@@ -120,6 +120,27 @@ def build_parser():
     replay.add_argument("--archive", type=Path, required=True)
     replay.add_argument("--out", type=Path, required=True)
     replay.add_argument("--audit", type=Path, required=True)
+    acquire = commands.add_parser("acquire-published", help="acquire the pinned model snapshot and selected patch artifacts")
+    acquire.add_argument("--reference", type=Path, default=Path("configs/published_p50c.json"))
+    acquire.add_argument("--out", type=Path, required=True)
+    acquire.add_argument("--max-download-bytes", type=int, default=3_000_000_000)
+    acquire.add_argument("--timeout", type=float, default=900.0,
+                         help="per-request transfer budget and socket timeout in seconds")
+    acquire.add_argument("--max-elapsed-seconds", type=float, default=1800.0,
+                         help="HTTP elapsed-time budget, checked between socket operations")
+    acquisition = commands.add_parser("verify-acquisition", help="recheck all pinned acquisition files offline")
+    acquisition.add_argument("--reference", type=Path, default=Path("configs/published_p50c.json"))
+    acquisition.add_argument("--bundle", type=Path, required=True)
+    inventory = commands.add_parser("inventory-model", help="inventory every local model file and stored tensor")
+    inventory.add_argument("--model", type=Path, required=True)
+    inventory.add_argument("--out", type=Path, required=True)
+    for command, help_text in (("reconstruct-published", "reconstruct and verify a complete model directory atomically"),
+                               ("verify-reconstruction", "independently verify saved reconstruction bytes and audit")):
+        reconstruction = commands.add_parser(command, help=help_text)
+        reconstruction.add_argument("--reference", type=Path, default=Path("configs/published_p50c.json"))
+        reconstruction.add_argument("--acquisition", type=Path, required=True)
+        reconstruction.add_argument("--out", type=Path, required=True,
+                                    help="reconstruction bundle (new output for reconstruct, existing for verify)")
     return parser
 
 
@@ -167,6 +188,29 @@ def main(argv=None):
                 raise ValueError("audit output exists; choose a new output")
             result = replay_sparse_checkpoint(args.base, args.manifest, args.archive, args.out)
             write_json(args.audit, result)
+        elif args.command in ("acquire-published", "verify-acquisition"):
+            from .acquisition import acquire_published, verify_acquisition
+            if args.command == "acquire-published":
+                audit = acquire_published(args.reference, args.out,
+                                          max_download_bytes=args.max_download_bytes,
+                                          timeout=args.timeout, max_elapsed_seconds=args.max_elapsed_seconds)
+            else:
+                audit = verify_acquisition(args.bundle, args.reference)
+            result = {key: audit[key] for key in ("kind", "complete", "resolved_source_revision", "resolved_model_revision")}
+            result.update(stored_tensor_count=len(audit["model_inventory"]["tensors"]),
+                          stored_parameter_count=audit["model_inventory"]["parameter_count"],
+                          inference_executed=False, experiment_executed=False)
+        elif args.command == "inventory-model":
+            from .inventory import inventory_model
+            inventory = inventory_model(args.model)
+            write_json(args.out, inventory)
+            result = {"file_count": len(inventory["files"]), "tensor_count": len(inventory["tensors"]),
+                      "stored_parameter_count": inventory["parameter_count"]}
+        elif args.command in ("reconstruct-published", "verify-reconstruction"):
+            from .reconstruction import reconstruct_published, verify_reconstruction
+            operation = reconstruct_published if args.command == "reconstruct-published" else verify_reconstruction
+            audit = operation(args.acquisition, args.out, args.reference)
+            result = {key: value for key, value in audit.items() if key != "model_inventory"}
         print(json.dumps(result, indent=2, allow_nan=False))
         return 0
     except (OSError, ValueError, TypeError) as error:

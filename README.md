@@ -6,11 +6,13 @@ Maintainer: [Arhaan Aggarwal (Arhaan2)](https://github.com/Arhaan2).
 
 ## Current status
 
-**Experimental infrastructure through Phase 1. No language-model improvement has been measured.**
+**Experimental infrastructure through Phase 2 artifact preparation. No language-model improvement has been measured.**
 
-The implementation provides auditable array edits, experiment profiles, execution diagnostics, versioned raw evidence contracts, exact split-overlap checks, paired analysis of externally graded results, and a small replay utility for the published sparse BF16 edit format. Its executable example uses small synthetic arrays to test the mechanics. It does not download a language model, call a frontier model, implement a language-model inference server, or grade MATH answers.
+The implementation provides pinned model acquisition, complete file and tensor inventories, transactional reconstruction of the published sparse BF16 patch, independent saved-checkpoint verification, auditable array edits, experiment profiles, execution diagnostics, versioned raw evidence contracts, exact split-overlap checks, and paired analysis of externally graded results. Its mechanics example uses small synthetic arrays. It does not call a frontier model, implement a language-model inference server, or grade MATH answers.
 
-Build and fixture validation are separate from real-model validation and experiment execution. The latter two remain unexecuted. Passing a schema check establishes configuration completeness, not externally verified provenance, model compatibility, or a scientific result.
+Build and fixture validation, real artifact verification, model execution, and experiments are separate evidence categories. Model execution and experiments remain unexecuted. Passing a schema check establishes configuration completeness, not externally verified provenance, model compatibility, or a scientific result.
+
+The pinned p50c artifacts have been acquired and the complete saved reconstruction verified: **130,188 changed stored BF16 entries**, with a **131,072-coordinate published column footprint**. All 486 unrelated tensors and the remaining model assets are unchanged. See the [artifact verification report and inventories](reports/p50c/README.md); these checks establish byte reconstruction, not task quality or inference compatibility.
 
 The intended study begins with replay of the [released evaluated edit](https://github.com/RikiyaT/lm_understand-logs/tree/4d09ba6d6a7e891dd8063974dfe81b3d78e3494f/exp8_math/runs/p50c/edit), then an informed fresh-editor experiment based on [Sparks of Weight-Space Programming](https://rikiyat.github.io/blog/weight-space-programming/), then a browser-deployment extension using [BrowserLLM](https://github.com/gufranmirza/browser-llm-bench). These are separate claims. The study design and remaining work are in [docs/study-design.md](docs/study-design.md) and [docs/roadmap.md](docs/roadmap.md).
 
@@ -36,6 +38,8 @@ python -m weight_space_lab check configs/qwen_math_design.json --require-ready
 That command **should fail** for the shipped template: model, runtime, dataset, grader, and editor-version pins have deliberately not been invented. Complete and verify them on the chosen inference machine before freezing an experiment.
 
 ## Profiles, diagnostics, and evidence
+
+For the pinned model and published patch, follow [acquisition and reconstruction](docs/model-artifacts.md). The workflow keeps the original snapshot read-only, resolves tensors through the real shard index, preserves every unrelated tensor and asset, and finalizes the reconstructed model and audit together. Acquisition uses bounded public downloads; reconstruction and verification are offline and require no inference framework. Sparse substitutions, the published column footprint, and actual saved BF16 changes are recorded separately.
 
 Version 2 protocols declare their execution purpose and require only the corresponding prerequisites. Published-patch reconstruction requires no editor connection. Fresh-editor search records the actual experimental editor's identity and interface, while final evaluation additionally requires a candidate and evaluation freeze. The original version 1 design remains supported without silently changing its settings.
 

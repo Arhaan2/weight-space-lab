@@ -14,23 +14,25 @@ Provide a diagnostic command for dependencies, device availability, memory, and 
 
 **Exit:** CPU-only tests exercise these contracts and existing mechanics. An unfinished configuration cannot pass readiness. Synthetic validation cannot establish model execution or experimental success. This milestone does not include model acquisition, inference adapters, graders, editor access, or an experiment.
 
-## Phase 2: one real model and exact published-patch replay
+## Phase 2: pinned model acquisition and complete published-patch reconstruction
 
-Choose an execution machine and verify available memory and inference performance with a bounded development-only smoke run. Resolve immutable model and tokenizer revisions. Capture the chat template, dtype, full parameter inventory, runtime dependencies, and exact inference settings.
+Acquire only the selected patch artifacts and matching base snapshot at the immutable revisions in `configs/published_p50c.json`. Record resolved source revisions, file hashes, stored tensor names/shapes/dtypes/counts, the actual shard index, model configuration, tokenizer assets, and chat template. Keep the original snapshot immutable and large weights outside tracked source.
 
-Obtain only the pinned published patch artifacts and the matching base checkpoint. Replay the sparse substitutions, verify every published base and edited tensor hash, and check the saved checkpoint. This reconstructs a released intervention; it does not establish independent Astra discovery.
+Replay the sparse substitutions through the actual model-directory layout. Preserve unrelated tensors and assets, verify every published base and edited tensor hash, independently compare saved bytes, and report targeted column scope separately from actual BF16 changes. Finalize the model and audit together. This reconstructs a released intervention; it does not establish independent Astra discovery. See [the artifact workflow](model-artifacts.md).
+
+**Exit:** fixture tests pass; the pinned real artifacts and saved reconstruction verify when downloads are available, or their exact prerequisites remain explicit. Artifact verification does not imply model loading, inference, grading, or an experiment. Native execution work follows this artifact boundary.
+
+## Phase 3: native execution and bounded edit execution
+
+Choose an execution machine and verify available memory and inference performance with a bounded development-only smoke run. Pin runtime dependencies and exact inference settings without changing the acquired model, precision, tokenizer, or chat template silently.
 
 Add the native generation adapter, task loaders, pinned graders, and machine-readable item/seed records. Verify one development task end to end. Test the model-card baseline and literature baseline on development data. Freeze final test identities without showing their contents to the experimental editor. Treat benchmark evaluation of the fixed published patch as its own replay study; it is not a source of test feedback for the later fresh-editor study.
-
-**Exit:** original and replayed checkpoints generate real outputs, edited tensors match the published hashes, every scheduled result is accounted for, and graders pass independent examples. No fresh candidate selection uses final-test feedback.
-
-## Phase 3: checkpoint round trip and bounded edit execution
 
 Implement Safetensors loading/saving with support for the selected model's actual dtypes and shard layout. Verify an identity round trip before applying any candidate. Preserve all nonedited tensors, tokenizer assets, model configuration, and architecture. Prove the actual changed-coordinate count on the saved/reloaded checkpoint.
 
 Connect the limited proposal format to an explicitly recorded Astra execution interface. Do not invent an API model identifier or quietly substitute another model. Add an execution-side probe ledger that enforces call, sequence, token, time, and cost limits before work begins. Run the editor in a context that cannot access final-test files.
 
-**Exit:** one real bounded edit is loadable and auditable; prohibited operations cannot pass the execution interface; a failed candidate restores the pristine base.
+**Exit:** original and replayed checkpoints generate real outputs, graders pass independent examples, and every scheduled result is accounted for. One real bounded edit is loadable and auditable; prohibited operations cannot pass the execution interface; a failed candidate restores the pristine base. No fresh candidate selection uses final-test feedback.
 
 ## Phase 4: controlled pilot and candidate freeze
 
