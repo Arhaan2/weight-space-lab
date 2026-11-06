@@ -159,6 +159,44 @@ def build_parser():
     native.add_argument("--schedule", type=Path, required=True)
     native.add_argument("--out", type=Path, required=True)
     native.add_argument("--resume", action="store_true")
+    acquire_data = commands.add_parser("acquire-benchmarks", help="download and verify pinned benchmark source files")
+    acquire_data.add_argument("--reference", type=Path, default=Path("configs/benchmark_sources.json"))
+    acquire_data.add_argument("--out", type=Path, required=True)
+    acquire_data.add_argument("--max-download-bytes", type=int, default=12_000_000)
+    acquire_data.add_argument("--timeout", type=float, default=30.0)
+    prepare_data = commands.add_parser("prepare-benchmark-data", help="prepare explicit audited benchmark splits and role bundles")
+    prepare_data.add_argument("--reference", type=Path, default=Path("configs/benchmark_sources.json"))
+    prepare_data.add_argument("--cache", type=Path, required=True)
+    prepare_data.add_argument("--out", type=Path, required=True)
+    bundle = commands.add_parser("check-benchmark-bundle", help="verify prepared source identities and split artifacts")
+    bundle.add_argument("bundle", type=Path)
+    bundle.add_argument("--cache", type=Path,
+                        help="independently reconstruct expected items from verified source bytes")
+    ifeval = commands.add_parser("acquire-ifeval", help="acquire pinned official evaluator code, license, and resources")
+    ifeval.add_argument("--out", type=Path, required=True)
+    grader_check = commands.add_parser("check-graders", help="execute independent known-answer fixtures with real evaluators")
+    grader_check.add_argument("--ifeval-root", type=Path)
+    grader_check.add_argument("--out", type=Path, required=True)
+    freeze = commands.add_parser("freeze-analysis", help="freeze a complete split, sample schedule, and analysis policy")
+    for name in ("split-manifest", "items", "seeds", "policy", "arms", "out"):
+        freeze.add_argument("--" + name, type=Path, required=True)
+    freeze.add_argument("--benchmark", required=True)
+    freeze.add_argument("--stage", choices=["smoke", "pilot", "full"], required=True)
+    freeze.add_argument("--metric", default="accuracy")
+    freeze.add_argument("--evidence-kind", choices=["fixture", "real_model"], required=True)
+    grade = commands.add_parser("grade-records", help="grade raw records independently and retain diagnostics")
+    for name in ("records", "items", "policy", "out"):
+        grade.add_argument("--" + name, type=Path, required=True)
+    grade.add_argument("--ifeval-root", type=Path)
+    project = commands.add_parser("project-analysis", help="project raw evidence and diagnostic grades under a frozen manifest")
+    for name in ("manifest", "records", "grades", "out"):
+        project.add_argument("--" + name, type=Path, required=True)
+    project.add_argument("--arm", choices=["baseline", "candidate"], required=True)
+    production = commands.add_parser("compare-graded", help="compare complete scheduled arms with separate model/grader failure accounting")
+    for name in ("manifest", "baseline-records", "candidate-records", "baseline-grades", "candidate-grades", "out"):
+        production.add_argument("--" + name, type=Path, required=True)
+    production.add_argument("--bootstrap-samples", type=int, default=10000)
+    production.add_argument("--seed", type=int, default=0)
     return parser
 
 
@@ -240,14 +278,77 @@ def main(argv=None):
             from .native_runner import run_schedule
             config, tasks, schedule = read_json(args.config), read_json(args.tasks), read_json(args.schedule)
             result = run_schedule(config, tasks, schedule, args.out, model_path=args.model, resume=args.resume)
+        elif args.command == "acquire-benchmarks":
+            from .benchmark_data import acquire_benchmarks
+            result = acquire_benchmarks(args.reference, args.out,
+                                       max_download_bytes=args.max_download_bytes, timeout=args.timeout)
+        elif args.command == "prepare-benchmark-data":
+            from .benchmark_data import prepare_benchmark_data
+            result = prepare_benchmark_data(args.reference, args.cache, args.out)
+        elif args.command == "check-benchmark-bundle":
+            from .benchmark_data import check_benchmark_bundle
+            result = check_benchmark_bundle(args.bundle, cache=args.cache)
+        elif args.command == "acquire-ifeval":
+            from .grading import acquire_ifeval
+            result = acquire_ifeval(args.out)
+        elif args.command in {"check-graders", "freeze-analysis", "grade-records", "project-analysis", "compare-graded"}:
+            if args.out.exists():
+                raise ValueError("output exists; choose a new artifact destination")
+            if args.command == "check-graders":
+                from .grading import run_known_answer_checks
+                result = run_known_answer_checks(ifeval_root=args.ifeval_root)
+            elif args.command == "freeze-analysis":
+                from .analysis_pipeline import build_analysis_manifest
+                result = build_analysis_manifest(
+                    read_json(args.split_manifest), read_json(args.items),
+                    benchmark=args.benchmark, seeds=read_json(args.seeds), policy=read_json(args.policy),
+                    arms=read_json(args.arms), stage=args.stage, metric=args.metric,
+                    evidence_kind=args.evidence_kind)
+            elif args.command == "grade-records":
+                from .benchmark_data import validate_item
+                from .grading import grade_record, validate_grading_policy
+                from .records import validate_run_records
+                records = validate_run_records(read_json(args.records))
+                policy = validate_grading_policy(read_json(args.policy))
+                items = read_json(args.items)
+                if not isinstance(items, list):
+                    raise ValueError("items must be an array")
+                indexed = {}
+                for item in items:
+                    item = validate_item(item)
+                    key = item["benchmark"], item["item_id"]
+                    if key in indexed:
+                        raise ValueError("duplicate benchmark item")
+                    indexed[key] = item
+                if any((row["benchmark"], row["item_id"]) not in indexed for row in records):
+                    raise ValueError("raw record references an unknown benchmark item")
+                result = [grade_record(row, indexed[row["benchmark"], row["item_id"]], policy,
+                                       ifeval_root=args.ifeval_root) for row in records]
+            elif args.command == "project-analysis":
+                from .analysis_pipeline import project_arm
+                result = project_arm(read_json(args.records), read_json(args.grades),
+                                     read_json(args.manifest), arm=args.arm)
+            else:
+                from .analysis_pipeline import compare_graded_runs
+                result = compare_graded_runs(
+                    read_json(args.baseline_records), read_json(args.candidate_records),
+                    read_json(args.baseline_grades), read_json(args.candidate_grades),
+                    read_json(args.manifest), bootstrap_samples=args.bootstrap_samples, seed=args.seed)
+            write_json(args.out, result)
         print(json.dumps(result, indent=2, allow_nan=False))
+        if args.command == "check-graders" and not result["all_passed"]:
+            return 2
+        if args.command == "grade-records" and any(row["status"] in {"grader_error", "grader_timeout"} for row in result):
+            return 2
         if args.command == "run-native" and any(result["statuses"][key] for key in ("error", "timeout", "missing")):
             return 2
         return 0
-    except (OSError, ValueError, TypeError) as error:
+    except (OSError, ValueError, TypeError, KeyError) as error:
         # Avoid dumping local machine paths or raw provider errors into reports.
         if isinstance(error, OSError):
             print(json.dumps({"error": "file operation failed", "type": type(error).__name__}))
+        elif isinstance(error, KeyError):
+            print(json.dumps({"error": "artifact has missing required fields", "type": "KeyError"}))
         else:
             print(json.dumps({"error": str(error), "type": type(error).__name__}))
         return 2

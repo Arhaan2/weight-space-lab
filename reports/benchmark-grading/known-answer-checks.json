@@ -1,0 +1,846 @@
+{
+  "all_passed": true,
+  "checks": [
+    {
+      "case": "math_equivalent_fraction",
+      "expected_correct": true,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "math",
+        "correct": true,
+        "diagnostics": {
+          "code": "verified",
+          "extracted_answer": "2/4",
+          "output_sha256": "373789b38fe190a782ba2445546867dfb925e58634a1b0d1fd6aa01d28592e0d",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "math_verify",
+          "revision": "c5aee6a180fa9bb3822d72e0397c158373a5946c259e34077086cdfc90d7fff3"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "6e636eee0e5bdfb69eb0991fcd395ac4d70889cb73ba753b631b26dfec3a1bd1",
+        "metrics": {},
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "016d36b2fcb3ef6c1ac69616208d4320c88b7c32f8e97b48d90f61cf0c0d9a09",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "math_equivalent_symbolic",
+      "expected_correct": true,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "math",
+        "correct": true,
+        "diagnostics": {
+          "code": "verified",
+          "extracted_answer": "(x+1)^2",
+          "output_sha256": "b17d926e9a4c97c057897bb43ad2f64a7bd69352ae17b5f07199fae29873f161",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "math_verify",
+          "revision": "c5aee6a180fa9bb3822d72e0397c158373a5946c259e34077086cdfc90d7fff3"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "d4848f57833a861edb3f055a5d6d44138529486904d0a6576f12e920ca937408",
+        "metrics": {},
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "43069a27d0c057ad92d39e02a53f989799f4d8b43ba9fd2cc9a1f4f28ab00a0b",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "math_missing",
+      "expected_correct": false,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "math",
+        "correct": false,
+        "diagnostics": {
+          "code": "missing_final_answer",
+          "extracted_answer": null,
+          "output_sha256": "9983b1f4a12725edf365a80c86af339bfe17d677cf8440c276f3d3c921e848a5",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "math_verify",
+          "revision": "c5aee6a180fa9bb3822d72e0397c158373a5946c259e34077086cdfc90d7fff3"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "3d8df16712dd01ddee1a11c3bf0f2f5b758cd8fbb7f173b2afddcf5573d45025",
+        "metrics": {},
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "dc7206b49ed3e585159ce89f20e5bdabe1048dcdabf91e83acbf54ee84755d57",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "math_last_box_wins",
+      "expected_correct": false,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "math",
+        "correct": false,
+        "diagnostics": {
+          "code": "verified",
+          "extracted_answer": "3",
+          "output_sha256": "68cfef826a141b5ae45b684960428287af52537126f946237acd57fca036abea",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "math_verify",
+          "revision": "c5aee6a180fa9bb3822d72e0397c158373a5946c259e34077086cdfc90d7fff3"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "3d8df16712dd01ddee1a11c3bf0f2f5b758cd8fbb7f173b2afddcf5573d45025",
+        "metrics": {},
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "6d4174dd88f3793d85576889f3083a54a42a05352b8256550da72739449b2991",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "math_last_box_equivalent",
+      "expected_correct": true,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "math",
+        "correct": true,
+        "diagnostics": {
+          "code": "verified",
+          "extracted_answer": "4/2",
+          "output_sha256": "b6ea351a0e56e277c9dfef834e85a34344aac33c2e0c6df888b8ce4ec8201e5b",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "math_verify",
+          "revision": "c5aee6a180fa9bb3822d72e0397c158373a5946c259e34077086cdfc90d7fff3"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "3d8df16712dd01ddee1a11c3bf0f2f5b758cd8fbb7f173b2afddcf5573d45025",
+        "metrics": {},
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "c48a0209a03cec45f0f83108a7e6d636258a6135281479306ac90db4d6851458",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "math_malformed_box",
+      "expected_correct": false,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "math",
+        "correct": false,
+        "diagnostics": {
+          "code": "malformed_final_answer",
+          "extracted_answer": null,
+          "output_sha256": "c65569727d19930b2d215ca248cce957741edc79fbe7a6d6a68c6ae189603ea7",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "math_verify",
+          "revision": "c5aee6a180fa9bb3822d72e0397c158373a5946c259e34077086cdfc90d7fff3"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "3d8df16712dd01ddee1a11c3bf0f2f5b758cd8fbb7f173b2afddcf5573d45025",
+        "metrics": {},
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "78adcdbf3782e6e8819a2fa5250201639ae691f2d5a191aad99f8261ab74e0f5",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "math_malformed_expression",
+      "expected_correct": false,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "math",
+        "correct": false,
+        "diagnostics": {
+          "code": "unparseable_prediction",
+          "extracted_answer": "\\frac12",
+          "output_sha256": "26e9b63cd255028d27b5bc44d0509212e7de952c8c68c6eb02d90c9bf730bf7e",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "math_verify",
+          "revision": "c5aee6a180fa9bb3822d72e0397c158373a5946c259e34077086cdfc90d7fff3"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "3d8df16712dd01ddee1a11c3bf0f2f5b758cd8fbb7f173b2afddcf5573d45025",
+        "metrics": {},
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "12e6e2f9893c9753949f264607445b3ef767cf4a90ab2453b29de74d405e3c55",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "math_balanced_malformed_expression",
+      "expected_correct": false,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "math",
+        "correct": false,
+        "diagnostics": {
+          "code": "unparseable_prediction",
+          "extracted_answer": "\\frac{2}{}",
+          "output_sha256": "e94c4bf18505058a14e683dc816c1ac081a876d615bc8c28e97278053b73289c",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "math_verify",
+          "revision": "c5aee6a180fa9bb3822d72e0397c158373a5946c259e34077086cdfc90d7fff3"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "3d8df16712dd01ddee1a11c3bf0f2f5b758cd8fbb7f173b2afddcf5573d45025",
+        "metrics": {},
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "a1d7072da322a1eecc0d0e8e3633a77bbe05f20599a8c158957cafacfd520aa1",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "math_json_not_answer",
+      "expected_correct": false,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "math",
+        "correct": false,
+        "diagnostics": {
+          "code": "missing_final_answer",
+          "extracted_answer": null,
+          "output_sha256": "328a85e0aa53be8ba3a40bc076d0269a6fbba565e324e7c0a38a347e685a4604",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "math_verify",
+          "revision": "c5aee6a180fa9bb3822d72e0397c158373a5946c259e34077086cdfc90d7fff3"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "3d8df16712dd01ddee1a11c3bf0f2f5b758cd8fbb7f173b2afddcf5573d45025",
+        "metrics": {},
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "fd86101a1ea1f1975a8b1964683778d337c13955f0e33a07747cc430abd80f4b",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "math_invalid_reference",
+      "expected_correct": null,
+      "expected_status": "grader_error",
+      "grade": {
+        "benchmark": "math",
+        "correct": null,
+        "diagnostics": {
+          "code": "unparseable_reference_answer",
+          "extracted_answer": "2",
+          "output_sha256": "fb8eebb9e467a62750535872ccef4767eac8f23c6f9183875234425ed01aa23e",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "math_verify",
+          "revision": "c5aee6a180fa9bb3822d72e0397c158373a5946c259e34077086cdfc90d7fff3"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "76108f9ff7862cc0b2343b8c373ba3317dfabc2f16dd0dcd7d73714c0ef70bac",
+        "metrics": {},
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "b7543c44d47fdeaf64445137a3ff9b6df0021e77ec5792f57a58cf600b2f91da",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "grader_error"
+      },
+      "passed": true
+    },
+    {
+      "case": "gsm_decimal_equivalence",
+      "expected_correct": true,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "gsm8k",
+        "correct": true,
+        "diagnostics": {
+          "code": "answer_extracted",
+          "extracted_answer": "1200.00",
+          "output_sha256": "43c45e1f51d2ed6a0d29dc676bb8903d9f2675e5eab91d15df08da67d5ca903a",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "gsm8k_decimal",
+          "revision": "4c8e6da79f2fed2894522ece3828bfa33aff3634a1433d07a526704f3be07088"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "895f98867f11108050bc84503e53cbb148df055365628a7c5d33d69a1cccf78d",
+        "metrics": {},
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "a9cc99b1556191f03b144211d937a1ebea8c1a392a08edf9d54158bb98a6701e",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "gsm_last_marker",
+      "expected_correct": false,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "gsm8k",
+        "correct": false,
+        "diagnostics": {
+          "code": "answer_extracted",
+          "extracted_answer": "3",
+          "output_sha256": "ca75ee84a1fc478beb502479ee368e499ab71202da91a90f37beb2847ae8c529",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "gsm8k_decimal",
+          "revision": "4c8e6da79f2fed2894522ece3828bfa33aff3634a1433d07a526704f3be07088"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "3c7ddb13dd88b9708acb93eba9c4d33326b4acdcaf82daa3951937f65c871768",
+        "metrics": {},
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "1614802de786ee8c7a9a97dac149faafa6e2fd66adfbf12fa04693bed43fd135",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "gsm_no_last_number_fallback",
+      "expected_correct": false,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "gsm8k",
+        "correct": false,
+        "diagnostics": {
+          "code": "missing_final_answer",
+          "extracted_answer": null,
+          "output_sha256": "341012bd213ff3bf682f4826bc5f3d5e0284b0ca9e2d90f092623797b5a82a70",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "gsm8k_decimal",
+          "revision": "4c8e6da79f2fed2894522ece3828bfa33aff3634a1433d07a526704f3be07088"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "3c7ddb13dd88b9708acb93eba9c4d33326b4acdcaf82daa3951937f65c871768",
+        "metrics": {},
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "cb10e42ea79b0b81c8563337f15da803da4fe485a03d6131343714dca739ef93",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "gsm_malformed",
+      "expected_correct": false,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "gsm8k",
+        "correct": false,
+        "diagnostics": {
+          "code": "malformed_final_answer",
+          "extracted_answer": null,
+          "output_sha256": "1da96512ef87d7b0bb1424c7ff42c9e34911f05f4eab3bedacc3eb0ee83d4e9b",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "gsm8k_decimal",
+          "revision": "4c8e6da79f2fed2894522ece3828bfa33aff3634a1433d07a526704f3be07088"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "3f8cba5533e81cdbfdc40a35a5c1b18877b2477d23a0f6cdf19bf78a858b1ab1",
+        "metrics": {},
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "268cc4407dfa5e6844708d544679500ba54dcb6c5d7830d66b41ec6603668e57",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "gsm_box",
+      "expected_correct": true,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "gsm8k",
+        "correct": true,
+        "diagnostics": {
+          "code": "answer_extracted",
+          "extracted_answer": "-2.50",
+          "output_sha256": "6dc2b5cd83d1907d4bd74d62c5e9e53ca1dc066bf07166f0defd4034ad06c44d",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "gsm8k_decimal",
+          "revision": "4c8e6da79f2fed2894522ece3828bfa33aff3634a1433d07a526704f3be07088"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "8fe0c3a83e86e6f1cc4168baa01e1b81280c20c23d3b5b80e9c112492bf09bf4",
+        "metrics": {},
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "f5ec2cd985ed7259424f9b9fea2fa60af0c54acd0f4df9add7a0a509c4f3d9ea",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "ifeval_json_and_keyword",
+      "expected_correct": true,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "ifeval",
+        "correct": true,
+        "diagnostics": {
+          "code": "official_evaluator_completed",
+          "extracted_answer": null,
+          "output_sha256": "d12846c0e5defa68f9bac711052301fa37bf1077a9b0c3b26c93196072094643",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "official_ifeval",
+          "revision": "d273d53c0d49aa509641885b183d98facd8d2bb2697725f9a2efbaaec52074fd"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "e7082655d3e458593dfce34ba82022d188cbded76f819ad6b4af92ed355b9f31",
+        "metrics": {
+          "instruction_count": 2,
+          "instruction_level_loose_accuracy": 1.0,
+          "instruction_level_strict_accuracy": 1.0,
+          "instruction_loose": [
+            true,
+            true
+          ],
+          "instruction_loose_correct": 2,
+          "instruction_strict": [
+            true,
+            true
+          ],
+          "instruction_strict_correct": 2,
+          "prompt_level_loose_accuracy": true,
+          "prompt_level_strict_accuracy": true
+        },
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "e6ff1cf265bc1690563b008852c374fd4224761e86a3f8cc80e4056a0ec4a6b6",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "ifeval_valid_json_insufficient",
+      "expected_correct": false,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "ifeval",
+        "correct": false,
+        "diagnostics": {
+          "code": "official_evaluator_completed",
+          "extracted_answer": null,
+          "output_sha256": "26345887af25be2e15f912cdf637d3e472509036b6aca2110889b474479cc058",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "official_ifeval",
+          "revision": "d273d53c0d49aa509641885b183d98facd8d2bb2697725f9a2efbaaec52074fd"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "e7082655d3e458593dfce34ba82022d188cbded76f819ad6b4af92ed355b9f31",
+        "metrics": {
+          "instruction_count": 2,
+          "instruction_level_loose_accuracy": 0.5,
+          "instruction_level_strict_accuracy": 0.5,
+          "instruction_loose": [
+            true,
+            false
+          ],
+          "instruction_loose_correct": 1,
+          "instruction_strict": [
+            true,
+            false
+          ],
+          "instruction_strict_correct": 1,
+          "prompt_level_loose_accuracy": false,
+          "prompt_level_strict_accuracy": false
+        },
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "874824f6000be4547b86a5642c45e5f525fe17181fa34df0631d87d419f2d27e",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "ifeval_strict_loose_difference",
+      "expected_correct": false,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "ifeval",
+        "correct": false,
+        "diagnostics": {
+          "code": "official_evaluator_completed",
+          "extracted_answer": null,
+          "output_sha256": "6a22aab3fbeae0744c66f05936b648d4f670090295e23ceef29ce626640d48d6",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "official_ifeval",
+          "revision": "d273d53c0d49aa509641885b183d98facd8d2bb2697725f9a2efbaaec52074fd"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "061202d15e4697c03c72fdb1c94bccdfff77e9afad8ee1bf0d38bfaa65ed0110",
+        "metrics": {
+          "instruction_count": 1,
+          "instruction_level_loose_accuracy": 1.0,
+          "instruction_level_strict_accuracy": 0.0,
+          "instruction_loose": [
+            true
+          ],
+          "instruction_loose_correct": 1,
+          "instruction_strict": [
+            false
+          ],
+          "instruction_strict_correct": 0,
+          "prompt_level_loose_accuracy": true,
+          "prompt_level_strict_accuracy": false
+        },
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "4ca667457d6cc3648a08b43e031b0e5b2237ffb807af6d05c4c5d4e48c190d3b",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "ifeval_pinned_sentences",
+      "expected_correct": true,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "ifeval",
+        "correct": true,
+        "diagnostics": {
+          "code": "official_evaluator_completed",
+          "extracted_answer": null,
+          "output_sha256": "b838e3337c01a8bba44b5797278d1062940b997b0a2d97bab54ac4112ff3b5e8",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "official_ifeval",
+          "revision": "d273d53c0d49aa509641885b183d98facd8d2bb2697725f9a2efbaaec52074fd"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "a9f869b951314c4e1cf530c9ec50dcfd2e6d6c5da902152e174e84049c78e549",
+        "metrics": {
+          "instruction_count": 1,
+          "instruction_level_loose_accuracy": 1.0,
+          "instruction_level_strict_accuracy": 1.0,
+          "instruction_loose": [
+            true
+          ],
+          "instruction_loose_correct": 1,
+          "instruction_strict": [
+            true
+          ],
+          "instruction_strict_correct": 1,
+          "prompt_level_loose_accuracy": true,
+          "prompt_level_strict_accuracy": true
+        },
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "0ea6ba6f8199207cba51a845bf08642ba63d55e5992b66a0d3641b45db4de45e",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "ifeval_evaluator_failure",
+      "expected_correct": null,
+      "expected_status": "grader_error",
+      "grade": {
+        "benchmark": "ifeval",
+        "correct": null,
+        "diagnostics": {
+          "code": "evaluator_failed",
+          "extracted_answer": null,
+          "output_sha256": "d2abceffbe02d642629ce7e527ed8a66455823aa73c7ca5a33833c4c6cd16978",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "official_ifeval",
+          "revision": "d273d53c0d49aa509641885b183d98facd8d2bb2697725f9a2efbaaec52074fd"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "0ad910d46caa972e7d60686ea80be7d8cf1ab2b27bb61a6ae71b2ff52f11a764",
+        "metrics": {},
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "c7d44a035e6765b1388963ccd82d24982e308e99cad36d8590e3d72024c7f5c5",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "grader_error"
+      },
+      "passed": true
+    },
+    {
+      "case": "truncated_grade",
+      "expected_correct": true,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "gsm8k",
+        "correct": true,
+        "diagnostics": {
+          "code": "answer_extracted",
+          "extracted_answer": "2",
+          "output_sha256": "bb94a526ded2526aadf3eb604d1c5221a2b51ac55991b9e6537a83a36e2c31ea",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "gsm8k_decimal",
+          "revision": "4c8e6da79f2fed2894522ece3828bfa33aff3634a1433d07a526704f3be07088"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "3c7ddb13dd88b9708acb93eba9c4d33326b4acdcaf82daa3951937f65c871768",
+        "metrics": {},
+        "policy_sha256": "1c4761f9043565caa3a2d5c249063084de6e5808c1bef8464af63121f7f1786b",
+        "record_type": "grade",
+        "run_record_sha256": "904fe105073e8cd2a1321c95f902bb2921409553e2d128815caea5c71e41df8f",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "truncated_fail",
+      "expected_correct": false,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "gsm8k",
+        "correct": false,
+        "diagnostics": {
+          "code": "truncation_policy_failure",
+          "extracted_answer": null,
+          "output_sha256": "bb94a526ded2526aadf3eb604d1c5221a2b51ac55991b9e6537a83a36e2c31ea",
+          "reasoning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "gsm8k_decimal",
+          "revision": "4c8e6da79f2fed2894522ece3828bfa33aff3634a1433d07a526704f3be07088"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "3c7ddb13dd88b9708acb93eba9c4d33326b4acdcaf82daa3951937f65c871768",
+        "metrics": {},
+        "policy_sha256": "f000436a50145f712b575a2e1968d825ef7c7a7ff5b7e3d98589523c50188002",
+        "record_type": "grade",
+        "run_record_sha256": "904fe105073e8cd2a1321c95f902bb2921409553e2d128815caea5c71e41df8f",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "reasoning_not_answer",
+      "expected_correct": false,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "gsm8k",
+        "correct": false,
+        "diagnostics": {
+          "code": "missing_final_answer",
+          "extracted_answer": null,
+          "output_sha256": "e1acaab9a70e1cc1abee3d28ed84771e096677cc7e5578a10c50151c3a5cf8ec",
+          "reasoning_sha256": "bb94a526ded2526aadf3eb604d1c5221a2b51ac55991b9e6537a83a36e2c31ea"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "gsm8k_decimal",
+          "revision": "4c8e6da79f2fed2894522ece3828bfa33aff3634a1433d07a526704f3be07088"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "3c7ddb13dd88b9708acb93eba9c4d33326b4acdcaf82daa3951937f65c871768",
+        "metrics": {},
+        "policy_sha256": "07db015fdfd33d652ce147ddc263913a0827045ce697419af0a5146f17f1b8c5",
+        "record_type": "grade",
+        "run_record_sha256": "e4e1296c0a90beaceadc0988b8a36b8e0e203427e109d257967ef39fce89505d",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "qwen_preopened_think",
+      "expected_correct": true,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "gsm8k",
+        "correct": true,
+        "diagnostics": {
+          "code": "answer_extracted",
+          "extracted_answer": "2",
+          "output_sha256": "751243ee6c59af085d21b9113e34f9f74c7c1b4f8609e59508afcb83a677c56b",
+          "reasoning_sha256": "00e13ed7af55b27622f1d6eab5bec0147e68efe28dc2b12461117afa1a5ed40e"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "gsm8k_decimal",
+          "revision": "4c8e6da79f2fed2894522ece3828bfa33aff3634a1433d07a526704f3be07088"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "3c7ddb13dd88b9708acb93eba9c4d33326b4acdcaf82daa3951937f65c871768",
+        "metrics": {},
+        "policy_sha256": "dd3eaa5b9daf79b4d97af2e90381cbde6f5bc032eac6d446f73dc87bdea1ce55",
+        "record_type": "grade",
+        "run_record_sha256": "f63ff96e5c61426c4269daafa5d926ecdaef63dd493c794584bf4fbee03472f5",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    },
+    {
+      "case": "unclosed_reasoning",
+      "expected_correct": false,
+      "expected_status": "graded",
+      "grade": {
+        "benchmark": "gsm8k",
+        "correct": false,
+        "diagnostics": {
+          "code": "malformed_reasoning_boundary",
+          "extracted_answer": null,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "reasoning_sha256": "a0fec35c06c2b7fb5fadbec1e01e12b06313f31fab57061a278e637138d6c163"
+        },
+        "evidence_kind": "fixture",
+        "grader": {
+          "name": "gsm8k_decimal",
+          "revision": "4c8e6da79f2fed2894522ece3828bfa33aff3634a1433d07a526704f3be07088"
+        },
+        "item_id": "known-answer-fixture",
+        "item_sha256": "3c7ddb13dd88b9708acb93eba9c4d33326b4acdcaf82daa3951937f65c871768",
+        "metrics": {},
+        "policy_sha256": "07db015fdfd33d652ce147ddc263913a0827045ce697419af0a5146f17f1b8c5",
+        "record_type": "grade",
+        "run_record_sha256": "9d5ca16bf0f91167737b91330f75e3eec0a195283a5f94f818b40e2c5e8f5053",
+        "sample_index": 0,
+        "schema_version": 1,
+        "seed": 0,
+        "status": "graded"
+      },
+      "passed": true
+    }
+  ],
+  "evidence_kind": "fixture",
+  "experiment_executed": false,
+  "kind": "independent_grader_known_answers",
+  "language_model_evaluated": false,
+  "schema_version": 1,
+  "scientific_result": false
+}

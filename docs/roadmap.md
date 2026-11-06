@@ -41,41 +41,77 @@ and resource measurements are recorded when the selected hardware/runtime is
 available, otherwise their exact prerequisite remains explicit. No benchmark
 experiment or editor search is launched. See [native execution](native-execution.md).
 
-### Prerequisites for the subsequent controlled pilot
+## Phase 4: benchmark data, independent graders, and paired analysis
 
-The broader execution and edit work below remains required before Phase 4;
-it is outside the Phase 3 generation/resume boundary.
+Prepare pinned MATH, GSM8K, and IFEval sources and explicit development,
+validation, and final-test manifests, retaining source identities. Audit exact
+and near-duplicate or template-family overlap with dataset-specific policies.
+Keep MATH-500 identities outside candidate-selection pools.
 
-Choose an execution machine and verify available memory and inference performance with a bounded development-only smoke run. Pin runtime dependencies and exact inference settings without changing the acquired model, precision, tokenizer, or chat template silently.
+Use a pinned mathematical parser/verifier, a documented GSM8K answer policy,
+and the official pinned IFEval evaluator. Validate them on independently
+prepared known-answer cases. Freeze reasoning/output separation, truncation,
+generation retry, and evaluator failure policies before a run. Keep raw
+execution, diagnostic grades, and compact analysis records separate and test
+the explicit projection. Production analysis requires every scheduled item
+and sample, including mutually absent, failed, and timed-out cases.
 
-Add the native generation adapter, task loaders, pinned graders, and machine-readable item/seed records. Verify one development task end to end. Test the model-card baseline and literature baseline on development data. Freeze final test identities without showing their contents to the experimental editor. Treat benchmark evaluation of the fixed published patch as its own replay study; it is not a source of test feedback for the later fresh-editor study.
+Prepare an editor-visible development bundle and evaluator-only held-out
+bundles. Their names and paths are an organizational convention, not access
+control. Enforced isolation is a Phase 7 prerequisite.
 
-Implement Safetensors loading/saving with support for the selected model's actual dtypes and shard layout. Verify an identity round trip before applying any candidate. Preserve all nonedited tensors, tokenizer assets, model configuration, and architecture. Prove the actual changed-coordinate count on the saved/reloaded checkpoint.
+**Exit:** offline implementation and meaningful checks pass; real evaluator
+and data checks are reported separately with any unavailable prerequisites.
+No pilot, candidate selection, editor call, or final benchmark experiment is
+part of this phase. See [benchmark evaluation](benchmark-evaluation.md).
 
-Connect the limited proposal format to an explicitly recorded Astra execution interface. Do not invent an API model identifier or quietly substitute another model. Add an execution-side probe ledger that enforces call, sequence, token, time, and cost limits before work begins. Run the editor in a context that cannot access final-test files.
+## Deferred execution gates
 
-**Prerequisite gate for the pilot:** original and replayed checkpoints generate real outputs, graders pass independent examples, and every scheduled result is accounted for. One real bounded edit is loadable and auditable; prohibited operations cannot pass the execution interface; a failed candidate restores the pristine base. No fresh candidate selection uses final-test feedback.
+The previous roadmap grouped data preparation into a controlled-pilot phase.
+The Phase 4 boundary above supersedes that grouping. The work below remains
+pending and must not be inferred from passing data or grading fixtures.
 
-## Phase 4: controlled pilot and candidate freeze
+### Controlled pilot and candidate freeze
 
-Run a bounded development/validation experiment. Preserve all candidate proposals, weight differences, probe budgets, and validation failures. Compare to decoding-only controls. Select according to the preregistered rule and freeze checkpoint hash, configuration hash, and evaluation code.
+Choose and verify the execution hardware; retain exact model, precision,
+tokenizer, template, and decoding. Run a bounded development/validation
+experiment with explicit call, sample, token, time, and cost limits. Preserve
+all proposals, failed candidates, and validation feedback. Compare decoding
+controls and freeze the selected checkpoint and evaluation configuration by
+the preregistered rule. A no-improvement result is valid.
 
-**Exit:** a selected candidate or an explicit no-improvement result, with enough evidence to reproduce the search procedure. No selection on the final test.
+The actual Astra execution interface and model identity must be recorded.
+No editor identifier is invented and no model is silently substituted. Start
+each proposal from the immutable base and verify saved tensor changes and an
+identity round trip. The editor must receive only approved data and tools.
 
-## Phase 5: held-out evaluation
+### Phase 7: enforced editor/evaluator access boundary
 
-Execute the same final item/seed schedule for all predeclared arms. Grade independently, audit extraction failures, calculate paired item-level intervals, and publish full denominators and failure accounting. Add transfer and regression checks before broadening the claim.
+Enforce separate identities, storage/tool permissions, and artifact access
+for editor and final evaluator. Prove that final tasks, targets, generations,
+audit details, and grading feedback cannot enter candidate selection. Validate
+this boundary before making an isolation claim; neither JSON declarations nor
+separate bundle directories prove it. Preserve the scientific role and actual
+identity of Astra when it is used as the experimental editor.
 
-**Exit:** an evidence-backed positive, negative, or inconclusive conclusion. A shorter generation is reported as a shorter generation unless correctness also improves.
+### Held-out evaluation
 
-## Phase 6: BrowserLLM extension
+After the candidate, configuration, split audit, policy, and access boundary
+are frozen, execute matched predeclared arms on the full final item/sample
+schedule. Audit grading failures and compute paired item-level uncertainty.
+Publish positive, negative, or inconclusive evidence with full denominators;
+shorter or usable output alone is not semantic correctness.
 
-Pin and audit BrowserLLM. Verify architecture support, add custom artifact references if needed, and add or validate task-correctness grading. Convert base and edited models identically, remeasure quality, then run resource comparisons across independent browser sessions.
+### Browser extension
 
-**Exit:** browser results separate quality, completion, latency, throughput, memory, and measurement limitations; base and edited artifacts are traceable to their native checkpoints.
+Verify architecture support and identity conversion before any comparison.
+Convert unchanged and edited checkpoints identically. Remeasure quality and
+browser resources separately across independent sessions. Do not modify the
+shared upstream benchmark repository as part of this work.
 
-## Phase 7: reproducible public release
+### Reproducible public release
 
-Publish executable commands, immutable dependency pins, permitted data references, patches, checkpoint hashes, per-example evidence, all candidate budgets, analysis code, and limitations. Keep the project on the maintainer's account and verify attribution before each push.
-
-**Exit:** a clean checkout on a second suitable machine reproduces the reported analysis and the documented evaluation path. Any remaining restriction is explicitly stated.
+Publish permitted scientific artifacts, immutable pins, full failure and
+budget accounting, reproduction commands, and limitations. Verify authorship,
+licenses, and metadata before publication. A second suitable machine must
+reproduce the reported analysis; any execution restriction remains explicit.

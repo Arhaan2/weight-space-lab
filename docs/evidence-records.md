@@ -4,7 +4,7 @@
 compact, externally graded records accepted by `compare`. Neither schema
 validates the scientific truth of an output or a grade. Phase 1 supplies the
 contracts and CPU fixtures. Phase 3 adds the [native runner](native-execution.md);
-no grader is implemented.
+Phase 4 adds [independent graders](independent-grading.md) and a [manifest-bound analysis pipeline](paired-analysis.md).
 
 ## Run records, version 1
 
@@ -73,7 +73,7 @@ The compact analysis contract remains unchanged: `item_id`, `seed`, `status`,
 boolean `correct`, and optional `score`. Do not add raw evidence fields to that
 format or use completed generation as evidence of correctness.
 
-`to_analysis_records(records, grades, benchmark=..., run_id=...)` explicitly
+`to_analysis_records(records, grades, benchmark=..., run_id=..., schedule=...)` explicitly
 rejects fixture evidence. The separate `to_fixture_analysis_records` helper
 retains `{evidence_kind: "fixture", scientific_result: false, records: ...}`;
 this envelope is not a scientific comparison input. Scientific projection
@@ -85,7 +85,7 @@ Unknown dataset or checkpoint identity on a failed/missing record does not
 discard that failure: the projection rejects conflicting known identities and
 leaves unknown values null in the raw evidence. Observed sample indexes and
 seeds must have a consistent one-to-one mapping across the selected benchmark;
-this checks alignment without inventing absent samples or a complete schedule.
+the supplied complete benchmark schedule additionally preserves absent samples. The production pipeline binds that schedule to all items in a frozen split manifest.
 
 Each independently supplied grade has `item_id`, `seed`, boolean `correct`,
 immutable `grader_revision`, and `run_record_sha256`, plus optional `score` in
@@ -95,6 +95,8 @@ truncated result requires a matching grade. Error, timeout and missing records
 project to failure, without a fabricated grader call. Duplicate, extra,
 unmatched or stale grades are rejected. The compact projection does not contain
 the source evidence: preserve raw records, grades and schedules alongside it.
+
+The legacy grade-binding helper above accepts externally prepared compact grades. New benchmark work uses the richer versioned diagnostic grade schema and frozen policy in [independent grading](independent-grading.md), then the explicit projection in [paired analysis](paired-analysis.md). Keep grader errors separate from model execution failures. Both remain in scheduled denominators; an unresolved grader error prevents a complete scientific correctness claim.
 
 ## Independent progress status, version 1
 

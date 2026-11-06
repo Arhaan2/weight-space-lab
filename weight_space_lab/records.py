@@ -188,14 +188,30 @@ def run_record_sha256(record):
     return hashlib.sha256(json.dumps(checked, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
 
 
-def to_analysis_records(records, grades, *, benchmark, run_id):
+def to_analysis_records(records, grades, *, benchmark, run_id, schedule=None):
     """Project real-model evidence into independently graded compact records.
 
-    Synthetic execution records cannot enter this scientific-analysis path.
+    Synthetic execution records cannot enter this path. The complete explicit
+    benchmark schedule is mandatory. Production comparisons additionally use
+    ``analysis_pipeline`` to bind the frozen data, policies and both arms.
     Use ``to_fixture_analysis_records`` for explicitly labeled contract checks.
     """
-    return _project_analysis_records(records, grades, benchmark=benchmark,
-                                     run_id=run_id, evidence_kind="real_model")
+    compact = _project_analysis_records(records, grades, benchmark=benchmark,
+                                        run_id=run_id, evidence_kind="real_model")
+    if schedule is None:
+        raise ValueError("real-model projection requires the complete scheduled item/sample manifest")
+    from .protocol import validate_benchmark_schedule
+    validate_benchmark_schedule(schedule)
+    if any(row["benchmark"] != benchmark for row in schedule):
+        raise ValueError("projection schedule must contain only the selected benchmark")
+    expected = {(row["item_id"], row["seed"]): row["sample_index"] for row in schedule}
+    selected = [row for row in records if row["benchmark"] == benchmark and row["run_id"] == run_id]
+    for row in selected:
+        if expected.get((row["item_id"], row["seed"])) != row["sample_index"]:
+            raise ValueError("raw result is outside the scheduled item/sample manifest")
+    indexed = {(row["item_id"], row["seed"]): row for row in compact}
+    return [indexed.get(key, {"item_id": key[0], "seed": key[1], "status": "missing", "correct": False})
+            for key in sorted(expected)]
 
 
 def to_fixture_analysis_records(records, grades, *, benchmark, run_id):

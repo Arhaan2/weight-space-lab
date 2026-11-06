@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "reasoning_policy": "qwen_thinking",
+  "output_eos_tokens": ["<|im_end|>", "<|endoftext|>"],
+  "truncation_policy": "grade",
+  "generation_retry": {"mode": "none", "max_attempts": 1},
+  "grader_timeout_seconds": 20,
+  "grader_retry": {"mode": "none", "max_attempts": 1}
+}

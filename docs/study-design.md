@@ -20,7 +20,7 @@ Start with the checkpoint and settings recorded in `configs/qwen_math_design.jso
 
 Use separate development, validation, and final-test data. Do not use the final test to select layers, choose edits, tune decoding, change the scoring script, or decide when to stop. Exclude MATH-500 task identities from every pool used for candidate selection. Check normalized text as well as identities, then inspect near-duplicates and shared templates separately.
 
-The experimental editor should receive weights and approved development feedback. The final evaluator should operate separately and reveal final scores only after the selected candidate and study configuration are frozen. A JSON declaration does not enforce this separation; the eventual execution system must limit the editor's filesystem, tools, and accessible artifacts.
+The experimental editor should receive weights and approved development feedback. The final evaluator should operate separately and reveal final scores only after the selected candidate and study configuration are frozen. A JSON declaration does not enforce this separation; Phase 7 must limit and test the editor's filesystem, tools, and accessible artifacts. Phase 4 prepares audience-specific bundles but claims no enforced isolation.
 
 ### Comparisons
 
@@ -52,7 +52,7 @@ The template's generated-token cap and maximum edited fraction are proposed pilo
 
 ### Scoring
 
-Use a pinned mathematical answer parser and verifier for MATH-500. Verify its handling of equivalent forms, missing answers, multiple boxed answers, truncated outputs, and malformed output using independently prepared examples. Preserve raw generations and the extracted answer for audit. Do not substitute an unvalidated string matcher or an unpinned model judge.
+Use the [Phase 4 pinned independent graders and policy](independent-grading.md) and [manifest-bound paired analysis](paired-analysis.md). Use a pinned mathematical answer parser and verifier for MATH-500. Verify its handling of equivalent forms, missing answers, multiple boxed answers, truncated outputs, and malformed output using independently prepared examples. Preserve raw generations and the extracted answer for audit. Do not substitute an unvalidated string matcher or an unpinned model judge.
 
 Use the published IFEval evaluator and clearly label strict versus loose, and instruction versus prompt-level scores. Score GSM8K with a documented final-answer extraction policy. Report the average per-generation correctness; do not relabel a best-of-four success rate as pass@1.
 

@@ -6,13 +6,15 @@ Maintainer: [Arhaan Aggarwal (Arhaan2)](https://github.com/Arhaan2).
 
 ## Current status
 
-**Experimental infrastructure through Phase 3 native generation and resumable execution. No language-model improvement has been measured.**
+**Experimental infrastructure through Phase 4 benchmark preparation, independent grading, and scheduled paired analysis. No language-model improvement has been measured.**
 
-The implementation provides pinned model acquisition, complete file and tensor inventories, transactional reconstruction of the published sparse BF16 patch, independent saved-checkpoint verification, native generation adapters, bounded schedule execution with crash-safe resume, auditable array edits, experiment profiles, execution diagnostics, versioned raw evidence contracts, exact split-overlap checks, and paired analysis of externally graded results. Its mechanics example uses small synthetic arrays. It does not call a frontier editor or grade MATH answers.
+The implementation provides pinned model acquisition, complete file and tensor inventories, transactional reconstruction of the published sparse BF16 patch, independent saved-checkpoint verification, native generation adapters, bounded schedule execution with crash-safe resume, auditable array edits, experiment profiles, execution diagnostics, versioned raw evidence contracts, pinned benchmark loaders and split manifests, exact and template-family overlap audits, independent benchmark graders, and scheduled paired analysis. Its mechanics example uses small synthetic arrays. It does not call a frontier editor. Optional pinned evaluators grade MATH and IFEval; GSM8K uses an explicit numeric final-answer policy.
 
 Build and fixture validation, real artifact verification, development model execution, and experiments are separate evidence categories. See [native execution](docs/native-execution.md) for the pinned backends, methodological variations, three-arm smoke procedure, and recovery contract. Experiments remain unexecuted. Passing a schema check establishes configuration completeness, not externally verified provenance, model compatibility, or a scientific result.
 
 The [real development smoke](reports/native-smoke/README.md) generated 16 tokens each from the original, identity-copy and reconstructed checkpoints using the explicit Transformers CPU/BF16 variation. All three hit the short token cap; no answer was graded. The report retains the initial failed load, successful raw outputs, recovery checks, and measured resource requirements. The preferred vLLM GPU path is pinned but remains unexecuted.
+
+The [Phase 4 verification report](reports/benchmark-grading/README.md) records pinned benchmark preparation, 25 independent known-answer checks with the real optional evaluators, and complete-schedule analysis fixtures. These are data and evaluator checks, not model accuracy measurements. Editor/final-data isolation remains a Phase 7 prerequisite.
 
 The pinned p50c artifacts have been acquired and the complete saved reconstruction verified: **130,188 changed stored BF16 entries**, with a **131,072-coordinate published column footprint**. All 486 unrelated tensors and the remaining model assets are unchanged. See the [artifact verification report and inventories](reports/p50c/README.md); these checks establish byte reconstruction, not task quality or inference compatibility.
 
@@ -56,14 +58,14 @@ python -m weight_space_lab check configs/profiles/native_development_smoke.json 
 
 The final command is expected to exit with status 2 until its explicit missing requirements are supplied and verified. Diagnostics load no checkpoint and measure no inference performance. Optional backend probes are bounded; they neither install a runtime nor choose a model or precision. Default CI installs only the project's lightweight dependencies and runs CPU-only contract tests.
 
-Raw run-record arrays are validated with `check-records`, benchmark schedules with `check-schedule`, and independent status records with `check-status`. These commands do not grade outputs or promote fixture evidence into real-model evidence. The compact `compare` input remains unchanged. Scientific raw-record projection rejects fixture evidence; its separate synthetic projection retains an explicit fixture envelope.
+Raw run-record arrays are validated with `check-records`, benchmark schedules with `check-schedule`, and independent status records with `check-status`. These commands do not grade outputs or promote fixture evidence into real-model evidence. The compact `compare` input remains unchanged and is a low-level analysis utility. Production grading and comparison require a frozen complete item/sample manifest through the [Phase 4 pipeline](docs/benchmark-evaluation.md). Scientific raw-record projection rejects fixture evidence; its separate synthetic projection retains an explicit fixture envelope.
 
 ## Mechanics and analysis
 
 - Applies declared matrix edits to a fresh copy of a pinned base state; no arbitrary code is executed from patch files.
 - Rejects malformed operations, edits outside an allowlist, nonfinite values, and edits beyond the configured scalar budget.
 - Reports hashes, changed scalar counts, and weight-difference sizes.
-- Checks exact task-text overlap and duplicate identifiers across development, validation, and test manifests.
+- Prepares explicit development, validation, and final-test manifests; checks exact identities, normalized text, numeric templates, and dataset-specific family overlap.
 - Compares paired, independently graded item/seed records, treating failed or missing scheduled results as failures and resampling at the item level.
 
 The supported exploratory algebraic operations are deliberately limited. They do not recreate the original discovery session or the full exploratory freedom of a Python kernel. The separate published-patch replay path uses the authors' released exact evaluated differences, which avoids estimating the original direction vector. Configuration checks do not establish that a remote checkpoint matches its claimed revision, that splits are semantically distinct, or that an editor was isolated from a test set.
@@ -74,7 +76,7 @@ Use Qwen3.5-0.8B for the native math study only after loading and validating the
 
 For the browser extension, first verify that the selected runtime can load and execute the exact architecture. Convert unchanged and edited checkpoints with the same toolchain and quantization. Browser latency and throughput alone cannot establish improved task accuracy.
 
-Large checkpoints, raw working data, local session transcripts, and development instructions are excluded from the source repository. Reproducible releases should include scientific task inputs where permitted, checkpoint identifiers, patch specifications, accepted edit rationale, evaluator versions, and independently scored evidence. Keep test data unavailable to the experimental editor until candidate selection is frozen.
+Large checkpoints, raw working data, local session transcripts, and development instructions are excluded from the source repository. Reproducible releases should include scientific task inputs where permitted, checkpoint identifiers, patch specifications, accepted edit rationale, evaluator versions, and independently scored evidence. Prepare separate editor-visible development and evaluator-only held-out bundles. These directory labels do not enforce access control; Phase 7 must enforce the editor/evaluator boundary before an isolated experimental claim.
 
 ## Attribution and licensing
 

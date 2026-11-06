@@ -1,0 +1,43 @@
+{
+  "bundle": {
+    "access_boundary_enforced": false,
+    "counts": {
+      "gsm8k": {
+        "development": 6002,
+        "test": 1319,
+        "validation": 1470
+      },
+      "ifeval": {
+        "development": 377,
+        "test": 66,
+        "validation": 98
+      },
+      "math": {
+        "development": 5973,
+        "test": 500,
+        "validation": 1482
+      }
+    },
+    "experiment_executed": false,
+    "ifeval_scope": "study-specific held-out subset; not the complete official 541-prompt benchmark",
+    "isolation_prerequisite": "Phase 7 must enforce evaluator/editor filesystem and tool access separation.",
+    "kind": "benchmark_data_bundle",
+    "overlap_audit_sha256": "673e0056c5addf0b331b49c850d81ea77b1b6644c09dcb96a43f0c8840ed61fb",
+    "quarantined_selection_items": 44,
+    "schema_version": 1,
+    "source_manifest_sha256": "1dc40b15bff068ed3e4bf57bddd26895279995265019db4edd15bcb1f5990977",
+    "source_quality_quarantine": 2,
+    "split_manifest_sha256": {
+      "development": "0715953ab74c6f57d22009514e3d9681f006164cdca41c96ba8e667dbe8f2258",
+      "test": "2840de89c0603f73f68ece68e24ddde971f6f651ed9e0bf3be2d6392f3c084d1",
+      "validation": "01c23f93bde0d54b51d9db4c4fe65dc5b235e3b89027dba4a7ae5f2f1fc483f4"
+    }
+  },
+  "experiment_executed": false,
+  "kind": "benchmark_data_verification",
+  "language_model_evaluated": false,
+  "schema_version": 1,
+  "verified_against_cached_source_bytes": true,
+  "verified_source_bytes": 8574725,
+  "verified_source_files": 11
+}

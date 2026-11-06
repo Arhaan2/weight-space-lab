@@ -1,0 +1,42 @@
+{
+  "commands": [
+    {
+      "command": "python -m unittest discover -s tests -v",
+      "elapsed_seconds": 3.196,
+      "environment": "existing project environment",
+      "exit_code": 0,
+      "tests_run": 208
+    },
+    {
+      "command": "python -m compileall -q weight_space_lab tests",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m pip check",
+      "environments": [
+        "existing project environment",
+        "separate evaluator environment"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "date": "2026-11-06",
+  "experiment_executed": false,
+  "kind": "build_log",
+  "language_model_evaluated": false,
+  "optional_evaluator_environment_has_inference_runtime": false,
+  "publication_audit": {
+    "checks": [
+      "prohibited public terms",
+      "machine-specific filesystem paths"
+    ],
+    "runner_location": "private temporary code outside public source",
+    "status": "passed"
+  },
+  "python_version": "3.13.5",
+  "schema_version": 1
+}
