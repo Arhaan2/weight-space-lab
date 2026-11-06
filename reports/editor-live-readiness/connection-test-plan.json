@@ -1,0 +1,50 @@
+{
+  "actions_dispatched": false,
+  "ambiguous_remote_outcome": "record_indeterminate_and_do_not_retry",
+  "automatic_retries": 0,
+  "bounds": {
+    "candidate_proposals": 0,
+    "editor_requests": 1,
+    "frontier_generated_tokens_including_reasoning": 64,
+    "local_elapsed_seconds": 30,
+    "provider_usage_bound": null,
+    "requested_sequences": 1,
+    "target_model_generated_tokens": 0,
+    "target_model_probes": 0
+  },
+  "candidate_search_allowed": false,
+  "experiment_executed": false,
+  "held_out_data_included": false,
+  "identity_evidence_source": "execution_interface_metadata_only_not_response_content",
+  "kind": "phase7_connection_test_plan",
+  "provider_api_model_identifier": null,
+  "purpose": "one_development_only_transport_acknowledgement",
+  "request": {
+    "messages": [
+      {
+        "content": "Return exactly {\"status\":\"acknowledged\"}.",
+        "role": "user"
+      }
+    ],
+    "response_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "const": "acknowledged",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "type": "object"
+    },
+    "tools": []
+  },
+  "requested_selector": "gpt-6-astra",
+  "reservation_status": "not_reserved_requires_existing_authorized_live_budget",
+  "schema_version": 1,
+  "scientific_result": false,
+  "status": "prepared_not_dispatched",
+  "weight_changes_allowed": false
+}

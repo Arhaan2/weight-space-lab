@@ -1,0 +1,42 @@
+{
+  "boundary_verified": true,
+  "checks": {
+    "absolute_read_denied": true,
+    "environment_clean": true,
+    "filesystem_write_denied": true,
+    "inherited_descriptor_denied": true,
+    "metadata_denied": true,
+    "network_denied": true,
+    "python_subprocess_denied": true,
+    "sentinel_preserved": true,
+    "subprocess_denied": true,
+    "symlink_read_denied": true,
+    "traversal_read_denied": true
+  },
+  "execution_context": "Host verification process; editor worker restricted by the macOS Seatbelt profile and independent watchdog. The enclosing Codex sandbox does not permit nested Seatbelt installation.",
+  "experiment_executed": false,
+  "host": {
+    "architecture": "arm64",
+    "kernel_release": "25.6.0",
+    "os_version": "26.6.2",
+    "platform": "darwin",
+    "python_version": "3.13.5"
+  },
+  "implementation": "macos-seatbelt-stdlib-worker-v1",
+  "live_astra_interaction": false,
+  "schema_version": 1,
+  "scientific_result": false,
+  "source_sha256": {
+    "tests/test_editor_sandbox.py": "8355f0cff47315b59de4d52a7c936e0b5b107ec92dcd049b850d9aa61a6a3ea3",
+    "weight_space_lab/editor_sandbox.py": "cbadb4cbd932d465f2fc8c1ac8914cade64f88b355bcfb05b8a70871c7109863"
+  },
+  "test_assets": "Synthetic host-only canary and active loopback listener; no final benchmark assets were opened.",
+  "test_suite": {
+    "command": ".venv/bin/python -m unittest discover -s tests -p test_editor_sandbox.py -v",
+    "tests_failed": 0,
+    "tests_passed": 11,
+    "tests_skipped": 0
+  },
+  "verification_date": "2026-11-06",
+  "verification_timezone": "America/Los_Angeles"
+}

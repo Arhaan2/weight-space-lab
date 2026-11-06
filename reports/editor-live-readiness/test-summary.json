@@ -1,0 +1,37 @@
+{
+  "experiment_executed": false,
+  "real_editor_request_sent": false,
+  "schema_version": 1,
+  "scientific_result": false,
+  "source_sha256": {
+    "weight_space_lab/editor_budget.py": "d0b03fbf8e8d6b403a66c1e2fb9fa3108e007470f7488a9109c8a5bad1f73a4b",
+    "weight_space_lab/editor_cli.py": "ebf831f6097af29f16f480e43c8d41313475b521c52dd4d6dc589a74d4207f9b",
+    "weight_space_lab/editor_contract.py": "2541fab4706ab050dd61818d03293106e801f091667bfedcb6c8e95bf4e3bf89",
+    "weight_space_lab/editor_controller.py": "e529ab4f7c90f035363db39a1fc2ab2ca68f7cbdc76bd56998dd5ad6b23ae72c",
+    "weight_space_lab/editor_live.py": "2a7a25ce60678b209d7c65722ce1500d9266b9d81507525603fa36aac26b6646",
+    "weight_space_lab/editor_sandbox.py": "cbadb4cbd932d465f2fc8c1ac8914cade64f88b355bcfb05b8a70871c7109863",
+    "weight_space_lab/editor_tools.py": "d1917d35755277af4455b15c1e4eead7406268a888e45422cc2ad2b9175690a6"
+  },
+  "suites": [
+    {
+      "command": ".venv/bin/python -m unittest discover -s tests -v",
+      "duration_seconds": 17.132,
+      "failures": 0,
+      "log": "regression-tests.txt",
+      "sha256": "a0c04056054649d97c8b70a8b45e049b1624800f79c7a58aa2569c7c7b92ead0",
+      "skip_entries": 2,
+      "tests_run": 356
+    },
+    {
+      "command": ".venv/bin/python -m unittest discover -s tests -p 'test_editor*.py' -v",
+      "duration_seconds": 6.07,
+      "failures": 0,
+      "log": "phase7-host-tests.txt",
+      "sha256": "9c55bf8f9fdf2672f39dea543c394402d317574e19ca5d98987348468a8d5a01",
+      "skip_entries": 0,
+      "tests_run": 65
+    }
+  ],
+  "verification_date": "2026-11-06",
+  "verification_timezone": "America/Los_Angeles"
+}

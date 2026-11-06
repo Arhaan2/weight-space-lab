@@ -232,6 +232,8 @@ def build_parser():
     candidate_demo.add_argument("--out", type=Path, required=True)
     candidate_demo.add_argument("--backend", choices=["transformers"], help="explicitly enable tiny native development generations")
     candidate_demo.add_argument("--tensor", default="model.language_model.layers.15.mlp.down_proj.weight")
+    from .editor_cli import add_commands
+    add_commands(commands)
     return parser
 
 
@@ -242,7 +244,10 @@ def main(argv=None):
             result = validate_protocol(read_json(args.config), require_ready=args.require_ready)
             print(json.dumps(result, indent=2, allow_nan=False))
             return 0 if not result["issues"] else 2
-        if args.command == "diagnose":
+        if args.command.startswith("editor-"):
+            from .editor_cli import run
+            result = run(args)
+        elif args.command == "diagnose":
             from .diagnostics import collect_diagnostics
             result = collect_diagnostics(probe_backends=args.probe_backends)
             if args.out is not None:
@@ -409,6 +414,12 @@ def main(argv=None):
                     read_json(args.manifest), bootstrap_samples=args.bootstrap_samples, seed=args.seed)
             write_json(args.out, result)
         print(json.dumps(result, indent=2, allow_nan=False))
+        if args.command == "editor-live-readiness" and not result["ready"]:
+            return 2
+        if args.command.startswith("editor-") and (
+                result.get("status") == "rejected" or
+                (isinstance(result.get("result"), dict) and result["result"].get("status") in {"failed", "cancelled", "timed_out"})):
+            return 2
         if args.command == "check-graders" and not result["all_passed"]:
             return 2
         if args.command == "grade-records" and any(row["status"] in {"grader_error", "grader_timeout"} for row in result):
@@ -422,7 +433,7 @@ def main(argv=None):
         if args.command == "demo-candidate-edit" and any(status not in {"ok", "truncated"} for status in result["generation_statuses"].values()):
             return 2
         return 0
-    except (OSError, ValueError, TypeError, KeyError) as error:
+    except (OSError, ValueError, TypeError, KeyError, RuntimeError) as error:
         # Avoid dumping local machine paths or raw provider errors into reports.
         if isinstance(error, OSError):
             print(json.dumps({"error": "file operation failed", "type": type(error).__name__}))

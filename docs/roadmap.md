@@ -127,21 +127,45 @@ development input. Its provenance is never described as Astra discovery or
 scientific improvement. See [candidate editing](candidate-editing.md) for the
 operation contract, restrictions, inspection ledger, and development commands.
 
+## Phase 7: editor interface, isolation, and probe controller
+
+Inspect the supported execution interfaces and retain actual exposed model
+identity/version and interface provenance without inventing an API identifier
+or substituting another model. Implement a strict provider-independent
+request/response contract and file handoff while live access remains pending.
+Keep simulated and unauthenticated responses explicitly non-scientific.
+
+Use an OS-enforced editor process boundary and a broker exposing only approved
+model information, development examples, bounded weight inspections, patch
+proposals, and frozen forward-pass probes. Deny host/evaluator files, network,
+subprocesses, and inherited descriptors. A new chat is insufficient. No training,
+gradients, optimizer operations, architecture changes, or evaluation edits are
+available. Validate saved candidates through the Phase 6 adapter.
+
+Reserve budget durably before dispatch; retain requests, retries, requested/
+completed/failed sequences, tokens, elapsed time, and available billed usage.
+Enforce cancellation and limits in supervised workers. Persist budget and
+deadlines across restarts; reconcile interrupted requests conservatively.
+
+**Exit:** offline integration, actual local denial checks, budget exhaustion,
+recovery, and invalid-proposal verification are implemented. The exposed selector
+is `gpt-6-astra`; the inspected CLI is `0.163.0`. A live isolated editor transport
+with hard caps is still pending, so no real Astra interaction or experiment is
+claimed. See [editor controller](editor-controller.md),
+[interface provenance](editor-interface-audit.md), and
+[verification evidence](../reports/editor-integration/README.md).
+
+The [live-readiness follow-up](../reports/editor-live-readiness/README.md)
+adds an explicit diagnostic gate and an inert zero-action connection plan.
+Installed CLI behavior confirms that the tested token-budget features do not
+send a provider hard output cap. Actual live launch/tool isolation and an
+authorized live budget remain prerequisites. No Phase 8 search is started by
+these diagnostics.
+
 ## Deferred execution gates
 
-The Phase 4–6 boundaries above supersede the earlier roadmap's combined
-controlled-pilot scope. Fresh-editor experiments remain pending and must not
-be inferred from passing fixtures, running the fixed replay, or demonstrating
-the engineering edit.
-
-### Phase 7: enforced editor/evaluator access boundary
-
-Enforce separate identities, storage/tool permissions, and artifact access
-for editor and final evaluator. Prove that final tasks, targets, generations,
-audit details, and grading feedback cannot enter candidate selection. Validate
-this boundary before making an isolation claim; neither JSON declarations nor
-separate bundle directories prove it. Preserve the scientific role and actual
-identity of Astra when it is used as the experimental editor.
+Fresh-editor experiments remain pending and must not be inferred from passing
+fixtures, running the fixed replay, or demonstrating the engineering edit.
 
 ### Fresh-editor controlled pilot and candidate freeze
 

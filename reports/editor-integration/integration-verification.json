@@ -1,0 +1,207 @@
+{
+  "actual_editor_identity": null,
+  "all_passed": true,
+  "budget": {
+    "billing_unit": null,
+    "cancellation_reason": null,
+    "cancelled": false,
+    "charged": {
+      "billed_units": 0,
+      "completed_sequences": 6,
+      "conservative_requests": 1,
+      "editor_requests": 6,
+      "elapsed_seconds": 11.237959833350033,
+      "failed_sequences": 1,
+      "generated_tokens": 35,
+      "limit_violations": 0,
+      "model_probes": 1,
+      "observed_billed_units": 0,
+      "observed_elapsed_seconds": 1.2379598333500326,
+      "observed_generated_tokens": 3,
+      "pending_requests": 0,
+      "requested_sequences": 7,
+      "retries": 0
+    },
+    "configuration_sha256": "1526dee8813148dfcb5df4f729fee992038061a1c07790ef90b3de0abf6b1495",
+    "limits": {
+      "billed_units": null,
+      "editor_requests": 6,
+      "elapsed_seconds": 120.0,
+      "generated_tokens": 4096,
+      "model_probes": 1,
+      "requested_sequences": 7
+    },
+    "observed": {
+      "billed_units": 0,
+      "billing_measurements": 6,
+      "elapsed_measurements": 6,
+      "elapsed_seconds": 1.2379598333500326,
+      "generated_tokens": 3,
+      "token_measurements": 6
+    },
+    "remaining": {
+      "billed_units": null,
+      "editor_requests": 0,
+      "elapsed_seconds": 108.76204016664997,
+      "generated_tokens": 4061,
+      "model_probes": 0,
+      "requested_sequences": 0
+    },
+    "reserved": {
+      "billed_units": null,
+      "elapsed_seconds": 65.0,
+      "generated_tokens": 2596,
+      "pending_billed_units": 0,
+      "pending_elapsed_seconds": 0,
+      "pending_generated_tokens": 0
+    },
+    "run_id": "314a5cdbcd6340bba6e30152d6c9f1d0",
+    "schema_version": 1
+  },
+  "checks": {
+    "budget_exhaustion_denied": true,
+    "interrupted_request_conservatively_failed": true,
+    "invalid_proposal_rejected": true,
+    "isolated_simulated_interactions_completed": true,
+    "restart_preserved_six_editor_requests": true
+  },
+  "editor_model_called": false,
+  "evidence_kind": "synthetic_fixture",
+  "experiment_executed": false,
+  "implementation": {
+    "files": {
+      "__init__.py": "24fd3f78be0dd96376a52325d2d703734234d59af81dceca2da491a973833fe9",
+      "__main__.py": "38f96cb13699fe6042c5d64f088ba8a314dbd5a4161b7e634028eb4b398de09a",
+      "acquisition.py": "8b158e7246801864ce2e48b2768dad07c961e3792353286236a7bb88b194df65",
+      "analysis_pipeline.py": "c972661132639f34fa272148d081bdde37fbafe61b53df156910eb904d663764",
+      "benchmark_data.py": "3c7783ae84b8d398b78cfa897afd497c1c41533909b5a6a53ac9ca807db8796c",
+      "candidate_demo.py": "4468a0f102377415b3a461eff6f483fe56215458f2ea6d5bd4a2e76ac07c239c",
+      "checkpoint.py": "9d28bd5bb97b4cc150728c2bc030abee1e469d5b3df30f0ac34965d99e6cf628",
+      "checkpoint_numeric.py": "fd521f0efbc26dd72903e6f25a1ab37c94cda68762698ac3ffbe3c2ce155b65e",
+      "diagnostics.py": "de48c0803371e840358635d138b1b65d08a16e69d997cc8be260c9552258e745",
+      "editor_budget.py": "d0b03fbf8e8d6b403a66c1e2fb9fa3108e007470f7488a9109c8a5bad1f73a4b",
+      "editor_cli.py": "6341ceec7186b92e95daaef71d909a06da9736506435f40ebe8e5e33b19796ef",
+      "editor_contract.py": "2541fab4706ab050dd61818d03293106e801f091667bfedcb6c8e95bf4e3bf89",
+      "editor_controller.py": "f4eba3019c748cd15f9319c8bb85e3f223214ea2ff15208c38191db3ff07bfcb",
+      "editor_sandbox.py": "cbadb4cbd932d465f2fc8c1ac8914cade64f88b355bcfb05b8a70871c7109863",
+      "editor_tools.py": "d1917d35755277af4455b15c1e4eead7406268a888e45422cc2ad2b9175690a6",
+      "evaluation.py": "d2b47ed98369bd71b9ae4476d8352e90a513badc64cdcfcca429fc619bf2cebf",
+      "grading.py": "f54c4c4810d1430ce11c094398e28158b03e189eb3eec6055aa299485d6131c5",
+      "grading_worker.py": "f449b34d99dabdf906398fd9b60922d818c3641f891a629cf79c0edcd2d978e7",
+      "inventory.py": "9f500212721fd3bca80d31764f96d95d08f15e6172b15fe54c014464f930ff03",
+      "native_assets.py": "4afee9fa8a7a7bd764a4099800ff27187c4d49b67093746338a4c20552833bd0",
+      "native_backend.py": "ef5ccd43814073100444085c440861f4abc5ac2589bf1a8f8adfc313055c3482",
+      "native_runner.py": "c9c9fc587b6dfe7377adfa5a04cc5646e05e082866480b085da777795ab98fd5",
+      "patches.py": "c93fd0da4a9873312ff89d3c2f67902a6c041727e9b1ffc80e3fd76003db50e6",
+      "protocol.py": "5e284bda579dd75aa1fbadc9e5af0e913263f011e442ab5bb3509fadf6c7b976",
+      "published_study.py": "47601605dd432eead36037520308d9e8755be55b49f7fbc870a5cc8d1be8dab8",
+      "reconstruction.py": "dcc6808a6ac9c45d59f5d4d7248501ce58a2b8fb3cf5f735067d840384b083fc",
+      "records.py": "342c6dce303cfba1bef2277fb0448525fa4a21820c07e005497148757e0729c4",
+      "replay.py": "ad5ed1b052a512f88a976484a1359c82e9cf50aa760340003f8ac38303613682",
+      "replay_report.py": "1e4f741ddb478307ce8143d3c13537011fe5f69b69c11edaf27cfece1ee18e9b"
+    },
+    "numpy": "2.3.5",
+    "python": "3.13.5"
+  },
+  "kind": "phase7_offline_integration_verification",
+  "live_astra_status": "pending_enforced_adapter",
+  "responses": [
+    {
+      "editor_identity_authenticated": false,
+      "evidence_kind": "simulated",
+      "experiment_executed": false,
+      "request_id": "9484adad910749aba3ed36b824d35ca2",
+      "result": {
+        "allowed_tensors": [
+          "synthetic.mlp.weight"
+        ],
+        "architectures": [
+          "SyntheticFixture"
+        ],
+        "checkpoint_sha256": "c39e7d52a2b06b4c0613cc7eb828eff6fc92cd49aa9a96927db35dfe7338a76e",
+        "stored_parameter_count": 4
+      },
+      "scientific_result": false,
+      "status": "ok",
+      "tool": "model_info"
+    },
+    {
+      "editor_identity_authenticated": false,
+      "evidence_kind": "simulated",
+      "experiment_executed": false,
+      "request_id": "a38aa2ea4c7f4e0dac27f8067e2a5ef3",
+      "result": {
+        "tensors": {
+          "synthetic.mlp.weight": {
+            "dtype": "F32",
+            "parameter_count": 4,
+            "shape": [
+              2,
+              2
+            ]
+          }
+        }
+      },
+      "scientific_result": false,
+      "status": "ok",
+      "tool": "inspect"
+    },
+    {
+      "editor_identity_authenticated": false,
+      "evidence_kind": "simulated",
+      "experiment_executed": false,
+      "request_id": "5ce03d7f83424afa88b98f9f73b80981",
+      "result": {
+        "candidate_id": "5ce03d7f83424afa88b98f9f73b80981",
+        "changed_numerical_entries": 2,
+        "changed_stored_entries": 2,
+        "original_sha256": "c39e7d52a2b06b4c0613cc7eb828eff6fc92cd49aa9a96927db35dfe7338a76e",
+        "targeted_coordinates": 2
+      },
+      "scientific_result": false,
+      "status": "ok",
+      "tool": "propose"
+    },
+    {
+      "editor_identity_authenticated": false,
+      "evidence_kind": "simulated",
+      "experiment_executed": false,
+      "request_id": "f58f61c970604743b7705558d86a6ab3",
+      "result": {
+        "candidate_id": "5ce03d7f83424afa88b98f9f73b80981",
+        "editor_request_id": "f58f61c970604743b7705558d86a6ab3",
+        "evidence_kind": "fixture",
+        "experiment_executed": false,
+        "outputs": [
+          {
+            "generated_tokens": 3,
+            "item_id": "synthetic-development",
+            "raw_output": "SYNTHETIC FIXTURE OUTPUT",
+            "seed": 17,
+            "status": "ok"
+          }
+        ],
+        "probe_id": "8df9654240af43b3a6ffd505b75572d5",
+        "scientific_result": false,
+        "split": "development",
+        "status": "completed"
+      },
+      "scientific_result": false,
+      "status": "ok",
+      "tool": "probe"
+    },
+    {
+      "editor_identity_authenticated": false,
+      "error": "action_rejected",
+      "error_type": "ValueError",
+      "evidence_kind": "simulated",
+      "experiment_executed": false,
+      "request_id": "d8eae29a789f4be08b36778d03bd00f5",
+      "scientific_result": false,
+      "status": "rejected",
+      "tool": "propose"
+    }
+  ],
+  "schema_version": 1,
+  "scientific_result": false
+}

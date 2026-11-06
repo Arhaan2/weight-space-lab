@@ -1,0 +1,31 @@
+{
+  "experiment_executed": false,
+  "live_astra_interaction": false,
+  "offline_demonstration_script_sha256": "b4c47bb50bd56ced40ad1882935d7ba0f17b7aeeb50ec6c7e1e7a3eddb31b883",
+  "schema_version": 1,
+  "scientific_result": false,
+  "suites": [
+    {
+      "command": ".venv/bin/python -m unittest discover -s tests -v",
+      "duration_seconds": 17.647,
+      "failed": 0,
+      "log_file": "regression-tests.txt",
+      "log_sha256": "89412a724292b3989353bce88a7c8d2798a52787cb1f8d994d7a1817b427a2e8",
+      "scope": "Codex execution sandbox; nested Seatbelt checks skipped explicitly",
+      "skipped_entries": 2,
+      "tests_run": 349
+    },
+    {
+      "command": ".venv/bin/python -m unittest discover -s tests -p 'test_editor*.py' -v",
+      "duration_seconds": 5.591,
+      "failed": 0,
+      "log_file": "phase7-tests.txt",
+      "log_sha256": "8f74f3ff9843148b93ff5c82cebdf1acabca59980144d6abcf577f628cd322ba",
+      "scope": "Host execution with editor workers restricted by their own Seatbelt profiles",
+      "skipped_entries": 0,
+      "tests_run": 58
+    }
+  ],
+  "verification_date": "2026-11-06",
+  "verification_timezone": "America/Los_Angeles"
+}
