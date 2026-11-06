@@ -1,0 +1,20 @@
+{
+  "accounted_wall_seconds": 278.14233012357727,
+  "command_exit_code": 2,
+  "complete_generations": 11,
+  "generation_seconds": 246.27838974888436,
+  "generation_status_counts": {
+    "truncated": 11
+  },
+  "graded": false,
+  "guard_failure": "source_changed_before_next_job_execution",
+  "implementation_sha256": "43eb2704dcc004b3a134698a628659ad9379343e24e4263a809c822a3e73733c",
+  "input_tokens": 1047,
+  "kind": "pre_freeze_development_trial",
+  "matching_source_wheel_preserved": true,
+  "output_tokens": 176,
+  "reason": "Interrupted by source-drift guard after fixing all-load-failure pending reporting; no final study was run.",
+  "scheduled_generations": 15,
+  "scientific_result": false,
+  "unattempted_generations": 4
+}

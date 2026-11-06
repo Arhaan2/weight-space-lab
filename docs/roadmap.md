@@ -65,25 +65,74 @@ and data checks are reported separately with any unavailable prerequisites.
 No pilot, candidate selection, editor call, or final benchmark experiment is
 part of this phase. See [benchmark evaluation](benchmark-evaluation.md).
 
+## Phase 5: fixed published-patch replay
+
+Connect the verified original, independently copied identity, and reconstructed
+p50c checkpoints to the native runner, pinned benchmark data and graders, and
+paired item-level analysis. Validate the complete pipeline on development
+examples before freezing the evaluation. Keep smoke, pilot, and full execution
+as separate explicit commands; installation and tests never launch the full
+benchmark.
+
+Freeze checkpoint and dataset identities, benchmark-specific item/sample
+schedules, runtime, precision, tokenizer, chat template, prompt wrapping,
+decoding and stopping, extraction/truncation/retry rules, graders, and primary
+comparison/analysis settings. The primary comparison is unchanged versus
+reconstructed p50c under identical settings. Include the identity control and
+a separately labeled temperature-1 comparison with both checkpoints; the
+alternative is fixed in advance and not selected from final feedback.
+
+Use the published repeat counts: MATH-500 four samples per item, GSM8K two,
+and full-source IFEval two. Full IFEval replay restores all 541 prompts and
+does not constitute the Phase 4 custom held-out IFEval evaluation. Preserve
+all declared runtime, dataset, random-stream, and grading discrepancies.
+
+Reports retain average per-generation correctness, paired item-level
+uncertainty, full denominators, missing/error/truncation counts, token use,
+runtime, and improved/regressed items. Do not relabel average correctness as
+best-of-N success. The scientific label remains **published-patch replay**
+regardless of agreement with the reported improvement. Keep final outputs
+outside the later fresh-editor workspace without claiming that directory
+separation establishes Phase 7 access isolation.
+
+**Exit:** the executable workflow and development checks are complete; use
+measured smoke performance to estimate the full workload. The measured full
+result remains explicitly pending while suitable compute is unavailable.
+See [published-patch replay](published-patch-replay.md) for commands, frozen
+scope, reporting, resource estimates, and discrepancies.
+
+## Phase 6: real candidate-checkpoint editing
+
+Adapt the bounded scale-column and direction-removal operations to complete
+Safetensors checkpoints with their actual tensor names, dtypes, shard layouts,
+and nonfloating buffers. Define binary64 arithmetic and per-operation rounding
+back to storage dtype. Preserve architecture, tokenizer, unrelated tensors,
+and all other assets. Avoid model-wide conversion or framework reserialization.
+
+Bind each candidate to the immutable original; ordered operation composition
+must be explicit. Enforce exact tensor/column/operation allowlists, finite
+values, shape preservation, work limits, targeted and stored-change budgets,
+and intervention parameter limits. Provide bounded metadata, statistics and
+slice inspections with persistent exposure accounting.
+
+Reopen saved files, verify unchanged tensors/assets and expected operation
+results, and separately count stored-bit and numerical differences. Publish
+model and audit together only after verification. Identity, valid-edit,
+rejected-edit and failed-write checks must preserve the original and prevent
+partial acceptance.
+
+**Exit:** the implementation and fixture checks pass, and a deliberately
+hand-authored engineering edit demonstrates the real-checkpoint path on
+development input. Its provenance is never described as Astra discovery or
+scientific improvement. See [candidate editing](candidate-editing.md) for the
+operation contract, restrictions, inspection ledger, and development commands.
+
 ## Deferred execution gates
 
-The previous roadmap grouped data preparation into a controlled-pilot phase.
-The Phase 4 boundary above supersedes that grouping. The work below remains
-pending and must not be inferred from passing data or grading fixtures.
-
-### Controlled pilot and candidate freeze
-
-Choose and verify the execution hardware; retain exact model, precision,
-tokenizer, template, and decoding. Run a bounded development/validation
-experiment with explicit call, sample, token, time, and cost limits. Preserve
-all proposals, failed candidates, and validation feedback. Compare decoding
-controls and freeze the selected checkpoint and evaluation configuration by
-the preregistered rule. A no-improvement result is valid.
-
-The actual Astra execution interface and model identity must be recorded.
-No editor identifier is invented and no model is silently substituted. Start
-each proposal from the immutable base and verify saved tensor changes and an
-identity round trip. The editor must receive only approved data and tools.
+The Phase 4–6 boundaries above supersede the earlier roadmap's combined
+controlled-pilot scope. Fresh-editor experiments remain pending and must not
+be inferred from passing fixtures, running the fixed replay, or demonstrating
+the engineering edit.
 
 ### Phase 7: enforced editor/evaluator access boundary
 
@@ -93,6 +142,21 @@ audit details, and grading feedback cannot enter candidate selection. Validate
 this boundary before making an isolation claim; neither JSON declarations nor
 separate bundle directories prove it. Preserve the scientific role and actual
 identity of Astra when it is used as the experimental editor.
+
+### Fresh-editor controlled pilot and candidate freeze
+
+Choose and verify the execution hardware; retain exact model, precision,
+tokenizer, template, and decoding. Run a bounded development/validation
+experiment with explicit call, sample, token, time, and cost limits. Preserve
+all proposals, failed candidates, and validation feedback. Compare decoding
+controls and freeze the selected checkpoint and evaluation configuration by
+the preregistered rule. A no-improvement result is valid.
+
+Record the actual Astra execution interface and model identity without
+inventing an editor identifier or silently substituting a model. Start each
+proposal from the immutable base and verify saved tensor changes and an
+identity round trip. The editor receives only approved data and tools through
+the enforced access boundary.
 
 ### Held-out evaluation
 

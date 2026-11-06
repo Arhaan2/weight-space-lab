@@ -1,0 +1,16 @@
+{
+  "base_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+  "composition": "independent",
+  "operations": [
+    {
+      "columns": [
+        0
+      ],
+      "factor": 0.99,
+      "op": "scale_columns",
+      "tensor": "model.language_model.layers.15.mlp.down_proj.weight"
+    }
+  ],
+  "provenance": "engineering_edit",
+  "schema_version": 1
+}

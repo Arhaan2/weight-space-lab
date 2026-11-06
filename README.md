@@ -6,15 +6,30 @@ Maintainer: [Arhaan Aggarwal (Arhaan2)](https://github.com/Arhaan2).
 
 ## Current status
 
-**Experimental infrastructure through Phase 4 benchmark preparation, independent grading, and scheduled paired analysis. No language-model improvement has been measured.**
+**Experimental infrastructure through Phase 6 real candidate-checkpoint editing. The measured full replay result is pending; no language-model improvement has been established.**
 
-The implementation provides pinned model acquisition, complete file and tensor inventories, transactional reconstruction of the published sparse BF16 patch, independent saved-checkpoint verification, native generation adapters, bounded schedule execution with crash-safe resume, auditable array edits, experiment profiles, execution diagnostics, versioned raw evidence contracts, pinned benchmark loaders and split manifests, exact and template-family overlap audits, independent benchmark graders, and scheduled paired analysis. Its mechanics example uses small synthetic arrays. It does not call a frontier editor. Optional pinned evaluators grade MATH and IFEval; GSM8K uses an explicit numeric final-answer policy.
+The implementation provides pinned model acquisition, complete file and tensor inventories, transactional reconstruction of the published sparse BF16 patch, independent saved-checkpoint verification, native generation adapters, bounded schedule execution with crash-safe resume, auditable array edits, experiment profiles, execution diagnostics, versioned raw evidence contracts, pinned benchmark loaders and split manifests, exact and template-family overlap audits, independent benchmark graders, and scheduled paired analysis. Phase 5 joins these into a frozen replay workflow with separate development smoke, development pilot, and full-run commands. Its mechanics example uses small synthetic arrays. It does not call a frontier editor. Optional pinned evaluators grade MATH and IFEval; GSM8K uses an explicit numeric final-answer policy.
 
 Build and fixture validation, real artifact verification, development model execution, and experiments are separate evidence categories. See [native execution](docs/native-execution.md) for the pinned backends, methodological variations, three-arm smoke procedure, and recovery contract. Experiments remain unexecuted. Passing a schema check establishes configuration completeness, not externally verified provenance, model compatibility, or a scientific result.
 
 The [real development smoke](reports/native-smoke/README.md) generated 16 tokens each from the original, identity-copy and reconstructed checkpoints using the explicit Transformers CPU/BF16 variation. All three hit the short token cap; no answer was graded. The report retains the initial failed load, successful raw outputs, recovery checks, and measured resource requirements. The preferred vLLM GPU path is pinned but remains unexecuted.
 
 The [Phase 4 verification report](reports/benchmark-grading/README.md) records pinned benchmark preparation, 25 independent known-answer checks with the real optional evaluators, and complete-schedule analysis fixtures. These are data and evaluator checks, not model accuracy measurements. Editor/final-data isolation remains a Phase 7 prerequisite.
+
+The [Phase 5 replay workflow](docs/published-patch-replay.md) compares unchanged and reconstructed p50c weights under identical published-reference settings, with a matched identity control and a separately labeled temperature-1 comparison. It freezes benchmark-specific schedules, execution identities, grading rules, and paired item-level analysis after development validation. Full schedules are MATH-500 × 4, GSM8K test × 2, and all 541 IFEval prompts × 2; full IFEval replay is distinct from the Phase 4 held-out subset. Reports retain denominators, failures, truncations, tokens, runtime, improved/regressed items, and discrepancies. The preferred GPU execution and measured full result remain pending. Installing the project or running its tests never starts the full benchmark.
+
+The [Phase 5 evidence report](reports/published-patch-replay/README.md) records 255 passing tests, 15 completed short development generations, 25 passing grader checks, frozen pilot/full inputs, and an explicitly pending 28,600-generation full study. All smoke generations reached the 16-token cap; they do not estimate benchmark accuracy.
+
+The [Phase 6 candidate adapter](docs/candidate-editing.md) applies bounded edits
+to the actual Safetensors tensor names, dtypes, and shard layout. It preserves
+unrelated tensors, buffers, architecture and tokenizer assets, logs bounded
+weight inspections, and independently verifies saved stored-bit and numerical
+changes before publishing a candidate. Every independent proposal starts from
+the immutable original. Its development demonstration is explicitly a
+hand-authored engineering edit, not an Astra-discovered intervention.
+The [development evidence](reports/candidate-editing/README.md) records the
+saved-change counts, inspection disclosures, identity control, and tiny native
+execution checks without making an accuracy claim.
 
 The pinned p50c artifacts have been acquired and the complete saved reconstruction verified: **130,188 changed stored BF16 entries**, with a **131,072-coordinate published column footprint**. All 486 unrelated tensors and the remaining model assets are unchanged. See the [artifact verification report and inventories](reports/p50c/README.md); these checks establish byte reconstruction, not task quality or inference compatibility.
 

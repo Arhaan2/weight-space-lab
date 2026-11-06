@@ -1,4 +1,4 @@
-"""Offline asset preparation and strict execution inputs for native smoke runs."""
+"""Offline asset preparation and strict inputs for native smoke and replay runs."""
 
 from __future__ import annotations
 
@@ -199,17 +199,43 @@ def prepare_smoke(acquisition, reconstruction, identity, output, reference, *, b
 
 
 def validate_execution_config(config, tasks, schedule):
-    """Require complete smoke provenance and reject every unsupported setting."""
+    """Require complete native provenance and reject unsupported study settings.
+
+    A fixed-patch run additionally names its enclosing replay freeze. The study
+    orchestrator checks that freeze and its complete matched-arm schedule; this
+    validator checks the native arm's immutable inputs before every execution
+    and resume. Neither check asserts editor isolation or scientific success.
+    """
     from .native_backend import validate_backend_spec
     required = {"schema_version", "kind", "run_id", "evidence_kind", "profile", "stage", "checkpoint",
                 "retry_policy", "execution_limits", "backend", "artifacts", "implementation_sha256",
                 "tasks_sha256", "schedule_sha256", "methodological_variations", "runtime_environment"}
-    if not isinstance(config, dict) or set(config) != required:
+    if not isinstance(config, dict):
+        raise ValueError("execution configuration has missing or unsupported fields")
+    replay = config.get("profile") == "fixed_patch_evaluation"
+    if set(config) != required | ({"study"} if replay else set()):
         raise ValueError("execution configuration has missing or unsupported fields")
     if type(config["schema_version"]) is not int or config["schema_version"] != 1 or config["kind"] != "native_execution":
         raise ValueError("unsupported native execution configuration")
-    if config["profile"] != "native_development_smoke" or config["stage"] != "smoke":
-        raise ValueError("this execution entry point is limited to development smoke runs")
+    if replay:
+        if config["stage"] not in ("pilot", "full"):
+            raise ValueError("fixed-patch execution requires a pilot or full replay stage")
+        study = config["study"]
+        digest_fields = {"freeze_id", "grader_revision", "policy_sha256", "patch_sha256",
+                         "reconstruction_audit_sha256", "evaluation_code_revision", "split_audit_sha256"}
+        if (not isinstance(study, dict)
+                or set(study) != digest_fields | {"kind", "primary_comparison", "truncation_policy"}
+                or study["kind"] != "published_patch_replay"
+                or study["primary_comparison"] != "unchanged_vs_reconstructed_p50c"
+                or study["truncation_policy"] not in ("grade", "fail")):
+            raise ValueError("fixed-patch execution requires a complete published-patch study freeze")
+        if any(not isinstance(study[key], str) or re.fullmatch(r"[0-9a-f]{64}", study[key]) is None
+               for key in digest_fields):
+            raise ValueError("replay study identities must be immutable SHA256 values")
+        if study["evaluation_code_revision"] != config["implementation_sha256"]:
+            raise ValueError("replay evaluation code differs from the native implementation freeze")
+    elif config["profile"] != "native_development_smoke" or config["stage"] != "smoke":
+        raise ValueError("native execution supports development smoke or a frozen fixed-patch replay")
     if config["evidence_kind"] != "real_model":
         raise ValueError("native artifact execution requires real_model evidence; use the synthetic runner fixture separately")
     validate_backend_spec(config["backend"])
@@ -275,8 +301,11 @@ def validate_execution_config(config, tasks, schedule):
             raise ValueError("task has missing or unknown fields")
         if any(not isinstance(task[key], str) or not task[key].strip() for key in ("benchmark", "item_id")):
             raise ValueError("task identifiers must be nonempty strings")
-        if task["split"] != "development":
-            raise ValueError("smoke tasks must be development-only")
+        expected_split = "test" if replay and config["stage"] == "full" else "development"
+        if task["split"] != expected_split:
+            raise ValueError(f"{config['stage']} tasks must use the {expected_split} split")
+        if replay and task["benchmark"] not in {"math", "gsm8k", "ifeval"}:
+            raise ValueError("fixed-patch replay requires a supported pinned benchmark")
         if (not isinstance(task["dataset_revision"], str)
                 or re.fullmatch(r"(?:[0-9a-f]{40}|[0-9a-f]{64})", task["dataset_revision"]) is None):
             raise ValueError("task dataset revision is invalid")
@@ -292,7 +321,7 @@ def validate_execution_config(config, tasks, schedule):
                     or message["role"] not in ("system", "user", "assistant")
                     or not isinstance(message["content"], str) or not message["content"].strip()):
                 raise ValueError("task messages must contain supported text roles and content")
-    # Reuse Phase 1's complete smoke profile contract without extending its schema.
+    # Reuse Phase 1's profile and per-benchmark schedule contract.
     sampling = config["backend"]["sampling"]
     plans = []
     from .protocol import validate_benchmark_schedule
@@ -304,24 +333,40 @@ def validate_execution_config(config, tasks, schedule):
         items = [task for task in tasks if task["benchmark"] == benchmark]
         if not items or len({task["dataset_revision"] for task in items}) != 1:
             raise ValueError("benchmark requires one known dataset revision")
-        plans.append({"benchmark": benchmark, "split": "development", "dataset_revision": items[0]["dataset_revision"],
+        plans.append({"benchmark": benchmark, "split": items[0]["split"], "dataset_revision": items[0]["dataset_revision"],
                       "task_manifest_sha256": canonical_hash(items), "item_ids": sorted({row["item_id"] for row in rows}),
                       "seeds": [row["seed"] for row in sorted(rows, key=lambda r: r["sample_index"])
                                 if row["item_id"] == rows[0]["item_id"]],
                       "sampling": {**{key: sampling[key] for key in ("mode", "temperature", "top_p", "top_k", "presence_penalty")},
                                    "thinking": config["backend"]["chat"]["enable_thinking"],
-                                   "max_output_tokens": sampling["max_new_tokens"]}})
+                                   "max_output_tokens": sampling["max_new_tokens"]},
+                      **({"grader_revision": study["grader_revision"],
+                          "truncation_policy": study["truncation_policy"]} if replay else {})})
     profile = {"schema_version": 2, "profile": config["profile"], "stage": config["stage"],
-               "claim_type": "development_smoke", "model": config["checkpoint"]["model_id"],
+               "claim_type": "published_patch_replay" if replay else "development_smoke",
+               "model": config["checkpoint"]["model_id"],
                "backend": config["backend"]["name"], "precision": config["backend"]["precision"],
                "pins": {"model_revision": config["checkpoint"]["revision"], "tokenizer_revision": assets["tokenizer_revision"],
                         "runtime_version": canonical_hash(config["backend"]["versions"]),
                         "chat_template_sha256": config["backend"]["chat"]["chat_template_sha256"],
                         "checkpoint_sha256": config["checkpoint"]["sha256"]},
                "benchmarks": plans, "execution_limits": config["execution_limits"]}
+    if replay:
+        profile["pins"].update({"source_revision": assets["source_revision"],
+                                **{key: study[key] for key in ("patch_sha256", "reconstruction_audit_sha256",
+                                                              "evaluation_code_revision", "split_audit_sha256")}})
+        if config["stage"] == "full":
+            from .protocol import frozen_configuration_hash
+            profile["frozen"] = True
+            profile["freeze"] = {
+                "configuration_sha256": frozen_configuration_hash(profile),
+                "checkpoint_sha256": config["checkpoint"]["sha256"],
+                "schedule_sha256": validate_benchmark_schedule(schedule)["schedule_sha256"],
+                "evaluation_code_revision": study["evaluation_code_revision"],
+            }
     checked = validate_protocol(profile, require_ready=True)
     if checked["issues"]:
-        raise ValueError("native smoke inputs do not satisfy the Phase 1 protocol")
+        raise ValueError("native execution inputs do not satisfy the Phase 1 protocol: " + "; ".join(checked["issues"]))
     return copy.deepcopy(config)
 
 

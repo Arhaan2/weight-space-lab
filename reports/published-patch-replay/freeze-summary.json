@@ -1,0 +1,264 @@
+{
+  "analysis": {
+    "bootstrap_samples": 10000,
+    "confidence_level": 0.95,
+    "multiplicity": "math primary; GSM8K, IFEval and controls descriptive; no pooled benchmark score",
+    "seed": 0,
+    "unit": "paired_source_item"
+  },
+  "backend": {
+    "attention_implementation": "eager",
+    "chat": {
+      "add_generation_prompt": true,
+      "chat_template_sha256": "273d8e0e683b885071fb17e08d71e5f2a5ddfb5309756181681de4f5a1822d80",
+      "enable_thinking": true
+    },
+    "cpu_threads": 4,
+    "decoding": {
+      "clean_up_tokenization_spaces": false,
+      "skip_special_tokens": false
+    },
+    "device": "cpu",
+    "max_model_len": 34816,
+    "name": "transformers",
+    "precision": "bfloat16",
+    "sampling": {
+      "frequency_penalty": 0.0,
+      "max_new_tokens": 32768,
+      "min_p": 0.0,
+      "mode": "stochastic",
+      "presence_penalty": 1.5,
+      "repetition_penalty": 1.0,
+      "temperature": 0.6,
+      "top_k": 20,
+      "top_p": 0.95
+    },
+    "stopping": {
+      "eos_token_ids": [
+        248044,
+        248046
+      ],
+      "ignore_eos": false,
+      "include_stop_str_in_output": false,
+      "stop_strings": []
+    },
+    "versions": {
+      "jinja2": "3.1.6",
+      "safetensors": "0.7.0",
+      "tokenizers": "0.22.2",
+      "torch": "2.10.0",
+      "transformers": "5.3.0"
+    }
+  },
+  "benchmarks": {
+    "gsm8k": {
+      "dataset_revisions": [
+        "3101c7d5072418e28b9008a6636bde82a006892c"
+      ],
+      "items": 1319,
+      "schedule_sha256": "534e5fc240ff1769709e3c6b5192a97c70a30cb216dd93217c06dbf11f32a15e",
+      "scheduled_generations_per_arm": 2638,
+      "source_manifest_sha256": "1dc40b15bff068ed3e4bf57bddd26895279995265019db4edd15bcb1f5990977",
+      "task_manifest_sha256": "fdd1c3fc0f10d658320465110c0e05baeccba585c0cf0cb216cc85a8fbfa8e80"
+    },
+    "ifeval": {
+      "dataset_revisions": [
+        "e6890f85757dd84e27ca6df2dd30651dafad28e0"
+      ],
+      "items": 541,
+      "schedule_sha256": "f2fca48ef1b5e32114896532f1cf8044f75a3b112efb83804fadbadb63df07bc",
+      "scheduled_generations_per_arm": 1082,
+      "source_manifest_sha256": "1dc40b15bff068ed3e4bf57bddd26895279995265019db4edd15bcb1f5990977",
+      "task_manifest_sha256": "8ad76c3fd5873fdaf54be29e016a1a6e8a23104c69dac0241397aae80dc609f6"
+    },
+    "math": {
+      "dataset_revisions": [
+        "6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be"
+      ],
+      "items": 500,
+      "schedule_sha256": "72ad246d30958e8e254bc90b1414f8b845e239575f23c3b701295f433c7362c4",
+      "scheduled_generations_per_arm": 2000,
+      "source_manifest_sha256": "1dc40b15bff068ed3e4bf57bddd26895279995265019db4edd15bcb1f5990977",
+      "task_manifest_sha256": "632a12e1112be40c8f66335b279c4ea730b72dc6008397e956d45e4885568ef5"
+    }
+  },
+  "checkpoint_identities": {
+    "identity": {
+      "model_id": "Qwen/Qwen3.5-0.8B",
+      "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+      "sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d"
+    },
+    "original": {
+      "model_id": "Qwen/Qwen3.5-0.8B",
+      "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+      "sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d"
+    },
+    "reconstructed": {
+      "model_id": "Qwen/Qwen3.5-0.8B",
+      "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+      "sha256": "30c24b2f248212c05e6edc99c6732ae0e392486efeb8ddce776dbff158fee62e"
+    }
+  },
+  "claim_scope": "Frozen CPU methodological variation; a vLLM run requires its own development validation and freeze.",
+  "development_report_sha256": "4f0a5165e2c03cdc35a5f8be456008d7fa52a356f2cb02ca5240b77a6af34727",
+  "execution_limits_by_benchmark": {
+    "gsm8k": {
+      "max_duration_seconds": 18993900,
+      "max_sequences": 2638,
+      "request_timeout_seconds": 7200,
+      "startup_timeout_seconds": 300
+    },
+    "ifeval": {
+      "max_duration_seconds": 7790700,
+      "max_sequences": 1082,
+      "request_timeout_seconds": 7200,
+      "startup_timeout_seconds": 300
+    },
+    "math": {
+      "max_duration_seconds": 14400300,
+      "max_sequences": 2000,
+      "request_timeout_seconds": 7200,
+      "startup_timeout_seconds": 300
+    }
+  },
+  "execution_order": [
+    "math-original",
+    "math-identity",
+    "math-reconstructed",
+    "math-original_temperature1",
+    "math-reconstructed_temperature1",
+    "gsm8k-reconstructed_temperature1",
+    "gsm8k-original_temperature1",
+    "gsm8k-reconstructed",
+    "gsm8k-identity",
+    "gsm8k-original",
+    "ifeval-original",
+    "ifeval-identity",
+    "ifeval-reconstructed",
+    "ifeval-original_temperature1",
+    "ifeval-reconstructed_temperature1"
+  ],
+  "freeze_sha256": "bac80c76bf1828b751d19171723b83fdc2a72300e2f0cd89c8a320ab699beab9",
+  "full_generation_attempts": 0,
+  "full_measurement_pending": true,
+  "grader_contract": {
+    "grader_failure": "retain denominator and report unresolved zero-credit bound, not identified correctness",
+    "gsm8k_extraction": "last explicit #### or boxed numeric answer; Decimal equivalence; no last-number fallback",
+    "ifeval_extraction": "final text after closed thinking block; official strict/loose prompt/instruction checks",
+    "ifeval_files": {
+      "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "instruction_following_eval/evaluation_lib.py": "35decc06000718487f44d7deafa6d3f48a8ec0886281edf40162c0265b7d248c",
+      "instruction_following_eval/instructions.py": "60e086f5342a03ce8e18b64bbcccf86308f523c08aa826707a562150a52f3edf",
+      "instruction_following_eval/instructions_registry.py": "ec92d72c264f6d906978613085db262356174300370a3fffe6fefd5969ce9cfc",
+      "instruction_following_eval/instructions_util.py": "a73797261eee5bf447e279d82a2b700b1bdd3cb1193412dbab1270a85832bc6b"
+    },
+    "ifeval_packages": {
+      "absl-py": "2.5.1",
+      "click": "8.5.1",
+      "cloudpickle": "3.1.2",
+      "defusedxml": "0.7.1",
+      "immutabledict": "4.3.1",
+      "joblib": "1.6.0",
+      "langdetect": "1.0.9",
+      "nltk": "3.10.4",
+      "regex": "2026.11.7",
+      "six": "1.17.0",
+      "tqdm": "4.70.1"
+    },
+    "ifeval_revision": "e6890f85757dd84e27ca6df2dd30651dafad28e0",
+    "math_extraction": "last balanced boxed expression after closed thinking block; pinned Math-Verify",
+    "math_packages": {
+      "antlr4-python3-runtime": "4.13.2",
+      "latex2sympy2_extended": "1.11.0",
+      "math-verify": "0.9.0",
+      "mpmath": "1.3.0",
+      "sympy": "1.14.0"
+    },
+    "missing_or_model_failure": "retain every scheduled denominator with zero credit",
+    "nltk_archive_sha256": "e57f64187974277726a3417ca6f181ec5403676c717672eef6a748a7b20e0106",
+    "nltk_data_revision": "4f15a3d89eefe9748ec1c05be495d91289197155",
+    "output_truncation": "grade final extracted answer if available; never expose unclosed reasoning",
+    "prompt_truncation": "reject over-context requests; never silently truncate input"
+  },
+  "graders": {
+    "gsm8k": {
+      "name": "gsm8k_decimal",
+      "revision": "4c8e6da79f2fed2894522ece3828bfa33aff3634a1433d07a526704f3be07088"
+    },
+    "ifeval": {
+      "name": "official_ifeval",
+      "revision": "d273d53c0d49aa509641885b183d98facd8d2bb2697725f9a2efbaaec52074fd"
+    },
+    "math": {
+      "name": "math_verify",
+      "revision": "c5aee6a180fa9bb3822d72e0397c158373a5946c259e34077086cdfc90d7fff3"
+    }
+  },
+  "implementation_sha256": "2056676caa103cc56ea395717dd108268ee761b3bc2fcadb8029312e8dd07123",
+  "kind": "published_patch_replay_freeze_summary",
+  "policy": {
+    "generation_retry": {
+      "max_attempts": 1,
+      "mode": "none"
+    },
+    "grader_retry": {
+      "max_attempts": 1,
+      "mode": "none"
+    },
+    "grader_timeout_seconds": 20,
+    "output_eos_tokens": [
+      "<|im_end|>",
+      "<|endoftext|>"
+    ],
+    "reasoning_policy": "qwen_thinking",
+    "schema_version": 1,
+    "truncation_policy": "grade"
+  },
+  "primary_benchmark": "math",
+  "primary_comparison": "unchanged_vs_reconstructed_p50c",
+  "runtime_environment": {
+    "machine": "arm64",
+    "packages": {
+      "annotated-doc": "0.0.5",
+      "anyio": "4.16.0",
+      "certifi": "2026.10.23",
+      "click": "8.5.1",
+      "filelock": "4.2.9",
+      "fsspec": "2026.9.0",
+      "h11": "0.16.0",
+      "hf-xet": "1.8.0",
+      "httpcore": "1.0.9",
+      "httpx": "0.28.1",
+      "huggingface-hub": "1.33.0",
+      "idna": "3.20",
+      "jinja2": "3.1.6",
+      "markdown-it-py": "4.2.0",
+      "markupsafe": "3.0.4",
+      "mdurl": "0.1.2",
+      "mpmath": "1.3.0",
+      "networkx": "3.7",
+      "numpy": "2.3.5",
+      "packaging": "26.3",
+      "pip": "25.1.1",
+      "pyarrow": "19.0.1",
+      "pygments": "2.21.0",
+      "pyyaml": "6.0.3",
+      "regex": "2026.11.7",
+      "rich": "15.0.0",
+      "safetensors": "0.7.0",
+      "setuptools": "84.2.1",
+      "shellingham": "1.5.4",
+      "sympy": "1.14.0",
+      "tokenizers": "0.22.2",
+      "torch": "2.10.0",
+      "tqdm": "4.70.1",
+      "transformers": "5.3.0",
+      "typer": "0.28.0",
+      "typing-extensions": "4.16.0",
+      "weight-space-lab": "0.1.0"
+    },
+    "python": "3.13.5",
+    "system": "Darwin"
+  },
+  "schema_version": 1
+}

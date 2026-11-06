@@ -1,0 +1,215 @@
+{
+  "astra_discovered": false,
+  "candidate_audit_summaries": {
+    "engineering": {
+      "artifact_verification": "passed",
+      "astra_discovery_claimed": false,
+      "base_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+      "bit_only_changed_entries": 0,
+      "budget_basis": "final stored-bit differences / all stored tensor coordinates, including buffers and aliases",
+      "changed_fraction": 1.1723775252004382e-06,
+      "changed_numerical_entries": 1024,
+      "changed_stored_entries": 1024,
+      "complete": true,
+      "composition": "independent",
+      "experiment_executed": false,
+      "exposure_request_count": 3,
+      "exposure_sha256": "f7229b680b99b81c4416818c953a4dda8abbb716c9a5429d0b8620275aba1b1a",
+      "inference_executed": false,
+      "kind": "candidate_checkpoint",
+      "l2_norm": 0.0025357974845589696,
+      "max_abs_change": 0.000244140625,
+      "model_inventory_sha256": "9c74a2911aa7d13404aa3afe11dd74151cc9afc7e98d5918e09f5ac379c12c7f",
+      "numeric_runtime": {
+        "numpy_version": "2.3.5"
+      },
+      "operation_count": 1,
+      "per_tensor": {
+        "model.language_model.layers.15.mlp.down_proj.weight": {
+          "base_sha256": "ef60d2c687bab19464dca9c8bfd7777e46ad226df0c9e25643b0bab04b5a1cca",
+          "changed_numerical_entries": 1024,
+          "changed_stored_entries": 1024,
+          "dtype": "BF16",
+          "l2_norm": 0.0025357974845589696,
+          "max_abs_change": 0.000244140625,
+          "result_sha256": "6a0a8c9c54f438cad529e20e6073aa56431ab9cd3933c9c2f3923a2cbb0c03f8",
+          "shape": [
+            1024,
+            3584
+          ],
+          "shard": "model.safetensors-00001-of-00001.safetensors",
+          "targeted_coordinates": 1024
+        }
+      },
+      "policy_sha256": "cd7e19b529050f1913c916d248fdf226d4339b8bcf0fc2af81879e7db9356ac0",
+      "precision": {
+        "arithmetic": "CPU NumPy IEEE-754 binary64 for each selected column operation",
+        "bf16_rounding": "direct binary64 to BF16; no intermediate float32 rounding",
+        "composition": "operations run in declared order and each reads the preceding rounded stored result",
+        "editable_dtypes": [
+          "BF16",
+          "F16",
+          "F32",
+          "F64"
+        ],
+        "nonfloating_buffers": "read-only; preserve original bytes and exact integer inspection values",
+        "overflow": "reject nonfinite binary64 intermediates and nonfinite stored results",
+        "projection": "direction rescaled by max abs, normalized by binary64 dot product; binary64 matrix product",
+        "reproducibility": "NumPy/BLAS reductions may differ across runtime builds; stored hashes identify actual results",
+        "rounding": "round to nearest, ties to even, to original stored dtype after every operation",
+        "signed_zero": "preserve sign through storage rounding; arithmetic may change it; bit and numerical counts differ",
+        "underflow": "gradual underflow; round to subnormal or signed zero; no explicit flush to zero"
+      },
+      "proposal_sha256": "75c908cdee4921b8d34defbc1c02311cfacb077726227782de89f851cec18ab7",
+      "provenance": "engineering_edit",
+      "result_sha256": "41a3227e61839f1d1a8482950e399db177aedaf772af2e956ef1644e9cd9bcf8",
+      "schema_version": 1,
+      "targeted_coordinates": 1024,
+      "total_stored_coordinates": 873438784,
+      "unchanged_tensor_count": 487
+    },
+    "identity": {
+      "artifact_verification": "passed",
+      "astra_discovery_claimed": false,
+      "base_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+      "bit_only_changed_entries": 0,
+      "budget_basis": "final stored-bit differences / all stored tensor coordinates, including buffers and aliases",
+      "changed_fraction": 0.0,
+      "changed_numerical_entries": 0,
+      "changed_stored_entries": 0,
+      "complete": true,
+      "composition": "independent",
+      "experiment_executed": false,
+      "exposure_request_count": 3,
+      "exposure_sha256": "f7229b680b99b81c4416818c953a4dda8abbb716c9a5429d0b8620275aba1b1a",
+      "inference_executed": false,
+      "kind": "candidate_checkpoint",
+      "l2_norm": 0.0,
+      "max_abs_change": 0.0,
+      "model_inventory_sha256": "064ee09f9cf02488285ddd81972dc9d72b462660c5ac9ee162aac2a577db2995",
+      "numeric_runtime": {
+        "numpy_version": "2.3.5"
+      },
+      "operation_count": 0,
+      "per_tensor": {},
+      "policy_sha256": "cd7e19b529050f1913c916d248fdf226d4339b8bcf0fc2af81879e7db9356ac0",
+      "precision": {
+        "arithmetic": "CPU NumPy IEEE-754 binary64 for each selected column operation",
+        "bf16_rounding": "direct binary64 to BF16; no intermediate float32 rounding",
+        "composition": "operations run in declared order and each reads the preceding rounded stored result",
+        "editable_dtypes": [
+          "BF16",
+          "F16",
+          "F32",
+          "F64"
+        ],
+        "nonfloating_buffers": "read-only; preserve original bytes and exact integer inspection values",
+        "overflow": "reject nonfinite binary64 intermediates and nonfinite stored results",
+        "projection": "direction rescaled by max abs, normalized by binary64 dot product; binary64 matrix product",
+        "reproducibility": "NumPy/BLAS reductions may differ across runtime builds; stored hashes identify actual results",
+        "rounding": "round to nearest, ties to even, to original stored dtype after every operation",
+        "signed_zero": "preserve sign through storage rounding; arithmetic may change it; bit and numerical counts differ",
+        "underflow": "gradual underflow; round to subnormal or signed zero; no explicit flush to zero"
+      },
+      "proposal_sha256": "585cd5ab23830140a23a3182490786e59052a3ce3d2564b5d437884bc33a100f",
+      "provenance": "engineering_edit",
+      "result_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+      "schema_version": 1,
+      "targeted_coordinates": 0,
+      "total_stored_coordinates": 873438784,
+      "unchanged_tensor_count": 488
+    }
+  },
+  "candidate_audits": {
+    "engineering": "2d6d41c4b152bfed6e7cde09894e61a0456ebdefa34125b817bcec5effca83da",
+    "identity": "3384f53aab2dba0ad7467a9366a64af6725752a49717b5164d3eea07919a87e6"
+  },
+  "checks_scope": "Identity, valid edit, rejected edit, and saved-byte verification; injected failed-write checks run in the fixture test suite.",
+  "claim_scope": "Candidate editing and native development execution only; no Astra search, benchmark grading, or improvement claim.",
+  "date": "2026-11-06",
+  "development_input_sha256": "4ce54618b0990c232d8c378dd717e725154acb4e20d4690b54cc7ec38cd11738",
+  "dtype_tensor_counts": {
+    "BF16": 452,
+    "F32": 36
+  },
+  "editor_called": false,
+  "experiment_executed": false,
+  "explanation": "A fixed 0.99 column scale checks implementation; it was not discovered by Astra and makes no improvement claim.",
+  "exposure_log_sha256": "8d2285d73012f45ece5808c0015c6d213ddb2ef19a38a5bdc004c91fe1d2f817",
+  "fixture_validation": {
+    "command": "python -m unittest discover -s tests",
+    "scientific_scores": false,
+    "tests_passed": 298
+  },
+  "generation_scope": "At most one authored development input, seed 17 and four output tokens per arm; no grades or candidate selection.",
+  "generation_statuses": {
+    "engineering": "truncated",
+    "identity": "truncated"
+  },
+  "identity_verified": true,
+  "inference_executed": true,
+  "inference_requested": true,
+  "intervention_origin": "hand_authored_engineering_edit",
+  "kind": "engineering_candidate_edit_demonstration",
+  "model_id": "Qwen/Qwen3.5-0.8B",
+  "model_revision": "2fc06364715b967f1860aea9cf38778875588b17",
+  "native_execution": {
+    "completed_generations": 2,
+    "execution_note": "Both requests reached the four-token cap; truncated is completed execution, not answer correctness.",
+    "full_generation_records_sha256": {
+      "engineering": "3c103ef8bd3e4f7efde90d1e2109549e498ae702e96e0355f77bcf3c50746a54",
+      "identity": "bb68b9c17b0283632210fa25d8a099e5442a513f766bbb7e8f3b2f786fd02480"
+    },
+    "generation_seconds": 11.352509584045038,
+    "identity_and_engineering_output_token_ids_equal": true,
+    "scientific_scores": false,
+    "total_output_tokens": 8
+  },
+  "original_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+  "original_verified_unchanged": true,
+  "policy_sha256": "cd7e19b529050f1913c916d248fdf226d4339b8bcf0fc2af81879e7db9356ac0",
+  "preliminary_execution": {
+    "completed_generations": 2,
+    "full_generation_records_sha256": {
+      "engineering": "913da3beee429b0f03c9e8e15d62de0fc85f8ea85f016525b8fae7c0a712c120",
+      "identity": "fb6aec337e2821e77fd263d223e56deb389748df0c4409831676c5171cecea90"
+    },
+    "issue": "The initial demo report mistakenly treated truncated status as no inference and returned exit 2. Classification and its regression test were corrected; the final demo was rerun from original into a fresh output.",
+    "report_sha256": "84cf7e1c880c2920b22a4f625871bb4877eb21b2ede4dc02d7abe83acd0f8966",
+    "retained_local_bundle": "artifacts/phase06-engineering-native",
+    "total_output_tokens": 8,
+    "used_for_candidate_selection": false
+  },
+  "proposal_sha256": "75c908cdee4921b8d34defbc1c02311cfacb077726227782de89f851cec18ab7",
+  "rejected_edit_left_no_candidate": true,
+  "saved_changes": {
+    "engineering": {
+      "bit_only_changed_entries": 0,
+      "changed_numerical_entries": 1024,
+      "changed_stored_entries": 1024,
+      "targeted_coordinates": 1024,
+      "total_stored_coordinates": 873438784,
+      "unchanged_tensor_count": 487
+    },
+    "identity": {
+      "bit_only_changed_entries": 0,
+      "changed_numerical_entries": 0,
+      "changed_stored_entries": 0,
+      "targeted_coordinates": 0,
+      "total_stored_coordinates": 873438784,
+      "unchanged_tensor_count": 488
+    }
+  },
+  "schema_version": 1,
+  "scientific_result": false,
+  "source_bundle": "artifacts/phase06-engineering-native-v2",
+  "source_report_sha256": "00e4720c004abdcd02686a8e47aa700d9432b78efe482f152f8cdf000f3170bc",
+  "stored_dtypes": [
+    "BF16",
+    "F32"
+  ],
+  "stored_tensor_count": 488,
+  "target_dtype": "BF16",
+  "target_tensor": "model.language_model.layers.15.mlp.down_proj.weight",
+  "valid_edit_verified": true
+}

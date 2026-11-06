@@ -5,6 +5,11 @@ answer grading, fresh-editor access, candidate search, or a benchmark
 experiment. The public command is deliberately limited to development smoke
 profiles. A completed generation is not a correctness measurement.
 
+The [Phase 5 replay workflow](published-patch-replay.md) separately composes
+this runner with frozen benchmark data, independent graders, and paired
+reporting. `run-native` remains smoke-only; full replay execution requires the
+explicit `replay-full` command and its validated study freeze.
+
 ## Runtime and methodological choices
 
 The preferred execution path is **vLLM 0.17.0**, on a compatible Linux CUDA

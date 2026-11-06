@@ -1,0 +1,9 @@
+{
+  "kind": "fixture_report",
+  "language_model_evaluated": false,
+  "schema_version": 1,
+  "scientific_result": false,
+  "scope": "Offline artifacts, execution, freeze gates, reporting, source drift, pending results, identity and decoding controls, and recovery invariants.",
+  "status": "passed",
+  "tests_run": 255
+}
