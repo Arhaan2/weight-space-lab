@@ -1,0 +1,52 @@
+{
+  "schema_version": 2,
+  "profile": "frozen_final_evaluation",
+  "stage": "full",
+  "claim_type": "informed_replication",
+  "model": "Qwen/Qwen3.5-0.8B",
+  "backend": null,
+  "precision": null,
+  "pins": {
+    "model_revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "tokenizer_revision": null,
+    "runtime_version": null,
+    "chat_template_sha256": null,
+    "checkpoint_sha256": null,
+    "evaluation_code_revision": null,
+    "editor_model_version": null
+  },
+  "benchmarks": [
+    {
+      "benchmark": "MATH-500",
+      "split": "test",
+      "dataset_revision": null,
+      "task_manifest_sha256": null,
+      "item_ids": null,
+      "seeds": null,
+      "sampling": null,
+      "grader_revision": null,
+      "truncation_policy": null
+    }
+  ],
+  "execution_limits": {
+    "max_sequences": null,
+    "max_duration_seconds": null
+  },
+  "interpretation": "Unexecuted design template. Null values are unresolved requirements, not defaults or successful checks.",
+  "intervention_origin": "fresh_editor",
+  "editor": "GPT-6 Astra",
+  "editor_knows_published_mechanism": true,
+  "no_training": true,
+  "frozen": false,
+  "editor_provenance": {
+    "model_id": null,
+    "interface": null,
+    "record_sha256": null
+  },
+  "freeze": {
+    "configuration_sha256": null,
+    "checkpoint_sha256": null,
+    "schedule_sha256": null,
+    "evaluation_code_revision": null
+  }
+}

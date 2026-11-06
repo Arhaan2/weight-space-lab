@@ -88,3 +88,9 @@ Publish accuracy and each budget measure alongside that composite. Record the br
 - If no edit improves the final metric, release the negative result and full search budget.
 
 The project will support a claim only after its real checkpoint and independently evaluated outputs exist. The mechanics example is never evidence of language-model improvement.
+
+## Execution contracts
+
+Use the [version 2 profiles](protocol-profiles.md) to distinguish artifact preparation, development smoke runs, fixed replay evaluation, fresh-editor search, frozen final evaluation, and browser evaluation. Preserve the original proposed settings until an explicit protocol revision is approved and recorded; null execution fields do not supply defaults. Each benchmark declares its own item and seed schedule.
+
+Retain [raw run records](evidence-records.md) separately from compact correctness records. Build and fixture-validation success do not establish real-model validation or an executed experiment. Diagnostic backend availability also establishes neither. Independent grades must identify their evaluator and the exact raw record they grade, and failed attempts remain part of the budget and evidence.

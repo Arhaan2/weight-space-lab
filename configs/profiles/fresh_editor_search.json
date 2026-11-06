@@ -1,0 +1,77 @@
+{
+  "schema_version": 2,
+  "profile": "fresh_editor_search",
+  "stage": "pilot",
+  "claim_type": "informed_replication",
+  "model": "Qwen/Qwen3.5-0.8B",
+  "backend": null,
+  "precision": null,
+  "pins": {
+    "model_revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "tokenizer_revision": null,
+    "runtime_version": null,
+    "chat_template_sha256": null,
+    "checkpoint_sha256": null,
+    "editor_model_version": null,
+    "split_audit_sha256": null
+  },
+  "benchmarks": [
+    {
+      "benchmark": "development-math",
+      "split": "development",
+      "dataset_revision": null,
+      "task_manifest_sha256": null,
+      "item_ids": null,
+      "seeds": null,
+      "sampling": {
+        "temperature": 0.6,
+        "top_p": 0.95,
+        "top_k": 20,
+        "presence_penalty": 1.5,
+        "thinking": true,
+        "max_output_tokens": 32768,
+        "mode": "stochastic"
+      },
+      "grader_revision": null,
+      "truncation_policy": null
+    },
+    {
+      "benchmark": "validation-math",
+      "split": "validation",
+      "dataset_revision": null,
+      "task_manifest_sha256": null,
+      "item_ids": null,
+      "seeds": null,
+      "sampling": {
+        "temperature": 0.6,
+        "top_p": 0.95,
+        "top_k": 20,
+        "presence_penalty": 1.5,
+        "thinking": true,
+        "max_output_tokens": 32768,
+        "mode": "stochastic"
+      },
+      "grader_revision": null,
+      "truncation_policy": null
+    }
+  ],
+  "execution_limits": {
+    "max_sequences": null,
+    "max_duration_seconds": null
+  },
+  "interpretation": "Unexecuted design template. Null values are unresolved requirements, not defaults or successful checks.",
+  "editor": "GPT-6 Astra",
+  "editor_knows_published_mechanism": true,
+  "no_training": true,
+  "editor_provenance": {
+    "model_id": null,
+    "interface": null
+  },
+  "probe_limits": {
+    "max_calls": 50,
+    "max_sequences_per_call": 512,
+    "max_total_generated_tokens": 10485760
+  },
+  "max_changed_fraction": 0.001,
+  "schedule_note": "Sampling values are the existing proposed design, not a new measurement. Declare benchmark-specific seeds and limits; exclude MATH-500 identities from both candidate-selection pools."
+}

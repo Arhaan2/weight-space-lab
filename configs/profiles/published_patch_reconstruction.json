@@ -1,0 +1,20 @@
+{
+  "schema_version": 2,
+  "profile": "published_patch_reconstruction",
+  "stage": "preparation",
+  "claim_type": "published_patch_replay",
+  "model": "Qwen/Qwen3.5-0.8B",
+  "source": {
+    "repository": "https://github.com/RikiyaT/lm_understand-logs",
+    "manifest_path": "exp8_math/runs/p50c/edit/manifest.json",
+    "archive_path": "exp8_math/runs/p50c/edit/edit.npz"
+  },
+  "pins": {
+    "source_revision": "4d09ba6d6a7e891dd8063974dfe81b3d78e3494f",
+    "model_revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "checkpoint_sha256": null,
+    "manifest_sha256": null,
+    "archive_sha256": null
+  },
+  "interpretation": "Reconstruct the released sparse BF16 edit from local verified inputs. No model inference, fresh editor, or benchmark score is implied."
+}

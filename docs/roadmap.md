@@ -6,7 +6,15 @@ Implement inspectable, bounded patch operations; deterministic state hashes; con
 
 **Exit:** tests and the example pass, the unfinished study configuration fails run-readiness checks, and public files contain no development-session material or machine-specific paths.
 
-## Phase 1: one real model and exact published-patch replay
+## Phase 1: experiment profiles and evidence contracts
+
+Implement profile-specific configuration requirements for artifact acquisition, exact reconstruction, development smoke runs, fixed-patch evaluation, fresh-editor search, frozen final evaluation, and browser evaluation. Keep deterministic decoding explicit and define a separate item/sample/seed schedule for each benchmark. Preserve missing execution information as a blocker.
+
+Provide a diagnostic command for dependencies, device availability, memory, and backend probe state without exporting machine paths or credentials. Define versioned raw run records with outputs, checkpoint and configuration identity, attempt history, and failure accounting; keep the compact analysis format stable. Report build, fixture-validation, real-model-validation, and experiment status independently.
+
+**Exit:** CPU-only tests exercise these contracts and existing mechanics. An unfinished configuration cannot pass readiness. Synthetic validation cannot establish model execution or experimental success. This milestone does not include model acquisition, inference adapters, graders, editor access, or an experiment.
+
+## Phase 2: one real model and exact published-patch replay
 
 Choose an execution machine and verify available memory and inference performance with a bounded development-only smoke run. Resolve immutable model and tokenizer revisions. Capture the chat template, dtype, full parameter inventory, runtime dependencies, and exact inference settings.
 
@@ -16,7 +24,7 @@ Add the native generation adapter, task loaders, pinned graders, and machine-rea
 
 **Exit:** original and replayed checkpoints generate real outputs, edited tensors match the published hashes, every scheduled result is accounted for, and graders pass independent examples. No fresh candidate selection uses final-test feedback.
 
-## Phase 2: checkpoint round trip and bounded edit execution
+## Phase 3: checkpoint round trip and bounded edit execution
 
 Implement Safetensors loading/saving with support for the selected model's actual dtypes and shard layout. Verify an identity round trip before applying any candidate. Preserve all nonedited tensors, tokenizer assets, model configuration, and architecture. Prove the actual changed-coordinate count on the saved/reloaded checkpoint.
 
@@ -24,25 +32,25 @@ Connect the limited proposal format to an explicitly recorded Astra execution in
 
 **Exit:** one real bounded edit is loadable and auditable; prohibited operations cannot pass the execution interface; a failed candidate restores the pristine base.
 
-## Phase 3: controlled pilot and candidate freeze
+## Phase 4: controlled pilot and candidate freeze
 
 Run a bounded development/validation experiment. Preserve all candidate proposals, weight differences, probe budgets, and validation failures. Compare to decoding-only controls. Select according to the preregistered rule and freeze checkpoint hash, configuration hash, and evaluation code.
 
 **Exit:** a selected candidate or an explicit no-improvement result, with enough evidence to reproduce the search procedure. No selection on the final test.
 
-## Phase 4: held-out evaluation
+## Phase 5: held-out evaluation
 
 Execute the same final item/seed schedule for all predeclared arms. Grade independently, audit extraction failures, calculate paired item-level intervals, and publish full denominators and failure accounting. Add transfer and regression checks before broadening the claim.
 
 **Exit:** an evidence-backed positive, negative, or inconclusive conclusion. A shorter generation is reported as a shorter generation unless correctness also improves.
 
-## Phase 5: BrowserLLM extension
+## Phase 6: BrowserLLM extension
 
 Pin and audit BrowserLLM. Verify architecture support, add custom artifact references if needed, and add or validate task-correctness grading. Convert base and edited models identically, remeasure quality, then run resource comparisons across independent browser sessions.
 
 **Exit:** browser results separate quality, completion, latency, throughput, memory, and measurement limitations; base and edited artifacts are traceable to their native checkpoints.
 
-## Phase 6: reproducible public release
+## Phase 7: reproducible public release
 
 Publish executable commands, immutable dependency pins, permitted data references, patches, checkpoint hashes, per-example evidence, all candidate budgets, analysis code, and limitations. Keep the project on the maintainer's account and verify attribution before each push.
 

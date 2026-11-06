@@ -1,0 +1,17 @@
+{
+  "schema_version": 2,
+  "profile": "artifact_acquisition",
+  "stage": "preparation",
+  "claim_type": "artifact_preparation",
+  "model": "Qwen/Qwen3.5-0.8B",
+  "source": {
+    "repository": "https://github.com/RikiyaT/lm_understand-logs",
+    "manifest_path": "exp8_math/runs/p50c/edit/manifest.json",
+    "archive_path": "exp8_math/runs/p50c/edit/edit.npz"
+  },
+  "pins": {
+    "source_revision": "4d09ba6d6a7e891dd8063974dfe81b3d78e3494f",
+    "model_revision": "2fc06364715b967f1860aea9cf38778875588b17"
+  },
+  "interpretation": "Configuration for obtaining the pinned model and published patch artifacts only. Completeness does not establish that any file was downloaded or verified."
+}

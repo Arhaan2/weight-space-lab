@@ -1,0 +1,32 @@
+{
+  "schema_version": 2,
+  "profile": "native_development_smoke",
+  "stage": "smoke",
+  "claim_type": "development_smoke",
+  "model": "Qwen/Qwen3.5-0.8B",
+  "backend": null,
+  "precision": null,
+  "pins": {
+    "model_revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "tokenizer_revision": null,
+    "runtime_version": null,
+    "chat_template_sha256": null,
+    "checkpoint_sha256": null
+  },
+  "benchmarks": [
+    {
+      "benchmark": "development-math",
+      "split": "development",
+      "dataset_revision": null,
+      "task_manifest_sha256": null,
+      "item_ids": null,
+      "seeds": null,
+      "sampling": null
+    }
+  ],
+  "execution_limits": {
+    "max_sequences": null,
+    "max_duration_seconds": null
+  },
+  "interpretation": "Unexecuted design template. Null values are unresolved requirements, not defaults or successful checks."
+}

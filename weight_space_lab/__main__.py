@@ -6,10 +6,6 @@ import argparse
 import json
 from pathlib import Path
 
-import numpy as np
-
-from .evaluation import compare_paired
-from .patches import apply_patch, state_sha256
 from .protocol import validate_protocol, validate_split_manifest
 
 
@@ -21,7 +17,10 @@ def read_json(path: Path):
                 raise ValueError("duplicate JSON object key")
             result[key] = value
         return result
-    return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=no_duplicate_keys)
+    def reject_constant(_):
+        raise ValueError("JSON must not contain nonfinite constants")
+    return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=no_duplicate_keys,
+                      parse_constant=reject_constant)
 
 
 def write_json(path: Path, value):
@@ -33,6 +32,11 @@ def write_json(path: Path, value):
 
 def demo(out: Path) -> dict:
     """Exercise mechanics using synthetic arrays and synthetic grades only."""
+    import numpy as np
+
+    from .evaluation import compare_paired
+    from .patches import apply_patch, state_sha256
+
     base = {
         "example.mlp.weight": np.array([[1, 2, 3, 4], [2, 3, 4, 5],
                                          [3, 4, 5, 6], [4, 5, 6, 7]], dtype=np.float32),
@@ -87,6 +91,16 @@ def build_parser():
     check = commands.add_parser("check", help="validate a proposed study configuration")
     check.add_argument("config", type=Path)
     check.add_argument("--require-ready", action="store_true")
+    diagnose = commands.add_parser("diagnose", help="report dependencies, devices and memory without loading a model")
+    diagnose.add_argument("--probe-backends", action="store_true",
+                          help="run an isolated, time-bounded optional backend probe")
+    diagnose.add_argument("--out", type=Path)
+    records = commands.add_parser("check-records", help="validate a versioned raw run-record array")
+    records.add_argument("records", type=Path)
+    status = commands.add_parser("check-status", help="validate separate implementation and evidence statuses")
+    status.add_argument("record", type=Path)
+    schedule = commands.add_parser("check-schedule", help="validate a benchmark-specific item/sample/seed schedule")
+    schedule.add_argument("schedule", type=Path)
     splits = commands.add_parser("check-splits", help="check exact split overlap")
     splits.add_argument("manifest", type=Path)
     example = commands.add_parser("demo", help="run synthetic mechanics fixtures")
@@ -116,11 +130,30 @@ def main(argv=None):
             result = validate_protocol(read_json(args.config), require_ready=args.require_ready)
             print(json.dumps(result, indent=2, allow_nan=False))
             return 0 if not result["issues"] else 2
-        if args.command == "check-splits":
+        if args.command == "diagnose":
+            from .diagnostics import collect_diagnostics
+            result = collect_diagnostics(probe_backends=args.probe_backends)
+            if args.out is not None:
+                write_json(args.out, result)
+        elif args.command == "check-records":
+            from .protocol import canonical_hash
+            from .records import validate_run_records
+            records = validate_run_records(read_json(args.records))
+            result = {"valid": True, "record_count": len(records),
+                      "records_sha256": canonical_hash(records),
+                      "verification_scope": "schema only; outputs and provenance require independent verification"}
+        elif args.command == "check-status":
+            from .records import validate_status_record
+            result = validate_status_record(read_json(args.record))
+        elif args.command == "check-schedule":
+            from .protocol import validate_benchmark_schedule
+            result = validate_benchmark_schedule(read_json(args.schedule))
+        elif args.command == "check-splits":
             result = validate_split_manifest(read_json(args.manifest))
         elif args.command == "demo":
             result = demo(args.out)
         elif args.command == "compare":
+            from .evaluation import compare_paired
             result = compare_paired(read_json(args.baseline), read_json(args.candidate),
                                     schedule=read_json(args.schedule), metric=args.metric,
                                     truncation_policy=args.truncation_policy,

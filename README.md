@@ -6,9 +6,11 @@ Maintainer: [Arhaan Aggarwal (Arhaan2)](https://github.com/Arhaan2).
 
 ## Current status
 
-**Experimental infrastructure, version 0.1. No language-model improvement has been measured.**
+**Experimental infrastructure through Phase 1. No language-model improvement has been measured.**
 
-The initial release implements auditable array edits, experiment-configuration checks, exact split-overlap checks, paired analysis of externally graded results, and a small replay utility for the published sparse BF16 edit format. Its executable example uses small synthetic arrays to test the mechanics. It does not download a language model, call a frontier model, implement a language-model inference server, or grade MATH answers.
+The implementation provides auditable array edits, experiment profiles, execution diagnostics, versioned raw evidence contracts, exact split-overlap checks, paired analysis of externally graded results, and a small replay utility for the published sparse BF16 edit format. Its executable example uses small synthetic arrays to test the mechanics. It does not download a language model, call a frontier model, implement a language-model inference server, or grade MATH answers.
+
+Build and fixture validation are separate from real-model validation and experiment execution. The latter two remain unexecuted. Passing a schema check establishes configuration completeness, not externally verified provenance, model compatibility, or a scientific result.
 
 The intended study begins with replay of the [released evaluated edit](https://github.com/RikiyaT/lm_understand-logs/tree/4d09ba6d6a7e891dd8063974dfe81b3d78e3494f/exp8_math/runs/p50c/edit), then an informed fresh-editor experiment based on [Sparks of Weight-Space Programming](https://rikiyat.github.io/blog/weight-space-programming/), then a browser-deployment extension using [BrowserLLM](https://github.com/gufranmirza/browser-llm-bench). These are separate claims. The study design and remaining work are in [docs/study-design.md](docs/study-design.md) and [docs/roadmap.md](docs/roadmap.md).
 
@@ -33,7 +35,24 @@ python -m weight_space_lab check configs/qwen_math_design.json --require-ready
 
 That command **should fail** for the shipped template: model, runtime, dataset, grader, and editor-version pins have deliberately not been invented. Complete and verify them on the chosen inference machine before freezing an experiment.
 
-## What the first release does
+## Profiles, diagnostics, and evidence
+
+Version 2 protocols declare their execution purpose and require only the corresponding prerequisites. Published-patch reconstruction requires no editor connection. Fresh-editor search records the actual experimental editor's identity and interface, while final evaluation additionally requires a candidate and evaluation freeze. The original version 1 design remains supported without silently changing its settings.
+
+See [experiment profiles](docs/protocol-profiles.md) for the requirement matrix, benchmark-specific schedules, and incomplete templates; [execution diagnostics](docs/diagnostics.md) for device and dependency checks; and [evidence records](docs/evidence-records.md) for raw outputs, retry accounting, independent grades, and status records.
+
+```bash
+python -m weight_space_lab diagnose
+python -m weight_space_lab diagnose --probe-backends
+python -m weight_space_lab check configs/profiles/native_development_smoke.json
+python -m weight_space_lab check configs/profiles/native_development_smoke.json --require-ready
+```
+
+The final command is expected to exit with status 2 until its explicit missing requirements are supplied and verified. Diagnostics load no checkpoint and measure no inference performance. Optional backend probes are bounded; they neither install a runtime nor choose a model or precision. Default CI installs only the project's lightweight dependencies and runs CPU-only contract tests.
+
+Raw run-record arrays are validated with `check-records`, benchmark schedules with `check-schedule`, and independent status records with `check-status`. These commands do not grade outputs or promote fixture evidence into real-model evidence. The compact `compare` input remains unchanged.
+
+## Mechanics and analysis
 
 - Applies declared matrix edits to a fresh copy of a pinned base state; no arbitrary code is executed from patch files.
 - Rejects malformed operations, edits outside an allowlist, nonfinite values, and edits beyond the configured scalar budget.

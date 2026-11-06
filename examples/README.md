@@ -18,7 +18,9 @@ python -m weight_space_lab compare \
   --out artifacts/mechanics-demo/reanalysis.json
 ```
 
-For real records, retain the same `item_id`, `seed`, `status`, and boolean `correct` schema. Allowed statuses are `ok`, `truncated`, `error`, `timeout`, and `missing`. A scheduled record absent from an arm is counted as a missing failure. Never use the synthetic examples as benchmark data. The analysis does not validate the truth of an upstream correctness label.
+For compact analysis records, retain the same `item_id`, `seed`, `status`, and boolean `correct` schema. Allowed statuses are `ok`, `truncated`, `error`, `timeout`, and `missing`. A scheduled record absent from an arm is counted as a missing failure. Never use the synthetic examples as benchmark data. The analysis does not validate the truth of an upstream correctness label.
+
+For real execution, separately retain the [versioned raw evidence](../docs/evidence-records.md), including attempts, raw output, checkpoint identity, and configuration hash. Validate it with `check-records`; independently grade completed outputs before using `to_analysis_records`. Keep one run and benchmark per comparison. The mechanics example continues to use compact synthetic grades and does not create real-model evidence.
 
 Accuracy can retain a correctly graded truncated answer with `--truncation-policy grade`, or reject every truncated answer with `--truncation-policy fail`. Choose the policy before evaluation. The `completion_within_budget` mode counts only correct records classified as `ok`; an upstream runner must enforce the actual resource and timing budgets. This utility does not measure those budgets itself.
 

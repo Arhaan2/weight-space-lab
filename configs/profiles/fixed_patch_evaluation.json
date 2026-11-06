@@ -1,0 +1,38 @@
+{
+  "schema_version": 2,
+  "profile": "fixed_patch_evaluation",
+  "stage": "pilot",
+  "claim_type": "published_patch_replay",
+  "model": "Qwen/Qwen3.5-0.8B",
+  "backend": null,
+  "precision": null,
+  "pins": {
+    "model_revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "tokenizer_revision": null,
+    "runtime_version": null,
+    "chat_template_sha256": null,
+    "checkpoint_sha256": null,
+    "source_revision": "4d09ba6d6a7e891dd8063974dfe81b3d78e3494f",
+    "patch_sha256": null,
+    "reconstruction_audit_sha256": null,
+    "evaluation_code_revision": null
+  },
+  "benchmarks": [
+    {
+      "benchmark": "MATH-500",
+      "split": "test",
+      "dataset_revision": null,
+      "task_manifest_sha256": null,
+      "item_ids": null,
+      "seeds": null,
+      "sampling": null,
+      "grader_revision": null,
+      "truncation_policy": null
+    }
+  ],
+  "execution_limits": {
+    "max_sequences": null,
+    "max_duration_seconds": null
+  },
+  "interpretation": "Unexecuted design template. Null values are unresolved requirements, not defaults or successful checks."
+}
