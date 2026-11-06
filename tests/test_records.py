@@ -4,7 +4,7 @@ import unittest
 
 from weight_space_lab.evaluation import validate_records
 from weight_space_lab.records import (
-    empty_status_record, run_record_sha256, to_analysis_records,
+    empty_status_record, run_record_sha256, to_analysis_records, to_fixture_analysis_records,
     validate_run_record, validate_run_records, validate_status_record,
 )
 
@@ -45,7 +45,29 @@ def grade(record, correct=True):
             "run_record_sha256": run_record_sha256(record)}
 
 
+def fixture_analysis(records, grades, **selection):
+    """Inspect contract mechanics without relabeling any fixture as real."""
+    envelope = to_fixture_analysis_records(records, grades, **selection)
+    assert envelope["evidence_kind"] == "fixture"
+    assert envelope["scientific_result"] is False
+    return envelope["records"]
+
+
 class RunRecordTests(unittest.TestCase):
+    def test_fixture_cannot_enter_scientific_analysis(self):
+        for status in ("ok", "truncated", "missing", "error", "timeout"):
+            record = fixture_record(status)
+            grades = [grade(record)] if status in {"ok", "truncated"} else []
+            with self.subTest(status=status), self.assertRaisesRegex(ValueError, "fixture evidence"):
+                to_analysis_records([record], grades, benchmark="synthetic", run_id="fixture-run")
+        record = fixture_record()
+        envelope = to_fixture_analysis_records([record], [grade(record)],
+                                               benchmark="synthetic", run_id="fixture-run")
+        self.assertEqual(envelope["evidence_kind"], "fixture")
+        self.assertFalse(envelope["scientific_result"])
+        with self.assertRaises(ValueError):
+            validate_records(envelope)
+
     def test_round_trip_and_compact_schema_remain_distinct(self):
         record = fixture_record()
         checked = validate_run_record(record)
@@ -54,7 +76,7 @@ class RunRecordTests(unittest.TestCase):
         self.assertEqual(record["attempts"][0]["raw_output"], "fixture output")
         with self.assertRaises(ValueError):
             validate_records([record])
-        compact = to_analysis_records([record], [grade(record)], benchmark="synthetic", run_id="fixture-run")
+        compact = fixture_analysis([record], [grade(record)], benchmark="synthetic", run_id="fixture-run")
         self.assertEqual(compact, [{"item_id": "fixture-a", "seed": 17, "status": "ok", "correct": True}])
 
     def test_no_success_with_missing_identity_or_output(self):
@@ -183,18 +205,18 @@ class RunRecordTests(unittest.TestCase):
         for grades in ([], [dict(grade(record), run_record_sha256=digest("different evidence"))],
                        [dict(grade(record), correct=1)], [grade(record), grade(record)]):
             with self.subTest(grades=grades), self.assertRaises(ValueError):
-                to_analysis_records([record], grades, benchmark="synthetic", run_id="fixture-run")
-        compact = to_analysis_records([fixture_record("timeout")], [], benchmark="synthetic", run_id="fixture-run")
+                fixture_analysis([record], grades, benchmark="synthetic", run_id="fixture-run")
+        compact = fixture_analysis([fixture_record("timeout")], [], benchmark="synthetic", run_id="fixture-run")
         self.assertFalse(compact[0]["correct"])
         with self.assertRaises(ValueError):
-            to_analysis_records([fixture_record("timeout")], [grade(record)], benchmark="synthetic", run_id="fixture-run")
+            fixture_analysis([fixture_record("timeout")], [grade(record)], benchmark="synthetic", run_id="fixture-run")
 
     def test_conversion_rejects_mixed_contexts(self):
         first, second = fixture_record(), fixture_record()
         second["item_id"] = "fixture-b"
         second["configuration_sha256"] = digest("different configuration")
         with self.assertRaises(ValueError):
-            to_analysis_records([first, second], [grade(first), grade(second)], benchmark="synthetic", run_id="fixture-run")
+            fixture_analysis([first, second], [grade(first), grade(second)], benchmark="synthetic", run_id="fixture-run")
 
     def test_conversion_rejects_mixed_grader_revisions(self):
         first, second = fixture_record(), fixture_record()
@@ -202,7 +224,7 @@ class RunRecordTests(unittest.TestCase):
         other_grade = grade(second)
         other_grade["grader_revision"] = digest("another grader")
         with self.assertRaises(ValueError):
-            to_analysis_records([first, second], [grade(first), other_grade], benchmark="synthetic", run_id="fixture-run")
+            fixture_analysis([first, second], [grade(first), other_grade], benchmark="synthetic", run_id="fixture-run")
 
     def test_unknown_failure_identities_project_without_dropping_failures(self):
         first = fixture_record()
@@ -213,7 +235,7 @@ class RunRecordTests(unittest.TestCase):
             second["checkpoint"] = dict.fromkeys(("model_id", "revision", "sha256"))
             original = copy.deepcopy(second)
             with self.subTest(status=status):
-                compact = to_analysis_records([first, second], [grade(first)], benchmark="synthetic", run_id="fixture-run")
+                compact = fixture_analysis([first, second], [grade(first)], benchmark="synthetic", run_id="fixture-run")
                 self.assertEqual(len(compact), 2)
                 self.assertEqual(compact[1], {"item_id": "fixture-b", "seed": 17, "status": status, "correct": False})
                 self.assertEqual(second, original)
@@ -225,10 +247,10 @@ class RunRecordTests(unittest.TestCase):
             changed = copy.deepcopy(second)
             changed["checkpoint"][key] = "different-fixture-model" if key == "model_id" else digest("different identity")
             with self.subTest(key=key), self.assertRaises(ValueError):
-                to_analysis_records([first, changed], [grade(first)], benchmark="synthetic", run_id="fixture-run")
+                fixture_analysis([first, changed], [grade(first)], benchmark="synthetic", run_id="fixture-run")
         second["dataset_revision"] = digest("different fixture dataset")
         with self.assertRaises(ValueError):
-            to_analysis_records([first, second], [grade(first)], benchmark="synthetic", run_id="fixture-run")
+            fixture_analysis([first, second], [grade(first)], benchmark="synthetic", run_id="fixture-run")
 
     def test_projection_rejects_conflicting_observed_sample_seed_mapping(self):
         first, second = fixture_record(), fixture_record("missing")
@@ -237,7 +259,7 @@ class RunRecordTests(unittest.TestCase):
             changed = copy.deepcopy(second)
             changed[key] += 1
             with self.subTest(key=key), self.assertRaises(ValueError):
-                to_analysis_records([first, changed], [grade(first)], benchmark="synthetic", run_id="fixture-run")
+                fixture_analysis([first, changed], [grade(first)], benchmark="synthetic", run_id="fixture-run")
 
 
 class StatusRecordTests(unittest.TestCase):

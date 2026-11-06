@@ -189,6 +189,28 @@ def run_record_sha256(record):
 
 
 def to_analysis_records(records, grades, *, benchmark, run_id):
+    """Project real-model evidence into independently graded compact records.
+
+    Synthetic execution records cannot enter this scientific-analysis path.
+    Use ``to_fixture_analysis_records`` for explicitly labeled contract checks.
+    """
+    return _project_analysis_records(records, grades, benchmark=benchmark,
+                                     run_id=run_id, evidence_kind="real_model")
+
+
+def to_fixture_analysis_records(records, grades, *, benchmark, run_id):
+    """Exercise grade-binding mechanics with a labeled, non-scientific envelope.
+
+    The envelope deliberately differs from the compact input to ``compare``;
+    consumers cannot accidentally pass the whole fixture result as real grades.
+    """
+    compact = _project_analysis_records(records, grades, benchmark=benchmark,
+                                        run_id=run_id, evidence_kind="fixture")
+    return {"evidence_kind": "fixture", "scientific_result": False,
+            "records": compact}
+
+
+def _project_analysis_records(records, grades, *, benchmark, run_id, evidence_kind):
     """Project one explicitly selected run and benchmark into compact grades.
 
     Grades are independent inputs with item_id, seed, correct, grader_revision,
@@ -199,6 +221,10 @@ def to_analysis_records(records, grades, *, benchmark, run_id):
     selected = [row for row in checked if row["benchmark"] == benchmark and row["run_id"] == run_id]
     if not selected:
         raise ValueError("selected run and benchmark contain no records")
+    if any(row["evidence_kind"] != evidence_kind for row in selected):
+        if evidence_kind == "real_model":
+            raise ValueError("fixture evidence cannot produce scientific analysis records")
+        raise ValueError("fixture analysis requires exclusively synthetic evidence")
     contexts = {(row["configuration_sha256"], row["evidence_kind"], row["stage"],
                  row["profile"], row["split"]) for row in selected}
     if len(contexts) != 1:

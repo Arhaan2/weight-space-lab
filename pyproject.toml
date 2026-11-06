@@ -9,8 +9,12 @@ description = "Auditable mechanics for controlled language-model weight-editing 
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [{name = "Arhaan Aggarwal"}]
-dependencies = ["numpy==2.3.5"]
+dependencies = ["numpy>=2.2.6,<=2.3.5"]
 license = "MIT"
+
+[project.optional-dependencies]
+native-cpu = ["numpy==2.3.5", "torch==2.10.0", "transformers==5.3.0", "tokenizers==0.22.2", "safetensors==0.7.0", "jinja2==3.1.6"]
+native-vllm = ["numpy==2.2.6", "vllm==0.17.0", "torch==2.10.0", "transformers==4.57.6", "tokenizers==0.22.2", "safetensors==0.7.0", "jinja2==3.1.6"]
 
 [project.scripts]
 weight-space-lab = "weight_space_lab.__main__:main"

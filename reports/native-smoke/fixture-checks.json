@@ -1,0 +1,23 @@
+{
+  "coverage": [
+    "durable start and completion",
+    "hard parent interruption and worker exit",
+    "startup and request timeout",
+    "retry history and budgets",
+    "missing derived exports",
+    "committed journal loss and tampering",
+    "source and environment drift",
+    "changed configuration, task text and ordered schedule",
+    "asset tampering",
+    "presence penalty semantics",
+    "unsupported settings",
+    "synthetic scoring prohibition"
+  ],
+  "kind": "fixture_report",
+  "numpy_2_2_6_isolated_environment": "passed",
+  "numpy_2_3_5": "passed",
+  "schema_version": 1,
+  "scientific_scores": false,
+  "test_log_sha256": "f9892fbdb19a6a73b1bfd41b46181a2557c190b8fdce40456764a30edac6f946",
+  "tests_executed": 166
+}

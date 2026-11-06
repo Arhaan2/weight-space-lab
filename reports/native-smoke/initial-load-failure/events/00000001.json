@@ -1,0 +1,27 @@
+{
+  "event": {
+    "attempt_index": 0,
+    "elapsed_seconds": 2.9772349998820573,
+    "kind": "attempt_finished",
+    "metadata": {},
+    "outcome": {
+      "duration_seconds": 2.949372832896188,
+      "error": {
+        "code": "loaded_tensor_missing",
+        "retryable": true
+      },
+      "finish_reason": "error",
+      "raw_output": null,
+      "status": "error",
+      "token_counts": {
+        "input": null,
+        "output": null,
+        "total": null
+      }
+    },
+    "previous_sha256": "7c253df69d06e07fb64488ebe18a038acdcc8066e3105198fce637377313251c",
+    "schedule_index": 0,
+    "sequence": 1
+  },
+  "sha256": "14b75b9a7d44251f0dc69132262c3d9d0e693945e9f8f9650d9893f9bfdd86ca"
+}

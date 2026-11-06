@@ -1,0 +1,51 @@
+[
+  {
+    "attempts": [
+      {
+        "attempt_index": 0,
+        "duration_seconds": 22.126713166944683,
+        "error": null,
+        "finish_reason": "length",
+        "raw_output": "Here's my thought process for solving the problem \"Compute 7 + 5",
+        "status": "truncated",
+        "token_counts": {
+          "input": 33,
+          "output": 16,
+          "total": 49
+        }
+      }
+    ],
+    "benchmark": "development-arithmetic",
+    "checkpoint": {
+      "model_id": "Qwen/Qwen3.5-0.8B",
+      "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+      "sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d"
+    },
+    "configuration_sha256": "814e60b6acf474050c8042110d88ee391606c0d501c01cb84fe708f6c7c659d1",
+    "dataset_revision": "5687abfe5782b204acb31421b05757ae50d19c9b5925a27fd67070f4c2cdd947",
+    "duration_seconds": 22.126713166944683,
+    "error": null,
+    "evidence_kind": "real_model",
+    "finish_reason": "length",
+    "item_id": "addition-7-5",
+    "profile": "native_development_smoke",
+    "raw_output": "Here's my thought process for solving the problem \"Compute 7 + 5",
+    "record_type": "run",
+    "retry_policy": {
+      "max_attempts": 1,
+      "mode": "none"
+    },
+    "run_id": "native-smoke-transformers-identity",
+    "sample_index": 0,
+    "schema_version": 1,
+    "seed": 17,
+    "split": "development",
+    "stage": "smoke",
+    "status": "truncated",
+    "token_counts": {
+      "input": 33,
+      "output": 16,
+      "total": 49
+    }
+  }
+]

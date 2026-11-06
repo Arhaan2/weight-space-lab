@@ -1,0 +1,43 @@
+{
+  "build": {
+    "evidence": [
+      {
+        "kind": "build_log",
+        "sha256": "67ad641bf06157d9e790ed701a9e764e4f46b6f2911d598a2ce98b6a2dfe8e58"
+      }
+    ],
+    "outcome": null,
+    "reason": null,
+    "status": "passed"
+  },
+  "experiment": {
+    "evidence": [],
+    "outcome": null,
+    "reason": null,
+    "status": "not_started"
+  },
+  "fixture_validation": {
+    "evidence": [
+      {
+        "kind": "fixture_report",
+        "sha256": "23a8a5ae92afcc30a9ef1637af6c4f789abfb468ec45c21162b05e4cbf63edd0"
+      }
+    ],
+    "outcome": null,
+    "reason": null,
+    "status": "passed"
+  },
+  "real_model_validation": {
+    "evidence": [
+      {
+        "kind": "real_model_report",
+        "sha256": "f3c2f15ff650b59cbddd5938659382cc4bbe169b3defc043258da7e63f3743ff"
+      }
+    ],
+    "outcome": null,
+    "reason": null,
+    "status": "passed"
+  },
+  "record_type": "status",
+  "schema_version": 1
+}

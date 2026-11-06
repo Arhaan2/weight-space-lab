@@ -1,0 +1,10 @@
+{
+  "event": {
+    "attempt_index": 0,
+    "kind": "attempt_started",
+    "previous_sha256": "628db0bc41741abd8c575f850c4bd890f428efbcbeae8a53aeaa711e011c3c14",
+    "schedule_index": 0,
+    "sequence": 0
+  },
+  "sha256": "c4d3e2cc58395e5235fd801736ade6d35c3a4c622cd8bc7a9398f3648a5d2b85"
+}

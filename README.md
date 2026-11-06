@@ -6,11 +6,13 @@ Maintainer: [Arhaan Aggarwal (Arhaan2)](https://github.com/Arhaan2).
 
 ## Current status
 
-**Experimental infrastructure through Phase 2 artifact preparation. No language-model improvement has been measured.**
+**Experimental infrastructure through Phase 3 native generation and resumable execution. No language-model improvement has been measured.**
 
-The implementation provides pinned model acquisition, complete file and tensor inventories, transactional reconstruction of the published sparse BF16 patch, independent saved-checkpoint verification, auditable array edits, experiment profiles, execution diagnostics, versioned raw evidence contracts, exact split-overlap checks, and paired analysis of externally graded results. Its mechanics example uses small synthetic arrays. It does not call a frontier model, implement a language-model inference server, or grade MATH answers.
+The implementation provides pinned model acquisition, complete file and tensor inventories, transactional reconstruction of the published sparse BF16 patch, independent saved-checkpoint verification, native generation adapters, bounded schedule execution with crash-safe resume, auditable array edits, experiment profiles, execution diagnostics, versioned raw evidence contracts, exact split-overlap checks, and paired analysis of externally graded results. Its mechanics example uses small synthetic arrays. It does not call a frontier editor or grade MATH answers.
 
-Build and fixture validation, real artifact verification, model execution, and experiments are separate evidence categories. Model execution and experiments remain unexecuted. Passing a schema check establishes configuration completeness, not externally verified provenance, model compatibility, or a scientific result.
+Build and fixture validation, real artifact verification, development model execution, and experiments are separate evidence categories. See [native execution](docs/native-execution.md) for the pinned backends, methodological variations, three-arm smoke procedure, and recovery contract. Experiments remain unexecuted. Passing a schema check establishes configuration completeness, not externally verified provenance, model compatibility, or a scientific result.
+
+The [real development smoke](reports/native-smoke/README.md) generated 16 tokens each from the original, identity-copy and reconstructed checkpoints using the explicit Transformers CPU/BF16 variation. All three hit the short token cap; no answer was graded. The report retains the initial failed load, successful raw outputs, recovery checks, and measured resource requirements. The preferred vLLM GPU path is pinned but remains unexecuted.
 
 The pinned p50c artifacts have been acquired and the complete saved reconstruction verified: **130,188 changed stored BF16 entries**, with a **131,072-coordinate published column footprint**. All 486 unrelated tensors and the remaining model assets are unchanged. See the [artifact verification report and inventories](reports/p50c/README.md); these checks establish byte reconstruction, not task quality or inference compatibility.
 
@@ -54,7 +56,7 @@ python -m weight_space_lab check configs/profiles/native_development_smoke.json 
 
 The final command is expected to exit with status 2 until its explicit missing requirements are supplied and verified. Diagnostics load no checkpoint and measure no inference performance. Optional backend probes are bounded; they neither install a runtime nor choose a model or precision. Default CI installs only the project's lightweight dependencies and runs CPU-only contract tests.
 
-Raw run-record arrays are validated with `check-records`, benchmark schedules with `check-schedule`, and independent status records with `check-status`. These commands do not grade outputs or promote fixture evidence into real-model evidence. The compact `compare` input remains unchanged.
+Raw run-record arrays are validated with `check-records`, benchmark schedules with `check-schedule`, and independent status records with `check-status`. These commands do not grade outputs or promote fixture evidence into real-model evidence. The compact `compare` input remains unchanged. Scientific raw-record projection rejects fixture evidence; its separate synthetic projection retains an explicit fixture envelope.
 
 ## Mechanics and analysis
 

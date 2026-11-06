@@ -141,6 +141,24 @@ def build_parser():
         reconstruction.add_argument("--acquisition", type=Path, required=True)
         reconstruction.add_argument("--out", type=Path, required=True,
                                     help="reconstruction bundle (new output for reconstruct, existing for verify)")
+    identity = commands.add_parser("copy-identity", help="create an independently verified byte-copy control")
+    identity.add_argument("--acquisition", type=Path, required=True)
+    identity.add_argument("--out", type=Path, required=True)
+    identity.add_argument("--reference", type=Path, default=Path("configs/published_p50c.json"))
+    prepare = commands.add_parser("prepare-native-smoke", help="freeze matched tiny native smoke configurations")
+    prepare.add_argument("--acquisition", type=Path, required=True)
+    prepare.add_argument("--reconstruction", type=Path, required=True)
+    prepare.add_argument("--identity", type=Path, required=True)
+    prepare.add_argument("--out", type=Path, required=True)
+    prepare.add_argument("--reference", type=Path, default=Path("configs/published_p50c.json"))
+    prepare.add_argument("--backend", choices=["transformers", "vllm"], required=True)
+    native = commands.add_parser("run-native", help="execute or resume a frozen development smoke schedule")
+    native.add_argument("config", type=Path)
+    native.add_argument("--model", type=Path, required=True)
+    native.add_argument("--tasks", type=Path, required=True)
+    native.add_argument("--schedule", type=Path, required=True)
+    native.add_argument("--out", type=Path, required=True)
+    native.add_argument("--resume", action="store_true")
     return parser
 
 
@@ -211,7 +229,20 @@ def main(argv=None):
             operation = reconstruct_published if args.command == "reconstruct-published" else verify_reconstruction
             audit = operation(args.acquisition, args.out, args.reference)
             result = {key: value for key, value in audit.items() if key != "model_inventory"}
+        elif args.command == "copy-identity":
+            from .native_assets import copy_identity
+            result = copy_identity(args.acquisition, args.out, args.reference)
+        elif args.command == "prepare-native-smoke":
+            from .native_assets import prepare_smoke
+            result = prepare_smoke(args.acquisition, args.reconstruction, args.identity,
+                                   args.out, args.reference, backend=args.backend)
+        elif args.command == "run-native":
+            from .native_runner import run_schedule
+            config, tasks, schedule = read_json(args.config), read_json(args.tasks), read_json(args.schedule)
+            result = run_schedule(config, tasks, schedule, args.out, model_path=args.model, resume=args.resume)
         print(json.dumps(result, indent=2, allow_nan=False))
+        if args.command == "run-native" and any(result["statuses"][key] for key in ("error", "timeout", "missing")):
+            return 2
         return 0
     except (OSError, ValueError, TypeError) as error:
         # Avoid dumping local machine paths or raw provider errors into reports.

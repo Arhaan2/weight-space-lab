@@ -1,0 +1,304 @@
+{
+  "event": {
+    "attempt_index": 0,
+    "elapsed_seconds": 24.714630791917443,
+    "kind": "attempt_finished",
+    "metadata": {
+      "generation": {
+        "chat_template_sha256": "273d8e0e683b885071fb17e08d71e5f2a5ddfb5309756181681de4f5a1822d80",
+        "duration_scope": "prompt_rendering_tokenization_and_generation_excluding_load_and_decode",
+        "output_token_ids": [
+          8160,
+          579,
+          821,
+          3272,
+          1817,
+          364,
+          21156,
+          279,
+          3377,
+          328,
+          44712,
+          220,
+          22,
+          478,
+          220,
+          20
+        ],
+        "process_peak_rss_bytes": 3961405440,
+        "prompt_token_ids": [
+          248045,
+          846,
+          198,
+          44712,
+          220,
+          22,
+          478,
+          220,
+          20,
+          13,
+          198,
+          5328,
+          2781,
+          2923,
+          539,
+          2923,
+          11,
+          321,
+          2113,
+          678,
+          1534,
+          4087,
+          2785,
+          1088,
+          76367,
+          44845,
+          248046,
+          198,
+          248045,
+          74455,
+          198,
+          248068,
+          198
+        ],
+        "rendered_prompt_sha256": "888febb69b3ab323f4c2f29660cfcc47864ac5bbba9619c70d7b7041e934ebce",
+        "scientific_score": null
+      },
+      "worker": {
+        "architecture": "Qwen3_5ForConditionalGeneration",
+        "attention_implementation": "eager",
+        "backend": "transformers",
+        "chat_template_sha256": "273d8e0e683b885071fb17e08d71e5f2a5ddfb5309756181681de4f5a1822d80",
+        "cpu_threads": 4,
+        "device": "cpu",
+        "evidence_kind": "real_model",
+        "hardware": {
+          "logical_cpu_count": 14,
+          "machine": "arm64",
+          "python_version": "3.13.5",
+          "release": "25.6.0",
+          "system": "Darwin"
+        },
+        "load_seconds": 3.593037916114554,
+        "methodological_variation": "transformers_cpu_checkpoint_preserving_bf16_f32",
+        "multi_token_prediction": false,
+        "precision_policy": "stored_bf16_and_f32_preserved",
+        "process_peak_rss_bytes": 3961405440,
+        "restored_f32_tensors": [
+          "model.language_model.layers.0.linear_attn.A_log",
+          "model.language_model.layers.0.linear_attn.norm.weight",
+          "model.language_model.layers.1.linear_attn.A_log",
+          "model.language_model.layers.1.linear_attn.norm.weight",
+          "model.language_model.layers.10.linear_attn.A_log",
+          "model.language_model.layers.10.linear_attn.norm.weight",
+          "model.language_model.layers.12.linear_attn.A_log",
+          "model.language_model.layers.12.linear_attn.norm.weight",
+          "model.language_model.layers.13.linear_attn.A_log",
+          "model.language_model.layers.13.linear_attn.norm.weight",
+          "model.language_model.layers.14.linear_attn.A_log",
+          "model.language_model.layers.14.linear_attn.norm.weight",
+          "model.language_model.layers.16.linear_attn.A_log",
+          "model.language_model.layers.16.linear_attn.norm.weight",
+          "model.language_model.layers.17.linear_attn.A_log",
+          "model.language_model.layers.17.linear_attn.norm.weight",
+          "model.language_model.layers.18.linear_attn.A_log",
+          "model.language_model.layers.18.linear_attn.norm.weight",
+          "model.language_model.layers.2.linear_attn.A_log",
+          "model.language_model.layers.2.linear_attn.norm.weight",
+          "model.language_model.layers.20.linear_attn.A_log",
+          "model.language_model.layers.20.linear_attn.norm.weight",
+          "model.language_model.layers.21.linear_attn.A_log",
+          "model.language_model.layers.21.linear_attn.norm.weight",
+          "model.language_model.layers.22.linear_attn.A_log",
+          "model.language_model.layers.22.linear_attn.norm.weight",
+          "model.language_model.layers.4.linear_attn.A_log",
+          "model.language_model.layers.4.linear_attn.norm.weight",
+          "model.language_model.layers.5.linear_attn.A_log",
+          "model.language_model.layers.5.linear_attn.norm.weight",
+          "model.language_model.layers.6.linear_attn.A_log",
+          "model.language_model.layers.6.linear_attn.norm.weight",
+          "model.language_model.layers.8.linear_attn.A_log",
+          "model.language_model.layers.8.linear_attn.norm.weight",
+          "model.language_model.layers.9.linear_attn.A_log",
+          "model.language_model.layers.9.linear_attn.norm.weight"
+        ],
+        "runtime_parameter_dtypes": {
+          "torch.bfloat16": 852983328,
+          "torch.float32": 2592
+        },
+        "state_accumulator_dtype": "float32",
+        "tokenizer_class": "TokenizersBackend",
+        "unused_stored_tensors": [
+          {
+            "dtype": "torch.bfloat16",
+            "name": "mtp.fc.weight",
+            "reason": "auxiliary_mtp_disabled_for_ordinary_autoregression",
+            "sha256": "48d27b3dffb832f804dd4cd0eab5b9a5cda184d6a38976fca89bd45d164d45d1",
+            "shape": [
+              1024,
+              2048
+            ]
+          },
+          {
+            "dtype": "torch.bfloat16",
+            "name": "mtp.layers.0.input_layernorm.weight",
+            "reason": "auxiliary_mtp_disabled_for_ordinary_autoregression",
+            "sha256": "f4d6646805e10a9e8f50bdbe958526fcd143970c33bca866fb1ca7b8c6110179",
+            "shape": [
+              1024
+            ]
+          },
+          {
+            "dtype": "torch.bfloat16",
+            "name": "mtp.layers.0.mlp.down_proj.weight",
+            "reason": "auxiliary_mtp_disabled_for_ordinary_autoregression",
+            "sha256": "beb6297c595cde2292439b62c00faf04794242c7bc8a2983122f5d1e7086dfc8",
+            "shape": [
+              1024,
+              3584
+            ]
+          },
+          {
+            "dtype": "torch.bfloat16",
+            "name": "mtp.layers.0.mlp.gate_proj.weight",
+            "reason": "auxiliary_mtp_disabled_for_ordinary_autoregression",
+            "sha256": "1364e2d48e6e07910a8259913fa8f75cdf79ac8d57f0496e166359039418d1de",
+            "shape": [
+              3584,
+              1024
+            ]
+          },
+          {
+            "dtype": "torch.bfloat16",
+            "name": "mtp.layers.0.mlp.up_proj.weight",
+            "reason": "auxiliary_mtp_disabled_for_ordinary_autoregression",
+            "sha256": "8e02fb20315779194143e49371d0b6d753f3be3b880d997e2880baebd3703e5b",
+            "shape": [
+              3584,
+              1024
+            ]
+          },
+          {
+            "dtype": "torch.bfloat16",
+            "name": "mtp.layers.0.post_attention_layernorm.weight",
+            "reason": "auxiliary_mtp_disabled_for_ordinary_autoregression",
+            "sha256": "40ff58d6a34fa107698f488885f2a89a55300943df341054db53b58bd87a3aa8",
+            "shape": [
+              1024
+            ]
+          },
+          {
+            "dtype": "torch.bfloat16",
+            "name": "mtp.layers.0.self_attn.k_norm.weight",
+            "reason": "auxiliary_mtp_disabled_for_ordinary_autoregression",
+            "sha256": "cdb7f43816e3344d7e0506ed79401969891921bae0efb5cffe93538557cd9441",
+            "shape": [
+              256
+            ]
+          },
+          {
+            "dtype": "torch.bfloat16",
+            "name": "mtp.layers.0.self_attn.k_proj.weight",
+            "reason": "auxiliary_mtp_disabled_for_ordinary_autoregression",
+            "sha256": "13e6af7b920fcfb440fd2995adb154ebc64650949e16456c6181fca55c720a84",
+            "shape": [
+              512,
+              1024
+            ]
+          },
+          {
+            "dtype": "torch.bfloat16",
+            "name": "mtp.layers.0.self_attn.o_proj.weight",
+            "reason": "auxiliary_mtp_disabled_for_ordinary_autoregression",
+            "sha256": "31a191824a31698dda7b2d45320bb495258a56d66f3242c5055fb1ca46ccfe2e",
+            "shape": [
+              1024,
+              2048
+            ]
+          },
+          {
+            "dtype": "torch.bfloat16",
+            "name": "mtp.layers.0.self_attn.q_norm.weight",
+            "reason": "auxiliary_mtp_disabled_for_ordinary_autoregression",
+            "sha256": "8bf34155cf168f89f5402fffe1ab8a72667854db3cef1d905106eeeff6bb0b38",
+            "shape": [
+              256
+            ]
+          },
+          {
+            "dtype": "torch.bfloat16",
+            "name": "mtp.layers.0.self_attn.q_proj.weight",
+            "reason": "auxiliary_mtp_disabled_for_ordinary_autoregression",
+            "sha256": "87cd4e02256a75e3c2759614c00589c44ccb14f91a413ebf52f26faf5c423adc",
+            "shape": [
+              4096,
+              1024
+            ]
+          },
+          {
+            "dtype": "torch.bfloat16",
+            "name": "mtp.layers.0.self_attn.v_proj.weight",
+            "reason": "auxiliary_mtp_disabled_for_ordinary_autoregression",
+            "sha256": "c6fe363129b3e76a4be64e2d9c7cb956cb3292359373486382901cd1b1dd5736",
+            "shape": [
+              512,
+              1024
+            ]
+          },
+          {
+            "dtype": "torch.bfloat16",
+            "name": "mtp.norm.weight",
+            "reason": "auxiliary_mtp_disabled_for_ordinary_autoregression",
+            "sha256": "b95f65d874310b706b7460fc82d89e2b25275ee2dc2d123b2a96c75eff3ed10b",
+            "shape": [
+              1024
+            ]
+          },
+          {
+            "dtype": "torch.bfloat16",
+            "name": "mtp.pre_fc_norm_embedding.weight",
+            "reason": "auxiliary_mtp_disabled_for_ordinary_autoregression",
+            "sha256": "94f4a65e7fd3eae385489f69c3d27b0abc0f9f706ff59580e3ce7a7fae551513",
+            "shape": [
+              1024
+            ]
+          },
+          {
+            "dtype": "torch.bfloat16",
+            "name": "mtp.pre_fc_norm_hidden.weight",
+            "reason": "auxiliary_mtp_disabled_for_ordinary_autoregression",
+            "sha256": "83544d29d3a6c236e3cef4230e682d4a43e4f0f2ffc01fae1936b22cda96da20",
+            "shape": [
+              1024
+            ]
+          }
+        ],
+        "verified_stored_tensor_count": 473,
+        "verified_tied_output_head": true,
+        "versions": {
+          "jinja2": "3.1.6",
+          "safetensors": "0.7.0",
+          "tokenizers": "0.22.2",
+          "torch": "2.10.0",
+          "transformers": "5.3.0"
+        }
+      }
+    },
+    "outcome": {
+      "duration_seconds": 21.04521150002256,
+      "error": null,
+      "finish_reason": "length",
+      "raw_output": "Here's my thought process for solving the problem \"Compute 7 + 5",
+      "status": "truncated",
+      "token_counts": {
+        "input": 33,
+        "output": 16,
+        "total": 49
+      }
+    },
+    "previous_sha256": "e19bb69f98ad3ee68f952d45434ee5e1a64acfd9ab6ab36a1e3c5d224cc5230a",
+    "schedule_index": 0,
+    "sequence": 1
+  },
+  "sha256": "4f838e0448241e96bb71ae0c511b50780ca593d1f5ca094673ef2b2f1cc87129"
+}

@@ -1,0 +1,57 @@
+[
+  {
+    "attempts": [
+      {
+        "attempt_index": 0,
+        "duration_seconds": 2.949372832896188,
+        "error": {
+          "code": "loaded_tensor_missing",
+          "retryable": true
+        },
+        "finish_reason": "error",
+        "raw_output": null,
+        "status": "error",
+        "token_counts": {
+          "input": null,
+          "output": null,
+          "total": null
+        }
+      }
+    ],
+    "benchmark": "development-arithmetic",
+    "checkpoint": {
+      "model_id": "Qwen/Qwen3.5-0.8B",
+      "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+      "sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d"
+    },
+    "configuration_sha256": "8d26f366940695ef4731f21a9d7d5911e0da576740a77db484b7006732a9e65e",
+    "dataset_revision": "5687abfe5782b204acb31421b05757ae50d19c9b5925a27fd67070f4c2cdd947",
+    "duration_seconds": 2.949372832896188,
+    "error": {
+      "code": "loaded_tensor_missing",
+      "retryable": true
+    },
+    "evidence_kind": "real_model",
+    "finish_reason": "error",
+    "item_id": "addition-7-5",
+    "profile": "native_development_smoke",
+    "raw_output": null,
+    "record_type": "run",
+    "retry_policy": {
+      "max_attempts": 1,
+      "mode": "none"
+    },
+    "run_id": "native-smoke-transformers-original",
+    "sample_index": 0,
+    "schema_version": 1,
+    "seed": 17,
+    "split": "development",
+    "stage": "smoke",
+    "status": "error",
+    "token_counts": {
+      "input": null,
+      "output": null,
+      "total": null
+    }
+  }
+]

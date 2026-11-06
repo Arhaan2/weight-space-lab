@@ -22,7 +22,29 @@ Replay the sparse substitutions through the actual model-directory layout. Prese
 
 **Exit:** fixture tests pass; the pinned real artifacts and saved reconstruction verify when downloads are available, or their exact prerequisites remain explicit. Artifact verification does not imply model loading, inference, grading, or an experiment. Native execution work follows this artifact boundary.
 
-## Phase 3: native execution and bounded edit execution
+## Phase 3: native generation and resumable execution
+
+Pin an architecture-compatible native backend and make tokenizer, template,
+thinking, precision, sampling, stopping and limits explicit. Preserve the
+released presence penalty without substituting a repetition penalty. Execute
+a predetermined item/sample schedule with Phase 1 raw records, immutable
+attempt history, bounded retries, hard worker timeouts, and validated resume.
+
+Verify original, identity-copy and reconstructed checkpoints through the same
+inference path using only a tiny development smoke. Record actual resources
+and clearly distinguish short smoke settings from the released reference.
+Test interruption, missing evidence, incompatible resume and unsupported
+settings offline. Fixtures never produce scientific scores.
+
+**Exit:** the implementation and recovery checks pass; tiny real generations
+and resource measurements are recorded when the selected hardware/runtime is
+available, otherwise their exact prerequisite remains explicit. No benchmark
+experiment or editor search is launched. See [native execution](native-execution.md).
+
+### Prerequisites for the subsequent controlled pilot
+
+The broader execution and edit work below remains required before Phase 4;
+it is outside the Phase 3 generation/resume boundary.
 
 Choose an execution machine and verify available memory and inference performance with a bounded development-only smoke run. Pin runtime dependencies and exact inference settings without changing the acquired model, precision, tokenizer, or chat template silently.
 
@@ -32,7 +54,7 @@ Implement Safetensors loading/saving with support for the selected model's actua
 
 Connect the limited proposal format to an explicitly recorded Astra execution interface. Do not invent an API model identifier or quietly substitute another model. Add an execution-side probe ledger that enforces call, sequence, token, time, and cost limits before work begins. Run the editor in a context that cannot access final-test files.
 
-**Exit:** original and replayed checkpoints generate real outputs, graders pass independent examples, and every scheduled result is accounted for. One real bounded edit is loadable and auditable; prohibited operations cannot pass the execution interface; a failed candidate restores the pristine base. No fresh candidate selection uses final-test feedback.
+**Prerequisite gate for the pilot:** original and replayed checkpoints generate real outputs, graders pass independent examples, and every scheduled result is accounted for. One real bounded edit is loadable and auditable; prohibited operations cannot pass the execution interface; a failed candidate restores the pristine base. No fresh candidate selection uses final-test feedback.
 
 ## Phase 4: controlled pilot and candidate freeze
 

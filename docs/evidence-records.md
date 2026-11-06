@@ -3,7 +3,8 @@
 `weight_space_lab.records` defines execution evidence independently of the
 compact, externally graded records accepted by `compare`. Neither schema
 validates the scientific truth of an output or a grade. Phase 1 supplies the
-contracts and CPU fixtures; no inference runner or grader is implemented.
+contracts and CPU fixtures. Phase 3 adds the [native runner](native-execution.md);
+no grader is implemented.
 
 ## Run records, version 1
 
@@ -73,6 +74,9 @@ boolean `correct`, and optional `score`. Do not add raw evidence fields to that
 format or use completed generation as evidence of correctness.
 
 `to_analysis_records(records, grades, benchmark=..., run_id=...)` explicitly
+rejects fixture evidence. The separate `to_fixture_analysis_records` helper
+retains `{evidence_kind: "fixture", scientific_result: false, records: ...}`;
+this envelope is not a scientific comparison input. Scientific projection
 selects one run and benchmark. It requires one execution context, including
 configuration, checkpoint, dataset, split, stage and fixture/real classification.
 Keep smoke, pilot and full runs in separate analyses.

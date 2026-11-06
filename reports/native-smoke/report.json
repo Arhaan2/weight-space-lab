@@ -1,0 +1,119 @@
+{
+  "additional_diagnostic_loads_without_generation": 1,
+  "all_three_short_output_token_ids_equal": true,
+  "arms": [
+    {
+      "arm": "original",
+      "attempt_wall_seconds": 26.165927750058472,
+      "checkpoint_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+      "configuration_sha256": "628db0bc41741abd8c575f850c4bd890f428efbcbeae8a53aeaa711e011c3c14",
+      "finish_reason": "length",
+      "generation_seconds": 21.492465291870758,
+      "input_tokens": 33,
+      "load_seconds": 4.568546083057299,
+      "output_token_ids_sha256": "72b2c9788a260fc3fc3796d56b15fd2a76e357a2e4aa70cd0f51bf35537cb829",
+      "output_tokens": 16,
+      "process_peak_rss_bytes": 4088086528,
+      "prompt_token_ids_sha256": "7b0f72728fd4e72986ba8fd1a3403bf682142936261eb9b31dab9b754af5da9a",
+      "records_sha256": "f4f1f8d8c1eb85ecfc38b4baa92101e9b148e97edf6d77687fc9894687ae95ab",
+      "restored_f32_tensors": 36,
+      "tokens_per_second": 0.7444469390885461,
+      "unused_mtp_tensors": 15,
+      "verified_active_saved_tensors": 473
+    },
+    {
+      "arm": "identity",
+      "attempt_wall_seconds": 25.094653791049495,
+      "checkpoint_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+      "configuration_sha256": "814e60b6acf474050c8042110d88ee391606c0d501c01cb84fe708f6c7c659d1",
+      "finish_reason": "length",
+      "generation_seconds": 22.126713166944683,
+      "input_tokens": 33,
+      "load_seconds": 2.891803457867354,
+      "output_token_ids_sha256": "72b2c9788a260fc3fc3796d56b15fd2a76e357a2e4aa70cd0f51bf35537cb829",
+      "output_tokens": 16,
+      "process_peak_rss_bytes": 4029612032,
+      "prompt_token_ids_sha256": "7b0f72728fd4e72986ba8fd1a3403bf682142936261eb9b31dab9b754af5da9a",
+      "records_sha256": "62a950da90ac42078de47605e1100883eb164f529edc6f9742ce734fee1aebf4",
+      "restored_f32_tensors": 36,
+      "tokens_per_second": 0.7231078506455518,
+      "unused_mtp_tensors": 15,
+      "verified_active_saved_tensors": 473
+    },
+    {
+      "arm": "reconstructed",
+      "attempt_wall_seconds": 24.714630791917443,
+      "checkpoint_sha256": "30c24b2f248212c05e6edc99c6732ae0e392486efeb8ddce776dbff158fee62e",
+      "configuration_sha256": "4f8a05712f8194849f565a60aec346f52bb133e2bc1b4c8ce8f802c5ac261b6f",
+      "finish_reason": "length",
+      "generation_seconds": 21.04521150002256,
+      "input_tokens": 33,
+      "load_seconds": 3.593037916114554,
+      "output_token_ids_sha256": "72b2c9788a260fc3fc3796d56b15fd2a76e357a2e4aa70cd0f51bf35537cb829",
+      "output_tokens": 16,
+      "process_peak_rss_bytes": 3961405440,
+      "prompt_token_ids_sha256": "7b0f72728fd4e72986ba8fd1a3403bf682142936261eb9b31dab9b754af5da9a",
+      "records_sha256": "086bb84116fabd6b77f4482fbadfb3112036ba9a8e2444eef0ce335e1464f2c4",
+      "restored_f32_tensors": 36,
+      "tokens_per_second": 0.7602679592924427,
+      "unused_mtp_tensors": 15,
+      "verified_active_saved_tensors": 473
+    }
+  ],
+  "completed_generations": 3,
+  "date": "2026-11-06",
+  "experiment_executed": false,
+  "gpu_dependency_resolution": {
+    "inference_executed": false,
+    "requirements_sha256": "ffd68e6e1e1ea5d2bc8d29a19829eba1d5548738eed0512ded9e87df3ba2843b",
+    "resolved_packages": 185,
+    "resolver": "uv 0.13.5",
+    "runtime_installed": false,
+    "status": "passed_metadata_resolution_only",
+    "target": "Linux x86_64 manylinux_2_31 Python 3.12"
+  },
+  "host_total_memory_bytes": 25769803776,
+  "implementation_sha256": "cd463351c1100cf6fd7465701bf744eb8dcad414ecb6aa271e16de24918dceac",
+  "initial_failure": {
+    "attempts": 1,
+    "code": "loaded_tensor_missing",
+    "configuration_sha256": "8d26f366940695ef4731f21a9d7d5911e0da576740a77db484b7006732a9e65e",
+    "records_sha256": "cfa283d0b77b2a2295cbfc0e660f35a41d0ef79caa47e992ae2d57bfba4bf66a",
+    "status": "error"
+  },
+  "kind": "real_model_report",
+  "measured_completed_output_tokens": 48,
+  "original_identity_token_ids_equal": true,
+  "preferred_vllm_execution": "not_executed_no_local_cuda",
+  "real_attempts_in_saved_journals": 4,
+  "real_resume_check": {
+    "changed_max_new_tokens_16_to_17_rejected": true,
+    "event_count_unchanged": 2,
+    "incompatible_resume_exit_code": 2,
+    "missing_records_rebuilt_identically": true
+  },
+  "resource_estimates": {
+    "100_sequences_at_1024_tokens_hours": [
+      37.41370933337344,
+      39.336378963457214
+    ],
+    "2000_sequences_at_32768_tokens_days": [
+      997.6989155566251,
+      1048.9701056921924
+    ],
+    "assumptions": [
+      "serial requests, same hardware and kernels",
+      "constant short-context measured rate; not validated at long context",
+      "generation component only; load, grading, queueing and retries excluded"
+    ],
+    "kind": "linear_planning_extrapolation_not_measured_larger_runs",
+    "long_context_memory_fit_verified": false,
+    "measured_rate_range_tokens_per_second": [
+      0.7231078506455518,
+      0.7602679592924427
+    ]
+  },
+  "schema_version": 1,
+  "scientific_scores": false,
+  "scope": "development smoke only; no grading, pilot, editor call, or benchmark experiment"
+}
