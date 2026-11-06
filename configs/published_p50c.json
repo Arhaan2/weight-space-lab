@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "claim_type": "published_patch_replay",
+  "status": "real_checkpoint_replay_not_executed",
+  "source_repository": "https://github.com/RikiyaT/lm_understand-logs",
+  "source_revision": "4d09ba6d6a7e891dd8063974dfe81b3d78e3494f",
+  "manifest_path": "exp8_math/runs/p50c/edit/manifest.json",
+  "archive_path": "exp8_math/runs/p50c/edit/edit.npz",
+  "base_model": "Qwen/Qwen3.5-0.8B",
+  "base_revision": "2fc06364715b967f1860aea9cf38778875588b17",
+  "tensor_names": [
+    "model.language_model.layers.15.mlp.down_proj.weight",
+    "model.language_model.layers.19.mlp.down_proj.weight"
+  ],
+  "expected_changed_stored_entries": 130188,
+  "reported_targeted_entries": 131072,
+  "interpretation": "Published BF16 patch replay is separate from fresh editor discovery and from benchmark evaluation. Counts and hashes must be verified on actual files before reporting success."
+}

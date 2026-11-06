@@ -1,0 +1,49 @@
+# Implementation roadmap
+
+## Phase 0: experimental mechanics — initial release
+
+Implement inspectable, bounded patch operations; deterministic state hashes; configuration and split checks; paired result analysis; and synthetic invariant tests. Run a mechanics example without pretending its outputs are language-model scores.
+
+**Exit:** tests and the example pass, the unfinished study configuration fails run-readiness checks, and public files contain no development-session material or machine-specific paths.
+
+## Phase 1: one real model and exact published-patch replay
+
+Choose an execution machine and verify available memory and inference performance with a bounded development-only smoke run. Resolve immutable model and tokenizer revisions. Capture the chat template, dtype, full parameter inventory, runtime dependencies, and exact inference settings.
+
+Obtain only the pinned published patch artifacts and the matching base checkpoint. Replay the sparse substitutions, verify every published base and edited tensor hash, and check the saved checkpoint. This reconstructs a released intervention; it does not establish independent Astra discovery.
+
+Add the native generation adapter, task loaders, pinned graders, and machine-readable item/seed records. Verify one development task end to end. Test the model-card baseline and literature baseline on development data. Freeze final test identities without showing their contents to the experimental editor. Treat benchmark evaluation of the fixed published patch as its own replay study; it is not a source of test feedback for the later fresh-editor study.
+
+**Exit:** original and replayed checkpoints generate real outputs, edited tensors match the published hashes, every scheduled result is accounted for, and graders pass independent examples. No fresh candidate selection uses final-test feedback.
+
+## Phase 2: checkpoint round trip and bounded edit execution
+
+Implement Safetensors loading/saving with support for the selected model's actual dtypes and shard layout. Verify an identity round trip before applying any candidate. Preserve all nonedited tensors, tokenizer assets, model configuration, and architecture. Prove the actual changed-coordinate count on the saved/reloaded checkpoint.
+
+Connect the limited proposal format to an explicitly recorded Astra execution interface. Do not invent an API model identifier or quietly substitute another model. Add an execution-side probe ledger that enforces call, sequence, token, time, and cost limits before work begins. Run the editor in a context that cannot access final-test files.
+
+**Exit:** one real bounded edit is loadable and auditable; prohibited operations cannot pass the execution interface; a failed candidate restores the pristine base.
+
+## Phase 3: controlled pilot and candidate freeze
+
+Run a bounded development/validation experiment. Preserve all candidate proposals, weight differences, probe budgets, and validation failures. Compare to decoding-only controls. Select according to the preregistered rule and freeze checkpoint hash, configuration hash, and evaluation code.
+
+**Exit:** a selected candidate or an explicit no-improvement result, with enough evidence to reproduce the search procedure. No selection on the final test.
+
+## Phase 4: held-out evaluation
+
+Execute the same final item/seed schedule for all predeclared arms. Grade independently, audit extraction failures, calculate paired item-level intervals, and publish full denominators and failure accounting. Add transfer and regression checks before broadening the claim.
+
+**Exit:** an evidence-backed positive, negative, or inconclusive conclusion. A shorter generation is reported as a shorter generation unless correctness also improves.
+
+## Phase 5: BrowserLLM extension
+
+Pin and audit BrowserLLM. Verify architecture support, add custom artifact references if needed, and add or validate task-correctness grading. Convert base and edited models identically, remeasure quality, then run resource comparisons across independent browser sessions.
+
+**Exit:** browser results separate quality, completion, latency, throughput, memory, and measurement limitations; base and edited artifacts are traceable to their native checkpoints.
+
+## Phase 6: reproducible public release
+
+Publish executable commands, immutable dependency pins, permitted data references, patches, checkpoint hashes, per-example evidence, all candidate budgets, analysis code, and limitations. Keep the project on the maintainer's account and verify attribution before each push.
+
+**Exit:** a clean checkout on a second suitable machine reproduces the reported analysis and the documented evaluation path. Any remaining restriction is explicitly stated.

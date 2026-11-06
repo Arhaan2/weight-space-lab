@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "study": "qwen-math-informed-replication",
+  "claim_type": "informed_replication",
+  "model": "Qwen/Qwen3.5-0.8B",
+  "editor": "GPT-6 Astra",
+  "editor_knows_published_mechanism": true,
+  "no_training": true,
+  "frozen": false,
+  "primary_benchmark": "MATH-500",
+  "secondary_benchmarks": ["GSM8K", "IFEval strict prompt-level"],
+  "sampling": {
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": 20,
+    "presence_penalty": 1.5,
+    "thinking": true,
+    "max_output_tokens": 32768,
+    "samples_per_item": 4
+  },
+  "probe_limits": {
+    "max_calls": 50,
+    "max_sequences_per_call": 512,
+    "max_total_generated_tokens": 10485760
+  },
+  "probe_budget_note": "The generated-token cap is our proposed pilot limit, not a published limit. Record observed calls, sequences, tokens, wall time, and cost. Smaller limits are a methodological deviation.",
+  "max_changed_fraction": 0.001,
+  "edit_fraction_note": "A proposed 0.1 percent ceiling, not a target or the paper's realized edit fraction. Compute counts over the complete original checkpoint and report text-only and whole-checkpoint denominators separately where applicable.",
+  "controls": [
+    "unchanged weights with literature sampling",
+    "unchanged weights with model-card thinking sampling",
+    "unchanged weights with development-tuned decoding",
+    "identity edit through the complete save/reload pipeline",
+    "edited weights under the same sampling as the matched base"
+  ],
+  "pins": {
+    "model_revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "tokenizer_revision": null,
+    "runtime_version": null,
+    "grader_revision": null,
+    "development_dataset_revision": null,
+    "validation_dataset_revision": null,
+    "test_dataset_revision": null,
+    "editor_model_version": null,
+    "chat_template_sha256": null
+  }
+}

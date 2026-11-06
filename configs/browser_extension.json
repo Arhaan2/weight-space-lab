@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "claim_type": "extension",
+  "status": "not_implemented_or_executed",
+  "benchmark_repository": "https://github.com/gufranmirza/browser-llm-bench",
+  "benchmark_revision": "b39187b1aff1f218493622d7fcf3cd5d24773b41",
+  "runtime": "WebLLM 0.2.86",
+  "existing_baseline_artifacts": [
+    {
+      "id": "Qwen3.5-0.8B-q4f16_1-MLC",
+      "revision": "0ec138972555613c1d7812a821778ad0398c8790"
+    },
+    {
+      "id": "Qwen3.5-0.8B-q0f16-MLC",
+      "revision": "cb7bfc1083da0671e4df137de05978a8555dfed2"
+    }
+  ],
+  "proposed_task": "structured extraction with exact field-level ground truth",
+  "primary_metric": "correct scheduled tasks within all prespecified budgets divided by all scheduled tasks",
+  "required_additions": [
+    "versioned task-correctness grader",
+    "independent held-out task split",
+    "matched conversion of original and edited checkpoints",
+    "edited artifact identity and hash validation",
+    "independent browser sessions and counterbalanced execution order"
+  ],
+  "interpretation": "Existing base artifacts establish a feasible integration route. No edited artifact has yet been converted, loaded, or evaluated."
+}

@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "weight-space-lab"
+version = "0.1.0"
+description = "Auditable mechanics for controlled language-model weight-editing experiments"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{name = "Arhaan Aggarwal"}]
+dependencies = ["numpy==2.3.5"]
+license = "MIT"
+
+[project.scripts]
+weight-space-lab = "weight_space_lab.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["weight_space_lab*"]
