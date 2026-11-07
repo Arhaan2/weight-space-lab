@@ -414,7 +414,7 @@ def main(argv=None):
                     read_json(args.manifest), bootstrap_samples=args.bootstrap_samples, seed=args.seed)
             write_json(args.out, result)
         print(json.dumps(result, indent=2, allow_nan=False))
-        if args.command == "editor-live-readiness" and not result["ready"]:
+        if args.command in {"editor-live-readiness", "editor-session-readiness"} and not result["ready"]:
             return 2
         if args.command.startswith("editor-") and (
                 result.get("status") == "rejected" or

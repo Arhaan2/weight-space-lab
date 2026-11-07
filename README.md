@@ -48,6 +48,16 @@ saves a zero-tool acknowledgement plan. The tested CLI budget features do not
 serialize a provider hard token cap. No live connection test was launched and
 no exhausted offline budget was reset.
 
+The explicit [authenticated session variant](docs/authenticated-session-editor.md)
+reuses that machinery for one Astra proposal and one baseline/candidate
+development comparison, without a separate API key or nested frontier call.
+It records the subscription route's unavailable provider generation cap and
+preserves the strict automated protocol. The local workflow passes synthetic
+integration tests; the [session boundary audit](docs/session-boundary-audit.md)
+records why the actual desktop session cannot yet be safely launched. The
+separate development attempt is prepared and unspent; no genuine Astra proposal
+or native development comparison has run in this variant.
+
 The pinned p50c artifacts have been acquired and the complete saved reconstruction verified: **130,188 changed stored BF16 entries**, with a **131,072-coordinate published column footprint**. All 486 unrelated tensors and the remaining model assets are unchanged. See the [artifact verification report and inventories](reports/p50c/README.md); these checks establish byte reconstruction, not task quality or inference compatibility.
 
 The intended study begins with replay of the [released evaluated edit](https://github.com/RikiyaT/lm_understand-logs/tree/4d09ba6d6a7e891dd8063974dfe81b3d78e3494f/exp8_math/runs/p50c/edit), then an informed fresh-editor experiment based on [Sparks of Weight-Space Programming](https://rikiyat.github.io/blog/weight-space-programming/), then a browser-deployment extension using [BrowserLLM](https://github.com/gufranmirza/browser-llm-bench). These are separate claims. The study design and remaining work are in [docs/study-design.md](docs/study-design.md) and [docs/roadmap.md](docs/roadmap.md).

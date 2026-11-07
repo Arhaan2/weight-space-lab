@@ -56,6 +56,8 @@ class EditorController:
     a resume. Editor processes cannot read or write any of these host files.
     """
 
+    session_kind = "editor_integration_session"
+
     @classmethod
     def create(cls, root, *, model, policy, development, limits, interface_observation,
                probe=None, run_id=None):
@@ -123,6 +125,8 @@ class EditorController:
         if self.root.is_symlink():
             raise ValueError("session directory cannot be a symlink")
         self.manifest = read_json_bounded(self.root / "session.json", max_bytes=1_048_576)
+        if self.manifest.get("kind") != self.session_kind:
+            raise ValueError("session protocol requires its own controller; modes cannot be mixed")
         self.digest = canonical_hash(self.manifest)
         if read_json_bounded(self.root / "ready.json") != {"session_sha256": self.digest}:
             raise ValueError("session initialization is incomplete or changed")

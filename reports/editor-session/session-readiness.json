@@ -1,0 +1,36 @@
+{
+  "accepted_selector": null,
+  "blockers": [
+    {
+      "category": "unavailable_interface_capability",
+      "condition": "actual_session_capability_boundary_verified",
+      "evidence": "desktop create_thread exposes no permission or tool allowlist; native UI access denied",
+      "needed": "host launch binding plus actual denial checks for held-out files, tools, network and harness writes"
+    },
+    {
+      "category": "missing_live_verification",
+      "condition": "actual_session_cancellation_and_no_ambiguous_retry_verified",
+      "evidence": "desktop launch exposes no retry control; app-server fields are schema evidence only",
+      "needed": "same-session interrupt and no-retry behavior verified without a model generation"
+    },
+    {
+      "category": "missing_implementation",
+      "condition": "session_deadline_supervisor_armed_before_handoff",
+      "evidence": "file export cannot monitor or stop an external session; late-response rejection is not execution-time cancellation",
+      "needed": "trusted transport supervisor enforcing the local deadline and cancellation on the actual session"
+    }
+  ],
+  "experimental_editor_launched": false,
+  "frontier_cap_status": "explicitly_unavailable_in_this_protocol_variant",
+  "frontier_provider_token_cap": null,
+  "immutable_model_version": null,
+  "nested_frontier_call": false,
+  "observed_effort": null,
+  "observed_model": null,
+  "ready": false,
+  "requested_effort": "high",
+  "requested_selector": "gpt-6-astra",
+  "separate_api_key_required": false,
+  "strict_automated_mode_changed": false,
+  "variant": "authenticated_session_v1"
+}
