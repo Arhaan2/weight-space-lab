@@ -6,11 +6,11 @@ Maintainer: [Arhaan Aggarwal (Arhaan2)](https://github.com/Arhaan2).
 
 ## Current status
 
-**Experimental infrastructure through Phase 7 offline editor integration and enforced local isolation. Live Astra integration and the measured full replay result remain pending; no language-model improvement has been established.**
+**Phase 7 includes one completed manual exploratory proposal/checkpoint/development comparison, with editor isolation unverified. Strict automated Astra integration and the measured full replay result remain pending; no language-model improvement has been established.**
 
 The implementation provides pinned model acquisition, complete file and tensor inventories, transactional reconstruction of the published sparse BF16 patch, independent saved-checkpoint verification, native generation adapters, bounded schedule execution with crash-safe resume, auditable array edits, experiment profiles, execution diagnostics, versioned raw evidence contracts, pinned benchmark loaders and split manifests, exact and template-family overlap audits, independent benchmark graders, and scheduled paired analysis. Phase 5 joins these into a frozen replay workflow with separate development smoke, development pilot, and full-run commands. Its mechanics example uses small synthetic arrays. It does not call a frontier editor. Optional pinned evaluators grade MATH and IFEval; GSM8K uses an explicit numeric final-answer policy.
 
-Build and fixture validation, real artifact verification, development model execution, and experiments are separate evidence categories. See [native execution](docs/native-execution.md) for the pinned backends, methodological variations, three-arm smoke procedure, and recovery contract. Experiments remain unexecuted. Passing a schema check establishes configuration completeness, not externally verified provenance, model compatibility, or a scientific result.
+Build and fixture validation, real artifact verification, development model execution, and experiments are separate evidence categories. See [native execution](docs/native-execution.md) for the pinned backends, methodological variations, three-arm smoke procedure, and recovery contract. Controlled research experiments remain unexecuted. Passing a schema check establishes configuration completeness, not externally verified provenance, model compatibility, or a scientific result.
 
 The [real development smoke](reports/native-smoke/README.md) generated 16 tokens each from the original, identity-copy and reconstructed checkpoints using the explicit Transformers CPU/BF16 variation. All three hit the short token cap; no answer was graded. The report retains the initial failed load, successful raw outputs, recovery checks, and measured resource requirements. The preferred vLLM GPU path is pinned but remains unexecuted.
 
@@ -38,8 +38,8 @@ Timeouts, cancellation, retries, interrupted requests, and budget exhaustion
 are enforced in code. The [interface audit](docs/editor-interface-audit.md)
 records the actually exposed `gpt-6-astra` selector and Codex CLI `0.163.0`,
 with unavailable live identity/version/billing left null. No supported live
-adapter yet meets the isolation and hard-limit requirements. No Astra editor
-interaction or experiment has run.
+adapter yet meets the isolation and hard-limit requirements. No runner-launched
+Astra interaction or controlled research experiment has run.
 
 The [live-readiness diagnosis](reports/editor-live-readiness/README.md) traces
 the precise remaining gates and records behavioral checks of the installed CLI.
@@ -54,15 +54,18 @@ development comparison, without a separate API key or nested frontier call.
 It records the subscription route's unavailable provider generation cap and
 preserves the strict automated protocol. The local workflow passes synthetic
 integration tests; the [session boundary audit](docs/session-boundary-audit.md)
-records why the actual desktop session cannot yet be safely launched. The
-separate development attempt is prepared and unspent; no genuine Astra proposal
-or native development comparison has run in this variant.
+records why the actual desktop session cannot yet be safely launched under the
+strict protocol. The separate development capacity was used once through its
+explicit manual exploratory extension below.
 
 An explicit [manual exploratory handoff](docs/manual-session-handoff.md) now
-accepts an operator-transferred Astra/Ultra proposal using that same unspent
-capacity. This path does not launch the editor and leaves isolation unverified;
-it cannot qualify as a controlled research run. The private packet and separate
-import/comparison commands are prepared; actual proposal evidence is pending.
+accepted the externally supplied proposal attributed by the operator to
+Astra/Ultra. The [sanitized result](reports/editor-session/manual-result.json)
+records a validated checkpoint with 32,768 changed stored entries and one real
+baseline/candidate development pair. Each arm generated three tokens and stopped
+at EOS; no grader ran. This path does not launch the editor, leaves isolation
+unverified, and cannot qualify as a controlled research run. The single proposal
+and comparison capacity is spent; no retry or additional evaluation was run.
 
 The pinned p50c artifacts have been acquired and the complete saved reconstruction verified: **130,188 changed stored BF16 entries**, with a **131,072-coordinate published column footprint**. All 486 unrelated tensors and the remaining model assets are unchanged. See the [artifact verification report and inventories](reports/p50c/README.md); these checks establish byte reconstruction, not task quality or inference compatibility.
 

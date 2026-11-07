@@ -1,0 +1,155 @@
+{
+  "arms": [
+    {
+      "accounted_arm_seconds": 16.731396958930418,
+      "arm": "baseline",
+      "error": null,
+      "finish_reason": "eos",
+      "generation_seconds": 4.14450570801273,
+      "outcome_status": "ok",
+      "raw_output_sha256": "02ba8c7d38b7c8f8a30a658261f211a16eb0b3eea91d28724d9fb3805f6ede1b",
+      "status": "completed",
+      "token_counts": {
+        "input": 27,
+        "output": 3,
+        "total": 30
+      }
+    },
+    {
+      "accounted_arm_seconds": 8.994998542126268,
+      "arm": "candidate",
+      "error": null,
+      "finish_reason": "eos",
+      "generation_seconds": 4.060871166875586,
+      "outcome_status": "ok",
+      "raw_output_sha256": "02ba8c7d38b7c8f8a30a658261f211a16eb0b3eea91d28724d9fb3805f6ede1b",
+      "status": "completed",
+      "token_counts": {
+        "input": 27,
+        "output": 3,
+        "total": 30
+      }
+    }
+  ],
+  "benchmark_improvement_established": false,
+  "budget": {
+    "billing_unit": null,
+    "cancellation_reason": null,
+    "cancelled": false,
+    "charged": {
+      "billed_units": 0,
+      "completed_sequences": 3,
+      "conservative_requests": 0,
+      "editor_requests": 1,
+      "elapsed_seconds": 40.01819541794248,
+      "failed_sequences": 0,
+      "generated_tokens": 6,
+      "limit_violations": 0,
+      "model_probes": 2,
+      "observed_billed_units": 0,
+      "observed_elapsed_seconds": 40.01819541794248,
+      "observed_generated_tokens": 6,
+      "pending_requests": 0,
+      "requested_sequences": 3,
+      "retries": 0
+    },
+    "configuration_sha256": "b3231d3dcf5ccba8c38d045a84ce69761ab288501794e551d68a9ad9c02ad27a",
+    "limits": {
+      "billed_units": null,
+      "editor_requests": 1,
+      "elapsed_seconds": 1500.0,
+      "generated_tokens": 256,
+      "model_probes": 2,
+      "requested_sequences": 3
+    },
+    "observed": {
+      "billed_units": 0,
+      "billing_measurements": 2,
+      "elapsed_measurements": 3,
+      "elapsed_seconds": 40.01819541794248,
+      "generated_tokens": 6,
+      "token_measurements": 3
+    },
+    "remaining": {
+      "billed_units": null,
+      "editor_requests": 0,
+      "elapsed_seconds": 1459.9818045820575,
+      "generated_tokens": 250,
+      "model_probes": 0,
+      "requested_sequences": 0
+    },
+    "reserved": {
+      "billed_units": 0,
+      "elapsed_seconds": 1500.0,
+      "generated_tokens": 256,
+      "pending_billed_units": 0,
+      "pending_elapsed_seconds": 0,
+      "pending_generated_tokens": 0
+    },
+    "run_id": "324c84bb0ceb4a27b02bc2e25db597ae",
+    "schema_version": 1
+  },
+  "checkpoint": {
+    "artifact_verification": "passed",
+    "base_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+    "bit_only_changed_entries": 0,
+    "changed_fraction": 3.751608080641402e-05,
+    "changed_numerical_entries": 32768,
+    "changed_stored_entries": 32768,
+    "l2_norm": 0.012223119465034201,
+    "max_abs_change": 0.0009765625,
+    "operation_count": 1,
+    "result_sha256": "4ae914709c32ae19262a82a53aafa6b73a0bf7e5b293c9b86cd172b0b0e7fffe",
+    "targeted_coordinates": 32768,
+    "unchanged_tensor_count": 487
+  },
+  "comparison_checkpoint_verification": {
+    "candidate_verified": true,
+    "original_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+    "original_verified": true
+  },
+  "comparison_evidence_kind": "real_model_development",
+  "comparison_status": "completed",
+  "comparison_stderr_sha256": "c404afbdc907c1d3e469e6b39ba7f637afd5dd55f288f94d3863b4f9739bdd4a",
+  "controlled_research_run": false,
+  "editor_isolation": "unverified",
+  "extension": "manual_exploratory_v1",
+  "final_evaluation_executed": false,
+  "frontier_billing": null,
+  "frontier_usage": null,
+  "grading": {
+    "executed": false,
+    "scientific_score": null
+  },
+  "import_status": "accepted",
+  "ledger_zero_billing_scope": "local_probe_measurements_only_not_frontier_billing",
+  "operator_selection": {
+    "mode": "Ultra",
+    "model": "Astra",
+    "requested_effort": "ultra",
+    "requested_selector": "gpt-6-astra",
+    "source": "operator_instruction"
+  },
+  "parent_variant": "authenticated_session_v1",
+  "prior_spent_ledgers_byte_identical": {
+    "editor-verification": true,
+    "editor-verification-final": true
+  },
+  "raw_prompts_and_outputs_public": false,
+  "response_object_preserved": true,
+  "runtime_provenance": {
+    "accepted_selector": null,
+    "effort": null,
+    "immutable_model_version": null,
+    "model": null,
+    "usage": null
+  },
+  "schema_version": 1,
+  "scope": "exploratory_workflow_validation",
+  "strict_automated_ready": false,
+  "supplied_response_sha256": "1f90ce60d52c713195d71d2d51d8105e32dafb3d35134138742ec74f25808d59",
+  "warnings": [
+    "optional_fast_path_unavailable_used_torch_implementation",
+    "multiprocessing_resource_tracker_reported_two_leaked_semaphores_at_shutdown"
+  ]
+}
