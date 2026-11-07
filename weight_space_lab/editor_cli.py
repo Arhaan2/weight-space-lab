@@ -39,12 +39,14 @@ def add_commands(commands):
     session_init = commands.add_parser("editor-session-init", help="freeze one separately authorized subscription-session development attempt")
     for name in ("root", "model", "policy", "development", "protocol", "probe", "interface-observation"):
         session_init.add_argument("--" + name, type=Path, required=True)
-    for name in ("status", "prepare", "export", "import", "cancel", "recover", "readiness"):
+    for name in ("status", "prepare", "export", "import", "compare", "cancel", "recover", "readiness"):
         parser = commands.add_parser("editor-session-" + name, help="authenticated_session_v1: " + name)
         if name != "readiness":
             parser.add_argument("--root", type=Path, required=True)
+            parser.add_argument("--manual-exploratory", action="store_true",
+                                help="external proposal intake; isolation unverified; never launch a frontier session")
         if name == "prepare":
-            parser.add_argument("--instruction-file", type=Path, required=True,
+            parser.add_argument("--instruction-file", type=Path,
                                 help="private JSON string; not embedded in shell history")
         if name == "import":
             parser.add_argument("--response", type=Path, required=True)
@@ -114,6 +116,27 @@ def _authenticated_session_command(args, read):
     command = args.command.removeprefix("editor-session-")
     if command == "readiness":
         return session_readiness()
+    if getattr(args, "manual_exploratory", False):
+        from .session_manual import ManualSessionController
+        controller = (ManualSessionController.enable(args.root) if command == "prepare"
+                      else ManualSessionController(args.root))
+        try:
+            if command in {"prepare", "status", "export"}:
+                return {**controller.status(), "packet_file": "manual/editor-packet.txt",
+                        "frontier_launched_by_runner": False}
+            if command == "import":
+                return controller.import_response_file(args.response)
+            if command == "compare":
+                return controller.compare()
+            if command == "cancel":
+                return controller.cancel()
+            if command == "recover":
+                return controller.recover()
+        finally:
+            controller.ledger.close()
+        raise ValueError("unknown manual exploratory command")
+    if command == "compare":
+        raise ValueError("separate comparison is available only for the explicit manual exploratory extension")
     if command == "init":
         controller = SessionController.create(args.root, model=args.model, policy=read(args.policy),
             development=read(args.development), protocol=read(args.protocol), probe=read(args.probe),
@@ -124,6 +147,8 @@ def _authenticated_session_command(args, read):
         if command in {"init", "status"}:
             return controller.status()
         if command == "prepare":
+            if args.instruction_file is None:
+                raise ValueError("session preparation requires --instruction-file")
             return controller.prepare_request(read(args.instruction_file))
         if command == "export":
             request = controller.export_request()

@@ -417,7 +417,7 @@ def main(argv=None):
         if args.command in {"editor-live-readiness", "editor-session-readiness"} and not result["ready"]:
             return 2
         if args.command.startswith("editor-") and (
-                result.get("status") == "rejected" or
+                result.get("status") in {"rejected", "invalid", "expired", "failed", "cancelled", "timed_out"} or
                 (isinstance(result.get("result"), dict) and result["result"].get("status") in {"failed", "cancelled", "timed_out"})):
             return 2
         if args.command == "check-graders" and not result["all_passed"]:

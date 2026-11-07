@@ -178,7 +178,7 @@ def _worker_main():
         elif payload["tool"] == "propose":
             audit = editor.propose(payload["arguments"]["proposal"], payload["output"])
             result = {"original_sha256": audit["base_sha256"],
-                      **{key: audit[key] for key in ("changed_stored_entries", "changed_numerical_entries", "targeted_coordinates")}}
+                      **{key: audit[key] for key in ("result_sha256", "changed_stored_entries", "changed_numerical_entries", "targeted_coordinates")}}
         elif payload["tool"] == "verify":
             if payload["arguments"]["candidate"]:
                 verify_candidate(payload["model"], payload["output"], payload["policy"])

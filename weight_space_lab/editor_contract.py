@@ -172,7 +172,7 @@ def validate_response(value, request):
     return value
 
 
-def read_json_bounded(path, max_bytes=MAX_HANDOFF_BYTES):
+def _read_bytes_bounded(path, max_bytes=MAX_HANDOFF_BYTES):
     """Read regular JSON files without following symlinks or blocking on FIFOs.
 
     Every directory is opened relative to its already-open parent with
@@ -207,6 +207,20 @@ def read_json_bounded(path, max_bytes=MAX_HANDOFF_BYTES):
         os.close(directory)
         if file_descriptor is not None:
             os.close(file_descriptor)
+    return payload
+
+
+def read_text_bounded(path, max_bytes=MAX_HANDOFF_BYTES):
+    """Read a bounded regular UTF-8 handoff, with the same no-symlink boundary."""
+    try:
+        return _read_bytes_bounded(path, max_bytes).decode("utf-8")
+    except UnicodeError as error:
+        raise ValueError("handoff is not bounded UTF-8 text") from error
+
+
+def read_json_bounded(path, max_bytes=MAX_HANDOFF_BYTES):
+    """Read strict JSON through the bounded, no-symlink handoff reader."""
+    payload = _read_bytes_bounded(path, max_bytes)
 
     def unique(pairs):
         result = {}
