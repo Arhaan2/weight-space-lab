@@ -58,10 +58,23 @@ def _hash_stream(stream, length=None):
 def file_sha256(path):
     """Hash a regular file without loading it into memory."""
     path = Path(path)
-    if not stat.S_ISREG(path.lstat().st_mode):
+    before = path.lstat()
+    if not stat.S_ISREG(before.st_mode):
         raise ValueError("artifact must be a regular file, not a link or device")
+    # macOS can leave a positive logical size on an evicted, dataless file.
+    # Such reads have returned zero bytes here: an empty digest is not a
+    # fingerprint of the original artifact, and attempting hydration can hang.
+    if getattr(before, "st_flags", 0) & 0x40000000:  # SF_DATALESS
+        raise ValueError("artifact is dataless; content unavailable")
     with path.open("rb") as stream:
-        return _hash_stream(stream)
+        digest = _hash_stream(stream, before.st_size)
+        if stream.read(1):
+            raise ValueError("artifact grew while hashing")
+        after = os.fstat(stream.fileno())
+    if (before.st_size, before.st_mtime_ns, before.st_ino) != (
+            after.st_size, after.st_mtime_ns, after.st_ino):
+        raise ValueError("artifact changed while hashing")
+    return digest
 
 
 def _files(root):

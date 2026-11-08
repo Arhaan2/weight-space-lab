@@ -4,9 +4,11 @@ import json
 import os
 import tempfile
 import unittest
+from unittest import mock
+from types import SimpleNamespace
 from pathlib import Path
 
-from weight_space_lab.inventory import inventory_model, read_json, safe_relative
+from weight_space_lab.inventory import inventory_model, read_json, safe_relative, file_sha256
 
 
 def write_shard(path, tensors):
@@ -22,6 +24,24 @@ def write_shard(path, tensors):
 
 
 class InventoryTests(unittest.TestCase):
+    def test_file_hash_rejects_dataless_without_opening(self):
+        info = SimpleNamespace(st_mode=0o100444, st_flags=0x40000000)
+        with mock.patch.object(Path, "lstat", return_value=info), mock.patch.object(Path, "open") as opened:
+            with self.assertRaisesRegex(ValueError, "dataless"):
+                file_sha256(Path("unavailable"))
+            opened.assert_not_called()
+
+    def test_file_hash_rejects_short_reads_with_positive_size(self):
+        path = self.root / "empty.bin"
+        path.write_bytes(b"")
+        info = path.stat()
+        fake = SimpleNamespace(st_mode=info.st_mode, st_flags=0, st_size=12,
+                               st_mtime_ns=info.st_mtime_ns, st_ino=info.st_ino)
+        with mock.patch.object(Path, "lstat", return_value=fake):
+            with self.assertRaisesRegex(ValueError, "ended before"):
+                file_sha256(path)
+        self.assertEqual(file_sha256(path), hashlib.sha256(b"").hexdigest())
+
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)

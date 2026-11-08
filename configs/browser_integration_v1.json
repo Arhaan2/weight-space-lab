@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "profile_id": "browser-webgpu-integration-v1",
+  "author": "Arhaan2",
+  "runtime": {"surface": "browser", "engine": "WebLLM", "version": "0.2.86", "device": "webgpu", "server_inference_fallback": false},
+  "settings": {"contextWindowTokens": 4096, "maxOutputTokens": 256, "temperature": 0, "topP": 1, "seed": 42, "enableThinking": false, "presencePenalty": 0, "frequencyPenalty": 0, "repetitionPenalty": 1, "requestTimeoutMs": 60000, "warmupCount": 0},
+  "limits": {"baseline_sequences": 1, "candidate_sequences": 1, "target_sequences": 2, "generated_tokens_per_sequence": 256, "generated_tokens_total": 512, "browser_execution_seconds": 1200, "arm_seconds": 600, "forced_cleanup_seconds": 10, "worker_unload_seconds": 10, "retries": 0, "warmups": 0, "new_weight_proposals": 0, "experimental_frontier_requests": 0},
+  "host_protections": {"sampling_seconds": 5, "stop_memory_pressure_at_or_above": 4, "stop_thermal_state_at_or_above": 2, "scope": "host-wide macOS signals from existing BrowserLLM collector; no MPS counters used"},
+  "completion": "Natural stop within fixed output and response limits; correctness and truncation do not invalidate the integration check.",
+  "resource_policy": "WebGPU adapter/device limits remain enabled. GPU-buffer accounting, WASM capacity, JS heap and Chrome process footprint are distinct scopes, not physical per-model GPU residency. Missing measurements remain null.",
+  "strict_ready": false,
+  "editor_isolation": "unverified",
+  "scientific_improvement_claim": false
+}

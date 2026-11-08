@@ -1,0 +1,164 @@
+{
+  "actual_served_browser_fetch_verification": {
+    "arms": {
+      "baseline": {
+        "all_status_200": true,
+        "application_generation_dispatches": 0,
+        "code_version_sha256": "7596be8c67f85a8789d10a2a9f3970736add80dbfe126f6b1015f6a1e84d1002",
+        "dedicated_browser_os_exit_verified": true,
+        "engine_loads": 0,
+        "frozen_sha256_identity_match": true,
+        "gpu_requests": 0,
+        "html_fallback_detected": false,
+        "preflight_sha256": "089439d8d0361a3b0cfe0e287c1474539c7a5a8d751f285e2689c80ffa820f22",
+        "resolved_runtime_files_verified": 15,
+        "response_files_verified": 21,
+        "workers_created": 0
+      },
+      "candidate": {
+        "all_status_200": true,
+        "application_generation_dispatches": 0,
+        "code_version_sha256": "7596be8c67f85a8789d10a2a9f3970736add80dbfe126f6b1015f6a1e84d1002",
+        "dedicated_browser_os_exit_verified": true,
+        "engine_loads": 0,
+        "frozen_sha256_identity_match": true,
+        "gpu_requests": 0,
+        "html_fallback_detected": false,
+        "preflight_sha256": "711368e635bef2030378f974b197ed7d6d9b972f5128b3075d26fe5cb52dda9a",
+        "resolved_runtime_files_verified": 15,
+        "response_files_verified": 21,
+        "workers_created": 0
+      }
+    },
+    "distinct_isolated_browser_profiles": true,
+    "engine_creation_in_preparation": false,
+    "model_initialization_in_preparation": false,
+    "origin": "http://127.0.0.1:4197"
+  },
+  "audited_at": "2026-11-07T23:43:10.613928+00:00",
+  "authorship": "Arhaan2",
+  "correction_inspected": {
+    "actual_served_browser_verification": "passed",
+    "cache_backend": "indexeddb in task mode",
+    "model_url": "explicit /resolve/<full artifact SHA-256>/ suffix prevents unwanted resolve/main rewrite",
+    "runtime_asset_guard": "hash-checked allowlisted actual fetches; rejects redirects and unexpected routes",
+    "wasm_mime": "application/wasm"
+  },
+  "exploratory_only": true,
+  "fixed_artifact_contract": {
+    "arms": {
+      "baseline": {
+        "cache_namespace": "wsl-qwen35-baseline-5ead3e9c60107ab7168bee5373f6cd636c839b82557fed6550aaaa30170aa5b0",
+        "converted_artifact_sha256": "5ead3e9c60107ab7168bee5373f6cd636c839b82557fed6550aaaa30170aa5b0",
+        "source_checkpoint_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+        "tensor_cache_sha256": "4893d40387c82135ca4fb7ac353390f37c84f905f7036884c5165d2d6de17a89"
+      },
+      "candidate": {
+        "cache_namespace": "wsl-qwen35-candidate-a9372372ebbfdd15a309fefafe12e5b84d0dc0cc4798694f0ef101f0111302d1",
+        "converted_artifact_sha256": "a9372372ebbfdd15a309fefafe12e5b84d0dc0cc4798694f0ef101f0111302d1",
+        "source_checkpoint_sha256": "4ae914709c32ae19262a82a53aafa6b73a0bf7e5b293c9b86cd172b0b0e7fffe",
+        "tensor_cache_sha256": "ee8a2e62e8709692682ee3d0792f9c2f28d296fe8e1ebfa9b4be6720fea9b6a5"
+      }
+    },
+    "chat_config_sha256": "cb4ec7657570e3f45fafdc5cbb69824c6a9fe072f87dc2973aa8e5d991731e01",
+    "context_window_size": 4096,
+    "model_id": "Qwen/Qwen3.5-0.8B",
+    "model_library_revision": "00fe7a40e57e5e8eb9fef87526a4bf28ad5846c0",
+    "model_library_sha256": "023c24d853746e24599dc99d7649e356986fd3e1c476e6a2b8ef7af4c9f056e0",
+    "prefill_chunk_size": 1024,
+    "quantization": "q4f16_1",
+    "runtime_source_sha256": "ae2642e73a4a9896c21efb3a067c4666446f8b49cbe2012f4b576f5d83d5f206",
+    "source_revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "tokenizer_json_sha256": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+    "webllm_version": "0.2.86"
+  },
+  "fixed_configuration_verification": {
+    "actual_served_browser_verification": "passed",
+    "audit_sha256": "e3e8c7924c72fdd8a5f231ea71e8af3624eb51ef81dc1c81ee6721996446c0dd",
+    "configuration_sha256": "9599525f5aea858955294759dd24f5504879a90949049b875c4c9f9e2b185147",
+    "distinct_model_and_cache_urls": true,
+    "exact_prior_smoke_and_settings_reused": true,
+    "import_graph_closed": true,
+    "runtime_assets_rehashed_per_arm": 15,
+    "served_html_and_javascript_files_rehashed_per_arm": 6,
+    "settings": {
+      "contextWindow": 4096,
+      "maxTokens": 256,
+      "requestLimitMs": 60000,
+      "seed": 42,
+      "temperature": 0,
+      "thinking": false,
+      "topP": 1,
+      "warmupTokens": 16,
+      "warmups": 0
+    }
+  },
+  "independent_verification": {
+    "compiled_parameter_contract": 435,
+    "conversion_erases_edit": false,
+    "conversion_or_edit_replay_performed": false,
+    "decoded_changed_outside_columns_0_31": 0,
+    "decoded_changed_values": 26348,
+    "new_weight_proposals": 0,
+    "paired_converted_artifacts_and_decoded_edit": "existing browser_conversion.verify passed against all deployed file/shard hashes and effective quantized edit",
+    "source_audit_sha256": "a1647265f8ac3abfea77ab19e23060f33f2ae727eb3720a8854658c69c533aff",
+    "source_candidate": "existing verify_candidate passed full source checkpoint and policy audit",
+    "unchanged_deployment_tensors": 433
+  },
+  "initialization_audit": {
+    "automatic_application_generation_found_on_inspected_creation_path": false,
+    "initialization_work": [
+      "GPU parameter allocation/upload and synchronization",
+      "VM creation and compiled metadata/function lookup",
+      "KV cache and RNN state allocation according to compiled ABI",
+      "resetChat invokes state clear/add sequence",
+      "sampling device tensors allocation/copy",
+      "WebGPU shader/pipeline compilation"
+    ],
+    "measurement_requirement": "Retain observed pre-generation device/queue counts separately from post-dispatch activity. Source inspection does not prove absence of implementation-internal WASM work.",
+    "source_audit_sha256": "81bcdd3f14bd2d263a8191b6cc65840143d3f0925efbd5d3413396b30a040d77",
+    "zero_computation_claim": false
+  },
+  "kind": "browser-integration-v2 independent preparation audit",
+  "limitations": [
+    "Offline verification does not establish actual browser execution.",
+    "Short smoke execution cannot establish 4096-token memory fit, sustained performance, or benchmark improvement.",
+    "All 86 historically unverifiable records retain their provenance limitations."
+  ],
+  "limits": {
+    "application_warmup_generations": 0,
+    "engine_loading_attempts": 4,
+    "generated_tokens_per_arm": 256,
+    "generated_tokens_total": 512,
+    "generation_dispatches": 2,
+    "generation_retries": 0,
+    "held_out_500_authorized": false,
+    "pilot_14_plus_14_authorized": false,
+    "single_deadline_seconds": 1200
+  },
+  "private_prompt_exclusions": true,
+  "protocol_review": {
+    "ambiguous_generation_consumes_slot": true,
+    "atomic_intent_and_ack_publication": true,
+    "browser_or_inference_used_in_independent_audit": false,
+    "durable_pre_generation_gate": true,
+    "durable_pre_load_gate": true,
+    "generation_evidence_checked_before_ack": true,
+    "normal_unload_distinguished_from_device_loss": true,
+    "single_deadline_with_independent_cleanup_watchdog": true,
+    "synthetic_accounting_tests_independently_run": 27
+  },
+  "schema_version": 1,
+  "status": "offline_and_actual_served_browser_fetch_preparation_verified",
+  "v1_preservation": {
+    "application_generation_dispatches": 0,
+    "baseline_loading_failure_seconds": 8.412044416880235,
+    "candidate": "unrun",
+    "cleanup": "worker terminated; dedicated Chrome and harness exited; unload not confirmed because engine load failed",
+    "historically_unverified_files": 86,
+    "ledger": "terminal cancelled; 256 conservative charged tokens retained; no pending reservations; no reset or reopen",
+    "original_exception": "TypeError: Failed to execute 'add' on 'Cache': Request failed",
+    "snapshot_entries": 555,
+    "snapshot_sha256": "aa8e8353c9c1e92be051a0c4f179d532494cc4ca65522566c7305b8b05c0ac67"
+  }
+}

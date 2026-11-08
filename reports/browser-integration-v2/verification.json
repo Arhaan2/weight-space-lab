@@ -1,0 +1,125 @@
+{
+  "arms": {
+    "baseline": {
+      "actual_runtime_asset_hashes_verified": 15,
+      "application_warmup_calls": 0,
+      "cache_backend": "indexeddb",
+      "cleanup_verified": true,
+      "dedicated_browser_os_exit_verified": true,
+      "engine_loading_calls": 1,
+      "execution_error": null,
+      "finish_reason": "length",
+      "generated_tokens": 252,
+      "generation_dispatch_calls": 1,
+      "generation_ms": 6837.400146484375,
+      "generation_queue_submitted_batches": 1513,
+      "host_gpu_names": [
+        "AGXAcceleratorG16X"
+      ],
+      "host_memory_pressure_categories": [
+        2
+      ],
+      "host_thermal_categories": [
+        0
+      ],
+      "initialization_queue_submitted_batches": 1,
+      "input_tokens": 72,
+      "loading_ms": 3489.7999999523163,
+      "local_webgpu_inference_observed": true,
+      "observed_webgpu_devices": 1,
+      "raw_output_sha256": "5ac67f8343121d6e5ea4789fe7aa1c217eca4b9cc8177bdcd150a92c01de475d",
+      "raw_result_sha256": "5f167462d92ba19d7b374c63c947880f29b68cbc955e45dd9f6bdb29c695a8cd",
+      "requested_and_loaded_artifact_sha256": "5ead3e9c60107ab7168bee5373f6cd636c839b82557fed6550aaaa30170aa5b0",
+      "requested_and_loaded_source_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+      "resource_scope": "GPUBuffer descriptors are tracked worker allocations, not physical VRAM; WASM/JS separately scoped. Host AGX utilization and pressure include unrelated workloads; owned process RSS/footprints may count shared memory more than once.",
+      "retained_owned_processes_alive": 0,
+      "runtime": "WebLLM 0.2.86",
+      "runtime_gpu_label": "Finish loading on WebGPU - apple",
+      "truncated": true
+    },
+    "candidate": {
+      "actual_runtime_asset_hashes_verified": 15,
+      "application_warmup_calls": 0,
+      "cache_backend": "indexeddb",
+      "cleanup_verified": true,
+      "dedicated_browser_os_exit_verified": true,
+      "engine_loading_calls": 1,
+      "execution_error": null,
+      "finish_reason": "length",
+      "generated_tokens": 252,
+      "generation_dispatch_calls": 1,
+      "generation_ms": 4153,
+      "generation_queue_submitted_batches": 1513,
+      "host_gpu_names": [
+        "AGXAcceleratorG16X"
+      ],
+      "host_memory_pressure_categories": [
+        2
+      ],
+      "host_thermal_categories": [
+        0
+      ],
+      "initialization_queue_submitted_batches": 1,
+      "input_tokens": 72,
+      "loading_ms": 2722.199999809265,
+      "local_webgpu_inference_observed": true,
+      "observed_webgpu_devices": 1,
+      "raw_output_sha256": "5ac67f8343121d6e5ea4789fe7aa1c217eca4b9cc8177bdcd150a92c01de475d",
+      "raw_result_sha256": "a82e47e9416daf002a91c0aa376dc155b42169a5fbddc78af08edb774a177443",
+      "requested_and_loaded_artifact_sha256": "a9372372ebbfdd15a309fefafe12e5b84d0dc0cc4798694f0ef101f0111302d1",
+      "requested_and_loaded_source_sha256": "4ae914709c32ae19262a82a53aafa6b73a0bf7e5b293c9b86cd172b0b0e7fffe",
+      "resource_scope": "GPUBuffer descriptors are tracked worker allocations, not physical VRAM; WASM/JS separately scoped. Host AGX utilization and pressure include unrelated workloads; owned process RSS/footprints may count shared memory more than once.",
+      "retained_owned_processes_alive": 0,
+      "runtime": "WebLLM 0.2.86",
+      "runtime_gpu_label": "Finish loading on WebGPU - apple",
+      "truncated": true
+    }
+  },
+  "authorship": "Arhaan2",
+  "cleanup_within_deadline": true,
+  "consumption": {
+    "actual_generated_tokens_total": 504,
+    "additional_loading_attempts": 0,
+    "application_generation_dispatches": 2,
+    "application_warmup_generations": 0,
+    "engine_loading_attempts": 2,
+    "generation_retries": 0,
+    "held_out_evaluations": 0,
+    "maximum_requested_tokens_per_arm": 256,
+    "new_weight_proposals": 0,
+    "pilot_14_plus_14_sequences": 0
+  },
+  "distinct_artifacts_proven": true,
+  "exploratory_only": true,
+  "grader": "actual grading is retained by the root result report; correctness is not required for this integration milestone",
+  "isolated_profiles_distinct": true,
+  "limitations": [
+    "Short smoke execution does not establish 4096-token memory fit, sustained performance or benchmark improvement.",
+    "Matching outputs do not invalidate the observed distinct artifact loading.",
+    "Runtime initialization performed observed GPU work despite zero application warmup generations.",
+    "Private prompts, raw output and authorization remain excluded from this public report."
+  ],
+  "matched_effective_settings": true,
+  "outputs_match": true,
+  "preservation": {
+    "after_audit_sha256": "f89c01b1e378bce4f79a773a495bfbd50ee8d03aaa66bfeebe6b045870ab67d3",
+    "entries_checked": 555,
+    "historically_unverified_files_remain": 86,
+    "old_ledger_opened_by_audit": false,
+    "unchanged": 555,
+    "v1_terminal_history_unchanged": true
+  },
+  "schema_version": 1,
+  "single_deadline_evidence": {
+    "all_four_load_generation_ack_deadlines_equal": true,
+    "baseline_cleanup_finalized_before_candidate_load_intent": true,
+    "deadline_seconds": 1200,
+    "first_load_to_final_cleanup_accounting_seconds": 41.65439990234375,
+    "remaining_seconds_at_final_cleanup_accounting": 1158.3455910682678
+  },
+  "single_deadline_not_reset": true,
+  "status": "both_short_local_browser_executions_verified",
+  "strict_ready": false,
+  "synthetic_accounting_tests_independently_run": 27,
+  "verified_at": "2026-11-07T23:52:11.983646+00:00"
+}
