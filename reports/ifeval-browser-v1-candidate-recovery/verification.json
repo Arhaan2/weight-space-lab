@@ -1,0 +1,161 @@
+{
+  "author": "Arhaan2",
+  "checks": {
+    "actual_effective_settings_and_input_tokens": true,
+    "baseline_grade_bindings": true,
+    "baseline_ledger_terminal_without_rerun": true,
+    "baseline_official_aggregation": true,
+    "baseline_raw_grade_schedule": true,
+    "baseline_scored_token_time_totals": true,
+    "browser_deadline_and_cleanup_duration": true,
+    "candidate_event_supervisor_terminal_parity": true,
+    "candidate_grade_bindings": true,
+    "candidate_official_aggregation": true,
+    "candidate_only_authorized_bounds": true,
+    "candidate_raw_grade_schedule": true,
+    "candidate_scored_token_time_totals": true,
+    "complete_execution_and_cleanup": true,
+    "complete_generation_schedule_and_caps": true,
+    "converted_and_deployed_file_hashes": true,
+    "exact_durable_gate_schedule_and_order": true,
+    "fresh_candidate_ledger_identity_and_terminal_state": true,
+    "frozen_pair_plan_and_binding": true,
+    "historical_available_evidence_preserved": true,
+    "identical_frozen_profile_and_schedule": true,
+    "import_remains_single_consumed_submission": true,
+    "ledger_observed_usage_matches_outputs": true,
+    "loaded_and_fetched_artifact_proof": true,
+    "local_gpu_execution_observed": true,
+    "no_unscheduled_or_heldout_experiment_execution": true,
+    "official_grader_assets_unchanged": true,
+    "original_and_candidate_manifest_bindings": true,
+    "original_authorization_preserved_and_recovery_separate": true,
+    "paired_denominator_contains_exact_frozen_items": true,
+    "paired_results_and_frozen_selection": true,
+    "production_environment_and_all_dependency_pins": true,
+    "quantization_audit_internal_consistency": true,
+    "raw_records_match_observed_generation": true,
+    "recovery_preservation_except_authorized_regression_test": true,
+    "recovery_started_from_verified_unused_candidate_capacity": true,
+    "repair_revision_and_focused_checks_bound": true,
+    "repaired_launcher_and_authorization_bound": true,
+    "runtime_artifact_identity": true,
+    "same_configured_converter_for_probe_and_conversion": true,
+    "saved_source_and_original_proposal_binding": true,
+    "shared_runtime_assets_identical": true,
+    "single_manual_continuation_accounting": true,
+    "source_and_deployment_audit_binding": true
+  },
+  "engine_loads_by_verifier": 0,
+  "grader_calls_by_verifier": 0,
+  "identities": {
+    "baseline_manifest_sha256": "606c495bce51d504caafc0020be81c0c5981d67140f568c7a4d48b8612f3fa4d",
+    "candidate_artifact_sha256": "6e18cc4906ce18786b9197bcc7fb5f93ffc706d808b0809150349546eef3627b",
+    "candidate_checkpoint_sha256": "f9c767c06ec3c17dbdfedc43b695d64d025ae7393d3f425cee71ef45c358d6bf",
+    "candidate_manifest_sha256": "63821c5b17328b9a2e565d592badb54809cc126d199d8734cd6fc544a9d82f03",
+    "comparison_file_sha256": "31b082eaf390f1c529cdb9fb7a4e6c9660779a4cdf18ba074016600ca1a2830c",
+    "repair_record_sha256": "025884f8f63ce6f5edea27832e0ad83b4b3de5b6d33a4df2f0f852737f0c09ba",
+    "verifier_sha256": "2a2c41a16f55620d55432b8057d4dcdaecf4fd4a8d83a55038d8e3ae0acac6f3"
+  },
+  "input_mutations": 0,
+  "kind": "independent_ifeval_candidate_recovery_verification",
+  "measurements": {
+    "baseline_metrics": {
+      "instruction_level_loose_accuracy": {
+        "passed": 17,
+        "scheduled": 32,
+        "value": 0.53125
+      },
+      "instruction_level_strict_accuracy": {
+        "passed": 16,
+        "scheduled": 32,
+        "value": 0.5
+      },
+      "prompt_level_loose_accuracy": {
+        "passed": 17,
+        "scheduled": 32,
+        "value": 0.53125
+      },
+      "prompt_level_strict_accuracy": {
+        "passed": 16,
+        "scheduled": 32,
+        "value": 0.5
+      }
+    },
+    "candidate_completion_counts": {
+      "ok": 20,
+      "truncated": 12
+    },
+    "candidate_engine_loads": 1,
+    "candidate_metrics": {
+      "instruction_level_loose_accuracy": {
+        "passed": 18,
+        "scheduled": 32,
+        "value": 0.5625
+      },
+      "instruction_level_strict_accuracy": {
+        "passed": 17,
+        "scheduled": 32,
+        "value": 0.53125
+      },
+      "prompt_level_loose_accuracy": {
+        "passed": 18,
+        "scheduled": 32,
+        "value": 0.5625
+      },
+      "prompt_level_strict_accuracy": {
+        "passed": 17,
+        "scheduled": 32,
+        "value": 0.53125
+      }
+    },
+    "decoded_quantization_recomputed_by_verifier": false,
+    "experimental_frontier_requests": 0,
+    "first_load_through_cleanup_seconds": 405.73106625000946,
+    "frozen_dependency_pins_verified": 75,
+    "generation_dispatches": 33,
+    "heldout_generations": 0,
+    "historical_preservation": {
+      "authorized_source_changes": 0,
+      "changed": 0,
+      "matched": 1387,
+      "unavailable": 0
+    },
+    "historical_unavailable_files_not_verified": 300,
+    "import_attempts": 1,
+    "manual_conversion_continuations": 1,
+    "observed_generated_tokens": 13915,
+    "paired_prompt_changes": {
+      "loose": {
+        "improved": 1,
+        "regressed": 0,
+        "tied": 31
+      },
+      "strict": {
+        "improved": 1,
+        "regressed": 0,
+        "tied": 31
+      }
+    },
+    "recovery_preservation": {
+      "authorized_source_changes": 1,
+      "changed": 0,
+      "matched": 670,
+      "unavailable": 0
+    },
+    "scored_generated_tokens": 13903,
+    "scored_generation_seconds": 266.79330004882814,
+    "selected_arm": "candidate",
+    "worker_resource_scope": "GPUBuffer descriptor accounting and WASM address space, not physical VRAM",
+    "worker_sampled_maxima": {
+      "eventLoopDelayMs": 73731,
+      "gpuBufferBytes": 1747698604,
+      "heapBytes": null,
+      "wasmBytes": 283181056
+    }
+  },
+  "passed": true,
+  "schema_version": 1,
+  "scope": "Recorded recovery and matched development evidence; no external-session or unavailable historical-file claims. Official grades are hash-bound and independently aggregated, not rerun.",
+  "target_forward_passes": 0
+}

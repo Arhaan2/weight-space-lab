@@ -1,0 +1,70 @@
+{
+  "author": "Arhaan2",
+  "candidate_execution_success": false,
+  "candidate_stage_status": "stopped_before_conversion_subprocess",
+  "checks": {
+    "baseline_and_public_evidence_preserved": true,
+    "baseline_ledger_complete_and_unreopened": true,
+    "baseline_raw_grade_bindings_preserved": true,
+    "candidate_checkpoint_actual_file_hashes": true,
+    "conversion_and_runtime_unexecuted": true,
+    "current_explicit_authorization_preserved": true,
+    "exact_original_response_preserved": true,
+    "failure_record_and_evidence_bindings": true,
+    "frozen_baseline_identity": true,
+    "frozen_candidate_plan_order_and_limits": true,
+    "heldout_examples_unexecuted_in_study": true,
+    "historical_available_evidence_preserved": true,
+    "independent_targeted_BF16_change_counts": true,
+    "preservation_snapshots_agree_on_overlapping_pins": true,
+    "pristine_checkpoint_actual_file_hashes": true,
+    "proposal_unchanged_and_provenance_separate": true,
+    "read_only_converter_diagnosis_matches_pins": true,
+    "recorded_cleanup_consistent_with_unstarted_runtime": true,
+    "recorded_failure_is_converter_environment_precheck": true,
+    "request_and_frozen_handoff_binding": true,
+    "saved_checkpoint_audit_binding": true,
+    "single_completed_import_ledger": true
+  },
+  "engine_loads_by_verifier": 0,
+  "identities": {
+    "baseline_manifest_sha256": "606c495bce51d504caafc0020be81c0c5981d67140f568c7a4d48b8612f3fa4d",
+    "candidate_checkpoint_sha256": "f9c767c06ec3c17dbdfedc43b695d64d025ae7393d3f425cee71ef45c358d6bf",
+    "candidate_preservation_sha256": "e79abcb92d3c55ffa107dc9eea4baea0abe947f993ebef4f18d1712440384578",
+    "cleanup_record_sha256": "8282998b0407e4303fab404a078159cfe8b1e8314d1d7d7bb2afa6c8f2078f6c",
+    "failure_record_sha256": "60286f243f465536b9e6d65c7c2b66e6bc6d1b29ea89707e6312650f9dd411eb",
+    "verifier_sha256": "1ac26dc0a1b2327f3546525cd92b8e191d775c3c820f250c1d3e98a5d5ee4f07"
+  },
+  "input_mutations": 0,
+  "kind": "independent_ifeval_candidate_partial_verification",
+  "measurements": {
+    "candidate_engine_loads": 0,
+    "candidate_generated_tokens": 0,
+    "candidate_generation_dispatches": 0,
+    "candidate_preservation": {
+      "changed": 0,
+      "matched": 578,
+      "unavailable": 0
+    },
+    "changed_numerical_entries": 122880,
+    "changed_stored_entries": 122880,
+    "completed_imports": 1,
+    "experimental_frontier_requests": 0,
+    "heldout_generations": 0,
+    "historical_preservation": {
+      "changed": 0,
+      "matched": 1387,
+      "unavailable": 0
+    },
+    "historical_unavailable_files_not_verified": 300,
+    "import_seconds": 17.30727424984798,
+    "targeted_coordinates": 122880
+  },
+  "paired_comparison_available": false,
+  "passed": true,
+  "preserved_prior_verification_sha256": "bb696e9f8c7f0d1b69904b27b8389105467b5e5baadf205d804da852d1577d08",
+  "schema_version": 1,
+  "scope": "Verification of recorded partial-stage evidence and study directories, not successful candidate execution; historical unavailable files and unrelated external sessions are excluded.",
+  "target_forward_passes": 0,
+  "verifier_correction": "The initial checker expected nested PackageNotFoundError text in the outer pipeline traceback. That traceback preserves CalledProcessError; the separately captured read-only diagnostic preserves PackageNotFoundError. This version checks each in its actual evidence location. The first report and all experimental evidence remain unchanged; no pipeline action was repeated."
+}

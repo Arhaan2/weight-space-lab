@@ -1,0 +1,52 @@
+{
+  "author": "Arhaan Aggarwal (Arhaan2)",
+  "closeout_activity": {
+    "experimental_frontier_requests": 0,
+    "new_conversions": 0,
+    "new_model_generations": 0,
+    "new_proposals": 0,
+    "new_weight_edits": 0,
+    "preserved_outputs_regraded": 0
+  },
+  "historical_unavailable_files": "The previously documented 300 unavailable historical files remain outside the preservation claim.",
+  "independent_continuation_evidence_audit": {
+    "checks_failed": 0,
+    "checks_passed": 32,
+    "engine_loads": 0,
+    "grader_calls": 0,
+    "input_mutations": 0,
+    "source": "scripts/verify_ifeval_continuation.py --check-only"
+  },
+  "kind": "offline_ifeval_v1_closeout_verification",
+  "original_report_evidence_ledger_files_snapshotted": 53,
+  "passed": true,
+  "privacy_review": {
+    "changed_files_reviewed": 54,
+    "complete_text_matches": 0,
+    "generated_coauthor_attribution_matches": 0,
+    "literal_private_machine_path_matches": 0,
+    "private_prompt_or_authorization_texts_checked": 163
+  },
+  "public_aggregate_consistency": "passed; copied frozen intervals and saved paired counts; no regrading or resampling",
+  "schema_version": 1,
+  "scope": "Tests use synthetic fixtures; public consistency does not replace private evidence verification. This record adds no execution authority.",
+  "snapshotted_files_unchanged": 53,
+  "staged_snapshot_validation": {
+    "index_blobs_verified_and_exported": 296,
+    "new_document_local_links_valid": true,
+    "offline_tests_failed": 0,
+    "offline_tests_passed": 66,
+    "public_verifier_passed": true,
+    "test_modules": [
+      "test_browser_candidate",
+      "test_ifeval_heldout_runner",
+      "test_ifeval_heldout_analysis",
+      "test_ifeval_candidate_continuation",
+      "test_ifeval_supervisor_gate",
+      "test_ifeval_continuation_preparation",
+      "test_ifeval_continuation_merge",
+      "test_ifeval_closeout"
+    ]
+  },
+  "whitespace": "Passed with blank-at-EOF exemption for the preserved frozen continuation runner; its bytes were not changed."
+}

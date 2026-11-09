@@ -1,0 +1,131 @@
+{
+  "author": "Arhaan2",
+  "checks": {
+    "1117_frozen_source_build_dependency_and_evidence_pins": true,
+    "858_historical_files_preserved_byte_for_byte": true,
+    "all_observed_consumption_preserved": true,
+    "all_three_sessions_owned_process_identities_absent": true,
+    "baseline_actual_source_and_deployed_model_bytes": true,
+    "candidate_actual_source_and_deployed_model_bytes": true,
+    "complete_suffix_exactly_34_with_no_execution_failure": true,
+    "continuation_served_artifact_and_build_bytes": true,
+    "cumulative_count_reconciliation": true,
+    "dedicated_ledger_authorization_and_plan_binding": true,
+    "durable_gates_exact_order_and_no_extra_dispatch": true,
+    "durable_samples_and_records_preserve_observed_text": true,
+    "exact_disjoint_remaining_schedule_and_settings": true,
+    "exact_dispatch_capacity_and_consumption": true,
+    "exact_prepared_plan_manifest_and_freeze": true,
+    "fetch_preflight_bound_without_model_activity": true,
+    "fresh_load_through_cleanup_clock_bound": true,
+    "frozen_runtime_generation_and_tokenizer_observed": true,
+    "new_explicit_authorization_bound": true,
+    "new_grading_bound_to_terminal_execution_without_retry": true,
+    "new_ledger_started_empty_and_closed_without_retry": true,
+    "only_suffix_records_and_grade_references": true,
+    "original_and_continuation_runner_identities_separate": true,
+    "original_baseline_exact_dispatch_prefix": true,
+    "original_baseline_record_grade_references_preserved": true,
+    "original_candidate_exact_dispatch_prefix": true,
+    "original_candidate_record_grade_references_preserved": true,
+    "original_suffix_never_dispatched_and_not_ambiguous": true,
+    "prior_processes_checked_before_continuation": true,
+    "suffix_grades_independently_aggregated": true,
+    "suffix_records_match_actual_outputs_and_attempts": true,
+    "terminal_process_cleanup_recorded": true
+  },
+  "complete_suffix_execution_and_grading": true,
+  "engine_loads_by_verifier": 0,
+  "grader_calls_by_verifier": 0,
+  "identities": {
+    "candidate_artifact_sha256": "6e18cc4906ce18786b9197bcc7fb5f93ffc706d808b0809150349546eef3627b",
+    "candidate_source_sha256": "f9c767c06ec3c17dbdfedc43b695d64d025ae7393d3f425cee71ef45c358d6bf",
+    "continuation_manifest_sha256": "0faa9ec2b548c5070106701fbe965640b44a678c1ee6b185c3d25aa7fcd4ab83",
+    "continuation_plan_sha256": "f366b08d4d9a25d54307af6638b1c5fa66f8ee9b87174e087de18d1ad8f9dad8",
+    "original_evaluation_freeze_sha256": "89ed9703869ab7c8b1032b3d8c5fa59fefed0215d9d0341016684d60b39b8a27",
+    "runner_source_sha256": {
+      "ifeval_candidate_continuation.py": "bda28582f9efbc04b2fd1cb624ce33baa5edbbc5db85097cf965caf79fb54e65",
+      "ifeval_heldout_runner.py": "cfbd51cbb79349442770022bb0dfcbb3a7b089debc3437bab9baeab69cca8bcf",
+      "ifeval_supervisor_gate.py": "5609efba2f7bf9ef334c75b8abdb2345e315dc32de8d3e5066d6cb25529a6c66"
+    },
+    "verifier_sha256": "8473bea5f0846b423ab0c30b98b25efff17d41a1508431f40fd334d2b5236133"
+  },
+  "input_mutations": 0,
+  "kind": "independent_ifeval_continuation_verification",
+  "measurements": {
+    "continuation_graceful_unload_confirmed": true,
+    "cumulative_usage": {
+      "dispatches": 259,
+      "elapsed_seconds": 3032.2242802490946,
+      "generated_tokens": 128468,
+      "loads": 3,
+      "scored_dispatches": 256,
+      "warmups": 3
+    },
+    "historical_files_preserved": 858,
+    "original_candidate_graceful_unload_confirmed": false,
+    "prepared_file_pins_verified": 1117,
+    "process_identities_rechecked": {
+      "baseline": 15,
+      "candidate_continuation": 15,
+      "candidate_interrupted": 14
+    },
+    "remaining_incomplete_prompts": 0,
+    "session_usage": {
+      "baseline": {
+        "dispatches": 129,
+        "elapsed_seconds": 1740.21307995799,
+        "generated_tokens": 68255,
+        "loads": 1,
+        "scored_dispatches": 128,
+        "warmups": 1
+      },
+      "candidate_continuation": {
+        "dispatches": 35,
+        "elapsed_seconds": 269.8347150001209,
+        "generated_tokens": 14613,
+        "loads": 1,
+        "scored_dispatches": 34,
+        "warmups": 1
+      },
+      "candidate_interrupted": {
+        "dispatches": 95,
+        "elapsed_seconds": 1022.1764852909837,
+        "generated_tokens": 45600,
+        "loads": 1,
+        "scored_dispatches": 94,
+        "warmups": 1
+      }
+    },
+    "suffix_completion_counts": {
+      "ok": 22,
+      "truncated": 12
+    },
+    "suffix_metrics": {
+      "instruction_level_loose_accuracy": {
+        "passed": 33,
+        "scheduled": 45,
+        "value": 0.7333333333333333
+      },
+      "instruction_level_strict_accuracy": {
+        "passed": 31,
+        "scheduled": 45,
+        "value": 0.6888888888888889
+      },
+      "prompt_level_loose_accuracy": {
+        "passed": 22,
+        "scheduled": 34,
+        "value": 0.6470588235294118
+      },
+      "prompt_level_strict_accuracy": {
+        "passed": 20,
+        "scheduled": 34,
+        "value": 0.5882352941176471
+      }
+    },
+    "unresolved_grader_errors": 0
+  },
+  "passed": true,
+  "schema_version": 1,
+  "scope": "Read-only independent bytes, dispatch, authorization, ledger, clock, process identity and grade-reference audit. Grades aggregated without regrading; no claim of editor isolation or answer correctness."
+}

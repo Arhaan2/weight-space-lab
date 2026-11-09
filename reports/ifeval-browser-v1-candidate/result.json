@@ -1,0 +1,1008 @@
+{
+  "schema_version": 1,
+  "kind": "ifeval_development_candidate_stopped_report",
+  "author": "Arhaan2",
+  "scope": "exploratory on-device workflow validation; editor isolation unverified",
+  "status": "stopped_before_conversion_subprocess",
+  "scientific_result": false,
+  "failure": {
+    "stage": "candidate_conversion_package_precheck",
+    "failure": "CalledProcessError during the pinned converter package metadata check",
+    "cause": "Resolving the configured virtual-environment Python symlink selects the base/system interpreter, where apache-tvm-ffi package metadata is absent. The configured virtual environment itself contains the exact pinned packages.",
+    "command_exit_code": 1,
+    "command_file_invocations": 1,
+    "conversion_stage_attempts": 1,
+    "conversion_subprocess_started": false,
+    "packaging_started": false,
+    "expected_packages": {
+      "apache-tvm-ffi": "0.1.13",
+      "mlc-ai-nightly-cpu": "0.26.dev246",
+      "mlc-llm-nightly-cpu": "0.26.dev6"
+    },
+    "configured_environment_packages_match": true,
+    "existing_conversion_subprocess_limit_seconds": 1800,
+    "package_precheck_limit_seconds": 30,
+    "frozen_implementation_changed": false
+  },
+  "proposal_provenance": {
+    "basis": "User-supplied original exploratory proposal based on the supplied development packet.",
+    "declared_session_tools": "File-reading and JSON-parsing tools were used to ingest the supplied packet.",
+    "declared_session_exclusions": "No external research, additional weight inspections, or target forward passes were used in the proposal session.",
+    "observation_limit": "This is the supplied provenance declaration; editor isolation remains unverified.",
+    "causality": "Selected columns are not a verified causal explanation for repetition.",
+    "original_request_preserved": true
+  },
+  "import": {
+    "accepted": true,
+    "execution_limit_seconds": 900,
+    "observed": {
+      "billed_units": null,
+      "billing_measurements": 0,
+      "elapsed_measurements": 1,
+      "elapsed_seconds": 17.30727424984798,
+      "generated_tokens": 0,
+      "token_measurements": 1
+    },
+    "charged": {
+      "billed_units": null,
+      "completed_sequences": 1,
+      "conservative_requests": 0,
+      "editor_requests": 1,
+      "elapsed_seconds": 17.30727424984798,
+      "failed_sequences": 0,
+      "generated_tokens": 0,
+      "limit_violations": 0,
+      "model_probes": 0,
+      "observed_billed_units": null,
+      "observed_elapsed_seconds": 17.30727424984798,
+      "observed_generated_tokens": 0,
+      "pending_requests": 0,
+      "requested_sequences": 1,
+      "retries": 0
+    },
+    "submission_slots_remaining": 0,
+    "frontier_requests": 0,
+    "target_generations": 0
+  },
+  "saved_checkpoint_audit": {
+    "artifact_verification": "passed",
+    "complete": true,
+    "base_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+    "result_sha256": "f9c767c06ec3c17dbdfedc43b695d64d025ae7393d3f425cee71ef45c358d6bf",
+    "total_stored_coordinates": 873438784,
+    "targeted_coordinates": 122880,
+    "changed_stored_entries": 122880,
+    "changed_numerical_entries": 122880,
+    "bit_only_changed_entries": 0,
+    "changed_fraction": 0.00014068530302405256,
+    "l2_norm": 0.678826476073289,
+    "max_abs_change": 0.0458984375,
+    "unchanged_tensor_count": 486,
+    "budget_basis": "final stored-bit differences / all stored tensor coordinates, including buffers and aliases",
+    "precision": {
+      "arithmetic": "CPU NumPy IEEE-754 binary64 for each selected column operation",
+      "bf16_rounding": "direct binary64 to BF16; no intermediate float32 rounding",
+      "composition": "operations run in declared order and each reads the preceding rounded stored result",
+      "editable_dtypes": [
+        "BF16",
+        "F16",
+        "F32",
+        "F64"
+      ],
+      "nonfloating_buffers": "read-only; preserve original bytes and exact integer inspection values",
+      "overflow": "reject nonfinite binary64 intermediates and nonfinite stored results",
+      "projection": "direction rescaled by max abs, normalized by binary64 dot product; binary64 matrix product",
+      "reproducibility": "NumPy/BLAS reductions may differ across runtime builds; stored hashes identify actual results",
+      "rounding": "round to nearest, ties to even, to original stored dtype after every operation",
+      "signed_zero": "preserve sign through storage rounding; arithmetic may change it; bit and numerical counts differ",
+      "underflow": "gradual underflow; round to subnormal or signed zero; no explicit flush to zero"
+    },
+    "target_support": [
+      {
+        "tensor": "model.language_model.layers.15.mlp.down_proj.weight",
+        "columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59
+        ],
+        "scale_factor": 0.75
+      },
+      {
+        "tensor": "model.language_model.layers.19.mlp.down_proj.weight",
+        "columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59
+        ],
+        "scale_factor": 0.75
+      }
+    ],
+    "per_tensor": {
+      "model.language_model.layers.15.mlp.down_proj.weight": {
+        "dtype": "BF16",
+        "shape": [
+          1024,
+          3584
+        ],
+        "base_sha256": "ef60d2c687bab19464dca9c8bfd7777e46ad226df0c9e25643b0bab04b5a1cca",
+        "result_sha256": "39f9cacf110946fb59b1f69da3e5f4b80b3e9b7f922628113c4305d8a15f7f84",
+        "changed_stored_entries": 61440,
+        "changed_numerical_entries": 61440,
+        "targeted_coordinates": 61440,
+        "l2_norm": 0.515693352394331,
+        "max_abs_change": 0.0458984375
+      },
+      "model.language_model.layers.19.mlp.down_proj.weight": {
+        "dtype": "BF16",
+        "shape": [
+          1024,
+          3584
+        ],
+        "base_sha256": "638eedeb701b94aa861f4438e615c07ec6c60ee703db1bfee2de577bb6498c3e",
+        "result_sha256": "43d090548a04c21284aefd285e97cc34bc14de6d6aa49bbf1d19a66496afddbe",
+        "changed_stored_entries": 61440,
+        "changed_numerical_entries": 61440,
+        "targeted_coordinates": 61440,
+        "l2_norm": 0.44143600998828353,
+        "max_abs_change": 0.044921875
+      }
+    }
+  },
+  "candidate_checkpoint_sha256": "f9c767c06ec3c17dbdfedc43b695d64d025ae7393d3f425cee71ef45c358d6bf",
+  "candidate_deployed_artifact_sha256": null,
+  "deployment_audit": {
+    "status": "unavailable_conversion_not_started",
+    "quantized_differences": null,
+    "decoded_quantized_differences": null,
+    "reason": "No converted or packaged artifact was produced."
+  },
+  "frozen_profile": {
+    "settings": {
+      "temperature": 0,
+      "topP": 1,
+      "seed": 42,
+      "maxTokens": 1024,
+      "contextWindow": 4096,
+      "warmups": 1,
+      "warmupTokens": 16,
+      "requestLimitMs": 120000,
+      "thinking": false
+    },
+    "grading_policy": {
+      "generation_retry": {
+        "max_attempts": 1,
+        "mode": "none"
+      },
+      "grader_retry": {
+        "max_attempts": 1,
+        "mode": "none"
+      },
+      "grader_timeout_seconds": 20,
+      "output_eos_tokens": [],
+      "reasoning_policy": "think_tags",
+      "schema_version": 1,
+      "truncation_policy": "grade"
+    },
+    "grader": {
+      "name": "official_ifeval",
+      "revision": "d273d53c0d49aa509641885b183d98facd8d2bb2697725f9a2efbaaec52074fd"
+    },
+    "scheduled_prompts": 32,
+    "same_order_tokenizer_template_runtime_warmup_and_extraction_required": true
+  },
+  "baseline": {
+    "checkpoint": {
+      "model_id": "Qwen/Qwen3.5-0.8B",
+      "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+      "sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d"
+    },
+    "artifact_sha256": "5ead3e9c60107ab7168bee5373f6cd636c839b82557fed6550aaaa30170aa5b0",
+    "configuration_sha256": "11cb758c0f0c043acda7eb035e7456086a5867f47809d326ce63e70bf6e3c1ad",
+    "manifest_sha256": "606c495bce51d504caafc0020be81c0c5981d67140f568c7a4d48b8612f3fa4d",
+    "summary": {
+      "scheduled_prompts": 32,
+      "scheduled_instructions": 32,
+      "attempted": 32,
+      "execution_status_counts": {
+        "ok": 20,
+        "truncated": 12
+      },
+      "unresolved_grader_errors": 0,
+      "semantic_grading_complete": true,
+      "score_interpretation": "measured compliance",
+      "metrics": {
+        "prompt_level_strict_accuracy": {
+          "passed": 16,
+          "scheduled": 32,
+          "value": 0.5
+        },
+        "prompt_level_loose_accuracy": {
+          "passed": 17,
+          "scheduled": 32,
+          "value": 0.53125
+        },
+        "instruction_level_strict_accuracy": {
+          "passed": 16,
+          "scheduled": 32,
+          "value": 0.5
+        },
+        "instruction_level_loose_accuracy": {
+          "passed": 17,
+          "scheduled": 32,
+          "value": 0.53125
+        }
+      },
+      "strict_failures_by_instruction": {
+        "length_constraints:nth_paragraph_first_word": 2,
+        "combination:two_responses": 2,
+        "detectable_format:number_bullet_lists": 2,
+        "change_case:english_lowercase": 2,
+        "change_case:capital_word_frequency": 1,
+        "detectable_content:number_placeholders": 1,
+        "change_case:english_capital": 1,
+        "detectable_format:number_highlighted_sections": 1,
+        "keywords:existence": 1,
+        "startend:quotation": 1,
+        "startend:end_checker": 1,
+        "punctuation:no_comma": 1
+      },
+      "known_generated_tokens": 13941,
+      "known_input_tokens": 6123,
+      "generation_seconds": 263.5452995605469,
+      "technically_valid": true
+    },
+    "resources": {
+      "host_scope": "host-wide samples include unrelated workloads; not model-attributed physical GPU memory",
+      "host_sampled_numeric_ranges": {
+        "hostGpuUtilizationPercent": {
+          "minimum": 15,
+          "maximum": 88,
+          "samples": 54
+        },
+        "hostGpuAllocatedBytes": {
+          "minimum": 20262060032,
+          "maximum": 23387455488,
+          "samples": 54
+        },
+        "hostSwapUsedBytes": {
+          "minimum": 25646470266.88,
+          "maximum": 26916295802.88,
+          "samples": 54
+        },
+        "hostMemoryPressureLevel": {
+          "minimum": 2,
+          "maximum": 2,
+          "samples": 54
+        },
+        "hostFreePagesBytes": {
+          "minimum": 14909440,
+          "maximum": 95993856,
+          "samples": 54
+        },
+        "hostCompressedStorageBytes": {
+          "minimum": 7937163264,
+          "maximum": 11100241920,
+          "samples": 54
+        },
+        "hostThermalState": {
+          "minimum": 0,
+          "maximum": 0,
+          "samples": 54
+        }
+      },
+      "host_sample_count": 54,
+      "owned_process_scope": "maximum single observed process per role; RSS/footprint can include shared memory",
+      "owned_role_sampled_maxima": {
+        "helper": {
+          "footprintBytes": 199825960,
+          "rssBytes": 91815936,
+          "wiredBytes": 0
+        },
+        "browser": {
+          "footprintBytes": 97175352,
+          "rssBytes": 207339520,
+          "wiredBytes": 0
+        },
+        "gpu-process": {
+          "footprintBytes": 2356529000,
+          "rssBytes": 217071616,
+          "wiredBytes": 0
+        },
+        "utility": {
+          "footprintBytes": 57345272,
+          "rssBytes": 88375296,
+          "wiredBytes": 0
+        },
+        "renderer": {
+          "footprintBytes": 710249136,
+          "rssBytes": 318636032,
+          "wiredBytes": 0
+        }
+      },
+      "worker_scope": "GPUBuffer descriptor accounting and WASM address space are not physical VRAM",
+      "sampling_limit": "Observed sample maxima do not establish absolute peaks; unavailable metrics remain unavailable.",
+      "worker_signals": [
+        {
+          "id": "gpu-buffers",
+          "label": "Tracked live GPUBuffer sizes",
+          "scope": "inference worker",
+          "source": "GPUBuffer.size, create/destroy ledger",
+          "unit": "bytes",
+          "status": "available",
+          "reason": "Sum of buffer descriptor sizes not explicitly destroyed on this device. Includes runtime pool buffers; excludes textures, driver overhead and physical VRAM residency."
+        },
+        {
+          "id": "device-loss",
+          "label": "GPU device lifecycle",
+          "scope": "inference worker",
+          "source": "Actual inference GPUDevice.lost promise",
+          "unit": "event",
+          "status": "available",
+          "reason": "Unexpected loss is a failed run; destroy during unload is an expected lifecycle event."
+        },
+        {
+          "id": "worker-wasm",
+          "label": "Reachable WASM linear memory",
+          "scope": "inference worker",
+          "source": "Exported WebAssembly.Memory.buffer.byteLength (weak references)",
+          "unit": "bytes",
+          "status": "pending",
+          "reason": "Linear address-space length, not resident RAM. A retained buffer after unload does not prove a leak; garbage collection is not forced."
+        },
+        {
+          "id": "worker-heap",
+          "label": "Worker JS heap",
+          "scope": "inference worker",
+          "source": "worker performance.memory.usedJSHeapSize",
+          "unit": "bytes",
+          "status": "unavailable",
+          "reason": "performance.memory is not exposed in this worker."
+        },
+        {
+          "id": "worker-lag",
+          "label": "Worker timer delay",
+          "scope": "inference worker",
+          "source": "1-second setInterval scheduling drift",
+          "unit": "ms",
+          "status": "available",
+          "reason": "Worker responsiveness; includes scheduling and synchronous work, not CPU usage."
+        },
+        {
+          "id": "worker-wasm",
+          "label": "Reachable WASM linear memory",
+          "scope": "inference worker",
+          "source": "Exported WebAssembly.Memory.buffer.byteLength (weak references)",
+          "unit": "bytes",
+          "status": "available",
+          "reason": "Linear address-space length, not resident RAM; may remain reachable after unload. No forced GC."
+        }
+      ],
+      "worker_sampled_maxima": {
+        "gpuBufferBytes": 1747698604,
+        "wasmBytes": 283181056,
+        "heapBytes": null,
+        "eventLoopDelayMs": 113.90000009536743
+      },
+      "worker_sample_count": 286,
+      "worker_series_scope": "one complete worker run, including load, warmup, requests and cleanup; the client repeats this shared series on every terminal output",
+      "initialization": [
+        {
+          "applicationGenerationCalls": 0,
+          "applicationWarmupCalls": 0,
+          "observedWebGPUDevices": 1,
+          "queueSubmittedBatchesDuringInitialization": 1,
+          "scope": "Observed GPUQueue.submit calls before application generation; includes runtime initialization/compilation work. No claim of zero model computation during loading.",
+          "runtimeAutomaticModelWarmup": "Not separately identifiable from initialization submissions; no application warmup or debug evaluate() call requested"
+        }
+      ]
+    },
+    "cleanup": {
+      "process_group_stop_requested": true,
+      "controller_exit_verified": true,
+      "controller_returncode": 0,
+      "unload_confirmed": true,
+      "worker_terminated": true,
+      "forced_termination": false,
+      "chrome_exit_confirmed": true,
+      "local_harness_exit_confirmed": true,
+      "owned_browser_and_worker_resources_released": true,
+      "release_scope": "Dedicated browser process/profile, all of its page/worker/device resources, and this local harness only; unrelated browser data untouched",
+      "chrome_os_exit_verified": true,
+      "retained_owned_pids_alive": []
+    },
+    "budget": {
+      "limits": {
+        "engine_load_attempts": 1,
+        "warmup_dispatches": 1,
+        "scored_dispatches": 32,
+        "generation_dispatches": 33,
+        "generated_tokens": 32784,
+        "warmup_tokens": 16,
+        "tokens_per_scored_request": 1024,
+        "request_seconds": 120,
+        "wall_seconds": 5400,
+        "automatic_retries": 0,
+        "candidate_generations": 0,
+        "heldout_generations": 0,
+        "frontier_requests": 0
+      },
+      "engine_load_attempts": 1,
+      "warmup_dispatches": 1,
+      "scored_dispatches": 32,
+      "generation_dispatches": 33,
+      "reserved": {
+        "generated_tokens": 32784,
+        "elapsed_seconds": 3960.0,
+        "billed_units": 0,
+        "pending_generated_tokens": 0,
+        "pending_elapsed_seconds": 0,
+        "pending_billed_units": 0
+      },
+      "observed": {
+        "generated_tokens": 13953,
+        "elapsed_seconds": 264.19289965820315,
+        "billed_units": 0,
+        "token_measurements": 33,
+        "elapsed_measurements": 33,
+        "billing_measurements": 33
+      },
+      "charged": {
+        "editor_requests": 0,
+        "model_probes": 33,
+        "requested_sequences": 33,
+        "completed_sequences": 33,
+        "failed_sequences": 0,
+        "generated_tokens": 13953,
+        "elapsed_seconds": 264.19289965820315,
+        "billed_units": 0,
+        "observed_generated_tokens": 13953,
+        "observed_elapsed_seconds": 264.19289965820315,
+        "observed_billed_units": 0,
+        "retries": 0,
+        "pending_requests": 0,
+        "conservative_requests": 0,
+        "limit_violations": 0
+      },
+      "terminal": true,
+      "candidate_generations": 0,
+      "heldout_generations": 0,
+      "experimental_frontier_requests": 0,
+      "first_load_through_cleanup_seconds": 273.3642682500649
+    },
+    "warmup": [
+      {
+        "generated_tokens": 12,
+        "input_tokens": 27,
+        "response_latency_ms": 647.60009765625,
+        "finish_reason": "length",
+        "assistant_prefix_tokens": 4,
+        "request_max_tokens": 16
+      }
+    ],
+    "load_ms": 2629.4000000953674
+  },
+  "candidate": {
+    "metrics": {
+      "prompt_level_strict_accuracy": null,
+      "instruction_level_strict_accuracy": null,
+      "prompt_level_loose_accuracy": null,
+      "instruction_level_loose_accuracy": null
+    },
+    "scored_examples_executed": 0,
+    "scored_examples_unexecuted": 32,
+    "natural_completions": 0,
+    "truncations": 0,
+    "scored_output_tokens": 0,
+    "scored_generation_seconds": null,
+    "generation_time_status": "not_started",
+    "load_through_cleanup_seconds": null,
+    "browser_deadline_started": false,
+    "resources": {
+      "status": "not_observed",
+      "reason": "No candidate engine load or browser execution."
+    }
+  },
+  "paired": {
+    "status": "not_evaluable",
+    "improved": null,
+    "regressed": null,
+    "tied": null,
+    "unmeasured_pairs": 32,
+    "strict_delta": null,
+    "loose_delta": null,
+    "confidence_interval": null,
+    "per_item": [
+      {
+        "schedule_position": 1,
+        "baseline_strict_compliant": true,
+        "baseline_loose_compliant": true,
+        "baseline_completion_status": "ok",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 2,
+        "baseline_strict_compliant": true,
+        "baseline_loose_compliant": true,
+        "baseline_completion_status": "ok",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 3,
+        "baseline_strict_compliant": false,
+        "baseline_loose_compliant": false,
+        "baseline_completion_status": "ok",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 4,
+        "baseline_strict_compliant": true,
+        "baseline_loose_compliant": true,
+        "baseline_completion_status": "truncated",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 5,
+        "baseline_strict_compliant": false,
+        "baseline_loose_compliant": false,
+        "baseline_completion_status": "truncated",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 6,
+        "baseline_strict_compliant": true,
+        "baseline_loose_compliant": true,
+        "baseline_completion_status": "ok",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 7,
+        "baseline_strict_compliant": false,
+        "baseline_loose_compliant": false,
+        "baseline_completion_status": "truncated",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 8,
+        "baseline_strict_compliant": false,
+        "baseline_loose_compliant": false,
+        "baseline_completion_status": "truncated",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 9,
+        "baseline_strict_compliant": true,
+        "baseline_loose_compliant": true,
+        "baseline_completion_status": "ok",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 10,
+        "baseline_strict_compliant": false,
+        "baseline_loose_compliant": false,
+        "baseline_completion_status": "ok",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 11,
+        "baseline_strict_compliant": true,
+        "baseline_loose_compliant": true,
+        "baseline_completion_status": "truncated",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 12,
+        "baseline_strict_compliant": true,
+        "baseline_loose_compliant": true,
+        "baseline_completion_status": "ok",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 13,
+        "baseline_strict_compliant": true,
+        "baseline_loose_compliant": true,
+        "baseline_completion_status": "ok",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 14,
+        "baseline_strict_compliant": false,
+        "baseline_loose_compliant": false,
+        "baseline_completion_status": "truncated",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 15,
+        "baseline_strict_compliant": false,
+        "baseline_loose_compliant": false,
+        "baseline_completion_status": "ok",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 16,
+        "baseline_strict_compliant": true,
+        "baseline_loose_compliant": true,
+        "baseline_completion_status": "ok",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 17,
+        "baseline_strict_compliant": false,
+        "baseline_loose_compliant": false,
+        "baseline_completion_status": "truncated",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 18,
+        "baseline_strict_compliant": true,
+        "baseline_loose_compliant": true,
+        "baseline_completion_status": "truncated",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 19,
+        "baseline_strict_compliant": false,
+        "baseline_loose_compliant": false,
+        "baseline_completion_status": "ok",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 20,
+        "baseline_strict_compliant": true,
+        "baseline_loose_compliant": true,
+        "baseline_completion_status": "ok",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 21,
+        "baseline_strict_compliant": true,
+        "baseline_loose_compliant": true,
+        "baseline_completion_status": "ok",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 22,
+        "baseline_strict_compliant": true,
+        "baseline_loose_compliant": true,
+        "baseline_completion_status": "ok",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 23,
+        "baseline_strict_compliant": true,
+        "baseline_loose_compliant": true,
+        "baseline_completion_status": "ok",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 24,
+        "baseline_strict_compliant": false,
+        "baseline_loose_compliant": false,
+        "baseline_completion_status": "ok",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 25,
+        "baseline_strict_compliant": false,
+        "baseline_loose_compliant": true,
+        "baseline_completion_status": "truncated",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 26,
+        "baseline_strict_compliant": false,
+        "baseline_loose_compliant": false,
+        "baseline_completion_status": "ok",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 27,
+        "baseline_strict_compliant": false,
+        "baseline_loose_compliant": false,
+        "baseline_completion_status": "truncated",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 28,
+        "baseline_strict_compliant": false,
+        "baseline_loose_compliant": false,
+        "baseline_completion_status": "ok",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 29,
+        "baseline_strict_compliant": true,
+        "baseline_loose_compliant": true,
+        "baseline_completion_status": "ok",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 30,
+        "baseline_strict_compliant": true,
+        "baseline_loose_compliant": true,
+        "baseline_completion_status": "ok",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 31,
+        "baseline_strict_compliant": false,
+        "baseline_loose_compliant": false,
+        "baseline_completion_status": "truncated",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      },
+      {
+        "schedule_position": 32,
+        "baseline_strict_compliant": false,
+        "baseline_loose_compliant": false,
+        "baseline_completion_status": "truncated",
+        "candidate_strict_compliant": null,
+        "candidate_loose_compliant": null,
+        "candidate_completion_status": "unexecuted",
+        "paired_change": "unmeasured"
+      }
+    ]
+  },
+  "consumption": {
+    "command_file_invocations": 1,
+    "conversion_stage_attempts": 1,
+    "candidate_load_attempts": 0,
+    "candidate_warmup_dispatches": 0,
+    "candidate_scored_dispatches": 0,
+    "candidate_generation_dispatches": 0,
+    "candidate_generated_tokens": 0,
+    "browser_deadline_started": false,
+    "automatic_retries": 0,
+    "new_weight_proposals": 0,
+    "heldout_generations": 0,
+    "experimental_frontier_requests": 0,
+    "baseline_reruns": 0
+  },
+  "candidate_authorized_limits": {
+    "automatic_retries": 0,
+    "engine_load_attempts": 1,
+    "generated_tokens": 32784,
+    "generation_dispatches": 33,
+    "request_seconds": 120,
+    "scored_dispatches": 32,
+    "wall_seconds": 5400,
+    "warmup_dispatches": 1
+  },
+  "candidate_cleanup": {
+    "pipeline_exit_code": 1,
+    "no_matching_stage_processes": true,
+    "conversion_subprocess_started": false,
+    "browser_execution_started": false,
+    "browser_cleanup": "not_applicable_no_browser_execution_started",
+    "import_worker_completed": true,
+    "scope": "Current process table matched known checkpoint/converter/experiment runner command signatures, excluding the observing shell. This is not an inventory of unrelated user browser processes."
+  },
+  "selection": {
+    "reason": "No candidate deployment or development execution; frozen policy requires complete technical execution and grading.",
+    "selected_arm": null,
+    "status": "not_evaluable",
+    "rule": "Compare all 32 fixed development items; prefer candidate only for strictly higher strict prompt compliance with complete technical execution and grading; ties retain pristine."
+  },
+  "heldout_examples_left_unexecuted": 128,
+  "verification": {
+    "passed": true,
+    "checks_passed": 22,
+    "checks_total": 22,
+    "final_report_file_sha256": "a9e68b4edc29a95c0b24c10dd18a55ad666e26d9d4503c6c4e6d263f6dd91cfa",
+    "initial_checker_correction": "Initial report preserved. The checker expected nested package error text in the outer pipeline log; corrected to verify its recorded diagnostic location. No experiment retry or evidence change.",
+    "current_evidence_files_unchanged": 578,
+    "available_historical_files_unchanged": 1387,
+    "historical_files_previously_unavailable_and_excluded": 300
+  },
+  "attribution": [
+    "Arhaan Aggarwal (Arhaan2)",
+    "Existing BrowserLLM work and Gufran's contribution preserved",
+    "Google Research IFEval, Zhou et al., Apache-2.0",
+    "Allen Institute for AI RLVR-IFeval; upstream Ai2 ImpACT and Llama 2 notices preserved"
+  ]
+}

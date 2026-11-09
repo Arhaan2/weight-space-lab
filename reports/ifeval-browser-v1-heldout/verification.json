@@ -1,0 +1,204 @@
+{
+  "author": "Arhaan2",
+  "checks": {
+    "aggregate_authorized_capacity": true,
+    "baseline_actual_source_and_deployed_hashes": true,
+    "baseline_all_frozen_source_pins": true,
+    "baseline_all_record_and_grade_hashes": true,
+    "baseline_bounded_load_through_cleanup_clock": true,
+    "baseline_cleanup_record_matches_os": true,
+    "baseline_complete_schedule": true,
+    "baseline_completed_dispatch_prefix_and_unexecuted_slots": true,
+    "baseline_effective_runtime_and_tokenizer": true,
+    "baseline_event_terminal_supervisor_parity": true,
+    "baseline_exact_durable_dispatch_gates": true,
+    "baseline_fetched_and_loaded_artifact": true,
+    "baseline_fresh_ledger_binding": true,
+    "baseline_grade_schedule": true,
+    "baseline_independent_official_aggregation": true,
+    "baseline_ledger_observation_parity": true,
+    "baseline_local_gpu_execution": true,
+    "baseline_manifest_and_configuration": true,
+    "baseline_observed_request_bounds": true,
+    "baseline_records_match_raw_observations": true,
+    "baseline_scored_resource_totals": true,
+    "baseline_served_asset_and_build_pins": true,
+    "baseline_terminal_ledger_and_no_retries": true,
+    "candidate_actual_source_and_deployed_hashes": true,
+    "candidate_all_frozen_source_pins": true,
+    "candidate_all_record_and_grade_hashes": true,
+    "candidate_bounded_load_through_cleanup_clock": true,
+    "candidate_cleanup_record_matches_os": true,
+    "candidate_completed_dispatch_prefix_and_unexecuted_slots": true,
+    "candidate_effective_runtime_and_tokenizer": true,
+    "candidate_event_terminal_supervisor_parity": true,
+    "candidate_exact_durable_dispatch_gates": true,
+    "candidate_fetched_and_loaded_artifact": true,
+    "candidate_fresh_ledger_binding": true,
+    "candidate_grade_schedule": true,
+    "candidate_independent_official_aggregation": true,
+    "candidate_ledger_observation_parity": true,
+    "candidate_local_gpu_execution": true,
+    "candidate_manifest_and_configuration": true,
+    "candidate_observed_request_bounds": true,
+    "candidate_records_match_raw_observations": true,
+    "candidate_scored_resource_totals": true,
+    "candidate_served_asset_and_build_pins": true,
+    "candidate_terminal_ledger_and_no_retries": true,
+    "exact_original_source_and_subset": true,
+    "exact_predeclared_freeze": true,
+    "freeze_precedes_first_engine_load": true,
+    "historical_event_metadata_has_no_heldout_execution": true,
+    "historical_evidence_unchanged": true,
+    "historical_ledgers_unchanged": true,
+    "no_prior_heldout_dispatches": true,
+    "overall_first_load_through_final_cleanup_limit": true,
+    "paired_analysis_frozen_denominators": true,
+    "private_authorization_bound": true,
+    "proposal_provenance_preserved": true,
+    "reported_completion_matches_evidence": true,
+    "sequential_engines_with_verified_unload": true
+  },
+  "complete_paired_evaluation": false,
+  "engine_loads_by_verifier": 0,
+  "grader_calls_by_verifier": 0,
+  "identities": {
+    "artifacts": {
+      "baseline": {
+        "deployed_artifact_sha256": "5ead3e9c60107ab7168bee5373f6cd636c839b82557fed6550aaaa30170aa5b0",
+        "source_checkpoint_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d"
+      },
+      "candidate": {
+        "deployed_artifact_sha256": "6e18cc4906ce18786b9197bcc7fb5f93ffc706d808b0809150349546eef3627b",
+        "source_checkpoint_sha256": "f9c767c06ec3c17dbdfedc43b695d64d025ae7393d3f425cee71ef45c358d6bf"
+      }
+    },
+    "evaluation_freeze_sha256": "89ed9703869ab7c8b1032b3d8c5fa59fefed0215d9d0341016684d60b39b8a27",
+    "verifier_sha256": "768f9a99075bb4caa1a64520b03c9dfebe8d0a262bc3a2b7e817ca84ee03e15f"
+  },
+  "input_mutations": 0,
+  "kind": "independent_ifeval_heldout_verification",
+  "label": "128-example IFEval on-device subset",
+  "measurements": {
+    "aggregate_usage": {
+      "dispatches": 224,
+      "engine_loads": 2,
+      "generated_tokens": 113855,
+      "scored_dispatches": 222,
+      "warmups": 2
+    },
+    "cleanup_verified": {
+      "baseline": true,
+      "candidate": false
+    },
+    "denied_terminal_generation_intents": {
+      "baseline": 0,
+      "candidate": 1
+    },
+    "forced_termination": {
+      "baseline": false,
+      "candidate": true
+    },
+    "frozen_source_pins_verified": 666,
+    "graceful_unload_confirmed": {
+      "baseline": true,
+      "candidate": false
+    },
+    "historical_execution_event_files_checked": 2,
+    "historical_files_preserved": 1348,
+    "historical_ledgers_preserved": 3,
+    "metrics": {
+      "baseline": {
+        "instruction_level_loose_accuracy": {
+          "passed": 112,
+          "scheduled": 173,
+          "value": 0.6473988439306358
+        },
+        "instruction_level_strict_accuracy": {
+          "passed": 106,
+          "scheduled": 173,
+          "value": 0.6127167630057804
+        },
+        "prompt_level_loose_accuracy": {
+          "passed": 74,
+          "scheduled": 128,
+          "value": 0.578125
+        },
+        "prompt_level_strict_accuracy": {
+          "passed": 69,
+          "scheduled": 128,
+          "value": 0.5390625
+        }
+      },
+      "candidate": {
+        "instruction_level_loose_accuracy": {
+          "passed": 83,
+          "scheduled": 173,
+          "value": 0.4797687861271676
+        },
+        "instruction_level_strict_accuracy": {
+          "passed": 77,
+          "scheduled": 173,
+          "value": 0.44508670520231214
+        },
+        "prompt_level_loose_accuracy": {
+          "passed": 55,
+          "scheduled": 128,
+          "value": 0.4296875
+        },
+        "prompt_level_strict_accuracy": {
+          "passed": 50,
+          "scheduled": 128,
+          "value": 0.390625
+        }
+      }
+    },
+    "overall_load_through_cleanup_seconds": 2786.1340919160284,
+    "paired_prompt_outcomes": {
+      "loose": {
+        "improved": 10,
+        "regressed": 5,
+        "tied": 79,
+        "unresolved": 34
+      },
+      "strict": {
+        "improved": 8,
+        "regressed": 5,
+        "tied": 81,
+        "unresolved": 34
+      }
+    },
+    "process_cleanup_verified": {
+      "baseline": true,
+      "candidate": true
+    },
+    "stop_diagnosis": {
+      "baseline": null,
+      "candidate": {
+        "inferred_mechanism": "The supervisor reads an event snapshot before scanning newly written intent files. The preserved order is consistent with a newer next-request intent being seen before the preceding completion is added to its in-memory seen_samples set. The exact supervisor snapshot was not recorded, so this mechanism is an inference.",
+        "last_completed_scored_schedule_position": 94,
+        "next_durable_intent_after_prior_sample_ms": 43,
+        "next_gate_after_prior_sample_ms": 11,
+        "next_generation_intent_without_reservation_ack_or_model_call": true,
+        "next_unexecuted_scored_schedule_position": 95,
+        "observed_worker_request_order_valid": true,
+        "prior_ledger_completion_after_next_durable_intent_ms": 273.032958984375
+      }
+    },
+    "supervisor_error": {
+      "baseline": null,
+      "candidate": "ValueError: requests must execute sequentially after warmup"
+    },
+    "unexecuted_instructions": {
+      "baseline": 0,
+      "candidate": 45
+    },
+    "unexecuted_prompts": {
+      "baseline": 0,
+      "candidate": 34
+    }
+  },
+  "passed": true,
+  "schema_version": 1,
+  "scope": "A passing audit validates preserved evidence and accounting; it does not imply a complete evaluation or graceful unload. Read-only byte, schedule, ledger, timing, process-cleanup and grade-record verification; official grades independently aggregated, not rerun. No claim of editor isolation or substantive answer correctness."
+}

@@ -1,18 +1,54 @@
 """Future candidate packaging audits, using tiny MLC fixtures and no inference."""
 import hashlib
+import importlib.util
 import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
+import venv
 from unittest.mock import patch
 import numpy as np
 from weight_space_lab.browser_candidate import audit_effective_pair, package_candidate, source_identity, _files
+from weight_space_lab.browser_candidate_recovery import run_converter_python
 from weight_space_lab.protocol import canonical_hash
 
 
 class BrowserCandidateTests(unittest.TestCase):
     source15='model.language_model.layers.15.mlp.down_proj.weight'
     source19='model.language_model.layers.19.mlp.down_proj.weight'
+
+    def test_converter_launcher_preserves_real_virtual_environment_after_cwd_change(self):
+        module = '_weight_space_converter_venv_only_probe'
+        self.assertIsNone(importlib.util.find_spec(module))
+        with tempfile.TemporaryDirectory() as temporary:
+            repository = Path(temporary) / 'repository'
+            environment = repository / 'converter-env'
+            elsewhere = Path(temporary) / 'elsewhere'
+            elsewhere.mkdir()
+            venv.EnvBuilder(with_pip=False, symlinks=True).create(environment)
+            site_packages = list(environment.rglob('site-packages'))
+            self.assertEqual(len(site_packages), 1)
+            (site_packages[0] / (module + '.py')).write_text('VALUE = "venv-only-module"\n')
+            relative_python = Path('converter-env') / ('Scripts/python.exe' if os.name == 'nt' else 'bin/python')
+            observed = run_converter_python(relative_python, ['-I', '-B', '-c',
+                f'import {module} as probe; import json,sys; '
+                'print(json.dumps({"value":probe.VALUE,"module_path":probe.__file__, '
+                '"executable":sys.executable,"prefix":sys.prefix,"base_prefix":sys.base_prefix}))'],
+                repository_root=repository, cwd=elsewhere, check=True, capture_output=True,
+                text=True, timeout=30)
+            evidence = json.loads(observed.stdout)
+            self.assertEqual(evidence['value'], 'venv-only-module')
+            self.assertEqual(observed.args[0], str((repository / relative_python).absolute()))
+            # macOS can canonicalize the temporary directory's /var alias in
+            # sys.executable; the venv executable itself must remain selected.
+            self.assertEqual(Path(evidence['executable']).parent.resolve(),
+                             (repository / relative_python).parent.resolve())
+            self.assertEqual(Path(evidence['executable']).name, relative_python.name)
+            self.assertEqual(Path(evidence['prefix']).resolve(), environment.resolve())
+            self.assertNotEqual(evidence['prefix'], evidence['base_prefix'])
+            self.assertTrue(Path(evidence['module_path']).resolve().is_relative_to(environment.resolve()))
+            self.assertIsNone(importlib.util.find_spec(module))
 
     def cache(self,root,*,change_layer=None,change_group=0):
         root=Path(root);root.mkdir()
