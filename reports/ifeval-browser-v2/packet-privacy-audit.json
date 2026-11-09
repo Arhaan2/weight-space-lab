@@ -1,0 +1,56 @@
+{
+  "baseline_equality": {
+    "aggregate_metrics": true,
+    "approved_weight_information": true,
+    "candidate_policy": true,
+    "frozen_development_feedback": true,
+    "grading_policy": true
+  },
+  "development_baseline_strict_passes": 16,
+  "development_prompts": 32,
+  "editor_route": {
+    "isolation": "unverified",
+    "manual_authenticated": true,
+    "observed_identity_effort_usage_and_billing_unavailable": true,
+    "requested_effort": "Ultra",
+    "requested_model": "Astra",
+    "strict_automated_readiness_required": false,
+    "two_hour_allowance_is_planning_only": true,
+    "unavailable_values_are_null_not_zero": true
+  },
+  "evidence_kind": "offline_read_only_checks",
+  "final_manifest_sha256": "2ab69feb0c2f12c2fd372da0dfd8d994cb1ed92e82a736d850c8ef9eda7a7bd2",
+  "kind": "ifeval_v2_first_packet_privacy_audit",
+  "limitations": [
+    "Exact literal and escaped-string checks complement explicit development-only field allowlists; they do not establish technical editor isolation.",
+    "Final custody remains procedural separation."
+  ],
+  "packet_bytes": 223932,
+  "packet_sha256": "eeb5175244985bd4638223174e615f7fce6f51c5632770af5512f368c46a0fbd",
+  "passed": true,
+  "preparation_only": {
+    "active_stage": false,
+    "editor_submissions": 0,
+    "final_evaluations": 0,
+    "production_stages": 0
+  },
+  "private_content_exclusion": {
+    "authorization_text_present": false,
+    "constructive_response_strings_checked": 128,
+    "final_answers_fixtures_or_results_present": false,
+    "final_item_ids_present": false,
+    "final_metadata_is_allowlisted": true,
+    "final_prompt_strings_checked": 128,
+    "literal_and_json_escaped_forms_checked": true,
+    "machine_paths_present": false,
+    "matches": 0,
+    "negative_fixture_response_strings_checked": 160,
+    "prior_control_results_present": false,
+    "total_strings_checked": 544,
+    "underlying_final_task_strings_checked": 128
+  },
+  "protocol_sha256": "d2c72be02ac3bd2f8f2db12cb9b4a705f9837310b117f80fd5a34d71dadf7ec4",
+  "request_sha256": "1e6154408aafbde9e88d5155849363a7de58dee38332aa0aa9f996cc9a477496",
+  "schema_version": 1,
+  "study_sha256": "97ca4e4e67821dedf0cb63f130f5c03b4e5fff6c9daa1ef061773ca1baca31f4"
+}
