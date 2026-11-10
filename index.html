@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A small model, edited weights, and a measured question: can instruction following improve without increasing browser resource use? Explore Weight Space Lab’s evidence.">
+  <meta name="theme-color" content="#ff8126">
+  <title>Weight Space Lab — the measured experiment</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/schibsted-grotesk-extrabold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#results">Skip to results</a>
+  <header class="masthead frame">
+    <a class="wordmark" href="#top" aria-label="Weight Space Lab, top">Weight Space Lab</a>
+    <nav aria-label="Main navigation">
+      <a href="#results">Results</a>
+      <a href="#resources">Resources</a>
+      <a href="#next">Next</a>
+      <a href="https://github.com/Arhaan2/weight-space-lab">GitHub</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero frame" id="top" aria-labelledby="page-title">
+      <h1 id="page-title"><span class="headline-line"><span>Weight Space</span></span><span class="headline-line"><span>Lab</span></span></h1>
+      <div class="hero-bottom">
+        <p class="hero-intro">Editing a small model’s weights to improve instruction following, while keeping browser resource use level or lower.</p>
+        <a class="button primary" href="#results">Explore results <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="hero-context">
+        <p>Qwen3.5-0.8B<br>Running locally in WebLLM</p>
+        <p>The first study is complete.<br>Its quality result is inconclusive.</p>
+      </div>
+    </section>
+
+    <section class="results section sky" id="results" aria-labelledby="results-title">
+      <div class="frame">
+        <div class="section-opening">
+          <h2 class="reveal" id="results-title">One extra pass</h2>
+          <p class="lead reveal">The edited model passed 70 of 128 held-out prompts. The original passed 69. The uncertainty is larger than that difference.</p>
+        </div>
+        <div class="comparison" data-ui>
+          <div class="comparison-controls" hidden id="comparison-controls">
+            <fieldset><legend>Prompt set</legend><div class="segmented"><button type="button" data-split="heldout" aria-pressed="true">Held-out</button><button type="button" data-split="development" aria-pressed="false">Development</button></div></fieldset>
+            <fieldset><legend>Scoring</legend><div class="segmented"><button type="button" data-metric="strict" aria-pressed="true">Strict</button><button type="button" data-metric="loose" aria-pressed="false">Loose</button></div></fieldset>
+          </div>
+          <p id="comparison-context" class="comparison-context">V1 held-out IFEval · Strict prompt compliance · Higher is better</p>
+          <div class="score-pair" aria-live="polite" aria-atomic="true">
+            <div class="score-arm reveal"><span class="arm-label">Original</span><p class="score"><strong id="baseline-score">69</strong><span id="baseline-denominator">/128</span></p><p class="score-rate" id="baseline-rate">53.91% of prompts</p></div>
+            <div class="score-arm reveal"><span class="arm-label">Edited</span><p class="score"><strong id="candidate-score">70</strong><span id="candidate-denominator">/128</span></p><p class="score-rate" id="candidate-rate">54.69% of prompts</p></div>
+          </div>
+          <div class="quality-bars" role="img" aria-label="Strict held-out compliance: original 53.91 percent; edited 54.69 percent." id="quality-bars">
+            <div class="quality-bar"><span>Original</span><div class="bar-track"><div id="baseline-bar" class="bar-fill" style="transform:scaleX(.5390625)"></div></div><span id="baseline-bar-label">53.91%</span></div>
+            <div class="quality-bar"><span>Edited</span><div class="bar-track"><div id="candidate-bar" class="bar-fill candidate-fill" style="transform:scaleX(.546875)"></div></div><span id="candidate-bar-label">54.69%</span></div>
+            <div class="bar-scale"><span>0% of prompts</span><span>100%</span></div>
+          </div>
+          <p id="comparison-note" class="chart-note">+0.78 percentage points. A positive estimate, with no established improvement or equivalence.</p>
+        </div>
+
+        <div class="evidence-row">
+          <figure class="evidence-figure reveal" data-ui>
+            <figcaption>V1 strict held-out outcomes</figcaption>
+            <div class="outcome-strip" role="img" aria-label="Strict scoring: 8 prompts improved, 7 regressed, 113 tied, out of 128."><div class="outcome-improved" style="flex:8"></div><div class="outcome-regressed" style="flex:7"></div><div class="outcome-tied" style="flex:113"></div></div>
+            <dl class="outcome-legend"><div><dt><i class="swatch improved"></i>Improved</dt><dd>8</dd></div><div><dt><i class="swatch regressed"></i>Regressed</dt><dd>7</dd></div><div><dt><i class="swatch tied"></i>Tied</dt><dd>113</dd></div></dl>
+            <p>Strict scoring, 128 paired prompts. Gains and regressions nearly cancel.</p>
+          </figure>
+          <figure class="evidence-figure reveal" data-ui>
+            <figcaption>V1 strict held-out uncertainty</figcaption>
+            <div class="interval-chart" role="img" aria-label="Strict compliance difference: positive 0.78 percentage points. 95 percent interval from negative 5.47 to positive 7.03 percentage points.">
+              <div class="interval-zero"><span>0</span></div><div class="interval-range"></div><div class="interval-estimate"><span>+0.78</span></div>
+              <div class="interval-labels"><span>−5.47</span><span>+7.03</span></div>
+            </div>
+            <p>95% paired bootstrap interval, in percentage points. 10,000 prompt-cluster resamples.</p>
+          </figure>
+        </div>
+        <p class="source-note reveal">V1 used a 128-prompt subset of official IFEval, containing 173 instructions. <a href="https://github.com/Arhaan2/weight-space-lab/blob/43a01f81ededd3b5f7b9c24997ce6c720db84c0f/reports/ifeval-browser-v1-final/README.md">Read the complete result</a>.</p>
+      </div>
+    </section>
+
+    <section class="method section" id="method" aria-labelledby="method-title">
+      <div class="frame method-layout">
+        <div class="method-intro">
+          <h2 class="reveal" id="method-title">A small edit.<br>A real test.</h2>
+          <p class="lead reveal">Edit weights. Keep the architecture, tokenizer and deployment settings fixed.</p>
+          <p class="reveal">The first proposal was supplied manually and attributed to Astra / Ultra by the operator. Provider model identity and usage were not observed.</p>
+        </div>
+        <div class="method-exchanges">
+          <article class="exchange reveal">
+            <h3>Start with the original</h3>
+            <p>Qwen3.5-0.8B, using the same local WebGPU runtime for both arms. The development baseline passes 16 of 32 prompts under strict scoring.</p>
+          </article>
+          <article class="exchange reveal">
+            <h3>Scale two weight slices</h3>
+            <pre><code>Layers      15 and 19
+Tensor      mlp.down_proj.weight
+Columns     0–59
+Multiplier  0.75</code></pre>
+            <p class="response">122,880 stored BF16 entries changed. An independent checkpoint audit verified the saved edit before matching q4f16_1 conversion.</p>
+          </article>
+          <article class="exchange reveal">
+            <h3>Grade the deployed model</h3>
+            <p>Use independent instruction checkers, first on development prompts, then on the frozen held-out set. Keep failures and truncations in the denominator.</p>
+            <p class="response">Strict development compliance: 16/32 → 17/32. Held-out compliance: 69/128 → 70/128. The held-out evidence remains inconclusive.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="resources section dark" id="resources" aria-labelledby="resources-title">
+      <div class="frame">
+        <div class="section-opening">
+          <h2 class="reveal" id="resources-title">What did it cost?</h2>
+          <p class="lead reveal">V1 used fewer held-out tokens. Its standard Browser LLM Bench comparison was not run.</p>
+        </div>
+        <div class="resource-layout">
+          <figure class="token-figure reveal" data-ui>
+            <figcaption>Sampled output tokens</figcaption>
+            <div class="token-row"><span>Original</span><strong>68,243</strong><div class="token-track"><div class="token-fill original-tokens"></div></div></div>
+            <div class="token-row"><span>Edited</span><strong>60,189</strong><div class="token-track"><div class="token-fill edited-tokens"></div></div></div>
+            <div class="token-scale"><span>0</span><span>70,000 tokens</span></div>
+            <p class="token-difference">8,054 fewer output tokens</p>
+            <p>Same 128 held-out prompts. These are task outputs, excluding warm-ups.</p>
+          </figure>
+          <div class="resource-observations">
+            <div class="observation reveal"><p class="observation-value">1.748 <span>GB</span></p><p>GPUBuffer descriptor sampled maximum in both arms. Allocation accounting, not physical VRAM.</p></div>
+            <div class="observation reveal"><p class="observation-value">283.2 <span>MB</span></p><p>WASM address-space sampled maximum in both arms. Not a measurement of physical memory.</p></div>
+            <div class="observation reveal"><p class="observation-value">1,705 → 1,228 <span>s</span></p><p>Observed generation time. Sequential sessions and a candidate interruption prevent a controlled speedup claim.</p></div>
+          </div>
+        </div>
+        <div class="resource-caveat reveal"><p>The candidate’s first session stopped after 94 prompts; a separate continuation completed the remaining 34. These observations do not establish energy savings, equal resource use or better useful efficiency.</p><a href="results.json" download>Download measured data</a></div>
+      </div>
+    </section>
+
+    <section class="next section lime" id="next" aria-labelledby="next-title">
+      <div class="frame">
+        <div class="section-opening"><h2 class="reveal" id="next-title">The follow-up</h2><p class="lead reveal">Astra proposes edits. Qualifying candidates face the original browser workload.</p></div>
+        <div class="next-layout">
+          <div class="next-objective reveal">
+            <p class="large-number">&gt;16<span>/32</span></p><p>Strict development passes required, with no more than <strong>13,941 output tokens</strong> and the frozen deployment and memory limits.</p>
+            <p>Up to four proposals, each starting from the pristine checkpoint. If none qualifies, the original model stays selected.</p>
+          </div>
+          <!-- V2_STATUS_START -->
+          <div class="next-status reveal" id="v2-status" data-ui>
+            <h3>V2 evidence</h3>
+            <p id="v2-description">3 candidate development evaluations are complete. No edit qualified; the original model was retained. The combined quality and resource goal was not demonstrated.</p>
+            <dl class="status-list"><div><dt>Development tasks</dt><dd>32</dd></div><div><dt>Untouched final prompts</dt><dd>0</dd></div><div><dt>Standard resource comparison</dt><dd id="v2-resource-status">Skipped: pristine retained</dd></div></dl>
+            <p id="v2-limitation">No verified untouched final prompts remain. V2 quality results are development evidence, without fresh held-out confirmation.</p>
+          </div>
+        <!-- V2_STATUS_END -->
+        </div>
+        <!-- V2_RESULTS_START -->
+        <div class="v2-measurements">
+          <h3 class="reveal">Measured development</h3>
+          <p class="reveal">V2 reuses the saved original baseline and the same 32 prompts for every evaluated candidate. These are development-only measurements.</p>
+          <table class="development-table reveal" data-ui>
+            <caption>Strict and loose prompt passes, sampled output tokens, and eligibility under the frozen selection rule.</caption>
+            <thead><tr><th scope="col">Artifact</th><th scope="col">Strict</th><th scope="col">Loose</th><th scope="col">Output tokens</th><th scope="col">Qualifies</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Original baseline</th><td data-label="Strict">16/32</td><td data-label="Loose">17/32</td><td data-label="Output tokens">13,941</td><td data-label="Qualifies">Reference</td></tr>
+              <tr><th scope="row">Astra round 1</th><td data-label="Strict">16/32</td><td data-label="Loose">17/32</td><td data-label="Output tokens">15,019</td><td data-label="Qualifies">No</td></tr>
+              <tr><th scope="row">Astra round 2</th><td data-label="Strict">16/32</td><td data-label="Loose">17/32</td><td data-label="Output tokens">12,644</td><td data-label="Qualifies">No</td></tr>
+              <tr><th scope="row">Astra round 3</th><td data-label="Strict">16/32</td><td data-label="Loose">17/32</td><td data-label="Output tokens">12,591</td><td data-label="Qualifies">No</td></tr>
+            </tbody>
+          </table>
+          <p class="reveal">The saved baseline used Chrome 156.0.8078.80; evaluated candidates used Chrome 157.0.8103.39. Browser changes may also affect the development comparison. The separate resource protocol matches the browser for both artifacts.</p>
+          <p class="reveal">The initial browser attempt stopped before any model load and remains counted. The preserved stop limited the continuation to 3 real candidate evaluations.</p>
+          <p class="v2-provenance reveal">The editor was a fresh-context gpt-6-astra collaboration agent. Ultra effort, immutable provider identity and technical isolation were not verified. <a href="https://github.com/Arhaan2/weight-space-lab/blob/70a41ac9fc2f9e3bffa2d231ebfaba0819505995/reports/ifeval-browser-v2-collaboration-run/README.md">Read the execution report</a>.</p>
+          <p class="reveal"><strong>For a subsequent quality claim,</strong> a new study would need a baseline on the same current browser and a verified untouched final set.</p>
+
+        </div>
+        <!-- V2_RESULTS_END -->
+        <!-- V2_RESOURCE_PLAN_START -->
+        <div class="resource-plan reveal">
+          <div><h3>Resource comparison skipped</h3><p>No edit passed the frozen development gate. The original model was retained.</p></div>
+          <p>Pristine retained; no redundant comparison was run.</p>
+        </div>
+        <p class="source-note reveal">The A–B–B–A resource comparison was conditional on an eligible edit. No browser resource improvement or equality is established. <a href="https://github.com/Arhaan2/weight-space-lab/blob/43a01f81ededd3b5f7b9c24997ce6c720db84c0f/docs/ifeval-browser-quality-resource-protocol.md">Read the protocol</a>.</p>
+        <!-- V2_RESOURCE_PLAN_END -->
+      </div>
+    </section>
+
+    <section class="notes section" id="evidence" aria-labelledby="evidence-title">
+      <div class="frame notes-layout">
+        <h2 class="reveal" id="evidence-title">Read the evidence</h2>
+        <div class="notes-copy">
+          <p class="reveal"><strong>What does “strict” mean?</strong> A prompt passes only when every specified instruction passes the official strict checker. Loose scoring allows the evaluator’s defined response variations. It is not a general measure of answer quality.</p>
+          <p class="reveal"><strong>What stayed fixed?</strong> Both V1 artifacts used Qwen3.5-0.8B, q4f16_1, WebLLM 0.2.86 and the same compiled model library. Thinking was disabled, temperature was zero, and the output ceiling was 1,024 tokens.</p>
+          <p class="reveal"><strong>Why keep the uncertainty visible?</strong> The strict estimate is +0.78 percentage points, but the 95% interval spans −5.47 to +7.03. The data do not establish improvement or equivalence.</p>
+          <p class="reveal"><strong>Where are the full results?</strong> The <a href="https://github.com/Arhaan2/weight-space-lab/blob/43a01f81ededd3b5f7b9c24997ce6c720db84c0f/reports/ifeval-browser-v1-final/result.json">canonical V1 JSON</a> includes all four compliance metrics, paired outcomes, interruptions and resource accounting. The <a href="https://github.com/Arhaan2/weight-space-lab/blob/43a01f81ededd3b5f7b9c24997ce6c720db84c0f/docs/ifeval-v1-reproduction.md">reproduction record</a> carries immutable model, runtime and evaluator pins.</p>
+          <p class="reveal"><strong>Why no fresh V2 test?</strong> The <a href="https://github.com/Arhaan2/weight-space-lab/blob/43a01f81ededd3b5f7b9c24997ce6c720db84c0f/docs/ifeval-v2-final-data.md">final-data exposure audit</a> could not establish untouched official prompts. The existing V1 test is not reused as fresh confirmation.</p>
+          <p class="reveal"><strong>Whose work makes this possible?</strong> Qwen; WebLLM and MLC; Google Research IFEval and Ai2 RLVR-IFeval; <a href="https://github.com/gufranmirza/browser-llm-bench">Browser LLM Bench</a> by Gufran Mirza and Arhaan Aggarwal; and <a href="https://rikiyat.github.io/blog/weight-space-programming/">Sparks of Weight-Space Programming</a> by Rikiya Takehi, Jayden Teoh, Alex Zhang and Omar Khattab.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer dark">
+    <div class="frame">
+      <div class="footer-top"><p>A measured experiment by<br><a href="https://github.com/Arhaan2">Arhaan Aggarwal</a></p><div><a href="https://github.com/Arhaan2/weight-space-lab">Source repository</a><a href="results.json">Public data</a><a href="#top">Back to top</a></div><p>Evidence snapshot<br>November 10, 2026</p></div>
+      <p class="footer-wordmark" aria-hidden="true">Weight Space Lab</p>
+      <p class="footer-credit">Project code under <a href="LICENSE.txt">MIT</a>. Model and dataset terms remain separate. Schibsted Grotesk under the <a href="assets/OFL.txt">SIL Open Font License</a>.</p>
+    </div>
+  </footer>
+</body>
+</html>
