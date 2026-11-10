@@ -4,17 +4,26 @@ Controlled experiments in which a frontier model proposes direct edits to an ope
 
 Maintainer: [Arhaan Aggarwal (Arhaan2)](https://github.com/Arhaan2).
 
-## Current workflow
+## Current results — November 10, 2026
 
-Improve Qwen instruction compliance through up to four manual Astra / Ultra weight-edit proposals, while preserving or reducing local browser resource use. [The current protocol](docs/ifeval-browser-quality-resource-protocol.md) and [command runbook](docs/ifeval-browser-v2-runbook.md) define one bounded workflow: reuse pristine and its saved 32-item baseline; import, audit, convert and evaluate each genuine proposal; select by strict compliance gain with no more scored output tokens; freeze; then run available final IFEval and the original Browser LLM Bench A–B–B–A resource comparison.
+**The combined goal is not established.** Three fresh Astra weight edits were independently audited, converted and evaluated in WebLLM on the same 32 development prompts. All three matched the original model's 16/32 strict passes. None met the frozen requirement of higher strict compliance with no more scored output tokens, so pristine was retained and the conditional Browser LLM Bench A–B–B–A comparison was skipped.
 
-```bash
-artifacts/ifeval-browser-v1/evaluator-env/bin/python -m weight_space_lab.ifeval_v2_study status --root artifacts/ifeval-browser-v2-narrowed
-```
+| Development artifact | Strict passes | Loose passes | Scored output tokens |
+| --- | ---: | ---: | ---: |
+| Saved original baseline | 16/32 | 17/32 | 13,941 |
+| Astra round 1 | 16/32 | 17/32 | 15,019 |
+| Astra round 2 | 16/32 | 17/32 | 12,644 |
+| Astra round 3 | 16/32 | 17/32 | 12,591 |
 
-The [current preparation report](reports/ifeval-browser-v2-narrowed/README.md) records verification, actual final-data availability and remaining capacity. No V2 model result is implied by implementation or synthetic tests. The first private editor packet is delivered locally; genuine manual responses are the planned execution handoffs. Random controls, authored benchmarks, native/hosted GPU experiments and automated frontier APIs are optional follow-ups.
+Explore the [results website](https://arhaan2.github.io/weight-space-lab/), [completed execution report](reports/ifeval-browser-v2-collaboration-run/README.md) and [aggregate data](reports/ifeval-browser-v2-collaboration-run/result.json). The report preserves all failed stages, exact-file recovery and actual dispatch accounting. No additional target generation was used to recover offline grading.
+
+The editor route used actual fresh-context `gpt-6-astra` collaboration agents; Ultra effort and immutable provider identity were not verified. The saved baseline used Chrome 156.0.8078.80 and the candidates used Chrome 157.0.8103.39. There are zero verified untouched final prompts, so this is development evidence with a browser-version confound, not a fresh held-out quality claim. Fewer output tokens alone do not establish lower browser memory, power or resource use.
+
+The [frozen protocol](docs/ifeval-browser-quality-resource-protocol.md), [historical preparation report](reports/ifeval-browser-v2-narrowed/README.md) and [execution amendments](docs/2026-11-10-direction.md) explain the bounds and deviations. A subsequent quality claim needs a new baseline on the same current browser and a verified untouched final set.
 
 ## Closed results and historical preparation
+
+These records retain prior milestones. Statements about pending execution or authorization below refer to their named historical workflows; the current V2 result is above.
 
 **IFEval browser V1 is closed: completed experiment, inconclusive held-out compliance.** Strict prompt compliance was 70/128 candidate versus 69/128 baseline (+0.78125 percentage points; frozen 95% interval −5.47 to +7.03). Improvement and equivalence are unestablished. The candidate completed through a separate continuation after the preserved supervisor interruption. See the [canonical V1 results](reports/ifeval-browser-v1-final/README.md), [saved-output interpretation](docs/ifeval-v1-output-review.md), [public reproduction record](docs/ifeval-v1-reproduction.md), and [historical V2 proposal](docs/ifeval-browser-v2-protocol.md). That proposal is superseded by the current workflow above; its preparation evidence is retained unchanged.
 

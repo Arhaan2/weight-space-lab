@@ -1,0 +1,1000 @@
+{
+  "schema_version": 1,
+  "project": "Weight Space Lab",
+  "updated": "2026-11-10",
+  "model": {
+    "name": "Qwen3.5-0.8B",
+    "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "runtime": "WebLLM 0.2.86",
+    "quantization": "q4f16_1",
+    "backend": "Apple WebGPU"
+  },
+  "v1": {
+    "status": "completed_inconclusive",
+    "development": {
+      "baseline": {
+        "strict": 16,
+        "loose": 17,
+        "total": 32,
+        "output_tokens": 13941,
+        "generation_seconds": 263.5452995605469
+      },
+      "candidate": {
+        "strict": 17,
+        "loose": 18,
+        "total": 32,
+        "output_tokens": 13903,
+        "generation_seconds": 266.79330004882814
+      }
+    },
+    "heldout": {
+      "metrics": {
+        "instruction_loose": {
+          "baseline": {
+            "denominator": 173,
+            "numerator": 112,
+            "value": 0.6473988439306358
+          },
+          "candidate": {
+            "denominator": 173,
+            "numerator": 116,
+            "value": 0.6705202312138728
+          },
+          "ci95_percentage_points": [
+            -2.9069767441860463,
+            7.6923076923076925
+          ],
+          "difference_percentage_points": 2.312138728323699
+        },
+        "instruction_strict": {
+          "baseline": {
+            "denominator": 173,
+            "numerator": 106,
+            "value": 0.6127167630057804
+          },
+          "candidate": {
+            "denominator": 173,
+            "numerator": 108,
+            "value": 0.6242774566473989
+          },
+          "ci95_percentage_points": [
+            -3.8461538461538463,
+            6.2857142857142865
+          ],
+          "difference_percentage_points": 1.1560693641618496
+        },
+        "prompt_loose": {
+          "baseline": {
+            "denominator": 128,
+            "numerator": 74,
+            "value": 0.578125
+          },
+          "candidate": {
+            "denominator": 128,
+            "numerator": 77,
+            "value": 0.6015625
+          },
+          "ci95_percentage_points": [
+            -3.90625,
+            8.59375
+          ],
+          "difference_percentage_points": 2.34375
+        },
+        "prompt_strict": {
+          "baseline": {
+            "denominator": 128,
+            "numerator": 69,
+            "value": 0.5390625
+          },
+          "candidate": {
+            "denominator": 128,
+            "numerator": 70,
+            "value": 0.546875
+          },
+          "ci95_percentage_points": [
+            -5.46875,
+            7.03125
+          ],
+          "difference_percentage_points": 0.78125
+        }
+      },
+      "paired_prompt_outcomes": {
+        "loose": {
+          "improved": 10,
+          "regressed": 7,
+          "tied": 111,
+          "unresolved": 0
+        },
+        "strict": {
+          "improved": 8,
+          "regressed": 7,
+          "tied": 113,
+          "unresolved": 0
+        }
+      },
+      "arms": {
+        "baseline": {
+          "accounting": {
+            "ambiguous_dispatch_outcomes": 0,
+            "attempted_model_failures": 0,
+            "attempted_scored_requests": 128,
+            "dispatched_without_observed_output": 0,
+            "execution_status_counts": {
+              "ok": 69,
+              "truncated": 59
+            },
+            "graded_outputs": 128,
+            "grader_errors": 0,
+            "grader_timeouts": 0,
+            "missing_outputs_including_unexecuted": 0,
+            "natural_completions": 69,
+            "scheduled_prompts": 128,
+            "scored_generated_tokens": 68243,
+            "scored_generation_seconds": 1704.5630007324219,
+            "scored_input_tokens": 8745,
+            "scored_requests_with_unknown_duration": 0,
+            "scored_requests_with_unknown_tokens": 0,
+            "truncations": 59,
+            "unexecuted_slots": 0
+          },
+          "allocation_sampled_maxima": {
+            "eventLoopDelayMs": 15305.599999904633,
+            "gpuBufferBytes": 1747697720,
+            "heapBytes": null,
+            "wasmBytes": 283181056
+          },
+          "source_checkpoint_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+          "deployed_artifact_sha256": "5ead3e9c60107ab7168bee5373f6cd636c839b82557fed6550aaaa30170aa5b0"
+        },
+        "candidate": {
+          "accounting": {
+            "ambiguous_dispatch_outcomes": 0,
+            "attempted_model_failures": 0,
+            "attempted_scored_requests": 128,
+            "dispatched_without_observed_output": 0,
+            "execution_status_counts": {
+              "ok": 77,
+              "truncated": 51
+            },
+            "graded_outputs": 128,
+            "grader_errors": 0,
+            "grader_timeouts": 0,
+            "missing_outputs_including_unexecuted": 0,
+            "natural_completions": 77,
+            "scheduled_prompts": 128,
+            "scored_generated_tokens": 60189,
+            "scored_generation_seconds": 1227.9859008789062,
+            "scored_input_tokens": 8745,
+            "scored_requests_with_unknown_duration": 0,
+            "scored_requests_with_unknown_tokens": 0,
+            "truncations": 51,
+            "unexecuted_slots": 0
+          },
+          "allocation_sampled_maxima": {
+            "eventLoopDelayMs": 9645,
+            "gpuBufferBytes": 1747697720,
+            "heapBytes": null,
+            "wasmBytes": 283181056
+          },
+          "source_checkpoint_sha256": "f9c767c06ec3c17dbdfedc43b695d64d025ae7393d3f425cee71ef45c358d6bf",
+          "deployed_artifact_sha256": "6e18cc4906ce18786b9197bcc7fb5f93ffc706d808b0809150349546eef3627b"
+        }
+      }
+    },
+    "edit": {
+      "operation": "scale_columns",
+      "layers": [
+        15,
+        19
+      ],
+      "tensor": "mlp.down_proj.weight",
+      "columns": [
+        0,
+        59
+      ],
+      "scale": 0.75,
+      "changed_bf16_entries": 122880,
+      "editor_attribution": "Operator-attributed Astra / Ultra; provider identity and usage not observed."
+    }
+  },
+  "v2": {
+    "status": "complete",
+    "description": "3 candidate development evaluations are complete. No edit qualified; the original model was retained. The combined quality and resource goal was not demonstrated.",
+    "proposal_limit": 4,
+    "development_prompts": 32,
+    "untouched_final_prompts": 0,
+    "resource_session_order": [
+      "A",
+      "B",
+      "B",
+      "A"
+    ],
+    "requests_per_resource_session": 60,
+    "resource_status": "pristine_retained_no_comparison",
+    "qualification": {
+      "strict_passes_greater_than": 16,
+      "output_tokens_at_most": 13941
+    },
+    "resource_status_label": "Skipped: pristine retained",
+    "limitation": "No verified untouched final prompts remain. V2 quality results are development evidence, without fresh held-out confirmation.",
+    "execution": {
+      "schema_version": 1,
+      "kind": "sanitized_v2_collaboration_result",
+      "updated_at_utc": "2026-11-10T22:05:38.806569+00:00",
+      "study_sha256": "bf38a30cb9bd0bac1b4afc2167b9293c32bb4d61b1af3e178a0f474e502b4e0c",
+      "continuation_sha256": "b25f884b71c2c538fbbd2659a09bcc0ee12a6e0bce824596fe07ca717324a82c",
+      "status": "complete",
+      "joint_goal_status": "no_qualifying_edit",
+      "model": "Qwen3.5-0.8B",
+      "runtime": "WebLLM 0.2.86 / MLC",
+      "quantization": "q4f16_1",
+      "benchmark": "32-prompt Ai2 RLVR-IFeval development set",
+      "baseline": {
+        "strict_passes": 16,
+        "loose_passes": 17,
+        "denominator": 32,
+        "scored_output_tokens": 13941,
+        "natural_completions": 20,
+        "truncations": 12,
+        "generation_seconds": 263.5452995605469,
+        "technically_valid": true,
+        "unresolved_grader_errors": 0
+      },
+      "baseline_environment": {
+        "chrome_version": "156.0.8078.80",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+        "platform": "MacIntel",
+        "hardware_concurrency": 14
+      },
+      "rounds": [
+        {
+          "round": 1,
+          "status": "completed",
+          "editor_dispatched": true,
+          "metrics": {
+            "strict_passes": 16,
+            "loose_passes": 17,
+            "denominator": 32,
+            "scored_output_tokens": 15019,
+            "natural_completions": 18,
+            "truncations": 14,
+            "generation_seconds": 279.5922004394531,
+            "technically_valid": true,
+            "unresolved_grader_errors": 0
+          },
+          "qualifies": false,
+          "artifact_sha256": "704590e6512285752e25795f2a81c389429ed662bf80f58d5a89227ea89e40fc",
+          "editor_delivery_turns": 1,
+          "graded_evidence_sha256": "0fc4469b07b234421ba259032baf77b5c88beba570c7282b5d43c9a782cbdbb6",
+          "deployment_limits_satisfied": true,
+          "memory_limits_satisfied": true,
+          "paired_outcomes": {
+            "strict": {
+              "improvements": 1,
+              "regressions": 1,
+              "ties": 30,
+              "unresolved": 0
+            },
+            "loose": {
+              "improvements": 1,
+              "regressions": 1,
+              "ties": 30,
+              "unresolved": 0
+            }
+          },
+          "source_edit": {
+            "result_sha256": "d182b6945dc2dff8e261c6e6a9467aa574019952bc75682da0059eabbef8e870",
+            "changed_stored_entries": 122880,
+            "changed_numerical_entries": 122880,
+            "targeted_coordinates": 122880
+          },
+          "weight_operations": [
+            {
+              "op": "scale_columns",
+              "tensor": "model.language_model.layers.15.mlp.down_proj.weight",
+              "columns": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024,
+                2025,
+                2026,
+                2027,
+                2028,
+                2029,
+                2030,
+                2031,
+                2032,
+                2033,
+                2034,
+                2035,
+                2036,
+                2037,
+                2038,
+                2039,
+                2040,
+                2041,
+                2042,
+                2043,
+                2044,
+                2045,
+                2046,
+                2047,
+                2048,
+                2049,
+                2050,
+                2051,
+                2052,
+                2053,
+                2054,
+                2055,
+                2056,
+                2057,
+                2058,
+                2059,
+                2060,
+                2061,
+                2062,
+                2063,
+                2064,
+                2065,
+                2066,
+                2067,
+                2068,
+                2069,
+                2070,
+                2071,
+                2072,
+                2073
+              ],
+              "factor": 0.75
+            },
+            {
+              "op": "scale_columns",
+              "tensor": "model.language_model.layers.19.mlp.down_proj.weight",
+              "columns": [
+                3524,
+                3525,
+                3526,
+                3527,
+                3528,
+                3529,
+                3530,
+                3531,
+                3532,
+                3533,
+                3534,
+                3535,
+                3536,
+                3537,
+                3538,
+                3539,
+                3540,
+                3541,
+                3542,
+                3543,
+                3544,
+                3545,
+                3546,
+                3547,
+                3548,
+                3549,
+                3550,
+                3551,
+                3552,
+                3553,
+                3554,
+                3555,
+                3556,
+                3557,
+                3558,
+                3559,
+                3560,
+                3561,
+                3562,
+                3563,
+                3564,
+                3565,
+                3566,
+                3567,
+                3568,
+                3569,
+                3570,
+                3571,
+                3572,
+                3573,
+                3574,
+                3575,
+                3576,
+                3577,
+                3578,
+                3579,
+                3580,
+                3581,
+                3582,
+                3583
+              ],
+              "factor": 0.75
+            }
+          ],
+          "base_checkpoint_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+          "composition": "sequential",
+          "execution": {
+            "status": "completed",
+            "engine_load_attempts": 1,
+            "warmup_dispatches": 1,
+            "scored_dispatches": 32,
+            "generation_dispatches": 33,
+            "cleanup": {
+              "process_group_stop_requested": true,
+              "controller_exit_verified": true,
+              "controller_returncode": 0,
+              "unload_confirmed": true,
+              "worker_terminated": true,
+              "forced_termination": false,
+              "native_capture_exit_confirmed": true,
+              "chrome_exit_confirmed": true,
+              "local_harness_exit_confirmed": true,
+              "owned_browser_and_worker_resources_released": true,
+              "release_scope": "Dedicated browser process/profile, all of its page/worker/device resources, and this local harness only; unrelated browser data untouched",
+              "chrome_os_exit_verified": true,
+              "retained_owned_pids_alive": []
+            },
+            "warmup_sampled_tokens": 12,
+            "error": null
+          },
+          "environment": {
+            "chrome_version": "157.0.8103.39",
+            "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36",
+            "platform": "MacIntel",
+            "hardware_concurrency": 14
+          },
+          "same_browser_as_saved_baseline": false
+        },
+        {
+          "round": 2,
+          "status": "completed",
+          "editor_dispatched": true,
+          "metrics": {
+            "strict_passes": 16,
+            "loose_passes": 17,
+            "denominator": 32,
+            "scored_output_tokens": 12644,
+            "natural_completions": 22,
+            "truncations": 10,
+            "generation_seconds": 303.1460002441406,
+            "technically_valid": true,
+            "unresolved_grader_errors": 0
+          },
+          "qualifies": false,
+          "artifact_sha256": "f78b942268e7fd5cfbb7747eaad2a93724a9658b31e9d6d1670e86b950495a66",
+          "editor_delivery_turns": 1,
+          "graded_evidence_sha256": "ff9dfdfb6c97b49a1dd44634b870a95107b04806b6b5ca1c6ac4b986a441bc43",
+          "deployment_limits_satisfied": true,
+          "memory_limits_satisfied": true,
+          "paired_outcomes": {
+            "strict": {
+              "improvements": 0,
+              "regressions": 0,
+              "ties": 32,
+              "unresolved": 0
+            },
+            "loose": {
+              "improvements": 0,
+              "regressions": 0,
+              "ties": 32,
+              "unresolved": 0
+            }
+          },
+          "source_edit": {
+            "result_sha256": "145ed8ee6b8d5761b1ad1eda9812c77bca9915c1a1214de221cd0a01caef66fa",
+            "changed_stored_entries": 122880,
+            "changed_numerical_entries": 122880,
+            "targeted_coordinates": 122880
+          },
+          "weight_operations": [
+            {
+              "op": "scale_columns",
+              "tensor": "model.language_model.layers.15.mlp.down_proj.weight",
+              "columns": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024,
+                2025,
+                2026,
+                2027,
+                2028,
+                2029,
+                2030,
+                2031,
+                2032,
+                2033,
+                2034,
+                2035,
+                2036,
+                2037,
+                2038,
+                2039,
+                2040,
+                2041,
+                2042,
+                2043,
+                2044,
+                2045,
+                2046,
+                2047,
+                2048,
+                2049,
+                2050,
+                2051,
+                2052,
+                2053,
+                2054,
+                2055,
+                2056,
+                2057,
+                2058,
+                2059,
+                2060,
+                2061,
+                2062,
+                2063,
+                2064,
+                2065,
+                2066,
+                2067,
+                2068,
+                2069,
+                2070,
+                2071,
+                2072,
+                2073
+              ],
+              "factor": 1.25
+            },
+            {
+              "op": "scale_columns",
+              "tensor": "model.language_model.layers.19.mlp.down_proj.weight",
+              "columns": [
+                3524,
+                3525,
+                3526,
+                3527,
+                3528,
+                3529,
+                3530,
+                3531,
+                3532,
+                3533,
+                3534,
+                3535,
+                3536,
+                3537,
+                3538,
+                3539,
+                3540,
+                3541,
+                3542,
+                3543,
+                3544,
+                3545,
+                3546,
+                3547,
+                3548,
+                3549,
+                3550,
+                3551,
+                3552,
+                3553,
+                3554,
+                3555,
+                3556,
+                3557,
+                3558,
+                3559,
+                3560,
+                3561,
+                3562,
+                3563,
+                3564,
+                3565,
+                3566,
+                3567,
+                3568,
+                3569,
+                3570,
+                3571,
+                3572,
+                3573,
+                3574,
+                3575,
+                3576,
+                3577,
+                3578,
+                3579,
+                3580,
+                3581,
+                3582,
+                3583
+              ],
+              "factor": 1.25
+            }
+          ],
+          "base_checkpoint_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+          "composition": "sequential",
+          "execution": {
+            "status": "completed",
+            "engine_load_attempts": 1,
+            "warmup_dispatches": 1,
+            "scored_dispatches": 32,
+            "generation_dispatches": 33,
+            "cleanup": {
+              "process_group_stop_requested": true,
+              "controller_exit_verified": true,
+              "controller_returncode": 0,
+              "unload_confirmed": true,
+              "worker_terminated": true,
+              "forced_termination": false,
+              "native_capture_exit_confirmed": true,
+              "chrome_exit_confirmed": true,
+              "local_harness_exit_confirmed": true,
+              "owned_browser_and_worker_resources_released": true,
+              "release_scope": "Dedicated browser process/profile, all of its page/worker/device resources, and this local harness only; unrelated browser data untouched",
+              "chrome_os_exit_verified": true,
+              "retained_owned_pids_alive": []
+            },
+            "warmup_sampled_tokens": 12,
+            "error": null
+          },
+          "environment": {
+            "chrome_version": "157.0.8103.39",
+            "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36",
+            "platform": "MacIntel",
+            "hardware_concurrency": 14
+          },
+          "same_browser_as_saved_baseline": false
+        },
+        {
+          "round": 3,
+          "status": "completed",
+          "editor_dispatched": true,
+          "metrics": {
+            "strict_passes": 16,
+            "loose_passes": 17,
+            "denominator": 32,
+            "scored_output_tokens": 12591,
+            "natural_completions": 22,
+            "truncations": 10,
+            "generation_seconds": 234.5698994140625,
+            "technically_valid": true,
+            "unresolved_grader_errors": 0
+          },
+          "qualifies": false,
+          "artifact_sha256": "eaa72067ef9bea370bd80398dafecbea5437379c8d6ddf27678b0068eebb0c38",
+          "editor_delivery_turns": 2,
+          "graded_evidence_sha256": "2e760fe7415427b0f1aa276ddcdb8cb60fa713dc017c96f46d30e3dfc5a184c4",
+          "deployment_limits_satisfied": true,
+          "memory_limits_satisfied": true,
+          "paired_outcomes": {
+            "strict": {
+              "improvements": 0,
+              "regressions": 0,
+              "ties": 32,
+              "unresolved": 0
+            },
+            "loose": {
+              "improvements": 0,
+              "regressions": 0,
+              "ties": 32,
+              "unresolved": 0
+            }
+          },
+          "source_edit": {
+            "result_sha256": "d3a2d071c41110570789cb142cc86a04c1b126f07564e1c25e2fac7b3d230787",
+            "changed_stored_entries": 122880,
+            "changed_numerical_entries": 122880,
+            "targeted_coordinates": 122880
+          },
+          "weight_operations": [
+            {
+              "op": "scale_columns",
+              "tensor": "model.language_model.layers.15.mlp.down_proj.weight",
+              "columns": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024,
+                2025,
+                2026,
+                2027,
+                2028,
+                2029,
+                2030,
+                2031,
+                2032,
+                2033,
+                2034,
+                2035,
+                2036,
+                2037,
+                2038,
+                2039,
+                2040,
+                2041,
+                2042,
+                2043,
+                2044,
+                2045,
+                2046,
+                2047,
+                2048,
+                2049,
+                2050,
+                2051,
+                2052,
+                2053,
+                2054,
+                2055,
+                2056,
+                2057,
+                2058,
+                2059,
+                2060,
+                2061,
+                2062,
+                2063,
+                2064,
+                2065,
+                2066,
+                2067,
+                2068,
+                2069,
+                2070,
+                2071,
+                2072,
+                2073
+              ],
+              "factor": 1.5
+            },
+            {
+              "op": "scale_columns",
+              "tensor": "model.language_model.layers.19.mlp.down_proj.weight",
+              "columns": [
+                3524,
+                3525,
+                3526,
+                3527,
+                3528,
+                3529,
+                3530,
+                3531,
+                3532,
+                3533,
+                3534,
+                3535,
+                3536,
+                3537,
+                3538,
+                3539,
+                3540,
+                3541,
+                3542,
+                3543,
+                3544,
+                3545,
+                3546,
+                3547,
+                3548,
+                3549,
+                3550,
+                3551,
+                3552,
+                3553,
+                3554,
+                3555,
+                3556,
+                3557,
+                3558,
+                3559,
+                3560,
+                3561,
+                3562,
+                3563,
+                3564,
+                3565,
+                3566,
+                3567,
+                3568,
+                3569,
+                3570,
+                3571,
+                3572,
+                3573,
+                3574,
+                3575,
+                3576,
+                3577,
+                3578,
+                3579,
+                3580,
+                3581,
+                3582,
+                3583
+              ],
+              "factor": 1.5
+            }
+          ],
+          "base_checkpoint_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+          "composition": "sequential",
+          "execution": {
+            "status": "completed",
+            "engine_load_attempts": 1,
+            "warmup_dispatches": 1,
+            "scored_dispatches": 32,
+            "generation_dispatches": 33,
+            "cleanup": {
+              "process_group_stop_requested": true,
+              "controller_exit_verified": true,
+              "controller_returncode": 0,
+              "unload_confirmed": true,
+              "worker_terminated": true,
+              "forced_termination": false,
+              "native_capture_exit_confirmed": true,
+              "chrome_exit_confirmed": true,
+              "local_harness_exit_confirmed": true,
+              "owned_browser_and_worker_resources_released": true,
+              "release_scope": "Dedicated browser process/profile, all of its page/worker/device resources, and this local harness only; unrelated browser data untouched",
+              "chrome_os_exit_verified": true,
+              "retained_owned_pids_alive": []
+            },
+            "warmup_sampled_tokens": 12,
+            "error": null
+          },
+          "environment": {
+            "chrome_version": "157.0.8103.39",
+            "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36",
+            "platform": "MacIntel",
+            "hardware_concurrency": 14
+          },
+          "same_browser_as_saved_baseline": false
+        },
+        {
+          "round": 4,
+          "status": "invalid",
+          "editor_dispatched": false,
+          "metrics": null,
+          "qualifies": null,
+          "artifact_sha256": null,
+          "editor_delivery_turns": 0,
+          "reason": "Closed without an Astra call: the preserved failed pre-dispatch stage consumed one of four browser-development attempts."
+        }
+      ],
+      "selection": {
+        "named_arms": {
+          "pristine_baseline": "5ead3e9c60107ab7168bee5373f6cd636c839b82557fed6550aaaa30170aa5b0",
+          "selected_astra": "5ead3e9c60107ab7168bee5373f6cd636c839b82557fed6550aaaa30170aa5b0"
+        },
+        "selection": "pristine_fallback",
+        "resource_order": [],
+        "frozen_before_final_results": true
+      },
+      "resource": {
+        "status": "pristine_retained_no_comparison",
+        "scheduled_sessions": 0,
+        "complete_sessions": 0,
+        "matched_environment": false,
+        "sessions": [],
+        "reason": "Pristine retained; no redundant comparison was run."
+      },
+      "untouched_final_prompts": 0,
+      "offline_grading_recovery": {
+        "status": "completed",
+        "charged_seconds": 27.657072332920507,
+        "pre_recovery_state_sha256": "8cd28b48f4d5797d21170b9447787ebcf0c6e92c7da787f6ad95d905886ec8b1",
+        "original_failed_stage_preserved": true,
+        "target_loads": 0,
+        "target_generations": 0,
+        "editor_calls": 0,
+        "calendar_and_global_limits_unchanged": true,
+        "harness_files_restored_exactly": 19,
+        "evaluator_payloads_restored": 171,
+        "unavailable_generated_bytecode_quarantined": 347,
+        "evaluator_versions_changed": false,
+        "frozen_inputs_verified_after_restoration": 758,
+        "interpretation": "Round 3 browser execution and cleanup completed. Offline grading initially stopped before any checker call when files became dataless. Exact frozen bytes/pinned package payloads were restored, existing project bytecode was bypassed, and one separately charged offline pass graded the preserved outputs. The failed stage and halt snapshot remain retained."
+      },
+      "actual_browser_usage": {
+        "engine_load_attempts": 3,
+        "warmup_dispatches": 3,
+        "scored_dispatches": 96,
+        "generation_dispatches": 99,
+        "sampled_tokens_including_warmups": 40290,
+        "unresolved_generation_sessions": 0,
+        "failed_target_sequences": 0,
+        "generation_retries": 0,
+        "preserved_pre_dispatch_failures": 1,
+        "charged_local_seconds": 1124.457251250511,
+        "charged_browser_seconds": 926.824992623413,
+        "scope": "All newly observed development and resource sessions, including warmups; historical saved baseline excluded. Original zero-dispatch failure remains separately counted."
+      },
+      "accounting": {
+        "model_loads": 3,
+        "warmups": 3,
+        "scored_generations": 96,
+        "scored_output_tokens": 40254,
+        "warmup_sampled_tokens": 36,
+        "charged_local_seconds": 1124.457251250511,
+        "charged_browser_seconds": 926.824992623413,
+        "development_browser_attempts": 4,
+        "count_scope": "Development candidate sessions only for loads/generations/tokens; stage times include inherited costs and any resource stages."
+      },
+      "editor": {
+        "actual_route": "Codex collaboration subagent",
+        "requested_model": "gpt-6-astra",
+        "fresh_context_each_round": true,
+        "effort_override": null,
+        "ultra_verified": false,
+        "actual_agent_dispatches": 3,
+        "immutable_provider_version": null,
+        "editor_delivery_turns": 4,
+        "submission_slots_consumed": 4,
+        "provider_tokens": null,
+        "provider_billing": null,
+        "technical_isolation": "unverified"
+      },
+      "preserved_pre_dispatch_failure": {
+        "cause": "Sandbox denied native memory-pressure query; resource_state_unknown",
+        "model_loads": 0,
+        "warmups": 0,
+        "generations": 0,
+        "original_state_sha256": "0feb6c71df16556e50273247ee41187e72925cbf53e46fc08447d7ab8ccbc4ca",
+        "original_files_verified": 606,
+        "original_files_expected": 606,
+        "original_verification_at_utc": "2026-11-10T22:05:24.577742+00:00",
+        "original_state_and_ledgers_unchanged": true,
+        "carried_local_seconds": 52.11339745623991,
+        "carried_browser_seconds": 1.0793538747821003,
+        "same_calendar_and_limits": true,
+        "maximum_real_candidate_evaluations": 3,
+        "correction": "Unchanged controller and native resource guards run outside sandbox; original failed attempt remains counted."
+      },
+      "limitations": [
+        "No untouched final prompts are available; development results do not establish fresh held-out quality.",
+        "The reused development baseline ran Chrome 156.0.8078.80; these candidates run Chrome 157.0.8103.39. The browser difference prevents an isolated weight-only causal claim from the development comparison. The resource A-B-B-A comparison, if selected, uses the current matched environment.",
+        "A collaboration editor was used instead of the frozen manual-interface route; no Ultra or immutable provider identity is claimed.",
+        "Two resource sessions per artifact would form a small pilot, not proof of precise resource equality.",
+        "GPU allocation descriptors and WASM address space are not physical VRAM; missing power is unavailable, not zero."
+      ]
+    }
+  },
+  "sources": {
+    "v1_report": "https://github.com/Arhaan2/weight-space-lab/blob/43a01f81ededd3b5f7b9c24997ce6c720db84c0f/reports/ifeval-browser-v1-final/README.md",
+    "v1_data": "https://github.com/Arhaan2/weight-space-lab/blob/43a01f81ededd3b5f7b9c24997ce6c720db84c0f/reports/ifeval-browser-v1-final/result.json",
+    "reproduction": "https://github.com/Arhaan2/weight-space-lab/blob/43a01f81ededd3b5f7b9c24997ce6c720db84c0f/docs/ifeval-v1-reproduction.md",
+    "v2_protocol": "https://github.com/Arhaan2/weight-space-lab/blob/43a01f81ededd3b5f7b9c24997ce6c720db84c0f/docs/ifeval-browser-quality-resource-protocol.md",
+    "final_data_audit": "https://github.com/Arhaan2/weight-space-lab/blob/43a01f81ededd3b5f7b9c24997ce6c720db84c0f/docs/ifeval-v2-final-data.md",
+    "v2_execution": "https://github.com/Arhaan2/weight-space-lab/blob/codex/results-site/reports/ifeval-browser-v2-collaboration-run/README.md"
+  }
+}
