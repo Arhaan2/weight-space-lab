@@ -33,7 +33,8 @@ def proposal(starts=(0, 3524), factors=(0.5, 1.5)):
 def completed(round_number, identity, passes, **kwargs):
     return {"round": round_number, "artifact_sha256": identity * 64,
         "strict_passes": passes, "completed": True, "technically_valid": True,
-        "independently_graded": True, "scheduled_prompts": 32, "graded_prompts": 32, **kwargs}
+        "independently_graded": True, "scheduled_prompts": 32, "graded_prompts": 32,
+        "scored_output_tokens":13000,"deployment_limits_satisfied":True,"memory_limits_satisfied":True, **kwargs}
 
 
 class ControlTests(unittest.TestCase):
@@ -138,8 +139,8 @@ class SelectionTests(unittest.TestCase):
             self.assertEqual(selected["artifact_sha256"], BASE)
             self.assertIsNone(selected["round"])
 
-    def test_earliest_completed_tie_ignores_other_metrics_and_input_order(self):
-        candidates = [completed(4, "d", 23), completed(2, "c", 23, sampled_tokens=99),
+    def test_strict_then_tokens_then_round_selection(self):
+        candidates = [completed(4, "d", 23), completed(2, "c", 23, scored_output_tokens=12000),
                       completed(1, "a", 23, technically_valid=False), completed(3, "e", 17)]
         self.assertEqual(select_candidate(candidates, BASE)["round"], 2)
         self.assertEqual(select_candidate(list(reversed(candidates)), BASE)["round"], 2)
@@ -153,18 +154,25 @@ class SelectionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "pristine"):
             select_candidate([completed(1, "b", 20)], BASE)
 
-    def test_final_names_deduplicate_by_artifact_identity_in_fixed_order(self):
+    def test_quality_gain_with_more_tokens_or_unmet_memory_limits_does_not_qualify(self):
+        for row in (completed(1,"a",20,scored_output_tokens=13942),
+                    completed(1,"a",20,memory_limits_satisfied=False),
+                    completed(1,"a",20,deployment_limits_satisfied=False)):
+            self.assertIsNone(select_candidate([row],BASE)["round"])
+        self.assertEqual(select_candidate([completed(1,"a",20,scored_output_tokens=13941)],BASE)["round"],1)
+
+    def test_final_fallback_runs_nothing_and_missing_final_preserves_resource_plan(self):
         selected = lambda identity: {"artifact_sha256": identity * 64}
-        full = final_arms(BASE, selected("a"), selected("c"))
+        full = final_arms(BASE, selected("a"))
         self.assertEqual([row["dispatch_arm"] for row in full["distinct_evaluations"]],
-                         ["pristine_baseline", "selected_astra", "selected_random_control"])
-        shared = final_arms(BASE, selected("a"), selected("a"))
-        self.assertEqual(shared["distinct_evaluations"][1]["named_arms"],
-                         ["selected_astra", "selected_random_control"])
-        self.assertEqual(shared["unused_final_slots_expire"], 1)
-        fallback = final_arms(BASE, selected("b"), selected("b"))
-        self.assertEqual(len(fallback["distinct_evaluations"]), 1)
-        self.assertEqual(fallback["unused_final_slots_expire"], 2)
+                         ["pristine_baseline", "selected_astra"])
+        self.assertEqual(full["resource_order"],["pristine_baseline","selected_astra","selected_astra","pristine_baseline"])
+        fallback = final_arms(BASE, selected("b"))
+        self.assertEqual(fallback["distinct_evaluations"], [])
+        self.assertEqual(fallback["resource_order"], [])
+        missing = final_arms(BASE,selected("a"),final_prompts=0)
+        self.assertEqual(missing["distinct_evaluations"],[])
+        self.assertEqual(len(missing["resource_order"]),4)
 
 
 class CandidateAdapterTests(unittest.TestCase):

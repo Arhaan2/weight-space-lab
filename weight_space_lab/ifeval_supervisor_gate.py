@@ -48,10 +48,12 @@ def _runtime_failure(event):
         raise ValueError("browser session stopped or failed; no further dispatch")
 
 
-def _validate_sample(event, expected_index, schedule):
+def _validate_sample(event, expected_index, schedule, settings=None):
     sample = event.get("data")
     warmup = expected_index == 1
-    cap = 16 if warmup else 1024
+    settings = settings or {}
+    cap = 16 if warmup else settings.get("maxTokens",1024)
+    request_ms = settings.get("requestLimitMs",120000)
     if not isinstance(sample, dict):
         raise ValueError("malformed durable completion event")
     tokens, duration = sample.get("generated_tokens"), sample.get("response_latency_ms")
@@ -63,7 +65,7 @@ def _validate_sample(event, expected_index, schedule):
             or not isinstance(sample.get("raw_output"), str)
             or type(tokens) is not int or not 0 <= tokens <= cap
             or type(duration) not in (int, float) or not math.isfinite(duration)
-            or not 0 <= duration <= 120000
+            or not 0 <= duration <= request_ms
             or sample.get("finish_reason") not in {"stop", "eos", "length"}
             or sample.get("execution_error") is not None
             or sample.get("cancelled", False) is not False
@@ -74,11 +76,13 @@ def _validate_sample(event, expected_index, schedule):
     return sample
 
 
-def _validate_ledger_sample(row, sample, index):
-    cap = 16 if index == 1 else 1024
+def _validate_ledger_sample(row, sample, index, settings=None):
+    settings = settings or {}
+    cap = 16 if index == 1 else settings.get("maxTokens",1024)
+    request_seconds = settings.get("requestLimitMs",120000)/1000
     if (row.get("kind") != "probe" or row.get("retry_of") is not None
             or row.get("attempt_index") != 0 or row.get("requested_sequences") != 1
-            or row.get("max_generated_tokens") != cap or row.get("timeout_seconds") != 120
+            or row.get("max_generated_tokens") != cap or row.get("timeout_seconds") != request_seconds
             or row.get("status") not in {"dispatched", "completed"}):
         raise ValueError("completion does not bind one original dispatched reservation")
     if row["status"] == "completed" and (
@@ -117,10 +121,10 @@ def reconcile_events(target, book, config, handled, seen_samples, *, on_observed
         if event["type"] not in {"warmup-sample", "task-sample"}:
             continue
         index = len(samples) + 1
-        sample = _validate_sample(event, index, schedule)
+        sample = _validate_sample(event, index, schedule, config.get("settings"))
         if index not in handled:
             raise ValueError("completion without an acknowledged dispatch")
-        _validate_ledger_sample(attempts[f"generation-{index}"], sample, index)
+        _validate_ledger_sample(attempts[f"generation-{index}"], sample, index, config.get("settings"))
         digest = canonical_hash(sample)
         if index in seen_samples and seen_samples[index] != digest:
             raise ValueError("previously reconciled completion changed")

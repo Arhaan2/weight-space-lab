@@ -1,0 +1,200 @@
+{
+  "calendar_anchor": "first_production_editor_packet_export_once",
+  "edit_family": {
+    "base_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+    "block_start_range": [
+      0,
+      3524
+    ],
+    "columns_per_tensor": 60,
+    "factors": [
+      0.5,
+      0.75,
+      1.25,
+      1.5
+    ],
+    "operation": "scale_columns",
+    "operations": 2,
+    "shape": [
+      1024,
+      3584
+    ],
+    "targeted_coordinates": 122880,
+    "tensors": [
+      "model.language_model.layers.15.mlp.down_proj.weight",
+      "model.language_model.layers.19.mlp.down_proj.weight"
+    ]
+  },
+  "editor": {
+    "frontier_usage": null,
+    "immutable_model_version": null,
+    "invalid_submission": "consumes proposal slot, including expired or oversized responses; no replacement",
+    "isolation": "unverified",
+    "marginal_billing": null,
+    "max_response_bytes": 262144,
+    "max_submissions": 4,
+    "observed_effort": null,
+    "observed_model": null,
+    "planning_allowance_enforced": false,
+    "planning_allowance_seconds": 7200,
+    "provider_billing_cap": null,
+    "provider_cancellation_limit": null,
+    "provider_token_cap": null,
+    "requested_display_name": "Astra",
+    "requested_effort": "ultra",
+    "requested_mode": "Ultra",
+    "requested_selector": "gpt-6-astra",
+    "route": "manual_authenticated_exploratory",
+    "selection_enforcement": "operator only",
+    "strict_automated_readiness_required": false
+  },
+  "final_set": {
+    "custody": "private ignored evaluator store; procedural separation; technical isolation unverified",
+    "final_quality_available": false,
+    "instructions": 0,
+    "items_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "label": "Deterministic unexposed subset of pinned official Google IFEval; not the full benchmark",
+    "manifest_file_sha256": "f4995f66e947e3484d7a081aa40925843e14d8a5af6080691be1b2ce1d09406a",
+    "manifest_sha256": "e065bb970b99b3cb14f684b0d20afc5b596374a820cb263e9cd2b059f21cf440",
+    "prompts": 0,
+    "qwen_generation_used": false,
+    "reason": "No official prompt has resolved non-exposure after historical evidence audit; final quality stage omitted",
+    "source_revision": "e6890f85757dd84e27ca6df2dd30651dafad28e0",
+    "source_sha256": "67ffeee0fcb87c317c5b08a2de85557b4a7e96ada6178aa645b4954fe4b53d49"
+  },
+  "grading_policy": {
+    "generation_retry": {
+      "max_attempts": 1,
+      "mode": "none"
+    },
+    "grader_retry": {
+      "max_attempts": 1,
+      "mode": "none"
+    },
+    "grader_timeout_seconds": 20,
+    "output_eos_tokens": [],
+    "reasoning_policy": "think_tags",
+    "schema_version": 1,
+    "truncation_policy": "grade"
+  },
+  "limits": {
+    "automatic_retries": 0,
+    "browser_seconds": 10800,
+    "calendar_seconds": 604800,
+    "conversions": 4,
+    "dispatches": 634,
+    "editor_submissions": 4,
+    "engine_loads": 10,
+    "generated_tokens": 408736,
+    "imports": 4,
+    "local_seconds": 14400,
+    "minimum_free_bytes": 8589934592,
+    "packages": 4,
+    "resource_requests": 240,
+    "retained_bytes": 34359738368,
+    "scored_requests": 624,
+    "task_requests": 384,
+    "warmups": 10
+  },
+  "optional_followups": [
+    "matched random controls",
+    "authored benchmark fallback",
+    "native CPU/MPS or hosted GPU",
+    "automated frontier API"
+  ],
+  "per_attempt_seconds": {
+    "analysis_export": 600,
+    "browser_development": 3600,
+    "browser_final": 5400,
+    "browser_preparation": 300,
+    "browser_resource": 1800,
+    "conversions": 1800,
+    "converter_prechecks": 30,
+    "grading": 2560,
+    "imports": 900,
+    "packaging": 300
+  },
+  "resource_limits": {
+    "deployment": "unchanged architecture, tokenizer, q4f16_1, WebLLM0.2.86, compiled library and context4096; effective conversion audit required",
+    "host_memory_pressure_stop_at": 4,
+    "host_thermal_state_stop_at": 2,
+    "resource_regression_allowance": null,
+    "unknown_host_state": "stop"
+  },
+  "schedule": {
+    "baseline_development_reruns": 0,
+    "deduplicate_final_artifacts": true,
+    "development_arms_per_round": [
+      "astra"
+    ],
+    "development_order": [
+      [
+        "astra"
+      ],
+      [
+        "astra"
+      ],
+      [
+        "astra"
+      ],
+      [
+        "astra"
+      ]
+    ],
+    "development_prompts_per_arm": 32,
+    "duplicate_capacity_expires": true,
+    "final_arms": [
+      "pristine_baseline",
+      "selected_astra"
+    ],
+    "final_instructions_per_arm": 0,
+    "final_prompts_per_arm": 0,
+    "resource_order": [
+      "pristine_baseline",
+      "selected_astra",
+      "selected_astra",
+      "pristine_baseline"
+    ],
+    "resource_requests_per_session": 60,
+    "resource_sessions": 4,
+    "rounds": 4
+  },
+  "schema_version": 2,
+  "selection": {
+    "baseline_passes": 16,
+    "baseline_scored_output_tokens": 13941,
+    "baseline_wins_ties": true,
+    "candidate_tie_break": "fewer scored output tokens, then earlier round",
+    "denominator": 32,
+    "fallback": "pristine",
+    "metric": "prompt_level_strict_accuracy",
+    "require_deployment_and_memory_limits": true,
+    "require_scored_tokens_no_greater_than_baseline": true,
+    "require_technically_complete": true,
+    "tokens_latency_loose_metrics_used": "scored output tokens constrain and break strict-score ties; latency and memory observations remain visible"
+  },
+  "settings": {
+    "contextWindow": 4096,
+    "maxTokens": 1024,
+    "requestLimitMs": 120000,
+    "seed": 42,
+    "temperature": 0,
+    "thinking": false,
+    "topP": 1,
+    "warmupTokens": 16,
+    "warmups": 1
+  },
+  "stage_seconds": {
+    "analysis_export": 600,
+    "browser_development": 3600,
+    "browser_final": 5400,
+    "browser_preparation": 120,
+    "browser_resource": 1800,
+    "conversions": 1200,
+    "converter_prechecks": 120,
+    "grading": 720,
+    "imports": 600,
+    "packaging": 240
+  },
+  "study_id": "ifeval-browser-v2-narrowed"
+}

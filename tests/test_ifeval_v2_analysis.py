@@ -123,12 +123,11 @@ class FinalAnalysisTests(unittest.TestCase):
                     item["target"]["kwargs"] *= 2
                 final_items.append(item)
             (evaluator / "final-items.json").write_text(json.dumps(final_items))
-            dataset = {"sha256": "d" * 64}
+            dataset = {"sha256": "d" * 64, "counts": {"prompts": 128, "instructions": 160}}
             study = {"evaluator_root": str(evaluator), "config": {"grading_policy": strict["policy"],
                 "final_set": {"manifest_sha256": dataset["sha256"]}}}
-            named = {name: "a" * 64 for name in ("pristine_baseline", "selected_astra", "selected_random_control")}
-            selection = {"named_arms": named, "distinct_evaluations": [{"artifact_sha256": "a" * 64,
-                "dispatch_arm": "pristine_baseline", "artifact_path": None}]}
+            named = {name: "a" * 64 for name in ("pristine_baseline", "selected_astra")}
+            selection = {"named_arms": named, "distinct_evaluations": []}
             state = {"selection": selection, "final": {}, "slots": {
                 f"r{r}-{m}": {"status": "failed"} for r in range(1, 5) for m in ("astra", "control")}}
             (root / "state.json").write_text(json.dumps(state))
@@ -141,14 +140,41 @@ class FinalAnalysisTests(unittest.TestCase):
                         patch("weight_space_lab.ifeval_v2_analysis._evidence", return_value=({"run_id": "one"}, {})) as read_evidence, \
                         patch("weight_space_lab.ifeval_v2_analysis.compare_selected", return_value={"synthetic_test_only": True}) as compare:
                     result = analyze(root)
-                self.assertEqual(read_evidence.call_count, 1)
-                self.assertEqual(compare.call_count, 3)
-                self.assertEqual(result["distinct_final_artifacts"], 1)
+                self.assertEqual(read_evidence.call_count, 0)
+                self.assertEqual(compare.call_count, 0)
+                self.assertEqual(result["distinct_final_artifacts"], 0)
+                self.assertEqual(result["scheduled_prompts_per_named_arm"], 0)
+                self.assertEqual(result["frozen_final_counts"], {"prompts": 128, "instructions": 160})
+                self.assertEqual(result["status"], "skipped_pristine_retained")
                 self.assertFalse(result["final_outcomes_returned_to_editor"])
                 state["final"]["pristine_baseline"] = {"status": "started"}
                 (root / "state.json").write_text(json.dumps(state))
                 with self.assertRaisesRegex(ValueError, "precede"):
                     freeze_analysis_plan(root, study, selection)
+
+    def test_zero_final_items_freezes_zero_and_skips_quality_analysis(self):
+        items, (strict, _) = fixtures()
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            evaluator = root / 'evaluator'
+            evaluator.mkdir()
+            (evaluator / 'final-items.json').write_text('[]')
+            dataset = {'sha256': 'd' * 64, 'counts': {'prompts': 0, 'instructions': 0}}
+            study = {'evaluator_root': str(evaluator), 'config': {'grading_policy': strict['policy'],
+                'final_set': {'manifest_sha256': dataset['sha256']}}}
+            selection = {'named_arms': {'pristine_baseline': 'a' * 64, 'selected_astra': 'b' * 64},
+                'distinct_evaluations': []}
+            state = {'selection': selection, 'final': {}, 'slots': {
+                f'r{r}-astra': {'status': 'failed'} for r in range(1, 5)}}
+            (root / 'state.json').write_text(json.dumps(state))
+            (root / 'final-selection.json').write_text(json.dumps(selection))
+            with patch('weight_space_lab.ifeval_v2_analysis.verify_frozen', return_value=dataset), \
+                    patch('weight_space_lab.ifeval_v2_study.load', return_value=(root, study, state)):
+                plan = freeze_analysis_plan(root, study, selection)
+                result = analyze(root)
+            self.assertEqual(plan['counts'], {'prompts': 0, 'instructions': 0})
+            self.assertEqual(result['status'], 'unavailable_no_eligible_official_final_items')
+            self.assertEqual(result['contrasts'], {})
 
 
 if __name__ == "__main__":

@@ -8,13 +8,14 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import sys
 import threading
 import time
 from .browser_check import _collector, _stop_process
 from .browser_v2_runner import alive, deadline_watchdog, sample_resources
 from .editor_budget import BudgetLedger
 from .grading import grade_record, grader_identity, verify_ifeval_assets
-from .ifeval_baseline import SETTINGS, POLICY, save, read_events, verify_loaded, reconcile
+from .ifeval_baseline import SETTINGS, POLICY, save, read_events, verify_loaded as verify_task_loaded, reconcile as reconcile_task
 from .ifeval_heldout_runner import adapt_browser_output
 from .browser_tasks import adapt_browser_output as development_adapter
 from .ifeval_candidate_continuation import recover_observations
@@ -24,34 +25,68 @@ from .native_runner import _lock
 from .protocol import canonical_hash
 
 
+RESOURCE_IDENTITY = "browser-llm-bench-standard"
+
+
+def expected_settings(manifest):
+    if manifest.get("workload_identity")==RESOURCE_IDENTITY:
+        from .browser_resource import RESOURCE_SETTINGS
+        return RESOURCE_SETTINGS
+    return SETTINGS
+
+
 def load(root):
     root = Path(root).resolve()
     manifest = read_json(root / "manifest.json")
     config = read_json(root / "baseline-config.json")
+    resource=manifest.get("workload_identity")==RESOURCE_IDENTITY
+    count=len(config["items"])
     if (read_json(root / "ready.json") != {"manifest_sha256": canonical_hash(manifest)}
-            or config["settings"] != SETTINGS or manifest["policy"] != POLICY
-            or manifest["grader"] != grader_identity("ifeval")
+            or config["settings"] != expected_settings(manifest)
+            or manifest["settings"] != config["settings"]
             or config["configurationSha256"] != canonical_hash({k:v for k,v in config.items() if k != "configurationSha256"})
-            or canonical_hash(read_json(manifest["items_path"])) != manifest["items_sha256"]
-            or len(config["items"]) not in (32, 128)
-            or verify_ifeval_assets(manifest["official_ifeval_root"]) != manifest["official_assets"]):
+            or manifest["scheduled_prompts"] != count
+            or (resource and count != 60) or (not resource and not 1 <= count <= 128)):
         raise ValueError("V2 session freeze changed")
+    if not resource and (manifest["policy"] != POLICY or manifest["grader"] != grader_identity("ifeval")
+            or canonical_hash(read_json(manifest["items_path"])) != manifest["items_sha256"]
+            or verify_ifeval_assets(manifest["official_ifeval_root"]) != manifest["official_assets"]):
+        raise ValueError("V2 task data or grader changed")
+    if resource:
+        from .browser_resource import validate_session
+        validate_session(root,manifest,config)
     for name, digest in manifest["files"].items():
-        if file_sha256(name) != digest:
-            raise ValueError("V2 session file changed")
+        if file_sha256(name) != digest: raise ValueError("V2 session file changed")
     return root, manifest
+
+
+def verify_loaded(target,config,code_sha):
+    expected=None
+    if config["settings"]["maxTokens"]==64:
+        expected={"temperature":0,"top_p":1,"seed":42,"max_tokens":64,"extra_body":{"enable_thinking":False}}
+    return verify_task_loaded(target,config,code_sha,expected_generation=expected)
+
+
+def reconcile(book,output,index,config):
+    # Additional workload caps precede the preserved baseline reconciliation.
+    cap=16 if index==1 else config.get("settings",SETTINGS)["maxTokens"]
+    ms=output.get("response_latency_ms"); tokens=output.get("generated_tokens")
+    if (type(tokens) is not int or not 0<=tokens<=cap or type(ms) not in (int,float)
+            or not 0<=ms<=config.get("settings",SETTINGS)["requestLimitMs"]):
+        raise ValueError("generation exceeds its frozen workload token/time cap")
+    return reconcile_task(book,output,index,config)
 
 
 def ledger(root, manifest, *, create=False):
     n = manifest["scheduled_prompts"]
     return BudgetLedger(Path(root) / "generation-budget.sqlite3", run_id=manifest["run_id"],
         limits={"editor_requests":0,"model_probes":n+1,"requested_sequences":n+1,
-            "generated_tokens":n*1024+16,"elapsed_seconds":5400,"billed_units":0},
+            "generated_tokens":n*expected_settings(manifest)["maxTokens"]+16,"elapsed_seconds":manifest.get("browser_seconds",5400),"billed_units":0},
         binding={"manifest_sha256": canonical_hash(manifest),"billing_unit":"none_local_execution"}, create=create)
 
 
 def grant_load(root, manifest, seconds):
-    if seconds < 140:
+    if seconds < expected_settings(manifest)["requestLimitMs"]/1000+20:
         raise TimeoutError("Insufficient browser allowance for request and cleanup")
     now, mono = time.time(), time.monotonic()
     grant = {"started_epoch_ms":now*1000,"deadline_epoch_ms":(now+seconds)*1000,
@@ -71,7 +106,7 @@ def validate_intent(intent, config, code_sha, index):
         "configuration_sha256":config["configurationSha256"],
         "artifact_sha256":config["convertedArtifactSha256"],"run_id":config["runId"]}
     if index:
-        expected.update(warmup=index == 1,max_tokens=16 if index == 1 else 1024,
+        expected.update(warmup=index == 1,max_tokens=16 if index == 1 else config.get("settings",SETTINGS)["maxTokens"],
             sequence_index=index-1,item_id="__warmup__" if index == 1 else config["items"][index-2]["item_id"])
     if any(intent.get(k) != v for k,v in expected.items()):
         raise ValueError("V2 dispatch identity or ordering changed")
@@ -81,6 +116,7 @@ def validate_intent(intent, config, code_sha, index):
 def execute(root, *, on_load, preparation_seconds):
     root, manifest = load(root)
     config = read_json(root/"baseline-config.json")
+    request_seconds=config["settings"]["requestLimitMs"]/1000
     order = {item["item_id"]: i for i, item in enumerate(config["items"])}
     arm = manifest.get("arm", "baseline")
     attempt_id = arm+"-1"
@@ -88,6 +124,9 @@ def execute(root, *, on_load, preparation_seconds):
     target, benchmark = root/"execution"/attempt_id, root/"benchmark"
     if target.exists() or (root/"load-grant.json").exists():
         raise ValueError("V2 session execution already started; retries forbidden")
+    # Generated interpreter caches are not runtime source; the copied harness
+    # contains no historical bytecode and collectors must not create it in place.
+    sys.dont_write_bytecode=True
     collector = _collector(benchmark)
     target.mkdir(parents=True, mode=0o700)  # Refuses repeat execution, even before a load.
     process, terminal, error, cleanup = None, None, None, {}
@@ -119,7 +158,8 @@ def execute(root, *, on_load, preparation_seconds):
                     if process is None:
                         process = subprocess.Popen(["node", "scripts/run-task-evaluation.mjs", str(root/"baseline-config.json"), str(target),
                             "--attempt-id", attempt_id, "--code-version-sha", code_sha], cwd=benchmark,
-                            stdout=out, stderr=err, start_new_session=True)
+                            stdout=out, stderr=err, start_new_session=True,
+                            env=dict(os.environ,PYTHONDONTWRITEBYTECODE="1"))
                     if watchdog_triggered.is_set() or (grant and time.monotonic() > grant["deadline_monotonic"]-12):
                         raise TimeoutError("global_deadline_cleanup_reserve")
                     if not grant and time.monotonic()-began > preparation_seconds:
@@ -144,11 +184,11 @@ def execute(root, *, on_load, preparation_seconds):
                         else:
                             validated_events = assert_predecessor(index, target, book, config, handled, seen_samples, grant,
                                                                   on_observed=observed)
-                            if grant["deadline_monotonic"]-time.monotonic() < 140:
+                            if grant["deadline_monotonic"]-time.monotonic() < request_seconds+20:
                                 raise TimeoutError("insufficient_global_time_for_request_and_cleanup")
                             verify_loaded(target, config, code_sha)
                             book.reserve(f"generation-{index}", kind="probe", sequences=1,
-                                max_generated_tokens=16 if index == 1 else 1024, timeout_seconds=120, max_billed_units=0)
+                                max_generated_tokens=16 if index == 1 else config["settings"]["maxTokens"], timeout_seconds=request_seconds, max_billed_units=0)
                             book.mark_dispatched(f"generation-{index}")
                         ack = {"kind": intent["kind"], "arm": arm, "request_id": intent["request_id"],
                                "attempt_id": attempt_id, "code_version_sha256": code_sha, "approved": True,
@@ -232,7 +272,10 @@ def execute(root, *, on_load, preparation_seconds):
             "supervisor_seconds": time.monotonic()-began, "generation_budget": book.summary(),
             "candidate_generations": len(book.attempts()) if arm == "candidate" else 0,
             "heldout_generations": sum(i >= 2 for i in handled), "frontier_requests": 0,
-            "baseline_reruns": 0, "study_manifest_sha256": manifest["study_manifest_sha256"]}
+            "baseline_reruns": 0, "study_manifest_sha256": manifest["study_manifest_sha256"],
+            "workload_identity":manifest.get("workload_identity","ifeval-task"),
+            "deployment_limits_satisfied":success,"memory_limits_satisfied":success,
+            "native_power":"unavailable unless explicitly captured; host-wide power is not model-only"}
         save(target/"supervisor-result.json", result)
         save(root/"accounting-after.json", result)
         return result
@@ -240,6 +283,7 @@ def execute(root, *, on_load, preparation_seconds):
 
 def grade(root, *, before_grade=lambda: None):
     root, manifest = load(root)
+    if manifest.get("workload_identity")==RESOURCE_IDENTITY: raise ValueError("Resource workload is not IFEval; no task grading")
     items = read_json(manifest["items_path"])
     arm = manifest.get("arm", "baseline")
     execution_path = root/"execution"/(arm+"-1")/"supervisor-result.json"
@@ -290,6 +334,10 @@ def grade(root, *, before_grade=lambda: None):
         "known_generated_tokens": sum(r["token_counts"]["output"] or 0 for r in records),
         "known_input_tokens": sum(r["token_counts"]["input"] or 0 for r in records),
         "generation_seconds": sum(r["duration_seconds"] or 0 for r in records),
+        "deployment_limits_satisfied":execution.get("deployment_limits_satisfied",False),
+        "memory_limits_satisfied":execution.get("memory_limits_satisfied",False),
+        "natural_completions":sum(r["status"]=="ok" for r in records),
+        "truncations":sum(r["status"]=="truncated" for r in records),
         "technically_valid": execution["status"] == "completed" and not unresolved}
     result = {"schema_version": 1, "kind": "browser_ifeval_v2_results", "author": "Arhaan2",
         "manifest_sha256": canonical_hash(manifest), "records": records, "grades": grades,

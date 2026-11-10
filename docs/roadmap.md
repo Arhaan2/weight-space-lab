@@ -1,5 +1,7 @@
 # Implementation roadmap
 
+The current executable workflow is the [bounded browser quality and resource study](ifeval-browser-quality-resource-protocol.md), with commands in the [manual runbook](ifeval-browser-v2-runbook.md). The phased plans below are historical context and do not impose additional prerequisites on that workflow.
+
 ## Phase 0: experimental mechanics — initial release
 
 Implement inspectable, bounded patch operations; deterministic state hashes; configuration and split checks; paired result analysis; and synthetic invariant tests. Run a mechanics example without pretending its outputs are language-model scores.

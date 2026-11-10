@@ -7,7 +7,7 @@ import unittest
 from types import SimpleNamespace
 
 from weight_space_lab.ifeval_data import MAPPINGS
-from weight_space_lab.ifeval_v2_dataset import validate_allocation, validate_fixtures, deduplicate, verify_frozen, public_summary
+from weight_space_lab.ifeval_v2_dataset import validate_allocation, validate_fixtures, deduplicate, verify_frozen, public_summary, select_official
 from weight_space_lab.protocol import canonical_hash
 from weight_space_lab.inventory import file_sha256
 
@@ -25,6 +25,46 @@ def item(types, text='Synthetic evaluator-only prompt.'):
 
 
 class FinalDatasetTests(unittest.TestCase):
+    def test_official_unresolved_exposure_is_not_silently_clean(self):
+        samples = [item(['punctuation:no_comma'])]
+        selected, audit = select_official(samples, {'items': {}}, Tokenizer())
+        self.assertEqual(selected, [])
+        self.assertEqual(audit['source_prompts'], 1)
+        self.assertEqual(audit['eligible_unexposed_prompts'], 0)
+        self.assertEqual(audit['cases'][0]['exclusion_reasons'], ['exposure_unresolved'])
+
+    def test_official_smaller_set_preserves_counts_and_type_sharing(self):
+        samples = [item(['punctuation:no_comma'], text) for text in [
+            'Explain how an electric motor works without commas.',
+            'Name three ingredients for a winter vegetable soup without commas.']]
+        for index, sample in enumerate(samples): sample['item_id'] = str(index)
+        exposure = {'items': {sample['item_id']: {'status': 'unexposed', 'evidence': ['synthetic custody record'],
+            'assessment_complete': True} for sample in samples}}
+        selected, audit = select_official(samples, exposure, Tokenizer())
+        self.assertEqual(len(selected), 2)
+        self.assertEqual(audit['selected_prompts'], 2)
+        self.assertEqual({i['item_id'] for i in selected}, {'0', '1'})
+        self.assertEqual(select_official(list(reversed(samples)), exposure, Tokenizer())[0], selected)
+
+    def test_official_duplicate_instances_and_exposed_matches_are_excluded(self):
+        samples = [item(['punctuation:no_comma'], text) for text in [
+            'Write a detailed winter vegetable soup recipe without any commas.',
+            'Write a detailed winter vegetable soup recipe without any commas!',
+            'Explain electric motor operation.', 'Describe oak leaves.']]
+        for index, sample in enumerate(samples): sample['item_id'] = str(index)
+        exposure = {'items': {sample['item_id']: {'status': 'unexposed', 'evidence': ['fixture'],
+            'assessment_complete': True} for sample in samples},
+            'known_exposed_prompts': [{'id': 'old', 'text': samples[2]['task_text']}]}
+        selected, audit = select_official(samples, exposure, Tokenizer())
+        self.assertEqual([i['item_id'] for i in selected], ['3'])
+        self.assertIn('source_exact_or_near_duplicate', audit['cases'][0]['exclusion_reasons'])
+        self.assertIn('exposed_exact_or_near_duplicate', audit['cases'][2]['exclusion_reasons'])
+
+    def test_official_unexposed_requires_completed_evidence(self):
+        with self.assertRaisesRegex(ValueError, 'completed evidence'):
+            select_official([item(['punctuation:no_comma'])],
+                {'items': {'fixture': {'status': 'unexposed'}}}, Tokenizer())
+
     def test_exact_normalized_and_underlying_exposure_rejected(self):
         sample=item(['punctuation:no_comma'])
         for text in [sample['task_text'],sample['task_text'].upper().replace(' ','  '),sample['metadata']['underlying_task']]:

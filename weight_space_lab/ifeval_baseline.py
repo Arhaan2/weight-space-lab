@@ -222,7 +222,7 @@ def read_events(target):
     return [json.loads(line) for line in data[:data.rfind(b"\n")+1].splitlines()]
 
 
-def verify_loaded(target, config, code_sha):
+def verify_loaded(target, config, code_sha, *, expected_generation=None):
     proof = read_json(target/"fetch-preflight.json")
     if (proof.get("status") != "passed" or proof.get("engine_loads") != 0
             or proof.get("generation_dispatches") != 0 or proof.get("code_version_sha256") != code_sha
@@ -247,6 +247,7 @@ def verify_loaded(target, config, code_sha):
     expected = {"temperature": 0, "top_p": 1, "seed": 42, "max_tokens": 1024,
         "presence_penalty": 0, "frequency_penalty": 0, "repetition_penalty": 1,
         "n": 1, "ignore_eos": False, "extra_body": {"enable_thinking": False}}
+    if expected_generation is not None: expected = expected_generation
     if settings.get("contextWindow") != 4096 or settings.get("maxHistorySize") != 1 or settings.get("generation") != expected:
         raise ValueError("effective generation configuration differs")
 

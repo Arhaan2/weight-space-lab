@@ -1,0 +1,74 @@
+{
+  "audit_counts": {
+    "eligible_unexposed_prompts": 0,
+    "exclusion_reason_counts": {
+      "exposed_exact_or_near_duplicate": 129,
+      "exposure_unresolved": 412,
+      "known_exposure": 129,
+      "minimum_sentence_requirement_exceeds_predeclared_limit": 3,
+      "minimum_word_requirement_exceeds_predeclared_limit": 11,
+      "task_text_requests_over_400_words": 9,
+      "unsupported_instruction_type": 185
+    },
+    "exposure_counts": {
+      "exposed": 129,
+      "unresolved": 412
+    },
+    "runtime_eligible_prompts": 344,
+    "selected_prompts": 0,
+    "source_prompts": 541
+  },
+  "checker_configuration_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "counts": {
+    "instruction_families": {},
+    "instruction_types": {},
+    "instructions": 0,
+    "prompts": 0,
+    "single_instruction_prompts": 0,
+    "two_instruction_prompts": 0
+  },
+  "editor_isolation": "unverified",
+  "final_quality_available": false,
+  "items_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "kind": "official_ifeval_v2_final_set_public_summary",
+  "label": "Deterministic unexposed subset of pinned official Google IFEval; not the full benchmark",
+  "limitations": [
+    "Known records cannot disprove unlogged historical editor access or pretraining exposure",
+    "Lexical duplicate screening does not prove semantic uniqueness",
+    "Evaluator/editor separation remains procedural; technical isolation is unverified"
+  ],
+  "manifest_sha256": "e065bb970b99b3cb14f684b0d20afc5b596374a820cb263e9cd2b059f21cf440",
+  "runtime_sha256": "ae2642e73a4a9896c21efb3a067c4666446f8b49cbe2012f4b576f5d83d5f206",
+  "schema_version": 2,
+  "selection": {
+    "duplicate_rule": "exclude every member of normalized exact or near-duplicate prompt pairs and matches to known exposed prompts",
+    "exposure": "require documented unexposed status; absent, conflicting or unresolved status is excluded",
+    "maximum_prompts": 128,
+    "near_duplicate": {
+      "normalized_character_ratio_minimum": 0.9,
+      "token_set_jaccard_minimum": 0.85
+    },
+    "order": "existing rare-instruction coverage selector; stable SHA256 seed/item tie ordering",
+    "seed": 42,
+    "selection_observes_model_outputs": false,
+    "shared_instruction_type_is_duplicate": false
+  },
+  "source": {
+    "benchmark": "ifeval",
+    "bytes": 207111,
+    "dataset_id": "google-research/google-research",
+    "format": "jsonl",
+    "key": "ifeval",
+    "path": "instruction_following_eval/data/input_data.jsonl",
+    "revision": "e6890f85757dd84e27ca6df2dd30651dafad28e0",
+    "role": "partition",
+    "row_count": 541,
+    "sha256": "67ffeee0fcb87c317c5b08a2de85557b4a7e96ada6178aa645b4954fe4b53d49",
+    "source_split": "official",
+    "url": "https://raw.githubusercontent.com/google-research/google-research/e6890f85757dd84e27ca6df2dd30651dafad28e0/instruction_following_eval/data/input_data.jsonl"
+  },
+  "target_forward_passes": 0,
+  "template_sha256": "0c8e7d1f1cb59e754a9a9d6d963fa07e23c720943f71f26be519f828315ca19a",
+  "tokenizer_sha256": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+  "upstream_attribution": "Google Research IFEval, Zhou et al., Apache-2.0; Qwen tokenizer and WebLLM/MLC retained"
+}

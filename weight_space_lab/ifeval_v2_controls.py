@@ -152,55 +152,59 @@ def verify_control(proposal, audit):
     return deepcopy(audit)
 
 
-def select_candidate(candidates, baseline_artifact_sha256):
-    """Identical rule for each method: strictly beat baseline, earliest round ties."""
-    if not _digest(baseline_artifact_sha256) or not isinstance(candidates, list):
+def select_candidate(candidates, baseline_artifact_sha256, *, baseline_tokens=13941):
+    """Strict improvement with no scored-token increase; tokens then round ties."""
+    if (not _digest(baseline_artifact_sha256) or not isinstance(candidates, list)
+            or type(baseline_tokens) is not int or baseline_tokens < 0):
         raise ValueError("invalid selection input")
     selected = {"artifact_sha256": baseline_artifact_sha256, "round": None,
-                "strict_passes": BASELINE_PASSES, "selection": "pristine_fallback"}
+        "strict_passes": BASELINE_PASSES, "scored_output_tokens": baseline_tokens,
+        "selection": "pristine_fallback"}
     seen, artifact_scores = set(), {}
-    for candidate in candidates:
-        if not isinstance(candidate, dict) or type(candidate.get("round")) is not int:
-            raise ValueError("invalid selection round record")
+    if any(not isinstance(c, dict) or type(c.get("round")) is not int for c in candidates):
+        raise ValueError("invalid selection round record")
     for candidate in sorted(candidates, key=lambda row: row["round"]):
         round_number = candidate["round"]
-        if type(round_number) is not int or round_number not in range(1, 5) or round_number in seen:
+        if round_number not in range(1, 5) or round_number in seen:
             raise ValueError("selection requires at most one record per frozen round")
         seen.add(round_number)
-        if not all(candidate.get(key) is True for key in ("completed", "technically_valid", "independently_graded")):
+        if not all(candidate.get(key) is True for key in ("completed", "technically_valid",
+                "independently_graded", "deployment_limits_satisfied", "memory_limits_satisfied")):
             continue
         if candidate.get("scheduled_prompts") != 32 or candidate.get("graded_prompts") != 32:
             continue
-        passes = candidate.get("strict_passes")
-        if type(passes) is not int or not 0 <= passes <= 32 or not _digest(candidate.get("artifact_sha256")):
+        passes, tokens = candidate.get("strict_passes"), candidate.get("scored_output_tokens")
+        if (type(passes) is not int or not 0 <= passes <= 32 or type(tokens) is not int or tokens < 0
+                or not _digest(candidate.get("artifact_sha256"))):
             raise ValueError("invalid completed candidate selection record")
         identity = candidate["artifact_sha256"]
-        if identity in artifact_scores and artifact_scores[identity] != passes:
-            raise ValueError("identical artifact has inconsistent frozen development grades")
-        artifact_scores[identity] = passes
-        if candidate["artifact_sha256"] == baseline_artifact_sha256:
-            if passes != BASELINE_PASSES:
-                raise ValueError("identical pristine artifact cannot have different frozen development grades")
+        if identity in artifact_scores and artifact_scores[identity] != (passes, tokens):
+            raise ValueError("identical artifact has inconsistent frozen development outcomes")
+        artifact_scores[identity] = (passes, tokens)
+        if identity == baseline_artifact_sha256:
+            if (passes, tokens) != (BASELINE_PASSES, baseline_tokens):
+                raise ValueError("identical pristine artifact cannot have different frozen development outcomes")
             continue
-        if passes > selected["strict_passes"]:
-            selected = {"artifact_sha256": candidate["artifact_sha256"], "round": round_number,
-                        "strict_passes": passes, "selection": "development_strict_improvement"}
+        if passes <= BASELINE_PASSES or tokens > baseline_tokens:
+            continue
+        if (passes > selected["strict_passes"] or
+                passes == selected["strict_passes"] and tokens < selected["scored_output_tokens"]):
+            selected = {"artifact_sha256": identity, "round": round_number, "strict_passes": passes,
+                "scored_output_tokens": tokens, "selection": "strict_improvement_without_token_increase"}
     return selected
 
 
-def final_arms(baseline_artifact_sha256, astra_selection, control_selection):
-    """Freeze three named arms onto at most three distinct dispatch identities."""
-    named = [("pristine_baseline", baseline_artifact_sha256),
-             ("selected_astra", astra_selection["artifact_sha256"]),
-             ("selected_random_control", control_selection["artifact_sha256"])]
-    distinct = []
-    for name, identity in named:
-        if not _digest(identity):
-            raise ValueError("invalid final artifact identity")
-        existing = next((row for row in distinct if row["artifact_sha256"] == identity), None)
-        if existing is None:
-            distinct.append({"artifact_sha256": identity, "dispatch_arm": name, "named_arms": [name]})
-        else:
-            existing["named_arms"].append(name)
-    return {"named_arms": dict(named), "distinct_evaluations": distinct,
-            "unused_final_slots_expire": 3 - len(distinct)}
+def final_arms(baseline_artifact_sha256, astra_selection, *, final_prompts=128):
+    """Freeze two identities; pristine fallback spends no final or resource capacity."""
+    candidate = astra_selection["artifact_sha256"]
+    if (not _digest(baseline_artifact_sha256) or not _digest(candidate)
+            or type(final_prompts) is not int or not 0 <= final_prompts <= 128):
+        raise ValueError("invalid final selection")
+    named = {"pristine_baseline": baseline_artifact_sha256, "selected_astra": candidate}
+    improved = candidate != baseline_artifact_sha256
+    distinct = [{"artifact_sha256": identity, "dispatch_arm": name, "named_arms": [name]}
+        for name, identity in named.items()] if improved and final_prompts else []
+    return {"named_arms": named, "distinct_evaluations": distinct,
+        "resource_order": ["pristine_baseline", "selected_astra", "selected_astra", "pristine_baseline"] if improved else [],
+        "unused_final_slots_expire": 2 - len(distinct), "final_prompts_per_arm": final_prompts,
+        "final_quality_status": "scheduled" if distinct else "no_untouched_final_items" if improved else "pristine_retained_no_qualifying_edit"}

@@ -21,22 +21,22 @@ def _plan(study, selection):
     items = read_json(Path(study["evaluator_root"]) / "final-items.json")
     if dataset["sha256"] != study["config"]["final_set"]["manifest_sha256"]:
         raise ValueError("Final dataset differs from the frozen study")
-    if len(items) != 128 or sum(len(i["target"]["instruction_id_list"]) for i in items) != 160:
-        raise ValueError("V2 requires 128 final prompts and 160 instructions")
+    counts = {"prompts": len(items), "instructions": sum(len(i["target"]["instruction_id_list"]) for i in items)}
+    if not 0 <= len(items) <= 128 or any(dataset["counts"][key] != count for key, count in counts.items()):
+        raise ValueError("Final counts differ from the frozen official subset")
     plan = {
         "schema_version": 1, "kind": "ifeval_browser_v2_final_analysis_plan",
         "label": LABEL, "selection_sha256": canonical_hash(selection),
         "final_manifest_sha256": dataset["sha256"], "ordered_items_sha256": canonical_hash(items),
         "named_artifacts": selection["named_arms"], "analysis_spec": deepcopy(ANALYSIS_SPEC),
+        "counts": counts,
         "policy": deepcopy(study["config"]["grading_policy"]),
         "split_manifest": {"schema_version": 1, "kind": "benchmark_split", "split": "test",
             "source_manifest_sha256": dataset["sha256"], "items": [
                 {"benchmark": i["benchmark"], "item_id": i["item_id"],
                  "dataset_revision": i["dataset_revision"], "item_sha256": canonical_hash(i)} for i in items]},
-        "contrasts": {"selected_astra_minus_pristine": "primary",
-                      "selected_control_minus_pristine": "secondary_exploratory",
-                      "selected_astra_minus_control": "secondary_exploratory"},
-        "duplicate_rule": "reuse one distinct artifact output set; alias contrasts are descriptive and add no dispatches",
+        "contrasts": {"selected_astra_minus_pristine": "primary"} if items and len(set(selection["named_arms"].values())) > 1 else {},
+        "duplicate_rule": "pristine fallback skips final and resource comparisons; no pristine-versus-pristine dispatch or contrast",
     }
     return plan
 
@@ -165,33 +165,30 @@ def analyze(root):
         raise ValueError("Frozen final analysis inputs changed")
     by_identity = {row["artifact_sha256"]: _evidence(root, study, row, items)
                    for row in selection["distinct_evaluations"]}
-    named = {name: by_identity[identity] for name, identity in selection["named_arms"].items()}
-    pairs = {
-        "selected_astra_minus_pristine": ("pristine_baseline", "selected_astra"),
-        "selected_control_minus_pristine": ("pristine_baseline", "selected_random_control"),
-        "selected_astra_minus_control": ("selected_random_control", "selected_astra"),
-    }
-    contrasts = {key: compare_selected(items, plan, named[left], named[right], alias=key)
-                 for key, (left, right) in pairs.items()}
+    if plan["contrasts"]:
+        named = {name: by_identity[identity] for name, identity in selection["named_arms"].items()}
+        contrasts = {"selected_astra_minus_pristine": compare_selected(items, plan, named["pristine_baseline"],
+            named["selected_astra"], alias="selected_astra_minus_pristine")}
+    else:
+        contrasts = {}
     development = []
     for round_number in range(1, 5):
-        pair = {m: state["slots"][f"r{round_number}-{m}"] for m in ("astra", "control")}
-        eligible = all(s.get("completed") is True and s.get("technically_valid") is True
-                       and s.get("independently_graded") is True and s.get("scheduled_prompts") == 32
-                       and s.get("graded_prompts") == 32 for s in pair.values())
+        slot = state["slots"][f"r{round_number}-astra"]
         development.append({"round": round_number,
-            "statuses": {m: s["status"] for m, s in pair.items()},
-            "strict_passes": {m: s.get("strict_passes") for m, s in pair.items()},
-            "astra_minus_control_strict_passes": pair["astra"]["strict_passes"] - pair["control"]["strict_passes"] if eligible else None,
-            "complete_pair": eligible})
+            "status": slot["status"], "strict_passes": slot.get("strict_passes"),
+            "scored_output_tokens": slot.get("scored_output_tokens"),
+            "complete": slot.get("completed") is True and slot.get("technically_valid") is True})
     result = {
         "schema_version": 1, "kind": "ifeval_browser_v2_final_analysis", "label": LABEL,
         "selection_sha256": canonical_hash(selection), "analysis_plan_sha256": canonical_hash(plan),
         "named_artifacts": selection["named_arms"], "distinct_final_artifacts": len(by_identity),
-        "scheduled_prompts_per_named_arm": 128, "scheduled_instructions_per_named_arm": 160,
-        "contrasts": contrasts, "development_matched_differences": development,
-        "design": "one adaptive search trajectory with four matched controls; not four independent editor replications",
-        "control_inheritance": "controls inherit Astra's per-round scale factors and edit family",
+        "scheduled_prompts_per_named_arm": len(items) if plan["contrasts"] else 0,
+        "scheduled_instructions_per_named_arm": plan["counts"]["instructions"] if plan["contrasts"] else 0,
+        "frozen_final_counts": plan["counts"], "contrasts": contrasts, "development_rounds": development,
+        "status": "unavailable_no_eligible_official_final_items" if not items else
+                  "skipped_pristine_retained" if not plan["contrasts"] else
+                  "complete" if all(c["status"] == "complete" for c in contrasts.values()) else "incomplete",
+        "design": "one adaptive search trajectory with at most four manual submissions; no independent editor replications",
         "primary_contrast": "selected_astra_minus_pristine", "multiple_comparison_claim": False,
         "final_outcomes_returned_to_editor": False, "new_generations": 0,
     }

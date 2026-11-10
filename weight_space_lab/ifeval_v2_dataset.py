@@ -6,24 +6,39 @@ contains only validation, inventory, and freeze logic, never the final text.
 from __future__ import annotations
 
 from collections import Counter
+from copy import deepcopy
+from difflib import SequenceMatcher
 import importlib.metadata
 import json
 import os
 from pathlib import Path
 import random
+import re
 import sys
 import time
 import types
 
-from .benchmark_data import validate_item
+from .benchmark_data import load_source, validate_item
 from .grading import IFEVAL_PACKAGES, grader_identity, ifeval_metrics, verify_ifeval_assets
-from .ifeval_data import SUPPORTED_IDS, TEMPLATE_SEGMENTS, feasibility_reasons, input_tokens, normalize_prompt, sha, write_new
+from .ifeval_data import ELIGIBILITY_POLICY, SUPPORTED_IDS, TEMPLATE_SEGMENTS, family_coverage, feasibility_reasons, input_tokens, normalize_prompt, sha, stratified_select, write_new
 from .protocol import canonical_hash
 
 PINNED_TOKENIZER_SHA256 = "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42"
 PINNED_WEBLLM_SHA256 = "ae2642e73a4a9896c21efb3a067c4666446f8b49cbe2012f4b576f5d83d5f206"
 
-LABEL = "Custom IFEval-style on-device evaluation set using official checkers; not an official Google IFEval split"
+HISTORICAL_LABEL = "Custom IFEval-style on-device evaluation set using official checkers; not an official Google IFEval split"
+LABEL = "Deterministic unexposed subset of pinned official Google IFEval; not the full benchmark"
+
+OFFICIAL_SELECTION = {
+    "maximum_prompts": 128,
+    "seed": 42,
+    "order": "existing rare-instruction coverage selector; stable SHA256 seed/item tie ordering",
+    "exposure": "require documented unexposed status; absent, conflicting or unresolved status is excluded",
+    "duplicate_rule": "exclude every member of normalized exact or near-duplicate prompt pairs and matches to known exposed prompts",
+    "near_duplicate": {"token_set_jaccard_minimum": 0.85, "normalized_character_ratio_minimum": 0.9},
+    "shared_instruction_type_is_duplicate": False,
+    "selection_observes_model_outputs": False,
+}
 
 
 def load(path):
@@ -207,7 +222,7 @@ def seal(root, *, tokenizer_path, ifeval_root, environment_path, bundled_audit_p
     components = ["allocation.json","authored-draft.json","provenance.json","final-items.json","fixtures.json",
                   "validation.json","dedup-audit.json","exposure-inventory.json","semantic-review.json","tokenizer-audit.json",
                   "author-private.py","inventory-private.py","authored-draft-v0.json","draft-revisions.json"]
-    manifest = {"schema_version":1,"kind":"ifeval_browser_v2_final_set_freeze","label":LABEL,
+    manifest = {"schema_version":1,"kind":"ifeval_browser_v2_final_set_freeze","label":HISTORICAL_LABEL,
                 "created_epoch_seconds":time.time(),"counts":counts,"ordered_item_ids":[i["item_id"] for i in items],
                 "items_sha256":canonical_hash(items),"allocation_sha256":allocation["sha256"],
                 "files":{name:sha(root/name) for name in components},"grader":grader_identity("ifeval"),
@@ -227,7 +242,7 @@ def seal(root, *, tokenizer_path, ifeval_root, environment_path, bundled_audit_p
 
 def public_summary(manifest, validation, audit, provenance):
     """Deliberate allowlist; no source text, answers, private paths, or result rows."""
-    return {"schema_version":1,"kind":"ifeval_v2_final_set_public_summary","label":LABEL,
+    return {"schema_version":1,"kind":"ifeval_v2_final_set_public_summary","label":HISTORICAL_LABEL,
             "manifest_sha256":manifest["sha256"],"counts":manifest["counts"],
             "items_sha256":manifest["items_sha256"],"checker_configuration_sha256":manifest["checker_configuration_sha256"],
             "allocation_sha256":manifest["allocation_sha256"],"tokenizer_sha256":manifest["tokenizer_sha256"],
@@ -250,3 +265,156 @@ def verify_frozen(root):
     if canonical_hash(load(root/"final-items.json")) != manifest["items_sha256"]:
         raise ValueError("frozen ordered items changed")
     return manifest
+
+
+def _near_duplicate(left, right):
+    left, right = normalize_prompt(left), normalize_prompt(right)
+    if left == right:
+        return True
+    a, b = set(re.findall(r"\w+", left)), set(re.findall(r"\w+", right))
+    thresholds = OFFICIAL_SELECTION["near_duplicate"]
+    return (len(a & b) / max(1, len(a | b)) >= thresholds["token_set_jaccard_minimum"]
+            and SequenceMatcher(None, left, right, autojunk=False).ratio()
+            >= thresholds["normalized_character_ratio_minimum"])
+
+
+def select_official(items, exposure, tokenizer, *, maximum=128):
+    """Screen task metadata and exposure evidence only; never accept generations.
+
+    The caller supplies an auditable per-item exposure assessment. Stored source
+    files and scheduled-but-unexecuted items do not prove exposure or non-exposure.
+    A positive unexposed classification needs cited evidence and a completed
+    assessment; an absent status remains unresolved rather than becoming clean.
+    """
+    if type(maximum) is not int or not 0 <= maximum <= 128:
+        raise ValueError("official final maximum must be within 0..128")
+    items = [deepcopy(validate_item(i)) for i in items]
+    if len({i["item_id"] for i in items}) != len(items):
+        raise ValueError("duplicate official item identity")
+    if any(i["benchmark"] != "ifeval" for i in items):
+        raise ValueError("official final set requires IFEval items")
+    decisions = exposure.get("items", {})
+    duplicates = {i["item_id"]: [] for i in items}
+    for index, left in enumerate(items):
+        for right in items[index + 1:]:
+            if _near_duplicate(left["task_text"], right["task_text"]):
+                duplicates[left["item_id"]].append(right["item_id"])
+                duplicates[right["item_id"]].append(left["item_id"])
+    known_exposed = exposure.get("known_exposed_prompts", [])
+    eligible, cases = [], []
+    for item in items:
+        item["split"] = "test"
+        count = input_tokens(item["task_text"], tokenizer)
+        item["metadata"]["rendered_input_tokens"] = count
+        feasibility = feasibility_reasons(item, count)
+        assessment = decisions.get(item["item_id"], {})
+        status = assessment.get("status", "unresolved")
+        if status not in {"unexposed", "exposed", "unresolved"}:
+            raise ValueError("invalid exposure classification")
+        if status == "unexposed" and (not assessment.get("evidence")
+                                      or assessment.get("assessment_complete") is not True):
+            raise ValueError("unexposed classification lacks completed evidence")
+        reasons = list(feasibility)
+        if status != "unexposed":
+            reasons.append("known_exposure" if status == "exposed" else "exposure_unresolved")
+        duplicate_matches = duplicates[item["item_id"]]
+        exposed_matches = [row["id"] for row in known_exposed
+                           if _near_duplicate(item["task_text"], row["text"])]
+        if duplicate_matches:
+            reasons.append("source_exact_or_near_duplicate")
+        if exposed_matches:
+            reasons.append("exposed_exact_or_near_duplicate")
+        if not reasons:
+            eligible.append(item)
+        cases.append({"item_id": item["item_id"], "source_item_sha256": canonical_hash(item),
+                      "rendered_input_tokens": count, "runtime_eligible": not feasibility,
+                      "exposure_status": status, "exposure_evidence": assessment.get("evidence", []),
+                      "source_duplicate_ids": sorted(duplicate_matches),
+                      "exposed_duplicate_ids": sorted(set(exposed_matches)),
+                      "exclusion_reasons": sorted(set(reasons))})
+    selected = stratified_select(eligible, min(maximum, len(eligible))) if eligible and maximum else []
+    return selected, {
+        "schema_version": 1, "kind": "official_ifeval_exposure_and_eligibility_audit",
+        "selection": deepcopy(OFFICIAL_SELECTION), "eligibility_policy": deepcopy(ELIGIBILITY_POLICY),
+        "source_prompts": len(items), "runtime_eligible_prompts": sum(c["runtime_eligible"] for c in cases),
+        "eligible_unexposed_prompts": len(eligible), "selected_prompts": len(selected),
+        "exposure_counts": dict(sorted(Counter(c["exposure_status"] for c in cases).items())),
+        "exclusion_reason_counts": dict(sorted(Counter(r for c in cases for r in c["exclusion_reasons"]).items())),
+        "cases": cases, "target_forward_passes": 0,
+        "limitations": ["Known records cannot disprove unlogged historical editor access or pretraining exposure",
+                       "Lexical duplicate screening does not prove semantic uniqueness",
+                       "Evaluator/editor separation remains procedural; technical isolation is unverified"],
+    }
+
+
+def seal_official(root, *, source_reference, source_cache, exposure_path, tokenizer_path,
+                  ifeval_root, environment_path, grading_policy_path):
+    """Freeze an audited official subset, including an honest empty final set."""
+    from tokenizers import Tokenizer
+    root = Path(root)
+    if root.exists() and any(root.iterdir()):
+        raise FileExistsError("official evaluator directory must be new and empty")
+    if sha(tokenizer_path) != PINNED_TOKENIZER_SHA256:
+        raise ValueError("tokenizer differs from pinned pristine runtime")
+    if importlib.metadata.version("tokenizers") != "0.22.2":
+        raise ValueError("pinned tokenizer package mismatch")
+    environment = load(environment_path)
+    if list(sys.version_info[:3]) != environment["python_version"]:
+        raise ValueError("pinned preparation Python mismatch")
+    verify_ifeval_assets(ifeval_root)
+    for package, version in IFEVAL_PACKAGES.items():
+        if importlib.metadata.version(package) != version:
+            raise ValueError("pinned evaluator package mismatch")
+    reference = load(source_reference)
+    source = next(s for s in reference["sources"] if s["key"] == "ifeval")
+    items = load_source(source, source_cache)
+    exposure = load(exposure_path)
+    if exposure.get("source_sha256") != source["sha256"]:
+        raise ValueError("exposure inventory refers to a different official source")
+    for path, identity in exposure.get("evidence_files", {}).items():
+        if identity.get("readable") is False:
+            continue
+        if sha(path) != identity["sha256"]:
+            raise ValueError("exposure evidence changed: " + path)
+    selected, audit = select_official(items, exposure, Tokenizer.from_file(str(tokenizer_path)))
+    counts = family_coverage(selected)
+    counts.update(single_instruction_prompts=sum(len(i["target"]["instruction_id_list"]) == 1 for i in selected),
+                  two_instruction_prompts=sum(len(i["target"]["instruction_id_list"]) == 2 for i in selected))
+    for name, value in [("final-items.json", selected), ("exposure-inventory.json", exposure),
+                        ("selection-audit.json", audit), ("source-reference.json", source),
+                        ("grading-policy.json", load(grading_policy_path))]:
+        private_write(root / name, value)
+    manifest = {
+        "schema_version": 2, "kind": "official_ifeval_browser_v2_final_set_freeze", "label": LABEL,
+        "created_epoch_seconds": time.time(), "counts": counts, "ordered_item_ids": [i["item_id"] for i in selected],
+        "items_sha256": canonical_hash(selected), "source": source,
+        "selection": deepcopy(OFFICIAL_SELECTION), "eligibility_policy_sha256": canonical_hash(ELIGIBILITY_POLICY),
+        "files": {name: sha(root / name) for name in ("final-items.json", "exposure-inventory.json", "selection-audit.json", "source-reference.json", "grading-policy.json")},
+        "grader": grader_identity("ifeval"), "grading_policy_sha256": sha(grading_policy_path),
+        "checker_configuration_sha256": canonical_hash([i["target"] for i in selected]),
+        "tokenizer_sha256": sha(tokenizer_path), "template_sha256": canonical_hash(TEMPLATE_SEGMENTS),
+        "runtime_sha256": PINNED_WEBLLM_SHA256, "environment_sha256": sha(environment_path),
+        "source_sha256": sha(__file__), "target_forward_passes": 0,
+        "final_quality_available": bool(selected), "editor_isolation": "unverified",
+        "custody": "private ignored evaluator store; procedural separation; technical isolation unverified",
+        "final_prompts_in_editor_packets": False,
+    }
+    manifest["sha256"] = canonical_hash(manifest)
+    private_write(root / "manifest.json", manifest)
+    return official_public_summary(manifest, audit)
+
+
+def official_public_summary(manifest, audit):
+    """Publish counts and identities without evaluator text or exposure records."""
+    return {
+        "schema_version": 2, "kind": "official_ifeval_v2_final_set_public_summary", "label": LABEL,
+        "manifest_sha256": manifest["sha256"], "counts": manifest["counts"],
+        "items_sha256": manifest["items_sha256"], "source": manifest["source"],
+        "checker_configuration_sha256": manifest["checker_configuration_sha256"],
+        "tokenizer_sha256": manifest["tokenizer_sha256"], "template_sha256": manifest["template_sha256"],
+        "runtime_sha256": manifest["runtime_sha256"], "selection": manifest["selection"],
+        "final_quality_available": manifest["final_quality_available"],
+        "audit_counts": {key: audit[key] for key in ("source_prompts", "runtime_eligible_prompts", "eligible_unexposed_prompts", "selected_prompts", "exposure_counts", "exclusion_reason_counts")},
+        "limitations": audit["limitations"], "editor_isolation": "unverified", "target_forward_passes": 0,
+        "upstream_attribution": "Google Research IFEval, Zhou et al., Apache-2.0; Qwen tokenizer and WebLLM/MLC retained",
+    }

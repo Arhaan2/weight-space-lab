@@ -1,5 +1,7 @@
 # Study design
 
+The current executable workflow is the [bounded browser quality and resource study](ifeval-browser-quality-resource-protocol.md), with commands in the [manual runbook](ifeval-browser-v2-runbook.md). The phased plans below are historical context and do not impose additional prerequisites on that workflow.
+
 ## Research question
 
 Can GPT-6 Astra propose small direct weight edits that improve a fixed open-weight model on previously withheld tasks, and does any improvement survive deployment in a browser?

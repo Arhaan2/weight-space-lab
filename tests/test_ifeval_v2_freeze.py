@@ -3,6 +3,11 @@ import hashlib
 import json
 from pathlib import Path
 import unittest
+import subprocess
+import tempfile
+import sys
+
+from weight_space_lab.protocol import canonical_hash
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -63,6 +68,33 @@ class PublicFreezeTests(unittest.TestCase):
         self.assertTrue(summary["bundled_tokenizer_parity"])
         self.assertEqual(summary["exact_or_normalized_matches"], 0)
         self.assertEqual(summary["target_forward_passes"], 0)
+
+
+class CurrentOfficialFreezeTests(unittest.TestCase):
+    def test_current_zero_final_manifest_has_no_authored_denominator(self):
+        config = json.loads((ROOT / 'configs/ifeval_browser_quality_resource.json').read_text())
+        summary = json.loads((ROOT / 'reports/ifeval-browser-v2-narrowed/final-set-summary.json').read_text())
+        self.assertEqual(config['final_set']['manifest_sha256'], summary['manifest_sha256'])
+        self.assertEqual((summary['counts']['prompts'], summary['counts']['instructions']), (0, 0))
+        self.assertFalse(summary['final_quality_available'])
+        self.assertEqual(summary['audit_counts']['source_prompts'], 541)
+        self.assertEqual(summary['audit_counts']['runtime_eligible_prompts'], 344)
+        self.assertEqual(summary['audit_counts']['eligible_unexposed_prompts'], 0)
+        self.assertEqual(summary['audit_counts']['exposure_counts'], {'exposed': 129, 'unresolved': 412})
+        self.assertEqual(summary['target_forward_passes'], 0)
+        self.assertNotIn('authorship', summary)
+
+    def test_real_script_launcher_verifies_fixture_without_pythonpath(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'final-items.json').write_text('[]')
+            manifest = {'files': {'final-items.json': hashlib.sha256(b'[]').hexdigest()},
+                'items_sha256': canonical_hash([]), 'counts': {'prompts': 0, 'instructions': 0}}
+            manifest['sha256'] = canonical_hash(manifest)
+            (root / 'manifest.json').write_text(json.dumps(manifest))
+            result = subprocess.run([sys.executable, str(ROOT / 'scripts/freeze_ifeval_v2.py'),
+                '--root', str(root), '--verify-only'], cwd=directory, capture_output=True, text=True, check=True)
+            self.assertEqual(json.loads(result.stdout)['counts'], {'prompts': 0, 'instructions': 0})
 
 
 if __name__ == "__main__":
