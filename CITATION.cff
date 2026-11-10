@@ -1,4 +1,6 @@
 cff-version: 1.2.0
+commit: 28f9b87dafefe05572272120a6d2295262bf7f69
+date-released: "2026-11-10"
 message: >-
   If you use this code or its measurements, cite this research artifact and
   the upstream model, benchmarks, and runtimes credited in the methodology.

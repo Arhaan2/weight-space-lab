@@ -173,11 +173,11 @@
       "sources": [
         {
           "label": "All-edit resource protocol",
-          "url": "https://github.com/Arhaan2/weight-space-lab/blob/codex/results-site/docs/resource-all-edits-protocol.md"
+          "url": "https://github.com/Arhaan2/weight-space-lab/blob/28f9b87dafefe05572272120a6d2295262bf7f69/docs/resource-all-edits-protocol.md"
         },
         {
           "label": "All-edit resource result",
-          "url": "https://github.com/Arhaan2/weight-space-lab/blob/codex/results-site/reports/resource-all-edits-v1/result.json"
+          "url": "https://github.com/Arhaan2/weight-space-lab/blob/28f9b87dafefe05572272120a6d2295262bf7f69/reports/resource-all-edits-v1/result.json"
         }
       ],
       "public_workload_prompt": "In three short sentences, explain why leaves change color in autumn.",
@@ -529,7 +529,7 @@
   "sources": [
     {
       "label": "Full research methodology",
-      "url": "https://github.com/Arhaan2/weight-space-lab/blob/codex/results-site/docs/research-methodology.md"
+      "url": "https://github.com/Arhaan2/weight-space-lab/blob/28f9b87dafefe05572272120a6d2295262bf7f69/docs/research-methodology.md"
     },
     {
       "label": "V1 result",
@@ -553,11 +553,11 @@
     },
     {
       "label": "All-edit resource protocol",
-      "url": "https://github.com/Arhaan2/weight-space-lab/blob/codex/results-site/docs/resource-all-edits-protocol.md"
+      "url": "https://github.com/Arhaan2/weight-space-lab/blob/28f9b87dafefe05572272120a6d2295262bf7f69/docs/resource-all-edits-protocol.md"
     },
     {
       "label": "All-edit resource result",
-      "url": "https://github.com/Arhaan2/weight-space-lab/blob/codex/results-site/reports/resource-all-edits-v1/result.json"
+      "url": "https://github.com/Arhaan2/weight-space-lab/blob/28f9b87dafefe05572272120a6d2295262bf7f69/reports/resource-all-edits-v1/result.json"
     }
   ],
   "upstream_attribution": [

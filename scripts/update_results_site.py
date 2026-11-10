@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-"""Copy the public V2 report into the static results site; performs no inference."""
+"""Synchronize public evidence, embedded data and no-JavaScript research tables. No inference."""
 from __future__ import annotations
-
 import argparse
 from datetime import datetime
 from html import escape
@@ -10,223 +9,218 @@ import math
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-
 REPOSITORY = Path(__file__).resolve().parents[1]
-DEFAULT_SOURCE = "https://github.com/Arhaan2/weight-space-lab/blob/codex/results-site/reports/ifeval-browser-v2-collaboration-run/README.md"
+PUBLIC_BASE = "https://github.com/Arhaan2/weight-space-lab/blob/codex/results-site/"
+ARTIFACTS = {"pristine": "Pristine", "v1": "V1 edit", "v2-r1": "Astra round 1", "v2-r2": "Astra round 2", "v2-r3": "Astra round 3"}
 
 
 def replace_region(document: str, name: str, markup: str) -> str:
     start, end = f"<!-- {name}_START -->", f"<!-- {name}_END -->"
     if document.count(start) != 1 or document.count(end) != 1:
         raise ValueError(f"Expected one pair of {name} markers")
-    before, remainder = document.split(start, 1)
-    _, after = remainder.split(end, 1)
-    return before + start + "\n" + markup + "\n        " + end + after
+    before, rest = document.split(start, 1)
+    _, after = rest.split(end, 1)
+    return before + start + "\n" + markup + "\n" + end + after
 
 
-def measurements_row(label: str, metrics: dict, qualification: str) -> str:
-    denominator = metrics["denominator"]
-    if not isinstance(denominator, int) or denominator <= 0:
-        raise ValueError("Invalid development denominator")
-    for field in ("strict_passes", "loose_passes"):
-        if not isinstance(metrics[field], int) or not 0 <= metrics[field] <= denominator:
-            raise ValueError(f"Invalid {field}")
-    tokens = metrics["scored_output_tokens"]
-    if not isinstance(tokens, int) or tokens < 0:
-        raise ValueError("Invalid output-token count")
-    return (
-        f'              <tr><th scope="row">{escape(label)}</th>'
-        f'<td data-label="Strict">{metrics["strict_passes"]}/{denominator}</td>'
-        f'<td data-label="Loose">{metrics["loose_passes"]}/{denominator}</td>'
-        f'<td data-label="Output tokens">{tokens:,}</td>'
-        f'<td data-label="Qualifies">{escape(qualification)}</td></tr>'
-    )
-
-
-def numeric(value, decimals: int = 0, divisor: float = 1) -> str:
+def numeric(value, decimals=0, divisor=1):
     if value is None:
-        return "Unavailable"
-    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
-        raise ValueError("Invalid numeric resource observation")
+        return "—"
+    if isinstance(value, bool) or not isinstance(value, (float, int)) or not math.isfinite(value):
+        raise ValueError("Invalid public numeric observation")
     return f"{value / divisor:,.{decimals}f}"
 
 
-def resource_markup(resource: dict) -> str:
-    sessions = [row for row in resource.get("sessions", []) if row.get("summary") is not None]
-    if not sessions:
+def table(headers, rows, caption):
+    head = "".join(f'<th scope="col">{escape(h)}</th>' for h in headers)
+    body = []
+    for label, values in rows:
+        cells = "".join(f'<td data-label="{escape(h, quote=True)}">{escape(str(v))}</td>' for h, v in zip(headers[1:], values))
+        body.append(f'<tr><th scope="row">{escape(label)}</th>{cells}</tr>')
+    return f'<table class="data-table"><caption class="visually-hidden">{escape(caption)}</caption><thead><tr>{head}</tr></thead><tbody>{"".join(body)}</tbody></table>'
+
+
+def static_evidence(data):
+    v1, report = data["v1"], data["v2"]["execution"]
+    rows = []
+    for label, record in (("Pristine", v1["development"]["baseline"]), ("V1 edit", v1["development"]["candidate"])):
+        rows.append((label, [f'{record["strict"]}/{record["total"]}', f'{record["loose"]}/{record["total"]}', numeric(record["output_tokens"])]))
+    for row in report["rounds"]:
+        if row.get("metrics"):
+            record = row["metrics"]
+            rows.append((f'Astra round {row["round"]}', [f'{record["strict_passes"]}/{record["denominator"]}', f'{record["loose_passes"]}/{record["denominator"]}', numeric(record["scored_output_tokens"])]))
+    content = '<h2>Development quality · 32 prompts</h2>' + table(["Artifact", "Strict passes", "Loose passes", "Output tokens"], rows, "Development results")
+    content += '<p>Development-only evidence. The saved baseline and V1 used Chrome 156; fresh Astra candidates used Chrome 157. No V2 edit qualified. No verified untouched final prompts remained; V2’s conditional resource comparison was skipped.</p>'
+    heldout = v1["heldout"]["metrics"]
+    rows = []
+    for arm, label in (("baseline", "Pristine"), ("candidate", "V1 edit")):
+        rows.append((label, [f'{heldout["prompt_strict"][arm]["numerator"]}/128', f'{heldout["prompt_loose"][arm]["numerator"]}/128', numeric(v1["heldout"]["arms"][arm]["accounting"]["scored_generated_tokens"])]))
+    low, high = heldout["prompt_strict"]["ci95_percentage_points"]
+    content += '<h2>Historical V1 held-out quality · 128 prompts</h2>' + table(["Artifact", "Strict passes", "Loose passes", "Output tokens"], rows, "Historical V1 held-out results")
+    content += f'<p>Strict prompt difference: +{numeric(heldout["prompt_strict"]["difference_percentage_points"], 2)} percentage points; paired 95% interval {numeric(low, 2)} to +{numeric(high, 2)} points. The interval includes zero. The edited evaluation was interrupted after 94 outputs and continued for 34; historical timing does not establish a controlled resource gain.</p>'
+    resource = data.get("resource_study")
+    content += '<h2>Independent all-artifact resource study</h2>'
+    if resource and resource.get('continuation'):
+        content += '<p>' + escape(continuation_summary(resource)) + '</p>'
+    sessions = (resource or {}).get("sessions", [])
+    if sessions:
+        rows = []
+        for session in sessions:
+            s = session.get("summary") or {}
+            rows.append((f'{session["position"]} · {ARTIFACTS.get(session["artifact_key"], session["artifact_key"])}', [session["status"].replace("_", " "), f'{numeric(s.get("measured_requests"))}/{numeric(s.get("scheduled_requests"))}', numeric(s.get("scored_output_tokens")), numeric(s.get("response_ms_sum"), 2, 1000), numeric(s.get("native_peak_footprint_gb"), 3)]))
+        content += table(["Session / artifact", "Status", "Requests", "Output tokens", "Response sum (s)", "Sampled native peak (GB)"], rows, "Individual standard-workload resource sessions")
+        content += '<p>Two sessions per artifact are planned in mirrored order. Native footprint is sampled owned-Chrome-process-tree footprint in decimal GB, not physical VRAM. CPU, GPU and power coverage are retained in the complete JSON. No equivalence claim is established.</p>'
+    else:
+        content += '<p>No measured resource session summary is published in this snapshot. No placeholders are treated as observations.</p>'
+    content += f'<p><a href="results.json" download>Download complete results JSON</a> · <a href="{escape(data["sources"]["v1_report"], quote=True)}">V1 report</a> · <a href="{escape(data["sources"]["v2_execution"], quote=True)}">V2 report</a></p>'
+    return content
+
+
+def continuation_summary(resource):
+    continuation = (resource or {}).get("continuation")
+    if not continuation:
         return ""
-    rows, telemetry = [], []
-    for session in sessions:
-        summary = session["summary"]
-        arm = {"pristine_baseline": "Original (A)", "selected_astra": "Edited (B)"}.get(session["arm"], session["arm"])
-        name = f'Session {session["position"]}: {arm}'
-        requests = f'{numeric(summary.get("measured_requests"))} / {numeric(summary.get("scheduled_requests"))}'
-        rows.append(
-            f'<tr><th scope="row">{escape(name)}<span class="session-outcome">{escape(summary["status"].replace("_", " ").capitalize())}</span></th>'
-            f'<td data-label="Requests">{requests}</td>'
-            f'<td data-label="Output tokens">{numeric(summary.get("scored_output_tokens"))}</td>'
-            f'<td data-label="Response sum (s)">{numeric(summary.get("response_ms_sum"), 2, 1000)}</td>'
-            f'<td data-label="Sampled footprint (GB)">{numeric(summary.get("native_peak_footprint_gb"), 3)}</td></tr>'
-        )
-        cells = []
-        for label, field, coverage in (
-            ("CPU capacity (%)", "cpu_capacity_percent", "cpu_coverage"),
-            ("GPU time (ms/s)", "gpu_time_ms_per_second", "gpu_coverage"),
-            ("Host power (W)", "host_power_watts", "power_coverage"),
-        ):
-            observed = numeric(summary.get(field), 2)
-            fraction = summary.get(coverage)
-            coverage_label = "Coverage unavailable" if fraction is None else f'{numeric(fraction, 1, .01)}% coverage'
-            cells.append(f'<td data-label="{label}">{observed}<span class="coverage-note">{coverage_label}</span></td>')
-        telemetry.append(f'<tr><th scope="row">{escape(name)}</th>{"".join(cells)}</tr>')
-    matching = "Matched environment verified." if resource.get("matched_environment") is True else "Matched environment is not established."
-    return f'''          <div class="measured-resources">
-            <h3>Measured browser usage</h3>
-            <p>{len(sessions)} recorded sessions of {numeric(resource.get("scheduled_sessions"))} scheduled. {numeric(resource.get("complete_sessions"))} complete. {matching}</p>
-            <table class="development-table">
-              <caption>Original Browser LLM Bench standard workload. Response time is summed over measured requests, excluding warm-ups. Native process footprint is the session’s sampled peak in decimal GB.</caption>
-              <thead><tr><th scope="col">Session</th><th scope="col">Requests</th><th scope="col">Output tokens</th><th scope="col">Response sum (s)</th><th scope="col">Sampled footprint (GB)</th></tr></thead>
-              <tbody>{"".join(rows)}</tbody>
-            </table>
-            <details class="native-telemetry"><summary>CPU, GPU and power coverage</summary>
-              <table class="development-table">
-                <caption>Native collectors’ CPU capacity and GPU time, plus host-wide power. Coverage is the share of active request time covered by eligible sampling intervals. Missing observations remain unavailable.</caption>
-                <thead><tr><th scope="col">Session</th><th scope="col">CPU capacity (%)</th><th scope="col">GPU time (ms/s)</th><th scope="col">Host power (W)</th></tr></thead>
-                <tbody>{"".join(telemetry)}</tbody>
-              </table>
-            </details>
-            <p>Native process footprint, GPUBuffer allocation descriptors and WASM address space are overlapping or different counters and are not added. Host power includes unrelated activity. Two sessions per artifact are a small pilot, not proof of resource equality.</p>
-          </div>'''
+    inherited = continuation.get("inherited_completed_positions", [])
+    remaining = continuation.get("remaining_positions", [])
+    gap = continuation.get("inter_session_gap_after_position6_seconds")
+    gap_text = f"The gap after position {inherited[-1]} was {numeric(gap, 2, 60)} minutes." if gap is not None and inherited else "The inter-session gap is not yet recorded."
+    return f"Documented continuation. Integrity verification stopped before position {remaining[0] if remaining else 'unavailable'}; {len(inherited)} completed sessions were retained. {gap_text} Both R3 observations remain included. Matching hardware/runtime does not establish uninterrupted or constant host conditions."
 
 
-def update(report_path: Path, site: Path, source_url: str | None, check: bool) -> None:
-    report = json.loads(report_path.read_text())
+def static_methods(methods, resource=None):
+    def fields(values):
+        return '<dl>' + ''.join(f'<div><dt>{escape(key.replace("_", " ")[:1].upper() + key.replace("_", " ")[1:])}</dt><dd>{escape(json.dumps(value) if isinstance(value, (dict, list)) else str(value))}</dd></div>' for key, value in values.items()) + '</dl>'
+    blocks = []
+    for study in methods.get("studies", []):
+        sources = ' · '.join(f'<a href="{escape(source["url"], quote=True)}">{escape(source["label"])}</a>' for source in study.get("sources", []))
+        aggregation = f'<p><strong>Aggregation.</strong> {escape(study["aggregation"])}</p>' if study.get("aggregation") else ""
+        public_prompt = f'<p><strong>Public resource workload prompt.</strong> “{escape(study["public_workload_prompt"])}”</p>' if study.get("public_workload_prompt") else ""
+        limitations = '<ul>' + ''.join(f'<li>{escape(item)}</li>' for item in study.get("limitations", [])) + '</ul>'
+        blocks.append(f'<details><summary>{escape(study["title"])}</summary><div class="method-body"><p>{escape(study["question"])}</p><p><strong>Scope.</strong> {escape(study["scope"])}</p><p><strong>Selection.</strong> {escape(study["selection_rule"])}</p>{aggregation}{public_prompt}{fields(study.get("generation_settings", {}))}{limitations}<p>{sources}</p></div></details>')
+    if resource and resource.get("continuation"):
+        continuation = resource["continuation"]
+        recovery = continuation.get("recovery", {})
+        gap = continuation.get("inter_session_gap_after_position6_seconds")
+        facts = {"Preserved completed positions": ", ".join(map(str, continuation.get("inherited_completed_positions", []))), "Continuation positions": ", ".join(map(str, continuation.get("remaining_positions", []))), "Failure stage": continuation.get("failure_stage"), "Failure type": continuation.get("failure_type"), "Recovered file role": recovery.get("file_role"), "Recovered bytes": numeric(recovery.get("size_bytes")), "Recovered SHA-256": recovery.get("sha256"), "Recovery method": recovery.get("method"), "Gap after position 6": numeric(gap, 2) + " seconds" if gap is not None else "Not yet recorded", "Original calendar and total limits": "Unchanged" if continuation.get("original_calendar_and_total_limits_unchanged") is True else "Not established", "Replaced completed sessions": continuation.get("replaced_completed_sessions"), "Model dispatch retries": continuation.get("model_dispatch_retries")}
+        blocks.append('<details><summary>Documented resource continuation</summary><div class="method-body"><p>' + escape(continuation.get("interruption_note", "")) + '</p>' + fields(facts) + '<p>Hardware and runtime matching does not establish constant background host activity or uninterrupted conditions. Both R3 observations remain in the descriptive comparison.</p></div></details>')
+    if resource and resource.get("environment"):
+        environment = resource["environment"]
+        hardware = environment.get("hardware", {})
+        try:
+            memory = int(hardware.get("hw.memsize", ""))
+        except (ValueError, TypeError):
+            memory = None
+        values = {"Processor": hardware.get("machdep.cpu.brand_string", "Unavailable"), "Logical CPUs": hardware.get("hw.logicalcpu", "Unavailable"), "Physical / unified memory": (f"{numeric(memory / 2**30, 2 if memory % 2**30 else 0)} GiB ({numeric(memory)} bytes)" if memory and memory > 0 else "Unavailable"), "Hardware model": hardware.get("hw.model", "Unavailable"), "macOS": environment.get("macos", "Unavailable"), "Chrome": environment.get("browser_version", "Unavailable"), "Runtime": environment.get("runtime", "Unavailable"), "Quantization": environment.get("quantization", "Unavailable")}
+        verification = "Matched hardware and runtime verified across the completed schedule." if resource.get("matched_environment") is True else ("Hardware and runtime matching remains pending until the full schedule completes." if resource.get("status") == "in_progress" else "Hardware and runtime matching was not established for the full schedule.")
+        blocks.append('<details><summary>Resource environment</summary><div class="method-body"><p>' + verification + '</p>' + fields(values) + '<p>Memory is the operating system’s reported physical / unified capacity, converted from bytes to GiB. It is not a measurement of model memory or physical GPU residency.</p></div></details>')
+    blocks.append('<details><summary>Scoring and uncertainty</summary><div class="method-body">' + fields(methods.get('scoring', {})) + '</div></details>')
+    telemetry = []
+    for definition in methods.get("telemetry_definitions", {}).values():
+        prose = ' '.join(str(definition.get(key, '')) for key in ('definition', 'scope', 'coverage', 'limitations', 'missing'))
+        telemetry.append(f'<div><dt>{escape(definition["label"])} · {escape(definition.get("unit", ""))}</dt><dd>{escape(prose)}</dd></div>')
+    blocks.append('<details><summary>Telemetry definitions and coverage</summary><div class="method-body"><dl>' + ''.join(telemetry) + '</dl></div></details>')
+    notes = methods.get("reproduction", []) + methods.get("preserved_failures", [])
+    blocks.append('<details><summary>Reproduction and preserved failures</summary><div class="method-body"><ul>' + ''.join(f'<li>{escape(note)}</li>' for note in notes) + '</ul></div></details>')
+    return '\n'.join(blocks)
+
+
+def script_json(identifier, data):
+    encoded = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
+    return f'<script id="{identifier}" type="application/json">{encoded}</script>'
+
+
+def update(args):
+    report = json.loads(args.report.read_text())
     if report.get("schema_version") != 1 or report.get("kind") != "sanitized_v2_collaboration_result":
         raise ValueError("Expected the sanitized public V2 report")
     if report["untouched_final_prompts"] != 0:
-        raise ValueError("Review the site copy before adding new final data")
-    data_path, html_path = site / "results.json", site / "index.html"
+        raise ValueError("Review study copy before adding new final-quality data")
+    data_path, html_path, methods_path = args.site / "results.json", args.site / "index.html", args.site / "research-methodology.json"
     data = json.loads(data_path.read_text())
-    evaluated = [row for row in report["rounds"] if row.get("metrics") is not None]
-    count = len(evaluated)
-    qualifying = sum(row.get("qualifies") is True for row in evaluated)
-    resource_status = report["resource"]["status"]
-    resource_label = {
-        "pending": "Not run",
-        "pristine_retained_no_comparison": "Skipped: pristine retained",
-        "complete": "Complete",
-        "completed": "Complete",
-        "pilot_complete": "Pilot complete",
-        "incomplete": "Incomplete",
-        "failed": "Stopped",
-    }.get(resource_status, resource_status.replace("_", " ").capitalize())
-    if resource_status == "pristine_retained_no_comparison":
-        description = f"{count} candidate development evaluations are complete. No edit qualified; the original model was retained. The combined quality and resource goal was not demonstrated."
-    elif count:
-        noun, verb = ("candidate", "has") if count == 1 else ("candidates", "have")
-        qualification = ("1 qualifies." if qualifying == 1 else f"{qualifying} qualify.") if qualifying else "No candidate qualifies."
-        description = f"{count} {noun} {verb} measured development results. {qualification}"
-        if report["status"] == "in_progress":
-            description += " The bounded study is still in progress."
-        elif report["status"] == "halted":
-            description += " Execution has stopped; partial evidence is retained."
-    else:
-        description = "No candidate development evaluation has completed. No new result is claimed."
-    limitation = "No verified untouched final prompts remain. V2 quality results are development evidence, without fresh held-out confirmation."
-    url = source_url or data["sources"].get("v2_execution") or DEFAULT_SOURCE
-    if not url.startswith("https://github.com/Arhaan2/weight-space-lab/"):
-        raise ValueError("The evidence link must identify this public repository")
-    data["sources"]["v2_execution"] = url
-    data["v2"].update(
-        status=report["status"], description=description, resource_status=resource_status,
-        resource_status_label=resource_label, limitation=limitation, execution=report,
-    )
+    evaluated = [r for r in report["rounds"] if r.get("metrics")]
+    qualified = sum(r.get("qualifies") is True for r in evaluated)
+    status = report["resource"]["status"]
+    label = {"pristine_retained_no_comparison": "Skipped: pristine retained", "pending": "Not run"}.get(status, status.replace("_", " ").capitalize())
+    description = f'{len(evaluated)} candidate development evaluations are complete. No edit qualified; the original model was retained. The combined quality and resource goal was not demonstrated.' if status == "pristine_retained_no_comparison" else f'{len(evaluated)} candidate development evaluations are recorded; {qualified} qualify.'
+    data["v2"].update(status=report["status"], description=description, resource_status=status, resource_status_label=label, limitation="No verified untouched final prompts remain. V2 quality results are development evidence, without fresh held-out confirmation.", execution=report)
+    if args.source_url:
+        data["sources"]["v2_execution"] = args.source_url
+    if args.repository_base:
+        if not args.repository_base.startswith("https://github.com/Arhaan2/weight-space-lab/blob/"):
+            raise ValueError("Repository base must identify the public source repository")
+        data["sources"]["repository_base"] = args.repository_base.rstrip("/") + "/"
+    base = data["sources"].get("repository_base", PUBLIC_BASE)
+    if args.resource_report.exists():
+        resource = json.loads(args.resource_report.read_text())
+        if resource.get("schema_version") != 1 or not isinstance(resource.get("sessions"), list):
+            raise ValueError("Expected versioned public resource report with session records")
+        data["resource_study"] = resource
+        data["sources"]["resource_study"] = args.resource_source_url or data["sources"].get("resource_study") or base + "reports/resource-all-edits-v1/result.json"
     data["updated"] = datetime.fromisoformat(report["updated_at_utc"]).astimezone(ZoneInfo("America/Los_Angeles")).date().isoformat()
-    status_markup = f'''          <div class="next-status reveal" id="v2-status" data-ui>
-            <h3>V2 evidence</h3>
-            <p id="v2-description">{escape(description)}</p>
-            <dl class="status-list"><div><dt>Development tasks</dt><dd>{report["baseline"]["denominator"]}</dd></div><div><dt>Untouched final prompts</dt><dd>0</dd></div><div><dt>Standard resource comparison</dt><dd id="v2-resource-status">{escape(resource_label)}</dd></div></dl>
-            <p id="v2-limitation">{escape(limitation)}</p>
-          </div>'''
-    rows = [measurements_row("Original baseline", report["baseline"], "Reference")]
-    rows.extend(measurements_row(f'Astra round {row["round"]}', row["metrics"], "Yes" if row.get("qualifies") is True else "No") for row in evaluated)
-    failure = report.get("preserved_pre_dispatch_failure", {})
-    failure_note = ""
-    if failure.get("maximum_real_candidate_evaluations") is not None:
-        failure_note = (f'<p class="reveal">The initial browser attempt stopped before any model load and remains counted. '
-                        f'The preserved stop limited the continuation to {int(failure["maximum_real_candidate_evaluations"])} real candidate evaluations.</p>')
-    baseline_browser = report.get("baseline_environment", {}).get("chrome_version")
-    candidate_browsers = sorted({row.get("environment", {}).get("chrome_version") for row in evaluated} - {None})
-    if baseline_browser and candidate_browsers:
-        browser_note = f'The saved baseline used Chrome {baseline_browser}; evaluated candidates used Chrome {", ".join(candidate_browsers)}.'
-        if any(browser != baseline_browser for browser in candidate_browsers):
-            browser_note += " Browser changes may also affect the development comparison."
-        browser_note += " The separate resource protocol matches the browser for both artifacts."
+    resource_updated = data.get("resource_study", {}).get("updated_at_utc")
+    if resource_updated:
+        data["updated"] = max(data["updated"], datetime.fromisoformat(resource_updated).astimezone(ZoneInfo("America/Los_Angeles")).date().isoformat())
+    methods = json.loads(methods_path.read_text())
+    v1_base = data["sources"]["v1_report"].split("reports/", 1)[0]
+    source_map = {"reports/ifeval-browser-v2-collaboration-run/result.json": data["sources"]["v2_execution"].replace("README.md", "result.json"), "reports/ifeval-browser-v2-collaboration-run/README.md": data["sources"]["v2_execution"], "reports/resource-all-edits-v1/result.json": data["sources"].get("resource_study", base + "reports/resource-all-edits-v1/result.json")}
+    def normalize(value):
+        if isinstance(value, dict):
+            out = {k: normalize(v) for k, v in value.items()}
+            url = out.get("url")
+            if isinstance(url, str) and (url.startswith("../") or (args.repository_base and url.startswith(PUBLIC_BASE))):
+                path = url[3:] if url.startswith("../") else url[len(PUBLIC_BASE):]
+                historical = path.startswith("reports/ifeval-browser-v1-") or path in ("docs/ifeval-v1-reproduction.md", "docs/ifeval-v2-final-data.md")
+                out["url"] = source_map.get(path, (v1_base if historical else base) + path)
+            return out
+        return [normalize(v) for v in value] if isinstance(value, list) else value
+    methods = normalize(methods)
+    resource = data.get("resource_study")
+    if resource:
+        for study in methods.get("studies", []):
+            if study["id"] in ("resource", "resource-all-edits", "resource_all_edits", "resource-all-edits-v1"):
+                study["status"] = resource["status"]
+    html = replace_region(html_path.read_text(), "STATIC_EVIDENCE", static_evidence(data))
+    html = replace_region(html, "RESEARCH_DATA", script_json("research-data", data))
+    html = replace_region(html, "METHODOLOGY_DATA", script_json("methodology-data", methods))
+    html = replace_region(html, "METHODS_DETAIL", static_methods(methods, resource))
+    if resource:
+        count = sum(row.get("status") == "completed" and (row.get("summary") or {}).get("status") == "complete" and (row.get("summary") or {}).get("measured_requests") == 60 and (row.get("summary") or {}).get("scheduled_requests") == 60 for row in resource["sessions"])
+        method_status = f"{count} of 10 planned sessions are complete in the public report. Quality eligibility was not required. Two sessions per artifact form a descriptive pilot, not an equivalence test."
+        method_state = resource["status"].replace("_", " ").capitalize()
+        download = '<a href="resource-study.json" download><span>Resource sessions</span><small>JSON · sessions and telemetry</small><span aria-hidden="true">↓</span></a>'
     else:
-        browser_note = "Browser-version provenance is incomplete; a matched-browser development comparison is not established."
-    next_study = (
-        '<p class="reveal"><strong>For a subsequent quality claim,</strong> a new study would need a baseline on the same current browser and a verified untouched final set.</p>'
-        if report["status"] == "complete" else ""
-    )
-    results_markup = f'''        <div class="v2-measurements">
-          <h3 class="reveal">Measured development</h3>
-          <p class="reveal">V2 reuses the saved original baseline and the same 32 prompts for every evaluated candidate. These are development-only measurements.</p>
-          <table class="development-table reveal" data-ui>
-            <caption>Strict and loose prompt passes, sampled output tokens, and eligibility under the frozen selection rule.</caption>
-            <thead><tr><th scope="col">Artifact</th><th scope="col">Strict</th><th scope="col">Loose</th><th scope="col">Output tokens</th><th scope="col">Qualifies</th></tr></thead>
-            <tbody>
-{chr(10).join(rows)}
-            </tbody>
-          </table>
-          <p class="reveal">{escape(browser_note)}</p>
-          {failure_note}
-          <p class="v2-provenance reveal">The editor was a fresh-context gpt-6-astra collaboration agent. Ultra effort, immutable provider identity and technical isolation were not verified. <a href="{escape(url, quote=True)}">Read the execution report</a>.</p>
-          {next_study}
-{resource_markup(report["resource"])}
-        </div>'''
-    html = replace_region(html_path.read_text(), "V2_STATUS", status_markup)
-    html = replace_region(html, "V2_RESULTS", results_markup)
-    protocol_url = escape(data["sources"]["v2_protocol"], quote=True)
-    if resource_status == "pristine_retained_no_comparison":
-        resource_plan = f'''        <div class="resource-plan reveal">
-          <div><h3>Resource comparison skipped</h3><p>No edit passed the frozen development gate. The original model was retained.</p></div>
-          <p>{escape(report["resource"]["reason"])}</p>
-        </div>
-        <p class="source-note reveal">The A–B–B–A resource comparison was conditional on an eligible edit. No browser resource improvement or equality is established. <a href="{protocol_url}">Read the protocol</a>.</p>'''
-    elif report["status"] == "halted" and not report["resource"].get("sessions"):
-        resource_plan = f'''        <div class="resource-plan reveal">
-          <div><h3>Resource comparison not reached</h3><p>Execution stopped. No standard-workload resource measurements are available.</p></div>
-          <p>The comparison requires a selected eligible edit and valid execution capacity. <a href="{protocol_url}">Read the protocol</a>.</p>
-        </div>'''
+        method_status = "Measured sessions appear in Resources only when recorded in the public report. A small pilot does not establish resource equivalence."
+        method_state = "Report pending"
+        download = '<a href="https://github.com/Arhaan2/weight-space-lab"><span>Source repository</span><small>Protocols, code and reports</small><span aria-hidden="true">↗</span></a>'
+    html = replace_region(html, "RESOURCE_METHOD_STATUS", escape(method_status))
+    html = replace_region(html, "RESOURCE_METHOD_STATE", escape(method_state))
+    html = replace_region(html, "RESOURCE_DOWNLOAD", download)
+    finding = (f"Quality improvement remains unestablished. {count} of {len(resource['sessions'])} resource sessions are complete across {len(resource['artifacts'])} artifacts." if resource else "V1’s held-out change is inconclusive. None of the three new Astra edits improved the strict development score.")
+    html = replace_region(html, "CURRENT_FINDING", escape(finding))
+    outputs = {data_path: json.dumps(data, indent=2) + "\n", methods_path: json.dumps(methods, indent=2) + "\n", html_path: html}
+    if resource:
+        outputs[args.site / "resource-study.json"] = json.dumps(resource, indent=2) + "\n"
+    if args.check:
+        stale = [str(path.relative_to(REPOSITORY)) for path, text in outputs.items() if not path.exists() or path.read_text() != text]
+        if stale:
+            raise SystemExit("Stale site evidence: " + ", ".join(stale))
+        print(f'PASS: embedded/static evidence synchronized ({len(evaluated)} candidates; {len((resource or {}).get("sessions", []))} resource sessions)')
     else:
-        resource_copy = ("A qualifying edit is required. The plan calls for four sessions on the original Browser LLM Bench standard workload, with 60 measured requests per session."
-                         if resource_status == "pending" else
-                         "The prespecified order compares the original and selected edit over four sessions. The measured table above records the actual completed work.")
-        resource_plan = f'''        <div class="resource-plan reveal">
-          <div><h3>The resource plan</h3><p>{resource_copy}</p></div>
-          <div class="abba" aria-label="Prespecified conditional session order: original A, edited B, edited B, original A"><span>A<small>Original</small></span><span>B<small>Edited</small></span><span>B<small>Edited</small></span><span>A<small>Original</small></span></div>
-        </div>
-        <p class="source-note reveal">The protocol matches browser, device, quantization, prompts and settings. Native CPU, process-memory and GPU signals retain their own scope. Two sessions per artifact form a small pilot. <a href="{protocol_url}">Read the protocol</a>.</p>'''
-    html = replace_region(html, "V2_RESOURCE_PLAN", resource_plan)
-    serialized = json.dumps(data, indent=2) + "\n"
-    if check:
-        if data_path.read_text() != serialized or html_path.read_text() != html:
-            raise SystemExit("Site V2 evidence is stale; run scripts/update_results_site.py")
-        print(f"PASS: site matches public V2 report ({count} evaluated candidates)")
-    else:
-        data_path.write_text(serialized)
-        html_path.write_text(html)
-        print(f"Updated site with {count} measured candidate result(s); resource status: {resource_status}")
+        for path, text in outputs.items():
+            path.write_text(text)
+        print(f'Updated research snapshot ({len(evaluated)} candidates; {len((resource or {}).get("sessions", []))} resource sessions)')
 
 
-def main() -> None:
+def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--report", type=Path, default=REPOSITORY / "reports/ifeval-browser-v2-collaboration-run/result.json")
+    parser.add_argument("--resource-report", type=Path, default=REPOSITORY / "reports/resource-all-edits-v1/result.json")
     parser.add_argument("--site", type=Path, default=REPOSITORY / "site")
-    parser.add_argument("--source-url", help="Public execution-report link; preserves an existing pinned link when omitted")
-    parser.add_argument("--check", action="store_true", help="Read-only verification that static HTML and JSON match the saved report")
-    args = parser.parse_args()
-    update(args.report, args.site, args.source_url, args.check)
+    parser.add_argument("--source-url", help="Public V2 report link; existing pin is retained by default")
+    parser.add_argument("--resource-source-url", help="Public resource JSON link")
+    parser.add_argument("--repository-base", help="Public blob/COMMIT/ prefix for newly published methodology and sources")
+    parser.add_argument("--check", action="store_true")
+    update(parser.parse_args())
 
 
 if __name__ == "__main__":

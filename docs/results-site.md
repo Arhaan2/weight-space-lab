@@ -8,8 +8,8 @@ installation, external analytics or a model download. Only the contents of
 ## Evidence
 
 `site/results.json` is a sanitized view of the public experiment reports. The
-page retains a readable V1 comparison without JavaScript; JavaScript adds the
-split and scoring controls. When updating results, keep that fallback and the
+page retains readable development, historical held-out and recorded resource
+tables without JavaScript. JavaScript adds artifact, scope and metric controls. When updating results, keep that fallback and the
 JSON consistent. Link historical evidence to its immutable public commit,
 because an open research pull request may be ahead of `main`.
 
@@ -27,10 +27,19 @@ The evidence verifier compares all four held-out metrics, paired prompt outcomes
 development results, token/duration accounting and allocation observations with
 the canonical public report. It also checks V2 against its public execution
 report and independently checks each evaluated candidate's qualification rule.
-The update script synchronizes V2's JSON and static HTML from that public report.
+The update script synchronizes V2 and the independent resource study from their
+public reports. It embeds script-safe copies of results and methodology, updates
+the no-JavaScript tables, and normalizes public source URLs.
 The verifier checks the deployment file types and scans
 text files for local paths and common credential markers. It does not execute a
 model or independently regrade private outputs.
+
+The resource checks independently recompute request totals, session means,
+ranges and baseline deltas, enforce missing-data and matched-environment rules,
+and compare all published study-source files to the frozen source manifest.
+Run the final verification in the clean release checkout. Unrelated local edits
+to a frozen source file correctly fail that check and must not be overwritten to
+make a development workspace appear clean.
 
 Review the rendered page at desktop, tablet and phone widths, with keyboard
 navigation and reduced motion. Stop preview/inspection browsers before running
@@ -55,36 +64,75 @@ defines the source-branch setting and build-status checks.
 
 ## Design and review
 
-The taste direction is **Type and nothing else**, seed `51409817`, using
-Schibsted Grotesk and the dealt orange, sky and lime fields. No direction was
-redrawn. The measured difference between 69 and 70 held-out passes supplies the
-main comparison; its uncertainty remains beside it. The evidence figures use
-the **Accent ladder** interface treatment, seed `1092602209`, with the page's
-type and colors. Five core type roles and one data-display role hold the scale.
+The current design is a research workbench, rebuilt after the user rejected the
+previous colorful landing page. Its **Achromatic ledger** app direction uses seed
+`1571155384`; the explicit professional brief supersedes the prior orange/lime
+palette and oversized typography. The prior screenshots and critiques remain a
+before record, not approval of this replacement.
 
-Apple interaction guidance supplies immediate press feedback, visible keyboard
-focus, named controls, reduced-motion behavior, and readable static fallbacks.
-The one live interaction switches actual V1 split/scoring combinations; it
-never simulates an experiment. V2's generated table remains present without
-JavaScript and distinguishes development evidence from fresh confirmation.
+Taste's full app-screen workflow supplies flat neutral surfaces, dense evidence,
+right-aligned tabular figures and a single muted teal on the selected data. The
+face is a restrained serif research title with the existing self-hosted Schibsted
+interface font. The product-specific element is a five-artifact comparison and an
+exact weight-edit map: actual affected column intervals are positioned within the
+verified 3,584-column down-projection dimension. No decorative weights are drawn.
 
-The final third review inspected the completed V2 table at 1,440, 768 and
-390 pixels. All ten screenshots from the final verification were reviewed.
-The inspector reported zero failures. Its three warnings are documented:
-photographs and footage would not add experimental evidence; the longest
-context paragraph remains a readable, bounded 78ch block alongside the wider
-results table (the inspector estimates about 95 average characters per line).
-It wraps naturally on narrow screens. No decorative media was added to fill
-those warnings.
+Three hash routes answer separate questions: **Results** compares artifacts;
+**Methodology** explains how measurements were obtained; **Evidence** supplies
+reports, identities and downloads. Selection composes the chart, selected reading,
+paired baseline difference, edit operations and individual resource sessions. Each resource session also exposes its actual
+non-warm-up request records through a keyboard-accessible range selector and
+three 20-request trace windows. Timing and token views share exact observations;
+horizontal spacing is request order, with observed idle gaps listed separately.
+Selected-session CSV exports only public numeric/finish metadata. V1
+held-out quality, the reused 32-prompt development set and the independent resource
+pilot never share a statistical denominator. Resource means require two completed
+60/60 sessions with available measurements; partial records remain inspectable.
 
-The final pass corrected a page-sized interface annotation by placing it on
-the actual table, and revealed the V2 heading, table and notes individually.
-Keyboard activation, all four comparison states, pressed-state labels, reduced
-motion, phone overflow, anchors, no-JavaScript reading and browser exceptions
-passed. No inspection browser ran during target measurement. The evidence
-verifier passed 39 checks against the canonical reports.
+Apple guidance supplies native keyboard controls, persistent focus after selected
+rows update, visible focus indicators, immediate local feedback, destination
+heading focus on route changes, and reduced-motion support. No entrance motion
+or external model call is used. Printing methodology temporarily expands details
+and restores their prior state. The complete numerical fallback and source links
+remain usable without JavaScript.
 
-Final critique: design 7.9, usability 8.2, creativity 7.5, content 9.0; weighted
-overall 8.02/10. Remaining density in the research caveats is deliberate: the
-browser-version difference, exposure limits, selection failure and attribution
-are necessary context for interpreting the measurements.
+Final review used a clean publication checkout after all ten target sessions
+ended. Taste app inspection passed with **zero failures** at 1,440, 768 and
+390 pixels. All six images in each of two rounds were visually examined.
+The second round kept the phone metric selector at full width, set its measurement
+unit as one unbroken line below the number, and shortened the adjacent continuation
+notice while retaining the complete recovery record in Methodology.
+
+Two inspector warnings are intentionally retained. The nearly neutral `#f7f7f4`
+ground implements the requested restrained research palette. At phone width,
+tables become per-artifact cards with labels over values; those fields are
+left-aligned within each card, while desktop numeric columns and chart readings
+remain right-aligned. Neither width has horizontal overflow. Text contrast checks,
+asset loading and browser exception checks pass. Neutral bars meet 3:1 graphical
+contrast and the selected teal remains distinct.
+
+The functional browser harness passed artifact and metric comparisons against the
+saved evidence, exact edit maps, session/request selection, warm-up exclusion,
+request and aggregate CSVs, keyboard focus, shared views, methods printing,
+citation download, reduced motion, and no-JavaScript fallback. Static JavaScript
+syntax, Python compilation and updater idempotence also pass. No review browser
+ran during target measurement, and no frozen report or benchmark source changed
+as part of interface review.
+
+Final visual critique: design 8.4, usability 8.3, creativity 8.0, content 9.1;
+overall approximately 8.4/10. The main comparison, actual weight-column locations
+and request traces give the interface a specific research purpose. Dense caveats
+remain in expandable methods; the resource view preserves its interruption notice
+and the visibly slower second R3 observation. These scores assess presentation,
+not scientific strength.
+
+Review artifacts are `.taste-skill/research-upgrade-2/desktop-fold.jpg`,
+`desktop-page-01.jpg`, `tablet-fold.jpg`, `tablet-page-01.jpg`, `mobile-fold.jpg`
+and `mobile-page-01.jpg` in the publication checkout. The structured inspection
+record is `report.json`; the parent task retains the functional harness output.
+
+The updater accepts `--repository-base https://github.com/Arhaan2/weight-space-lab/blob/COMMIT/`
+to pin newly published methodology/source links, `--source-url` for the V2 report,
+and `--resource-source-url` for the independent resource report. Preserve historical
+immutable pins. `--check` performs no writes and confirms JSON, embedded data and
+static tables remain synchronized.

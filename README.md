@@ -21,6 +21,22 @@ The editor route used actual fresh-context `gpt-6-astra` collaboration agents; U
 
 The [frozen protocol](docs/ifeval-browser-quality-resource-protocol.md), [historical preparation report](reports/ifeval-browser-v2-narrowed/README.md) and [execution amendments](docs/2026-11-10-direction.md) explain the bounds and deviations. A subsequent quality claim needs a new baseline on the same current browser and a verified untouched final set.
 
+A separate, subsequently authorized **all-edit resource pilot is complete**: pristine, V1, and all three Astra edits each ran two 60-request sessions in a mirrored schedule on the same recorded device, browser and runtime. Including one warm-up per session, this used 10 loads and 610 requests, with no target failures or retries. Every measured session generated 2,340 output tokens.
+
+| Resource artifact | Mean response time (ms/request) | Mean sampled native peak (GB) |
+| --- | ---: | ---: |
+| Pristine | 617.85 | 3.092 |
+| V1 edit | 601.06 | 3.075 |
+| Astra round 1 | 652.13 | 2.995 |
+| Astra round 2 | 601.70 | 3.054 |
+| Astra round 3 | 1,055.28 | 2.895 |
+
+These are equal-weight means of two sessions per artifact. GPUBuffer descriptor and WASM address-space maxima were identical across the schedule; they are allocation bookkeeping, not physical VRAM. Power was unavailable. Lower CPU/GPU activity rates do not establish less total work; round 3's lower native footprint coincided with slower responses, including both its 661.28 and 1,449.28 ms/request sessions.
+
+An integrity preflight stopped after six completed sessions. The four unused positions ran through a documented continuation after a **22.20-minute inter-session gap**; no completed observation was replaced. Hardware/runtime matching does not imply uninterrupted or constant host conditions. This two-session pilot is descriptive and establishes neither resource equivalence nor causal efficiency gains. It does not change the negative V2 quality-selection result.
+
+The [interactive research website](https://arhaan2.github.io/weight-space-lab/) exposes artifact comparisons, individual sessions and request traces, exact weight-edit maps, methodology, downloadable data and citation metadata. See the [resource report](reports/resource-all-edits-v1/README.md), [resource JSON](reports/resource-all-edits-v1/result.json), and [research methodology](docs/research-methodology.md) for measurement definitions, frozen source identities, recovery records and limitations.
+
 ## Closed results and historical preparation
 
 These records retain prior milestones. Statements about pending execution or authorization below refer to their named historical workflows; the current V2 result is above.
