@@ -1,0 +1,29 @@
+{
+  "all_passed": true,
+  "baseline": {
+    "instructions": 32,
+    "loose_prompt_passes": 17,
+    "natural_completions": 20,
+    "prompts": 32,
+    "scored_output_tokens": 13941,
+    "strict_prompt_passes": 16,
+    "truncations": 12
+  },
+  "check_count": 92,
+  "checks_summary": [
+    "Exact 32 saved baseline prompts, outputs, strict/loose grades, token counts, timing and resource observations",
+    "Approved weight information and policy, generation/scoring settings and response schema unchanged",
+    "Genuine request identifiers and hashes; calendar anchored once",
+    "No final task contents, authorization text, raw host paths or prefilled proposal",
+    "No editor submission or target inference performed"
+  ],
+  "editor_isolation": "unverified",
+  "experimental_editor_submissions": 0,
+  "kind": "round1_packet_privacy_audit_summary",
+  "packet_sha256": "859ea2e0978ad939033409f508e7ec9a0dfd0f3afb433742136d280123ebe05b",
+  "private_audit_sha256": "3009da03c183fd49db7b843cbdb4cb563e83dee8d3c02a0aaff48e0f937ebac2",
+  "request_sha256": "48124cd60e3818cef973d533d16103521369007d1cc4b5305f106a5855b4b24a",
+  "schema_version": 1,
+  "study_sha256": "bf38a30cb9bd0bac1b4afc2167b9293c32bb4d61b1af3e178a0f474e502b4e0c",
+  "target_forward_passes": 0
+}

@@ -1,0 +1,49 @@
+{
+  "author": "Arhaan2",
+  "candidate_edits": 0,
+  "conversions": 0,
+  "editor_calls": 0,
+  "evidence_kind": "offline_configuration_check",
+  "grader": {
+    "name": "official_ifeval",
+    "revision": "d273d53c0d49aa509641885b183d98facd8d2bb2697725f9a2efbaaec52074fd"
+  },
+  "grader_identity_sha256": "7d832e7dc3183d7e3633a84972fb644a09740be315fef99af4fd5f544bf8ba9b",
+  "grading_policy_sha256": "07db015fdfd33d652ce147ddc263913a0827045ce697419af0a5146f17f1b8c5",
+  "kind": "ifeval_browser_v2_offline_session_validation",
+  "limitations": "Offline preparation and configuration checks do not establish a successful real V2 browser load or generation.",
+  "model_loads": 0,
+  "production_capacity_consumed": false,
+  "runtime": "WebLLM 0.2.86 / q4f16_1",
+  "runtime_driver_sha256": "0bdc63ab924f08dfd8d23385923e7320a1e04eb51be1666c8f66aa6fe553c1a6",
+  "schema_version": 1,
+  "session_checks": [
+    "V2 session manifests and immutable configuration digests",
+    "Exact frozen settings and official grading policy",
+    "Official evaluator asset identity",
+    "Frozen source files and served build identities",
+    "Ordered items and dataset hash",
+    "Independent private ledgers with no dispatches"
+  ],
+  "sessions": [
+    {
+      "instructions": 32,
+      "prompts": 32,
+      "runtime_load_validation_passed": true,
+      "stage": "development"
+    },
+    {
+      "instructions": 160,
+      "prompts": 128,
+      "runtime_load_validation_passed": true,
+      "stage": "final"
+    }
+  ],
+  "settings_sha256": "2f899ed1320f010b9542d243154ceb9531baa97496a5b5860d88fe0b9663846c",
+  "source_model_and_deployment_checks": "Actual pristine file inventory and deployed baseline file map matched frozen identities.",
+  "synthetic_capacity_only": true,
+  "target_generations": 0,
+  "temporary_capacity_removed_after_verification": true,
+  "verified_actual_deployed_artifact_sha256": "5ead3e9c60107ab7168bee5373f6cd636c839b82557fed6550aaaa30170aa5b0",
+  "verified_actual_pristine_source_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d"
+}

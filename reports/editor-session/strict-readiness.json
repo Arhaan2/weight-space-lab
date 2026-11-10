@@ -1,0 +1,1003 @@
+{
+  "cli_behavior_evidence": {
+    "additional_baseline_controls": {
+      "analytics.enabled": false,
+      "features.apps": false,
+      "features.browser_use": false,
+      "features.computer_use": false,
+      "features.daemon_auto_start": false,
+      "features.enable_request_compression": false,
+      "features.hooks": false,
+      "features.image_generation": false,
+      "features.multi_agent": false,
+      "features.plugins": false,
+      "features.shell_snapshot": false,
+      "feedback.enabled": false,
+      "web_search": "disabled"
+    },
+    "binary_sha256": "8813367285524ac798dd96d1b071aea30d58708c7226fd236cd275cf1cfdee31",
+    "cases": [
+      {
+        "case": "baseline",
+        "configuration_changes": [],
+        "exit_code": 1,
+        "requests": [
+          {
+            "authorization_present": false,
+            "body_sha256": "cbd7611bbb0ca8b5b2e7797a1fb33498470b721de372655928e827064c05d154",
+            "input_tool_markers": {
+              "apply_patch": true,
+              "create_goal": true,
+              "exec_command": true,
+              "list_mcp_resources": true,
+              "request_user_input": true,
+              "view_image": true,
+              "web__run": false,
+              "write_stdin": true
+            },
+            "instruction_budget_markers": {
+              "remaining_tokens": false,
+              "rollout_budget": false,
+              "token_budget": true
+            },
+            "keys": [
+              "client_metadata",
+              "include",
+              "input",
+              "model",
+              "parallel_tool_calls",
+              "prompt_cache_key",
+              "reasoning",
+              "store",
+              "stream",
+              "text",
+              "tool_choice"
+            ],
+            "max_output_tokens": null,
+            "max_tokens": null,
+            "request_path": "/v1/responses",
+            "requested_model": "gpt-6-astra",
+            "tool_choice": "auto",
+            "tools": []
+          }
+        ],
+        "sanitized_error_categories": []
+      },
+      {
+        "case": "max_output_tokens_config",
+        "configuration_changes": [
+          "max_output_tokens=16"
+        ],
+        "exit_code": 1,
+        "requests": [],
+        "sanitized_error_categories": [
+          "Error loading config.toml: unknown configuration field `max_output_tokens` in -c/--config override"
+        ]
+      },
+      {
+        "case": "model_max_output_tokens_config",
+        "configuration_changes": [
+          "model_max_output_tokens=16"
+        ],
+        "exit_code": 1,
+        "requests": [],
+        "sanitized_error_categories": [
+          "Error loading config.toml: unknown configuration field `model_max_output_tokens` in -c/--config override"
+        ]
+      },
+      {
+        "case": "max_tokens_config",
+        "configuration_changes": [
+          "max_tokens=16"
+        ],
+        "exit_code": 1,
+        "requests": [],
+        "sanitized_error_categories": [
+          "Error loading config.toml: unknown configuration field `max_tokens` in -c/--config override"
+        ]
+      },
+      {
+        "case": "max_cost_config",
+        "configuration_changes": [
+          "max_cost=1"
+        ],
+        "exit_code": 1,
+        "requests": [],
+        "sanitized_error_categories": [
+          "Error loading config.toml: unknown configuration field `max_cost` in -c/--config override"
+        ]
+      },
+      {
+        "case": "max_billed_units_config",
+        "configuration_changes": [
+          "max_billed_units=1"
+        ],
+        "exit_code": 1,
+        "requests": [],
+        "sanitized_error_categories": [
+          "Error loading config.toml: unknown configuration field `max_billed_units` in -c/--config override"
+        ]
+      },
+      {
+        "case": "token_budget_feature",
+        "configuration_changes": [
+          "features.token_budget=true"
+        ],
+        "exit_code": 1,
+        "requests": [
+          {
+            "authorization_present": false,
+            "body_sha256": "4262edd8beefdc93a8096ec685afb5b8fb1f90c10597f5f76f585c517bf8e93a",
+            "input_tool_markers": {
+              "apply_patch": true,
+              "create_goal": true,
+              "exec_command": true,
+              "list_mcp_resources": true,
+              "request_user_input": true,
+              "view_image": true,
+              "web__run": false,
+              "write_stdin": true
+            },
+            "instruction_budget_markers": {
+              "remaining_tokens": false,
+              "rollout_budget": false,
+              "token_budget": true
+            },
+            "keys": [
+              "client_metadata",
+              "include",
+              "input",
+              "model",
+              "parallel_tool_calls",
+              "prompt_cache_key",
+              "reasoning",
+              "store",
+              "stream",
+              "text",
+              "tool_choice"
+            ],
+            "max_output_tokens": null,
+            "max_tokens": null,
+            "request_path": "/v1/responses",
+            "requested_model": "gpt-6-astra",
+            "tool_choice": "auto",
+            "tools": []
+          }
+        ],
+        "sanitized_error_categories": []
+      },
+      {
+        "case": "rollout_budget_feature",
+        "configuration_changes": [
+          "features.rollout_budget={limit_tokens=16,reminder_at_remaining_tokens=[8]}"
+        ],
+        "exit_code": 1,
+        "requests": [
+          {
+            "authorization_present": false,
+            "body_sha256": "18dc28b70e527963bd8043fdd87cd5ca0f86c14f5ffaa451d7b41f17508b8991",
+            "input_tool_markers": {
+              "apply_patch": true,
+              "create_goal": true,
+              "exec_command": true,
+              "list_mcp_resources": true,
+              "request_user_input": true,
+              "view_image": true,
+              "web__run": false,
+              "write_stdin": true
+            },
+            "instruction_budget_markers": {
+              "remaining_tokens": false,
+              "rollout_budget": true,
+              "token_budget": true
+            },
+            "keys": [
+              "client_metadata",
+              "include",
+              "input",
+              "model",
+              "parallel_tool_calls",
+              "prompt_cache_key",
+              "reasoning",
+              "store",
+              "stream",
+              "text",
+              "tool_choice"
+            ],
+            "max_output_tokens": null,
+            "max_tokens": null,
+            "request_path": "/v1/responses",
+            "requested_model": "gpt-6-astra",
+            "tool_choice": "auto",
+            "tools": []
+          }
+        ],
+        "sanitized_error_categories": []
+      },
+      {
+        "case": "tool_switches",
+        "configuration_changes": [
+          "features.shell_tool=false",
+          "features.unified_exec=false",
+          "features.view_image=false",
+          "features.goals=false",
+          "features.sleep_tool=false",
+          "features.workspace_dependencies=false",
+          "tools.update_plan.enabled=false",
+          "tools.experimental_request_user_input.enabled=false"
+        ],
+        "exit_code": 1,
+        "requests": [
+          {
+            "authorization_present": false,
+            "body_sha256": "6eea97cf5d37dc6c2dff032c6110ba28c960c2de8d911b277b65421441595151",
+            "input_tool_markers": {
+              "apply_patch": true,
+              "create_goal": false,
+              "exec_command": true,
+              "list_mcp_resources": true,
+              "request_user_input": true,
+              "view_image": false,
+              "web__run": false,
+              "write_stdin": false
+            },
+            "instruction_budget_markers": {
+              "remaining_tokens": false,
+              "rollout_budget": false,
+              "token_budget": false
+            },
+            "keys": [
+              "client_metadata",
+              "include",
+              "input",
+              "model",
+              "parallel_tool_calls",
+              "prompt_cache_key",
+              "reasoning",
+              "store",
+              "stream",
+              "text",
+              "tool_choice"
+            ],
+            "max_output_tokens": null,
+            "max_tokens": null,
+            "request_path": "/v1/responses",
+            "requested_model": "gpt-6-astra",
+            "tool_choice": "auto",
+            "tools": []
+          }
+        ],
+        "sanitized_error_categories": []
+      },
+      {
+        "case": "ambiguous_drop_zero_retries",
+        "configuration_changes": [
+          "features.unbounded_connection_retries=false"
+        ],
+        "exit_code": 1,
+        "requests": [
+          {
+            "authorization_present": false,
+            "body_sha256": "91c427eae717cf39648788e80a342e13e693efdbc60a839c9d9f6497272d58af",
+            "input_tool_markers": {
+              "apply_patch": true,
+              "create_goal": true,
+              "exec_command": true,
+              "list_mcp_resources": true,
+              "request_user_input": true,
+              "view_image": true,
+              "web__run": false,
+              "write_stdin": true
+            },
+            "instruction_budget_markers": {
+              "remaining_tokens": false,
+              "rollout_budget": false,
+              "token_budget": true
+            },
+            "keys": [
+              "client_metadata",
+              "include",
+              "input",
+              "model",
+              "parallel_tool_calls",
+              "prompt_cache_key",
+              "reasoning",
+              "store",
+              "stream",
+              "text",
+              "tool_choice"
+            ],
+            "max_output_tokens": null,
+            "max_tokens": null,
+            "request_path": "/v1/responses",
+            "requested_model": "gpt-6-astra",
+            "tool_choice": "auto",
+            "tools": []
+          }
+        ],
+        "sanitized_error_categories": []
+      }
+    ],
+    "cli_common_options": [
+      "--no-daemon",
+      "exec",
+      "--ignore-user-config",
+      "--ignore-rules",
+      "--strict-config",
+      "--skip-git-repo-check",
+      "--ephemeral",
+      "--json",
+      "--model gpt-6-astra",
+      "--cd <empty approved directory>"
+    ],
+    "cli_version": "codex-cli 0.163.0",
+    "conclusions": {
+      "actual_editor_launch_boundary": "Not verified: dispatch_live remains unimplemented and this diagnostic CLI did not run under the Phase 7 filesystem profile.",
+      "no_model_substitution": "Experimental allowProviderModelFallback field exists in schema; not behaviorally verified against the live provider.",
+      "provider_billing_cap": "No demonstrated provider-side billed-usage ceiling. Tested max_cost/max_billed_units config overrides are rejected.",
+      "provider_max_output_tokens": "Unsupported by the tested CLI flag/config controls; baseline and accepted budget features serialize no max_output_tokens/max_tokens field.",
+      "rollout_budget_feature": "Recognized and adds rollout_budget input text; no provider hard output limit serialized.",
+      "token_budget_feature": "Recognized and present in model-visible input; no provider hard output limit serialized.",
+      "tool_allowlist": "Not verified. Some feature switches alter input markers, but absence of top-level tools does not mean no tools; code-mode descriptions are in input. No complete tool registry or actual denied tool execution established.",
+      "zero_retry_ambiguous_drop": "Verified for the local capture case with explicit zero request/stream retries plus unbounded_connection_retries=false: one request and terminal exit1."
+    },
+    "credential_boundary": {
+      "all_captured_requests_had_authorization": false,
+      "configuration_home": "fresh empty temporary directory",
+      "environment": "minimal PATH/LANG/configuration-home/temporary-directory variables only",
+      "ignore_rules": true,
+      "ignore_user_config": true,
+      "provider_requires_openai_auth": false
+    },
+    "direct_flag_check": {
+      "command": "codex exec --max-output-tokens 16 --help",
+      "exit_code": 2,
+      "result": "unexpected argument --max-output-tokens; parser rejects before dispatch"
+    },
+    "evidence_scope": "Actual installed binary, strict configuration parser, and loopback-only synthetic provider request capture. No real provider response or model generation.",
+    "experiment_executed": false,
+    "immutable_model_version": null,
+    "interpretation_limits": [
+      "A fake server receiving a requested model string is not real-provider acceptance or model identity verification.",
+      "An HTTP400 response deliberately stops before inference; its exit1 is expected.",
+      "Request body digests describe temporary diagnostic payloads; raw prompts/tool dumps/private paths are not published.",
+      "A configuration field being accepted is not evidence of provider-side enforcement.",
+      "These diagnostic requests are not experimental editor interactions and consume no frontier-model generation budget."
+    ],
+    "kind": "installed_cli_control_behavior_audit",
+    "live_editor_request_count": 0,
+    "live_interface_accepted_selector": null,
+    "locally_serialized_selector": "gpt-6-astra",
+    "model_self_description_used": false,
+    "network_boundary": {
+      "external_provider_network": "denied",
+      "loopback_server": "synthetic request capture only",
+      "mechanism": "macOS Seatbelt",
+      "profile": "(version 1)(allow default)(deny network-outbound)(allow network-outbound (remote ip \"localhost:*\"))",
+      "scope": "Network-only restriction for the diagnostic CLI; NOT the Phase 7 editor filesystem isolation profile."
+    },
+    "observed_live_session_model_metadata": null,
+    "private_harness_sha256": {
+      "ambiguous_drop_capture": "907d5d20a9fea034984e6d8ab1fa73854beab6cbf867931155072ff5d83218a3",
+      "request_capture": "9353a9339151493b24a89471a50466e48c0f2ec8b3750ac8b662e8d555e632fd"
+    },
+    "provider_controls": {
+      "base_url": "http://<loopback-listener>/v1",
+      "model_provider": "phase7_capture",
+      "name": "synthetic loopback capture; no model",
+      "request_max_retries": 0,
+      "requires_openai_auth": false,
+      "stream_idle_timeout_ms": 3000,
+      "stream_max_retries": 0,
+      "wire_api": "responses"
+    },
+    "provider_usage": null,
+    "reproduction_harness": {
+      "command": ".venv/bin/python scripts/verify_codex_controls.py --out <new-evidence-file>",
+      "path": "scripts/verify_codex_controls.py",
+      "sha256": "bebe4bac2c18c2704dae76333eab87f76d52af35f33c32cfff6dd9b5d43b1809",
+      "structural_redaction_check_passed": true,
+      "validated_cases": [
+        {
+          "case": "baseline",
+          "exit_code": 1,
+          "invalid_request": false,
+          "request_count": 1
+        },
+        {
+          "case": "ambiguous_drop_zero_retries",
+          "exit_code": 1,
+          "invalid_request": false,
+          "request_count": 1
+        }
+      ],
+      "validation_scope": "Public sanitized harness compiled and ran baseline plus ambiguous-drop cases; ten historical control cases retained above."
+    },
+    "requested_selector": "gpt-6-astra",
+    "schema_version": 1,
+    "scientific_result": false,
+    "verification_date": "2026-11-06",
+    "verification_timezone": "America/Los_Angeles"
+  },
+  "cli_behavior_evidence_matches_installed_binary": true,
+  "conditions": [
+    {
+      "available_evidence": "Dispatch is fail-closed; simulate() calls a Python fixture only. File imports remain unverified.",
+      "classification": "missing_implementation",
+      "condition": "No supported live provider adapter is registered.",
+      "expected_evidence": "Executable adapter selecting the requested model, binding the narrow contract, controls and returned provenance.",
+      "file": "weight_space_lab/editor_controller.py",
+      "function": "EditorController.dispatch_live",
+      "id": "live_adapter_missing",
+      "mandatory": true,
+      "smallest_next_step": "Implement one adapter only after the selected interface demonstrates the mandatory controls.",
+      "stage": "pre_dispatch",
+      "status": "blocked"
+    },
+    {
+      "available_evidence": "Host Python fixture denials passed; CLI executable/provider network are not permitted by this profile.",
+      "classification": "missing_live_verification",
+      "condition": "The tested stdlib Python profile has never launched a live editor or its complete tool surface.",
+      "expected_evidence": "Denial tests on the exact editor launch: final tasks/answers/results, host files, descriptors, plugins and network routes.",
+      "file": "weight_space_lab/editor_sandbox.py",
+      "function": "SandboxRunner.run / _profile",
+      "id": "actual_launch_isolation_unverified",
+      "mandatory": true,
+      "smallest_next_step": "Build a narrow provider broker and verify the exact launch/tools; do not widen the Python profile or infer equivalence.",
+      "stage": "pre_dispatch",
+      "status": "blocked"
+    },
+    {
+      "available_evidence": "max_output_tokens is an offline envelope/reservation; local deadlines and output usage events are not remote generation caps.",
+      "classification": "unavailable_interface_capability",
+      "condition": "No demonstrated frontier-provider enforcement of the 64-token total output bound, including reasoning.",
+      "expected_evidence": "Supported dispatch control observed on the actual provider request and documented/enforced at the provider.",
+      "file": "weight_space_lab/editor_controller.py",
+      "function": "_export / dispatch_live",
+      "id": "frontier_generation_cap_not_demonstrated",
+      "mandatory": true,
+      "smallest_next_step": "Use an explicitly supported provider-enforced output limit for this exact selector, or propose a protocol change; do not treat CLI goals as a cap.",
+      "stage": "pre_dispatch",
+      "status": "blocked"
+    },
+    {
+      "available_evidence": {
+        "actual_frontier_billed_usage": null,
+        "configured_billed_units_limit": null,
+        "local_fixture_zero_is_frontier_usage": false
+      },
+      "classification": "unavailable_interface_capability",
+      "condition": "No provider-side billed-usage cap is demonstrated; the selected offline budget has no monetary ceiling configured.",
+      "expected_evidence": "If a billed ceiling is configured: establish its unit and enforceable conservative bound before dispatch. Otherwise record available usage without claiming a monetary cap.",
+      "file": "weight_space_lab/editor_budget.py",
+      "function": "BudgetLedger.reserve / finish",
+      "id": "frontier_billed_cap_not_demonstrated",
+      "mandatory": false,
+      "smallest_next_step": "Do not invent a mandatory money cap from billed_units:null. Any future configured cap requires demonstrated enforcement.",
+      "stage": "disclosure",
+      "status": "not_configured"
+    },
+    {
+      "available_evidence": "gpt-6-astra is exposed; allowProviderModelFallback exists in experimental schema. No real dispatch acceptance or response was observed.",
+      "classification": "missing_live_verification",
+      "condition": "A catalog selector and schema fallback flag do not demonstrate no substitution on a real dispatch.",
+      "expected_evidence": "Explicit requested selector, no fallback behavior, and execution-interface model/reroute metadata.",
+      "file": "configs/editor_interface_observation.json",
+      "function": "interfaces / model_selector_sources",
+      "id": "no_substitution_control_unverified",
+      "mandatory": true,
+      "smallest_next_step": "Wire and test no-fallback behavior before launch; reject reroute/mismatch using interface events.",
+      "stage": "pre_dispatch",
+      "status": "blocked"
+    },
+    {
+      "available_evidence": {
+        "available": true,
+        "can_authorize_live_execution": false,
+        "cancelled": false,
+        "configured_billed_units_limit": null,
+        "implementation_matches_current": false,
+        "mode": "offline_integration",
+        "read_only": true,
+        "reason": "existing_session_is_offline_and_cannot_be_promoted_or_reset",
+        "remaining": {
+          "editor_requests": 0,
+          "elapsed_seconds": 108.76204016664997,
+          "generated_tokens": 4061,
+          "requested_sequences": 0
+        },
+        "session_sha256": "f7a5a5120f6dff2875d06d4bc97648b7297f67b88e7f10234cc406cbc2e1f3c2",
+        "used": {
+          "editor_requests": 6,
+          "elapsed_seconds": 11.237959833350033,
+          "generated_tokens": 35,
+          "requested_sequences": 7
+        }
+      },
+      "classification": "configuration",
+      "condition": "No existing authorized live session can reserve this one request.",
+      "expected_evidence": "A non-cancelled authorized live ledger with one request/sequence, 64 frontier tokens and 30 seconds available, with complete billing semantics.",
+      "file": "weight_space_lab/editor_live.py",
+      "function": "_budget_snapshot",
+      "id": "authorized_live_budget_unavailable",
+      "mandatory": true,
+      "smallest_next_step": "Preserve spent offline budgets; explicitly authorize/freeze a live budget only after capability gates pass. Never reset a run.",
+      "stage": "pre_dispatch",
+      "status": "blocked"
+    },
+    {
+      "available_evidence": "Read-only diagnostic access works; ordinary controller resume correctly refuses changed implementation.",
+      "classification": "configuration",
+      "condition": "The selected historical session is bound to the original package hashes, which differ from this readiness implementation.",
+      "expected_evidence": "Exact original package/runtime hashes for any resume, or an explicitly authorized new protocol with budget provenance.",
+      "file": "weight_space_lab/editor_controller.py",
+      "function": "EditorController.__init__ / _implementation",
+      "id": "existing_session_code_freeze_changed",
+      "mandatory": true,
+      "smallest_next_step": "Keep the historical session immutable. Do not relax the source freeze or recreate its ledger to obtain live budget.",
+      "stage": "pre_dispatch",
+      "status": "blocked"
+    },
+    {
+      "available_evidence": "Separate inert zero-action plan and exact acknowledgement validator are implemented; no transport exists.",
+      "classification": "missing_implementation",
+      "condition": "Connection diagnostic must expose no proposal/probe/action execution.",
+      "expected_evidence": "One structured acknowledgement request, empty tools, exact response validator, no calls to _execute_action.",
+      "file": "weight_space_lab/editor_live.py",
+      "function": "connection_test_plan / validate_connection_response",
+      "id": "zero_action_contract_prepared",
+      "mandatory": true,
+      "smallest_next_step": "Bind this narrow contract in the future verified adapter; do not reuse the six-tool offline action contract.",
+      "stage": "pre_dispatch",
+      "status": "prepared"
+    },
+    {
+      "available_evidence": "Local worker cancellation is tested. It cannot prove a remote provider stops generation when a local client is killed.",
+      "classification": "missing_live_verification",
+      "condition": "No live transport demonstrates zero automatic retries and remote cancellation/outcome semantics.",
+      "expected_evidence": "One provider request, bounded local supervisor, no retry after an ambiguous remote outcome; explicit remote cancellation capability or limitation.",
+      "file": "weight_space_lab/editor_live.py",
+      "function": "connection_test_plan",
+      "id": "remote_cancellation_and_retry_semantics_unverified",
+      "mandatory": true,
+      "smallest_next_step": "Verify transport retry/cancel behavior and charge ambiguous outcome conservatively; retain provider hard cap independently.",
+      "stage": "pre_dispatch",
+      "status": "blocked"
+    },
+    {
+      "available_evidence": null,
+      "classification": "missing_live_verification",
+      "condition": "The requested selector has not been accepted by an actual live execution interface.",
+      "expected_evidence": "Interface-produced session/dispatch acceptance for gpt-6-astra, separate from configured request and model text.",
+      "file": "configs/editor_interface_observation.json",
+      "function": "actual_returned_model_identity",
+      "id": "accepted_selector_not_observed",
+      "mandatory": true,
+      "smallest_next_step": "Record live session/dispatch metadata during the gated one-request check.",
+      "stage": "post_response",
+      "status": "not_observed"
+    },
+    {
+      "available_evidence": null,
+      "classification": "missing_live_verification",
+      "condition": "No actual session/response model metadata has been observed.",
+      "expected_evidence": "Interface response model/provider/reroute metadata, never the model's self-description.",
+      "file": "configs/editor_interface_observation.json",
+      "function": "actual_returned_model_identity",
+      "id": "response_model_metadata_not_observed",
+      "mandatory": true,
+      "smallest_next_step": "Capture authenticated interface events; reject mismatches and retain unknown fields as null.",
+      "stage": "post_response",
+      "status": "not_observed"
+    },
+    {
+      "available_evidence": "CLI schema exposes token usage events. Actual provider usage and billing are null, not fixture zero.",
+      "classification": "missing_live_verification",
+      "condition": "No frontier usage has been observed because no frontier request was sent.",
+      "expected_evidence": "Record interface token usage and billed usage when exposed; preserve unknowns and charge ambiguous outcomes conservatively.",
+      "file": "weight_space_lab/editor_budget.py",
+      "function": "BudgetLedger.finish",
+      "id": "frontier_usage_not_observed",
+      "mandatory": true,
+      "smallest_next_step": "Capture metering during the gated connection check; do not describe it as an execution cap.",
+      "stage": "post_response",
+      "status": "not_observed"
+    },
+    {
+      "available_evidence": {
+        "cli_version_is_model_version": false,
+        "immutable_model_version": null,
+        "opaque_catalog_comp_hash": "3000"
+      },
+      "classification": "unavailable_interface_capability",
+      "condition": "fresh_editor_search requires editor_model_version but the inspected catalog does not expose an authenticated immutable build.",
+      "expected_evidence": "An immutable build value actually supplied by the interface, or an explicitly approved protocol revision.",
+      "file": "weight_space_lab/protocol.py",
+      "function": "validate_protocol / _PROFILE_PINS",
+      "id": "immutable_model_version_not_exposed",
+      "mandatory": false,
+      "smallest_next_step": "Propose explicit unavailable-version provenance for a connection diagnostic; keep the existing search protocol unchanged pending approval.",
+      "stage": "protocol_proposal",
+      "status": "not_exposed"
+    }
+  ],
+  "connection_plan_sha256": "9364b4336b706137845ce013ba35da83188def6a79777afa531ce665fc99e12c",
+  "dispatch_blockers": [
+    "live_adapter_missing",
+    "actual_launch_isolation_unverified",
+    "frontier_generation_cap_not_demonstrated",
+    "no_substitution_control_unverified",
+    "authorized_live_budget_unavailable",
+    "existing_session_code_freeze_changed",
+    "zero_action_contract_prepared",
+    "remote_cancellation_and_retry_semantics_unverified"
+  ],
+  "existing_budget": {
+    "available": true,
+    "can_authorize_live_execution": false,
+    "cancelled": false,
+    "configured_billed_units_limit": null,
+    "implementation_matches_current": false,
+    "mode": "offline_integration",
+    "read_only": true,
+    "reason": "existing_session_is_offline_and_cannot_be_promoted_or_reset",
+    "remaining": {
+      "editor_requests": 0,
+      "elapsed_seconds": 108.76204016664997,
+      "generated_tokens": 4061,
+      "requested_sequences": 0
+    },
+    "session_sha256": "f7a5a5120f6dff2875d06d4bc97648b7297f67b88e7f10234cc406cbc2e1f3c2",
+    "used": {
+      "editor_requests": 6,
+      "elapsed_seconds": 11.237959833350033,
+      "generated_tokens": 35,
+      "requested_sequences": 7
+    }
+  },
+  "experiment_executed": false,
+  "immutable_model_version": null,
+  "installed_cli": {
+    "available": true,
+    "binary_sha256": "8813367285524ac798dd96d1b071aea30d58708c7226fd236cd275cf1cfdee31",
+    "exec_help_sha256": "df0d864ca2076f7654288c6a1e3394e3eaa2ea8f15021df2524efdd90c70986c",
+    "inspection_scope": "version/help only; accepted configuration is not applied provider enforcement",
+    "version": "codex-cli 0.163.0"
+  },
+  "kind": "phase7_live_readiness",
+  "legacy_search_check": {
+    "conditions": [
+      {
+        "available_evidence": "Requested selector and installed CLI evidence exist; no live editor execution metadata exists.",
+        "blocks_connection_test": false,
+        "classification": "missing_live_verification",
+        "condition": "missing requirement: editor_provenance.model_id",
+        "expected_evidence": "Actual editor execution-interface provenance, separate from request text and model self-description.",
+        "field": "editor_provenance.model_id",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Record interface acceptance and response metadata in the gated connection check before using it in a future pilot."
+      },
+      {
+        "available_evidence": "Requested selector and installed CLI evidence exist; no live editor execution metadata exists.",
+        "blocks_connection_test": false,
+        "classification": "missing_live_verification",
+        "condition": "missing requirement: editor_provenance.interface",
+        "expected_evidence": "Actual editor execution-interface provenance, separate from request text and model self-description.",
+        "field": "editor_provenance.interface",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Record interface acceptance and response metadata in the gated connection check before using it in a future pilot."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing pin: tokenizer_revision",
+        "expected_evidence": "A verified, frozen tokenizer_revision for the later candidate-search pilot.",
+        "field": "tokenizer_revision",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing pin: runtime_version",
+        "expected_evidence": "A verified, frozen runtime_version for the later candidate-search pilot.",
+        "field": "runtime_version",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing pin: chat_template_sha256",
+        "expected_evidence": "A verified, frozen chat_template_sha256 for the later candidate-search pilot.",
+        "field": "chat_template_sha256",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing pin: checkpoint_sha256",
+        "expected_evidence": "A verified, frozen checkpoint_sha256 for the later candidate-search pilot.",
+        "field": "checkpoint_sha256",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      },
+      {
+        "available_evidence": "No authenticated immutable build is exposed; CLI 0.163.0 and opaque comp_hash 3000 cannot fill this pin.",
+        "blocks_connection_test": false,
+        "classification": "unavailable_interface_capability",
+        "condition": "missing pin: editor_model_version",
+        "expected_evidence": "An immutable editor build actually exposed by the execution interface.",
+        "field": "editor_model_version",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Obtain a genuine immutable version or approve an explicit provenance-schema correction; do not silently relax the pilot."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing pin: split_audit_sha256",
+        "expected_evidence": "A verified, frozen split_audit_sha256 for the later candidate-search pilot.",
+        "field": "split_audit_sha256",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing requirement: backend",
+        "expected_evidence": "A verified, frozen backend for the later candidate-search pilot.",
+        "field": "backend",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing requirement: precision",
+        "expected_evidence": "A verified, frozen precision for the later candidate-search pilot.",
+        "field": "precision",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing requirement: execution_limits.max_sequences",
+        "expected_evidence": "A verified, frozen execution_limits.max_sequences for the later candidate-search pilot.",
+        "field": "execution_limits.max_sequences",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing requirement: execution_limits.max_duration_seconds",
+        "expected_evidence": "A verified, frozen execution_limits.max_duration_seconds for the later candidate-search pilot.",
+        "field": "execution_limits.max_duration_seconds",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing requirement: benchmarks[0].dataset_revision",
+        "expected_evidence": "A verified, frozen benchmarks[0].dataset_revision for the later candidate-search pilot.",
+        "field": "benchmarks[0].dataset_revision",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing requirement: benchmarks[0].task_manifest_sha256",
+        "expected_evidence": "A verified, frozen benchmarks[0].task_manifest_sha256 for the later candidate-search pilot.",
+        "field": "benchmarks[0].task_manifest_sha256",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing requirement: benchmarks[0].grader_revision",
+        "expected_evidence": "A verified, frozen benchmarks[0].grader_revision for the later candidate-search pilot.",
+        "field": "benchmarks[0].grader_revision",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing requirement: benchmarks[0].truncation_policy",
+        "expected_evidence": "A verified, frozen benchmarks[0].truncation_policy for the later candidate-search pilot.",
+        "field": "benchmarks[0].truncation_policy",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing requirement: benchmarks[0].item_ids",
+        "expected_evidence": "A verified, frozen benchmarks[0].item_ids for the later candidate-search pilot.",
+        "field": "benchmarks[0].item_ids",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing requirement: benchmarks[0].seeds",
+        "expected_evidence": "A verified, frozen benchmarks[0].seeds for the later candidate-search pilot.",
+        "field": "benchmarks[0].seeds",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing requirement: benchmarks[1].dataset_revision",
+        "expected_evidence": "A verified, frozen benchmarks[1].dataset_revision for the later candidate-search pilot.",
+        "field": "benchmarks[1].dataset_revision",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing requirement: benchmarks[1].task_manifest_sha256",
+        "expected_evidence": "A verified, frozen benchmarks[1].task_manifest_sha256 for the later candidate-search pilot.",
+        "field": "benchmarks[1].task_manifest_sha256",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing requirement: benchmarks[1].grader_revision",
+        "expected_evidence": "A verified, frozen benchmarks[1].grader_revision for the later candidate-search pilot.",
+        "field": "benchmarks[1].grader_revision",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing requirement: benchmarks[1].truncation_policy",
+        "expected_evidence": "A verified, frozen benchmarks[1].truncation_policy for the later candidate-search pilot.",
+        "field": "benchmarks[1].truncation_policy",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing requirement: benchmarks[1].item_ids",
+        "expected_evidence": "A verified, frozen benchmarks[1].item_ids for the later candidate-search pilot.",
+        "field": "benchmarks[1].item_ids",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      },
+      {
+        "available_evidence": "The intentionally unexecuted fresh_editor_search template has null here. No pilot configuration was changed.",
+        "blocks_connection_test": false,
+        "classification": "configuration",
+        "condition": "missing requirement: benchmarks[1].seeds",
+        "expected_evidence": "A verified, frozen benchmarks[1].seeds for the later candidate-search pilot.",
+        "field": "benchmarks[1].seeds",
+        "file": "configs/profiles/fresh_editor_search.json",
+        "function": "weight_space_lab.protocol.validate_protocol",
+        "scope": "later_search_pilot",
+        "smallest_next_step": "Bind the verified pilot evidence only when that later phase is authorized; this field is not needed for a zero-probe connection check."
+      }
+    ],
+    "pending_run_requirements": [
+      "missing requirement: editor_provenance.model_id",
+      "missing requirement: editor_provenance.interface",
+      "missing pin: tokenizer_revision",
+      "missing pin: runtime_version",
+      "missing pin: chat_template_sha256",
+      "missing pin: checkpoint_sha256",
+      "missing pin: editor_model_version",
+      "missing pin: split_audit_sha256",
+      "missing requirement: backend",
+      "missing requirement: precision",
+      "missing requirement: execution_limits.max_sequences",
+      "missing requirement: execution_limits.max_duration_seconds",
+      "missing requirement: benchmarks[0].dataset_revision",
+      "missing requirement: benchmarks[0].task_manifest_sha256",
+      "missing requirement: benchmarks[0].grader_revision",
+      "missing requirement: benchmarks[0].truncation_policy",
+      "missing requirement: benchmarks[0].item_ids",
+      "missing requirement: benchmarks[0].seeds",
+      "missing requirement: benchmarks[1].dataset_revision",
+      "missing requirement: benchmarks[1].task_manifest_sha256",
+      "missing requirement: benchmarks[1].grader_revision",
+      "missing requirement: benchmarks[1].truncation_policy",
+      "missing requirement: benchmarks[1].item_ids",
+      "missing requirement: benchmarks[1].seeds"
+    ],
+    "profile": "fresh_editor_search",
+    "run_configuration_complete": false,
+    "scope": "later search pilot; not the Phase 7 connection diagnostic"
+  },
+  "model_self_description_used": false,
+  "observed_session_response_model_metadata": null,
+  "ready": false,
+  "real_editor_request_sent": false,
+  "requested_selector": "gpt-6-astra",
+  "schema_version": 1,
+  "scientific_result": false,
+  "selector_accepted_by_execution_interface": {
+    "live_provider_acceptance": null,
+    "local_cli_synthetic_configuration": "gpt-6-astra",
+    "scope": "Local parser/serialization acceptance is separate from live execution acceptance."
+  },
+  "selector_accepted_by_live_interface": null,
+  "status": "blocked"
+}

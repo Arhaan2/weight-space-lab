@@ -1,0 +1,37 @@
+{
+  "actual_authenticated_session_denial_tests": false,
+  "genuine_astra_proposal": false,
+  "host_editor_tests": {
+    "errors": 0,
+    "failures": 0,
+    "skips": 0,
+    "tests": 65
+  },
+  "implementation_sha256": "c7153ed46a215ec7f5909ae67467d7290764610b59ac401ce8f6773193156cf6",
+  "new_session_tests": {
+    "errors": 0,
+    "failures": 0,
+    "skips": 0,
+    "tests": 34
+  },
+  "real_target_model_generation": false,
+  "regression": {
+    "errors": 0,
+    "failures": 0,
+    "skips": 2,
+    "tests": 390
+  },
+  "schema_version": 1,
+  "scientific_result": false,
+  "skips_mapped_to_passing_host_tests": [
+    {
+      "host": "same test passed",
+      "regression_skip": "EditorControllerTests.test_isolated_simulator_round_trip_is_non_scientific"
+    },
+    {
+      "host": "all seven class tests passed",
+      "regression_skip": "ActualSandboxTests.setUpClass"
+    }
+  ],
+  "suite": "synthetic_and_host_integration_only"
+}

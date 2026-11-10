@@ -197,6 +197,43 @@ def build_parser():
         production.add_argument("--" + name, type=Path, required=True)
     production.add_argument("--bootstrap-samples", type=int, default=10000)
     production.add_argument("--seed", type=int, default=0)
+    replay_prepare = commands.add_parser("prepare-published-replay", help="verify and freeze one published-patch replay stage without inference")
+    replay_prepare.add_argument("--stage", choices=["smoke", "pilot", "full"], required=True)
+    for name in ("root", "fresh-editor-workspace", "acquisition", "reconstruction", "identity", "data", "cache"):
+        replay_prepare.add_argument("--" + name, type=Path, required=True)
+    replay_prepare.add_argument("--backend", choices=["transformers", "vllm"], required=True)
+    replay_prepare.add_argument("--development-report", type=Path)
+    replay_prepare.add_argument("--reference", type=Path, default=Path("configs/published_p50c.json"))
+    replay_prepare.add_argument("--plan", type=Path, default=Path("configs/published_replay_plan.json"))
+    replay_prepare.add_argument("--policy", type=Path, default=Path("configs/grading-policy.json"))
+    replay_prepare.add_argument("--smoke-measurement", type=Path, default=Path("reports/native-smoke/report.json"))
+    for name in ("smoke", "pilot", "full"):
+        command = commands.add_parser("replay-" + name, help=f"explicitly execute/resume only the frozen {name} replay stage")
+        for argument in ("root", "acquisition", "reconstruction", "identity"):
+            command.add_argument("--" + argument, type=Path, required=True)
+        command.add_argument("--resume", action="store_true")
+        command.add_argument("--job", help="execute only this frozen benchmark/arm job")
+    replay_report = commands.add_parser("report-published-replay", help="independently grade and report a frozen replay, including missing results")
+    replay_report.add_argument("--root", type=Path, required=True)
+    replay_report.add_argument("--stage", choices=["smoke", "pilot", "full"], required=True)
+    replay_report.add_argument("--report-id", required=True)
+    replay_report.add_argument("--ifeval-root", type=Path)
+    inspect_candidate = commands.add_parser("inspect-checkpoint", help="expose a declared bounded checkpoint inspection and record it")
+    for argument in ("model", "policy", "request", "log"):
+        inspect_candidate.add_argument("--" + argument, type=Path, required=True)
+    edit_candidate = commands.add_parser("edit-checkpoint", help="apply a bounded proposal from the immutable original and verify saved bytes")
+    for argument in ("model", "policy", "patch", "log", "out"):
+        edit_candidate.add_argument("--" + argument, type=Path, required=True)
+    verify_candidate = commands.add_parser("verify-candidate", help="reopen a candidate and verify stored changes, policy, and unrelated assets")
+    for argument in ("model", "candidate", "policy"):
+        verify_candidate.add_argument("--" + argument, type=Path, required=True)
+    candidate_demo = commands.add_parser("demo-candidate-edit", help="demonstrate a labeled hand-authored engineering edit on development input")
+    candidate_demo.add_argument("--model", type=Path, required=True)
+    candidate_demo.add_argument("--out", type=Path, required=True)
+    candidate_demo.add_argument("--backend", choices=["transformers"], help="explicitly enable tiny native development generations")
+    candidate_demo.add_argument("--tensor", default="model.language_model.layers.15.mlp.down_proj.weight")
+    from .editor_cli import add_commands
+    add_commands(commands)
     return parser
 
 
@@ -207,7 +244,10 @@ def main(argv=None):
             result = validate_protocol(read_json(args.config), require_ready=args.require_ready)
             print(json.dumps(result, indent=2, allow_nan=False))
             return 0 if not result["issues"] else 2
-        if args.command == "diagnose":
+        if args.command.startswith("editor-"):
+            from .editor_cli import run
+            result = run(args)
+        elif args.command == "diagnose":
             from .diagnostics import collect_diagnostics
             result = collect_diagnostics(probe_backends=args.probe_backends)
             if args.out is not None:
@@ -277,7 +317,45 @@ def main(argv=None):
         elif args.command == "run-native":
             from .native_runner import run_schedule
             config, tasks, schedule = read_json(args.config), read_json(args.tasks), read_json(args.schedule)
+            if config.get("profile") != "native_development_smoke" or config.get("stage") != "smoke":
+                raise ValueError("run-native is smoke-only; use the explicit frozen replay stage command")
             result = run_schedule(config, tasks, schedule, args.out, model_path=args.model, resume=args.resume)
+        elif args.command == "prepare-published-replay":
+            from .published_study import prepare_study
+            result = prepare_study(root=args.root, fresh_editor_workspace=args.fresh_editor_workspace,
+                acquisition=args.acquisition, reconstruction=args.reconstruction, identity=args.identity,
+                data=args.data, cache=args.cache, backend=args.backend, stage=args.stage,
+                reference=args.reference, plan_path=args.plan, policy_path=args.policy,
+                development_report=args.development_report, smoke_measurement=args.smoke_measurement)
+        elif args.command in {"replay-smoke", "replay-pilot", "replay-full"}:
+            from .published_study import run_study
+            result = run_study(args.root, args.command.removeprefix("replay-"), acquisition=args.acquisition,
+                reconstruction=args.reconstruction, identity=args.identity, resume=args.resume, job=args.job)
+        elif args.command == "report-published-replay":
+            from .published_study import report_study
+            report = report_study(args.root, args.stage, report_id=args.report_id, ifeval_root=args.ifeval_root)
+            result = {key: report[key] for key in ("kind", "stage", "freeze_sha256", "report_sha256", "measurement_status", "measured_result_pending")}
+            if "development_validation" in report:
+                result["development_validation"] = report["development_validation"]
+        elif args.command in {"inspect-checkpoint", "edit-checkpoint"}:
+            from .checkpoint import CheckpointEditor
+            editor = CheckpointEditor(args.model, read_json(args.policy), exposure_log=args.log)
+            if args.command == "inspect-checkpoint":
+                result = editor.inspect(read_json(args.request))
+            else:
+                from .inventory import file_sha256
+                audit = editor.propose(read_json(args.patch), args.out)
+                result = {"accepted": True, "result_sha256": audit["result_sha256"],
+                          "audit_sha256": file_sha256(args.out / "audit.json")}
+        elif args.command == "verify-candidate":
+            from .checkpoint import verify_candidate
+            from .inventory import file_sha256
+            audit = verify_candidate(args.model, args.candidate, read_json(args.policy))
+            result = {"verified": True, "result_sha256": audit["result_sha256"],
+                      "audit_sha256": file_sha256(args.candidate / "audit.json")}
+        elif args.command == "demo-candidate-edit":
+            from .candidate_demo import demo_candidate_edit
+            result = demo_candidate_edit(args.model, args.out, backend=args.backend, tensor=args.tensor)
         elif args.command == "acquire-benchmarks":
             from .benchmark_data import acquire_benchmarks
             result = acquire_benchmarks(args.reference, args.out,
@@ -336,14 +414,26 @@ def main(argv=None):
                     read_json(args.manifest), bootstrap_samples=args.bootstrap_samples, seed=args.seed)
             write_json(args.out, result)
         print(json.dumps(result, indent=2, allow_nan=False))
+        if args.command in {"editor-live-readiness", "editor-session-readiness"} and not result["ready"]:
+            return 2
+        if args.command.startswith("editor-") and (
+                result.get("status") in {"rejected", "invalid", "expired", "failed", "cancelled", "timed_out"} or
+                (isinstance(result.get("result"), dict) and result["result"].get("status") in {"failed", "cancelled", "timed_out"})):
+            return 2
         if args.command == "check-graders" and not result["all_passed"]:
             return 2
         if args.command == "grade-records" and any(row["status"] in {"grader_error", "grader_timeout"} for row in result):
             return 2
         if args.command == "run-native" and any(result["statuses"][key] for key in ("error", "timeout", "missing")):
             return 2
+        if args.command in {"replay-smoke", "replay-pilot", "replay-full"} and not result["successful_execution"]:
+            return 2
+        if args.command == "report-published-replay" and "development_validation" in result and not result["development_validation"]["passed"]:
+            return 2
+        if args.command == "demo-candidate-edit" and any(status not in {"ok", "truncated"} for status in result["generation_statuses"].values()):
+            return 2
         return 0
-    except (OSError, ValueError, TypeError, KeyError) as error:
+    except (OSError, ValueError, TypeError, KeyError, RuntimeError) as error:
         # Avoid dumping local machine paths or raw provider errors into reports.
         if isinstance(error, OSError):
             print(json.dumps({"error": "file operation failed", "type": type(error).__name__}))

@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "variant": "authenticated_session_v1",
+  "editor": {
+    "requested_selector": "gpt-6-astra",
+    "requested_effort": "high"
+  },
+  "scope": {
+    "candidate_proposals": 1,
+    "editor_requests": 1,
+    "development_comparisons": 1,
+    "baseline_sequences": 1,
+    "candidate_sequences": 1,
+    "automatic_retries": 0
+  },
+  "limits": {
+    "target_max_new_tokens": 128,
+    "target_timeout_seconds": 300,
+    "local_elapsed_seconds": 900,
+    "frontier_provider_token_cap": null,
+    "frontier_provider_token_cap_status": "unavailable_subscription_route"
+  },
+  "restrictions": {
+    "development_only": true,
+    "training": false,
+    "gradients": false,
+    "optimizer_updates": false,
+    "architecture_changes": false,
+    "evaluation_changes": false,
+    "harness_changes": false,
+    "grader_changes": false
+  }
+}

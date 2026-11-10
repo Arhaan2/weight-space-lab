@@ -1,0 +1,1883 @@
+{
+  "schema_version": 1,
+  "kind": "ifeval_development_recovery_comparison_report",
+  "author": "Arhaan2",
+  "scope": "exploratory on-device workflow validation; editor isolation unverified",
+  "scientific_result": false,
+  "recovery": {
+    "bug": "The original converter launcher dereferenced the virtual-environment Python symlink and executed system Python for its package check.",
+    "fix": "A separately versioned launch helper makes the configured interpreter absolute before subprocess directory changes without dereferencing it; package checks and conversion use that same executable.",
+    "baseline_frozen_sources_preserved": true,
+    "authorization_scope": "One explicitly authorized manual recovery after the documented precheck failure; no re-import and no automatic retries.",
+    "source_revision": {
+      "base_git_commit": "0f234cf2208544bbc0344e5086320b490bcc0ab5",
+      "branch": "ifeval-browser-v1",
+      "module_sha256": "b40f6318db0ab7c4acdac0f60b249f81e4c7af54d8056bcb6b874453107d2b69",
+      "repair_diff_sha256": "0aaad547d332095be63d301a15d9202e5fe595b18e7e152bd701a2c8cff4d7ea",
+      "regression_test_source_sha256": "da4334d0737818b6e5307a1e060833c62cc4fbba9672d5b4366d1bcb136f44a1",
+      "historical_source_unchanged": true
+    },
+    "original_launcher_source_sha256": "d1554e04cfd16137295026b1bde7a899e79d6f78abd3e19eb39a8aacd6d1fe89",
+    "repaired_launcher_source_sha256": "b40f6318db0ab7c4acdac0f60b249f81e4c7af54d8056bcb6b874453107d2b69",
+    "repair_record_sha256": "025884f8f63ce6f5edea27832e0ad83b4b3de5b6d33a4df2f0f852737f0c09ba",
+    "environment_verification_sha256": "8533b6911e6cfcd355c3bd5f6255c7a977170de48e46c8f70da8aa205631200c",
+    "continuation_intent_sha256": "98f2ef2744f3478163d7a49af598adcb57e894353de32c9ff637e88f21779afd",
+    "continuation_result_sha256": "19b76efe88362aed4b33343d366df33e9c00aadaed0517a3809bac1d1a6789b3",
+    "focused_tests": {
+      "focused_tests_passed": 16,
+      "focused_tests_log_sha256": "930d564a43e58f03a65d57ce6412344138f0b632160ce947dafdcff9db25a611"
+    },
+    "regression_test": "A real temporary symlink-based virtual environment is launched through the production helper after a working-directory change; a module installed only in that environment must remain importable.",
+    "environment": {
+      "passed": true,
+      "through_production_helper": "weight_space_lab.browser_candidate_recovery.run_converter_python",
+      "expected_environment_active": true,
+      "all_frozen_dependency_pins_match": true,
+      "dependency_pin_count": 75,
+      "expected_converter_packages": {
+        "apache-tvm-ffi": "0.1.13",
+        "mlc-ai-nightly-cpu": "0.26.dev246",
+        "mlc-llm-nightly-cpu": "0.26.dev6"
+      },
+      "lockfile_sha256": "4dc01074649765167397fd2410766248ccea2e8b347d3fa14e1917e33eeeeb70",
+      "helper_source_sha256": "b40f6318db0ab7c4acdac0f60b249f81e4c7af54d8056bcb6b874453107d2b69",
+      "changed_subprocess_cwd_verified": true,
+      "target_generations": 0,
+      "engine_loads": 0,
+      "installations": 0,
+      "dependency_upgrades": 0,
+      "invoked_interpreter_relative_to_environment": "bin/python",
+      "observed_executable_matches_invoked": true,
+      "sys_prefix_is_expected_environment": true,
+      "sys_prefix_differs_from_sys_base_prefix": true,
+      "module_locations_relative_to_environment": {
+        "mlc_llm": "lib/python3.13/site-packages/mlc_llm/__init__.py",
+        "tvm": "lib/python3.13/site-packages/tvm/__init__.py",
+        "tvm_ffi": "lib/python3.13/site-packages/tvm_ffi/__init__.py"
+      },
+      "all_observed_dependency_versions": {
+        "aiohappyeyeballs": "2.7.1",
+        "aiohttp": "3.14.5",
+        "aiosignal": "1.4.0",
+        "annotated-doc": "0.0.5",
+        "annotated-types": "0.8.0",
+        "anyio": "4.16.0",
+        "apache-tvm-ffi": "0.1.13",
+        "attrs": "26.1.0",
+        "certifi": "2026.10.23",
+        "charset-normalizer": "3.5.2",
+        "click": "8.5.1",
+        "datasets": "5.1.0",
+        "dill": "0.4.1",
+        "fastapi": "0.162.2",
+        "filelock": "4.2.9",
+        "frozenlist": "1.8.0",
+        "fsspec": "2026.7.0",
+        "h11": "0.16.0",
+        "hf-xet": "1.8.0",
+        "httpcore2": "2.16.0",
+        "httpx2": "2.16.0",
+        "huggingface_hub": "2.4.0",
+        "idna": "3.20",
+        "Jinja2": "3.1.6",
+        "jiter": "0.19.0",
+        "markdown-it-py": "4.2.0",
+        "MarkupSafe": "3.0.4",
+        "mdurl": "0.1.2",
+        "ml_dtypes": "0.6.0",
+        "mlc-ai-nightly-cpu": "0.26.dev246",
+        "mlc-llm-nightly-cpu": "0.26.dev6",
+        "mpmath": "1.3.0",
+        "multidict": "7.2.1",
+        "multiprocess": "0.70.19",
+        "networkx": "3.7",
+        "numpy": "2.5.4",
+        "openai": "3.46.0",
+        "opentelemetry-api": "1.45.2",
+        "packaging": "26.3",
+        "pandas": "3.1.1",
+        "prompt_toolkit": "3.0.53",
+        "propcache": "0.5.4",
+        "psutil": "7.2.2",
+        "pyarrow": "26.0.1",
+        "pydantic": "2.14.3",
+        "pydantic_core": "2.50.4",
+        "Pygments": "2.21.0",
+        "python-dateutil": "4.0.0",
+        "PyYAML": "6.0.3",
+        "regex": "2026.11.7",
+        "requests": "2.34.2",
+        "rich": "15.0.0",
+        "safetensors": "0.9.0rc1",
+        "sentencepiece": "0.2.3",
+        "setuptools": "84.2.1",
+        "shellingham": "1.5.4",
+        "shortuuid": "1.0.13",
+        "sniffio": "1.3.1",
+        "starlette": "1.10.0",
+        "sympy": "1.14.0",
+        "tiktoken": "0.14.0",
+        "tokenizers": "0.23.3",
+        "torch": "2.15.0",
+        "tqdm": "4.70.1",
+        "transformers": "5.22.2",
+        "truststore": "0.10.5",
+        "typer": "0.28.0",
+        "typing-inspection": "0.4.5",
+        "typing_extensions": "4.16.0",
+        "tzdata": "2026.6",
+        "urllib3": "2.8.0",
+        "uvicorn": "0.54.0",
+        "wcwidth": "0.9.4",
+        "xxhash": "4.0.2",
+        "yarl": "1.25.1"
+      },
+      "production_cache_and_environment_reused": true,
+      "initial_offline_probe_correction": "The initial import probe omitted production MLC_LLM_HOME and attempted the default cache outside the workspace. The preserved diagnostic identified PermissionError. This verification uses the unchanged production conversion cache/environment settings; no converter or runtime execution was retried.",
+      "path_privacy": "Exact interpreter, sys.prefix, sys.base_prefix and import paths are retained privately; public paths are relative to the verified virtual environment."
+    },
+    "continuation": {
+      "status": "completed",
+      "returncode": 0,
+      "continuation_seconds": 493.6125814579427,
+      "manual_conversion_continuations": 1,
+      "automatic_retries": 0,
+      "imports": 0,
+      "converted": true,
+      "packaged": true,
+      "bound": true,
+      "browser_result_present": true,
+      "comparison_present": true
+    },
+    "prior_import_and_baseline_ledgers_unchanged": true,
+    "actual_conversion_used_verified_interpreter": true
+  },
+  "prior_failure_history": {
+    "status": "stopped_before_conversion_subprocess",
+    "failure": {
+      "stage": "candidate_conversion_package_precheck",
+      "failure": "CalledProcessError during the pinned converter package metadata check",
+      "cause": "Resolving the configured virtual-environment Python symlink selects the base/system interpreter, where apache-tvm-ffi package metadata is absent. The configured virtual environment itself contains the exact pinned packages.",
+      "command_exit_code": 1,
+      "command_file_invocations": 1,
+      "conversion_stage_attempts": 1,
+      "conversion_subprocess_started": false,
+      "packaging_started": false,
+      "expected_packages": {
+        "apache-tvm-ffi": "0.1.13",
+        "mlc-ai-nightly-cpu": "0.26.dev246",
+        "mlc-llm-nightly-cpu": "0.26.dev6"
+      },
+      "configured_environment_packages_match": true,
+      "existing_conversion_subprocess_limit_seconds": 1800,
+      "package_precheck_limit_seconds": 30,
+      "frozen_implementation_changed": false
+    },
+    "consumption": {
+      "command_file_invocations": 1,
+      "conversion_stage_attempts": 1,
+      "candidate_load_attempts": 0,
+      "candidate_warmup_dispatches": 0,
+      "candidate_scored_dispatches": 0,
+      "candidate_generation_dispatches": 0,
+      "candidate_generated_tokens": 0,
+      "browser_deadline_started": false,
+      "automatic_retries": 0,
+      "new_weight_proposals": 0,
+      "heldout_generations": 0,
+      "experimental_frontier_requests": 0,
+      "baseline_reruns": 0
+    }
+  },
+  "proposal_provenance": {
+    "basis": "User-supplied original exploratory proposal based on the supplied development packet.",
+    "declared_session_tools": "File-reading and JSON-parsing tools were used to ingest the supplied packet.",
+    "declared_session_exclusions": "No external research, additional weight inspections, or target forward passes were used in the proposal session.",
+    "observation_limit": "This is the supplied provenance declaration; editor isolation remains unverified.",
+    "causality": "Selected columns are not a verified causal explanation for repetition.",
+    "original_request_preserved": true
+  },
+  "import": {
+    "accepted": true,
+    "execution_limit_seconds": 900,
+    "observed": {
+      "billed_units": null,
+      "billing_measurements": 0,
+      "elapsed_measurements": 1,
+      "elapsed_seconds": 17.30727424984798,
+      "generated_tokens": 0,
+      "token_measurements": 1
+    },
+    "charged": {
+      "billed_units": null,
+      "completed_sequences": 1,
+      "conservative_requests": 0,
+      "editor_requests": 1,
+      "elapsed_seconds": 17.30727424984798,
+      "failed_sequences": 0,
+      "generated_tokens": 0,
+      "limit_violations": 0,
+      "model_probes": 0,
+      "observed_billed_units": null,
+      "observed_elapsed_seconds": 17.30727424984798,
+      "observed_generated_tokens": 0,
+      "pending_requests": 0,
+      "requested_sequences": 1,
+      "retries": 0
+    },
+    "submission_slots_remaining": 0,
+    "frontier_requests": 0,
+    "target_generations": 0,
+    "repeated_during_recovery": false
+  },
+  "frozen_profile": {
+    "settings": {
+      "temperature": 0,
+      "topP": 1,
+      "seed": 42,
+      "maxTokens": 1024,
+      "contextWindow": 4096,
+      "warmups": 1,
+      "warmupTokens": 16,
+      "requestLimitMs": 120000,
+      "thinking": false
+    },
+    "grading_policy": {
+      "schema_version": 1,
+      "reasoning_policy": "think_tags",
+      "output_eos_tokens": [],
+      "truncation_policy": "grade",
+      "generation_retry": {
+        "mode": "none",
+        "max_attempts": 1
+      },
+      "grader_timeout_seconds": 20,
+      "grader_retry": {
+        "mode": "none",
+        "max_attempts": 1
+      }
+    },
+    "grader": {
+      "name": "official_ifeval",
+      "revision": "d273d53c0d49aa509641885b183d98facd8d2bb2697725f9a2efbaaec52074fd"
+    },
+    "scheduled_prompts": 32,
+    "same_order_tokenizer_template_runtime_warmup_and_extraction_verified": true
+  },
+  "baseline": {
+    "checkpoint": {
+      "model_id": "Qwen/Qwen3.5-0.8B",
+      "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+      "sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d"
+    },
+    "artifact_sha256": "5ead3e9c60107ab7168bee5373f6cd636c839b82557fed6550aaaa30170aa5b0",
+    "configuration_sha256": "11cb758c0f0c043acda7eb035e7456086a5867f47809d326ce63e70bf6e3c1ad",
+    "manifest_sha256": "606c495bce51d504caafc0020be81c0c5981d67140f568c7a4d48b8612f3fa4d",
+    "summary": {
+      "scheduled_prompts": 32,
+      "scheduled_instructions": 32,
+      "attempted": 32,
+      "execution_status_counts": {
+        "ok": 20,
+        "truncated": 12
+      },
+      "unresolved_grader_errors": 0,
+      "semantic_grading_complete": true,
+      "score_interpretation": "measured compliance",
+      "metrics": {
+        "prompt_level_strict_accuracy": {
+          "passed": 16,
+          "scheduled": 32,
+          "value": 0.5
+        },
+        "prompt_level_loose_accuracy": {
+          "passed": 17,
+          "scheduled": 32,
+          "value": 0.53125
+        },
+        "instruction_level_strict_accuracy": {
+          "passed": 16,
+          "scheduled": 32,
+          "value": 0.5
+        },
+        "instruction_level_loose_accuracy": {
+          "passed": 17,
+          "scheduled": 32,
+          "value": 0.53125
+        }
+      },
+      "strict_failures_by_instruction": {
+        "length_constraints:nth_paragraph_first_word": 2,
+        "combination:two_responses": 2,
+        "detectable_format:number_bullet_lists": 2,
+        "change_case:english_lowercase": 2,
+        "change_case:capital_word_frequency": 1,
+        "detectable_content:number_placeholders": 1,
+        "change_case:english_capital": 1,
+        "detectable_format:number_highlighted_sections": 1,
+        "keywords:existence": 1,
+        "startend:quotation": 1,
+        "startend:end_checker": 1,
+        "punctuation:no_comma": 1
+      },
+      "known_generated_tokens": 13941,
+      "known_input_tokens": 6123,
+      "generation_seconds": 263.5452995605469,
+      "technically_valid": true
+    },
+    "resources": {
+      "host_scope": "host-wide samples include unrelated workloads; not model-attributed physical GPU memory",
+      "host_sampled_numeric_ranges": {
+        "hostGpuUtilizationPercent": {
+          "minimum": 15,
+          "maximum": 88,
+          "samples": 54
+        },
+        "hostGpuAllocatedBytes": {
+          "minimum": 20262060032,
+          "maximum": 23387455488,
+          "samples": 54
+        },
+        "hostSwapUsedBytes": {
+          "minimum": 25646470266.88,
+          "maximum": 26916295802.88,
+          "samples": 54
+        },
+        "hostMemoryPressureLevel": {
+          "minimum": 2,
+          "maximum": 2,
+          "samples": 54
+        },
+        "hostFreePagesBytes": {
+          "minimum": 14909440,
+          "maximum": 95993856,
+          "samples": 54
+        },
+        "hostCompressedStorageBytes": {
+          "minimum": 7937163264,
+          "maximum": 11100241920,
+          "samples": 54
+        },
+        "hostThermalState": {
+          "minimum": 0,
+          "maximum": 0,
+          "samples": 54
+        }
+      },
+      "host_sample_count": 54,
+      "owned_process_scope": "maximum single observed process per role; RSS/footprint can include shared memory",
+      "owned_role_sampled_maxima": {
+        "helper": {
+          "footprintBytes": 199825960,
+          "rssBytes": 91815936,
+          "wiredBytes": 0
+        },
+        "browser": {
+          "footprintBytes": 97175352,
+          "rssBytes": 207339520,
+          "wiredBytes": 0
+        },
+        "gpu-process": {
+          "footprintBytes": 2356529000,
+          "rssBytes": 217071616,
+          "wiredBytes": 0
+        },
+        "utility": {
+          "footprintBytes": 57345272,
+          "rssBytes": 88375296,
+          "wiredBytes": 0
+        },
+        "renderer": {
+          "footprintBytes": 710249136,
+          "rssBytes": 318636032,
+          "wiredBytes": 0
+        }
+      },
+      "worker_scope": "GPUBuffer descriptor accounting and WASM address space are not physical VRAM",
+      "sampling_limit": "Observed sample maxima do not establish absolute peaks; unavailable metrics remain unavailable.",
+      "worker_signals": [
+        {
+          "id": "gpu-buffers",
+          "label": "Tracked live GPUBuffer sizes",
+          "scope": "inference worker",
+          "source": "GPUBuffer.size, create/destroy ledger",
+          "unit": "bytes",
+          "status": "available",
+          "reason": "Sum of buffer descriptor sizes not explicitly destroyed on this device. Includes runtime pool buffers; excludes textures, driver overhead and physical VRAM residency."
+        },
+        {
+          "id": "device-loss",
+          "label": "GPU device lifecycle",
+          "scope": "inference worker",
+          "source": "Actual inference GPUDevice.lost promise",
+          "unit": "event",
+          "status": "available",
+          "reason": "Unexpected loss is a failed run; destroy during unload is an expected lifecycle event."
+        },
+        {
+          "id": "worker-wasm",
+          "label": "Reachable WASM linear memory",
+          "scope": "inference worker",
+          "source": "Exported WebAssembly.Memory.buffer.byteLength (weak references)",
+          "unit": "bytes",
+          "status": "pending",
+          "reason": "Linear address-space length, not resident RAM. A retained buffer after unload does not prove a leak; garbage collection is not forced."
+        },
+        {
+          "id": "worker-heap",
+          "label": "Worker JS heap",
+          "scope": "inference worker",
+          "source": "worker performance.memory.usedJSHeapSize",
+          "unit": "bytes",
+          "status": "unavailable",
+          "reason": "performance.memory is not exposed in this worker."
+        },
+        {
+          "id": "worker-lag",
+          "label": "Worker timer delay",
+          "scope": "inference worker",
+          "source": "1-second setInterval scheduling drift",
+          "unit": "ms",
+          "status": "available",
+          "reason": "Worker responsiveness; includes scheduling and synchronous work, not CPU usage."
+        },
+        {
+          "id": "worker-wasm",
+          "label": "Reachable WASM linear memory",
+          "scope": "inference worker",
+          "source": "Exported WebAssembly.Memory.buffer.byteLength (weak references)",
+          "unit": "bytes",
+          "status": "available",
+          "reason": "Linear address-space length, not resident RAM; may remain reachable after unload. No forced GC."
+        }
+      ],
+      "worker_sampled_maxima": {
+        "gpuBufferBytes": 1747698604,
+        "wasmBytes": 283181056,
+        "heapBytes": null,
+        "eventLoopDelayMs": 113.90000009536743
+      },
+      "worker_sample_count": 286,
+      "worker_series_scope": "one complete worker run, including load, warmup, requests and cleanup; the client repeats this shared series on every terminal output",
+      "initialization": [
+        {
+          "applicationGenerationCalls": 0,
+          "applicationWarmupCalls": 0,
+          "observedWebGPUDevices": 1,
+          "queueSubmittedBatchesDuringInitialization": 1,
+          "scope": "Observed GPUQueue.submit calls before application generation; includes runtime initialization/compilation work. No claim of zero model computation during loading.",
+          "runtimeAutomaticModelWarmup": "Not separately identifiable from initialization submissions; no application warmup or debug evaluate() call requested"
+        }
+      ]
+    },
+    "cleanup": {
+      "process_group_stop_requested": true,
+      "controller_exit_verified": true,
+      "controller_returncode": 0,
+      "unload_confirmed": true,
+      "worker_terminated": true,
+      "forced_termination": false,
+      "chrome_exit_confirmed": true,
+      "local_harness_exit_confirmed": true,
+      "owned_browser_and_worker_resources_released": true,
+      "release_scope": "Dedicated browser process/profile, all of its page/worker/device resources, and this local harness only; unrelated browser data untouched",
+      "chrome_os_exit_verified": true,
+      "retained_owned_pids_alive": []
+    },
+    "budget": {
+      "limits": {
+        "engine_load_attempts": 1,
+        "warmup_dispatches": 1,
+        "scored_dispatches": 32,
+        "generation_dispatches": 33,
+        "generated_tokens": 32784,
+        "warmup_tokens": 16,
+        "tokens_per_scored_request": 1024,
+        "request_seconds": 120,
+        "wall_seconds": 5400,
+        "automatic_retries": 0,
+        "candidate_generations": 0,
+        "heldout_generations": 0,
+        "frontier_requests": 0
+      },
+      "engine_load_attempts": 1,
+      "warmup_dispatches": 1,
+      "scored_dispatches": 32,
+      "generation_dispatches": 33,
+      "reserved": {
+        "generated_tokens": 32784,
+        "elapsed_seconds": 3960.0,
+        "billed_units": 0,
+        "pending_generated_tokens": 0,
+        "pending_elapsed_seconds": 0,
+        "pending_billed_units": 0
+      },
+      "observed": {
+        "generated_tokens": 13953,
+        "elapsed_seconds": 264.19289965820315,
+        "billed_units": 0,
+        "token_measurements": 33,
+        "elapsed_measurements": 33,
+        "billing_measurements": 33
+      },
+      "charged": {
+        "editor_requests": 0,
+        "model_probes": 33,
+        "requested_sequences": 33,
+        "completed_sequences": 33,
+        "failed_sequences": 0,
+        "generated_tokens": 13953,
+        "elapsed_seconds": 264.19289965820315,
+        "billed_units": 0,
+        "observed_generated_tokens": 13953,
+        "observed_elapsed_seconds": 264.19289965820315,
+        "observed_billed_units": 0,
+        "retries": 0,
+        "pending_requests": 0,
+        "conservative_requests": 0,
+        "limit_violations": 0
+      },
+      "terminal": true,
+      "candidate_generations": 0,
+      "heldout_generations": 0,
+      "experimental_frontier_requests": 0,
+      "first_load_through_cleanup_seconds": 273.3642682500649
+    },
+    "warmup": [
+      {
+        "generated_tokens": 12,
+        "input_tokens": 27,
+        "response_latency_ms": 647.60009765625,
+        "finish_reason": "length",
+        "assistant_prefix_tokens": 4,
+        "request_max_tokens": 16
+      }
+    ],
+    "load_ms": 2629.4000000953674
+  },
+  "candidate": {
+    "status": "completed",
+    "runtime_failure_recorded": false,
+    "checkpoint": {
+      "model_id": "Qwen/Qwen3.5-0.8B",
+      "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+      "sha256": "f9c767c06ec3c17dbdfedc43b695d64d025ae7393d3f425cee71ef45c358d6bf"
+    },
+    "artifact_sha256": "6e18cc4906ce18786b9197bcc7fb5f93ffc706d808b0809150349546eef3627b",
+    "manifest_sha256": "63821c5b17328b9a2e565d592badb54809cc126d199d8734cd6fc544a9d82f03",
+    "configuration_sha256": "11cb758c0f0c043acda7eb035e7456086a5867f47809d326ce63e70bf6e3c1ad",
+    "graded_evidence_sha256": "4ac30c509b94a475bc70a8ff0ed88bcb1840a0046363a4dcd24d91bf066c9fd6",
+    "terminal_result_sha256": "ecc7eeec0571745fc1cb796583ed1edd669d771c6ae7d3b7a1efd5bbd3529e46",
+    "events_sha256": "a4a9429eab56e28c9101033cb3b8410882d8e04530571c143663065d8a595d5d",
+    "summary": {
+      "scheduled_prompts": 32,
+      "scheduled_instructions": 32,
+      "attempted": 32,
+      "execution_status_counts": {
+        "ok": 20,
+        "truncated": 12
+      },
+      "unresolved_grader_errors": 0,
+      "semantic_grading_complete": true,
+      "score_interpretation": "measured compliance",
+      "metrics": {
+        "prompt_level_strict_accuracy": {
+          "passed": 17,
+          "scheduled": 32,
+          "value": 0.53125
+        },
+        "prompt_level_loose_accuracy": {
+          "passed": 18,
+          "scheduled": 32,
+          "value": 0.5625
+        },
+        "instruction_level_strict_accuracy": {
+          "passed": 17,
+          "scheduled": 32,
+          "value": 0.53125
+        },
+        "instruction_level_loose_accuracy": {
+          "passed": 18,
+          "scheduled": 32,
+          "value": 0.5625
+        }
+      },
+      "strict_failures_by_instruction": {
+        "length_constraints:nth_paragraph_first_word": 2,
+        "combination:two_responses": 2,
+        "detectable_format:number_bullet_lists": 2,
+        "change_case:english_lowercase": 2,
+        "change_case:capital_word_frequency": 1,
+        "detectable_content:number_placeholders": 1,
+        "change_case:english_capital": 1,
+        "keywords:existence": 1,
+        "startend:quotation": 1,
+        "startend:end_checker": 1,
+        "punctuation:no_comma": 1
+      },
+      "known_generated_tokens": 13903,
+      "known_input_tokens": 6123,
+      "generation_seconds": 266.79330004882814,
+      "technically_valid": true
+    },
+    "load_ms": 130705,
+    "budget": {
+      "limits": {
+        "engine_load_attempts": 1,
+        "warmup_dispatches": 1,
+        "scored_dispatches": 32,
+        "generation_dispatches": 33,
+        "generated_tokens": 32784,
+        "warmup_tokens": 16,
+        "tokens_per_scored_request": 1024,
+        "request_seconds": 120,
+        "wall_seconds": 5400,
+        "automatic_retries": 0,
+        "candidate_generations": 33,
+        "heldout_generations": 0,
+        "frontier_requests": 0
+      },
+      "engine_load_attempts": 1,
+      "warmup_dispatches": 1,
+      "scored_dispatches": 32,
+      "generation_dispatches": 33,
+      "first_load_through_cleanup_seconds": 405.73106625000946,
+      "supervisor_seconds": 423.59340162505396,
+      "heldout_generations": 0,
+      "frontier_requests": 0,
+      "reserved": {
+        "generated_tokens": 32784,
+        "elapsed_seconds": 3960.0,
+        "billed_units": 0,
+        "pending_generated_tokens": 0,
+        "pending_elapsed_seconds": 0,
+        "pending_billed_units": 0
+      },
+      "observed": {
+        "generated_tokens": 13915,
+        "elapsed_seconds": 267.91760009765625,
+        "billed_units": 0,
+        "token_measurements": 33,
+        "elapsed_measurements": 33,
+        "billing_measurements": 33
+      },
+      "charged": {
+        "editor_requests": 0,
+        "model_probes": 33,
+        "requested_sequences": 33,
+        "completed_sequences": 33,
+        "failed_sequences": 0,
+        "generated_tokens": 13915,
+        "elapsed_seconds": 267.91760009765625,
+        "billed_units": 0,
+        "observed_generated_tokens": 13915,
+        "observed_elapsed_seconds": 267.91760009765625,
+        "observed_billed_units": 0,
+        "retries": 0,
+        "pending_requests": 0,
+        "conservative_requests": 0,
+        "limit_violations": 0
+      },
+      "terminal": true
+    },
+    "warmup": [
+      {
+        "generated_tokens": 12,
+        "input_tokens": 27,
+        "response_latency_ms": 1124.300048828125,
+        "finish_reason": "length",
+        "assistant_prefix_tokens": 4,
+        "request_max_tokens": 16
+      }
+    ],
+    "resources": {
+      "host_scope": "host-wide samples include unrelated workloads; not model-attributed physical GPU memory",
+      "host_sampled_numeric_ranges": {
+        "hostGpuUtilizationPercent": {
+          "minimum": 10,
+          "maximum": 89,
+          "samples": 82
+        },
+        "hostGpuAllocatedBytes": {
+          "minimum": 20629569536,
+          "maximum": 23392944128,
+          "samples": 82
+        },
+        "hostSwapUsedBytes": {
+          "minimum": 25512053309.44,
+          "maximum": 27127122493.44,
+          "samples": 82
+        },
+        "hostMemoryPressureLevel": {
+          "minimum": 2,
+          "maximum": 2,
+          "samples": 82
+        },
+        "hostFreePagesBytes": {
+          "minimum": 14925824,
+          "maximum": 115900416,
+          "samples": 82
+        },
+        "hostCompressedStorageBytes": {
+          "minimum": 8814313472,
+          "maximum": 11439570944,
+          "samples": 82
+        },
+        "hostThermalState": {
+          "minimum": 0,
+          "maximum": 0,
+          "samples": 82
+        }
+      },
+      "host_sample_count": 82,
+      "owned_process_scope": "maximum single observed process per role; RSS/footprint can include shared memory",
+      "owned_role_sampled_maxima": {
+        "helper": {
+          "footprintBytes": 306089536,
+          "rssBytes": 252641280,
+          "wiredBytes": 0
+        },
+        "browser": {
+          "footprintBytes": 372099256,
+          "rssBytes": 307888128,
+          "wiredBytes": 0
+        },
+        "gpu-process": {
+          "footprintBytes": 2356184816,
+          "rssBytes": 235356160,
+          "wiredBytes": 0
+        },
+        "utility": {
+          "footprintBytes": 61867208,
+          "rssBytes": 91635712,
+          "wiredBytes": 0
+        },
+        "renderer": {
+          "footprintBytes": 1024265216,
+          "rssBytes": 709165056,
+          "wiredBytes": 0
+        }
+      },
+      "worker_scope": "GPUBuffer descriptor accounting and WASM address space are not physical VRAM",
+      "worker_sampled_maxima": {
+        "gpuBufferBytes": 1747698604,
+        "wasmBytes": 283181056,
+        "heapBytes": null,
+        "eventLoopDelayMs": 73731
+      },
+      "worker_sample_count": 311,
+      "worker_signals": [
+        {
+          "id": "gpu-buffers",
+          "label": "Tracked live GPUBuffer sizes",
+          "scope": "inference worker",
+          "source": "GPUBuffer.size, create/destroy ledger",
+          "unit": "bytes",
+          "status": "available",
+          "reason": "Sum of buffer descriptor sizes not explicitly destroyed on this device. Includes runtime pool buffers; excludes textures, driver overhead and physical VRAM residency."
+        },
+        {
+          "id": "device-loss",
+          "label": "GPU device lifecycle",
+          "scope": "inference worker",
+          "source": "Actual inference GPUDevice.lost promise",
+          "unit": "event",
+          "status": "available",
+          "reason": "Unexpected loss is a failed run; destroy during unload is an expected lifecycle event."
+        },
+        {
+          "id": "worker-wasm",
+          "label": "Reachable WASM linear memory",
+          "scope": "inference worker",
+          "source": "Exported WebAssembly.Memory.buffer.byteLength (weak references)",
+          "unit": "bytes",
+          "status": "pending",
+          "reason": "Linear address-space length, not resident RAM. A retained buffer after unload does not prove a leak; garbage collection is not forced."
+        },
+        {
+          "id": "worker-heap",
+          "label": "Worker JS heap",
+          "scope": "inference worker",
+          "source": "worker performance.memory.usedJSHeapSize",
+          "unit": "bytes",
+          "status": "unavailable",
+          "reason": "performance.memory is not exposed in this worker."
+        },
+        {
+          "id": "worker-lag",
+          "label": "Worker timer delay",
+          "scope": "inference worker",
+          "source": "1-second setInterval scheduling drift",
+          "unit": "ms",
+          "status": "available",
+          "reason": "Worker responsiveness; includes scheduling and synchronous work, not CPU usage."
+        },
+        {
+          "id": "worker-wasm",
+          "label": "Reachable WASM linear memory",
+          "scope": "inference worker",
+          "source": "Exported WebAssembly.Memory.buffer.byteLength (weak references)",
+          "unit": "bytes",
+          "status": "available",
+          "reason": "Linear address-space length, not resident RAM; may remain reachable after unload. No forced GC."
+        }
+      ],
+      "initialization": [
+        {
+          "applicationGenerationCalls": 0,
+          "applicationWarmupCalls": 0,
+          "observedWebGPUDevices": 1,
+          "queueSubmittedBatchesDuringInitialization": 1,
+          "scope": "Observed GPUQueue.submit calls before application generation; includes runtime initialization/compilation work. No claim of zero model computation during loading.",
+          "runtimeAutomaticModelWarmup": "Not separately identifiable from initialization submissions; no application warmup or debug evaluate() call requested"
+        }
+      ],
+      "worker_series_scope": "one complete worker run including load, warmup, scored requests and cleanup; the client repeats this shared series on each terminal output",
+      "sampling_limit": "Observed sample maxima do not establish absolute peaks; unavailable metrics remain unavailable."
+    },
+    "cleanup": {
+      "process_group_stop_requested": true,
+      "controller_exit_verified": true,
+      "controller_returncode": 0,
+      "unload_confirmed": true,
+      "worker_terminated": true,
+      "forced_termination": false,
+      "chrome_exit_confirmed": true,
+      "local_harness_exit_confirmed": true,
+      "owned_browser_and_worker_resources_released": true,
+      "release_scope": "Dedicated browser process/profile, all of its page/worker/device resources, and this local harness only; unrelated browser data untouched",
+      "chrome_os_exit_verified": true,
+      "retained_owned_processes_alive": 0
+    }
+  },
+  "conversion": {
+    "status": "converted_source_bound",
+    "preparation_seconds": 29.880269333021715,
+    "converter_packages": {
+      "apache-tvm-ffi": "0.1.13",
+      "mlc-ai-nightly-cpu": "0.26.dev246",
+      "mlc-llm-nightly-cpu": "0.26.dev6"
+    },
+    "converter_subprocess_limit_seconds": 1800,
+    "package_check_limit_seconds": 30,
+    "packaging_seconds": 8.74192004208453,
+    "target_generations": 0,
+    "new_proposals": 0
+  },
+  "saved_checkpoint_audit": {
+    "base_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+    "result_sha256": "f9c767c06ec3c17dbdfedc43b695d64d025ae7393d3f425cee71ef45c358d6bf",
+    "total_stored_coordinates": 873438784,
+    "targeted_coordinates": 122880,
+    "changed_stored_entries": 122880,
+    "changed_numerical_entries": 122880,
+    "bit_only_changed_entries": 0,
+    "changed_fraction": 0.00014068530302405256,
+    "l2_norm": 0.678826476073289,
+    "max_abs_change": 0.0458984375,
+    "unchanged_tensor_count": 486,
+    "budget_basis": "final stored-bit differences / all stored tensor coordinates, including buffers and aliases",
+    "per_tensor": {
+      "model.language_model.layers.15.mlp.down_proj.weight": {
+        "dtype": "BF16",
+        "shape": [
+          1024,
+          3584
+        ],
+        "base_sha256": "ef60d2c687bab19464dca9c8bfd7777e46ad226df0c9e25643b0bab04b5a1cca",
+        "result_sha256": "39f9cacf110946fb59b1f69da3e5f4b80b3e9b7f922628113c4305d8a15f7f84",
+        "changed_stored_entries": 61440,
+        "changed_numerical_entries": 61440,
+        "targeted_coordinates": 61440,
+        "l2_norm": 0.515693352394331,
+        "max_abs_change": 0.0458984375
+      },
+      "model.language_model.layers.19.mlp.down_proj.weight": {
+        "dtype": "BF16",
+        "shape": [
+          1024,
+          3584
+        ],
+        "base_sha256": "638eedeb701b94aa861f4438e615c07ec6c60ee703db1bfee2de577bb6498c3e",
+        "result_sha256": "43d090548a04c21284aefd285e97cc34bc14de6d6aa49bbf1d19a66496afddbe",
+        "changed_stored_entries": 61440,
+        "changed_numerical_entries": 61440,
+        "targeted_coordinates": 61440,
+        "l2_norm": 0.44143600998828353,
+        "max_abs_change": 0.044921875
+      }
+    }
+  },
+  "deployed_artifact_audit": {
+    "quantization": "q4f16_1",
+    "group_size": 32,
+    "parameter_contract_verified": true,
+    "parameter_count": 435,
+    "changed_tensor_names": [
+      "model.layers.15.mlp.down_proj.q_weight",
+      "model.layers.15.mlp.down_proj.q_scale",
+      "model.layers.19.mlp.down_proj.q_weight",
+      "model.layers.19.mlp.down_proj.q_scale"
+    ],
+    "unchanged_tensor_count": 431,
+    "conversion_erases_edit": false,
+    "per_source_tensor": {
+      "model.language_model.layers.15.mlp.down_proj.weight": {
+        "decoded_baseline_sha256": "3ebd057c53cd239909d363d45bf0c7b9d2d4b62ffba03c626ddfb316ae2e70eb",
+        "decoded_candidate_sha256": "0dbf53ad38e1a196445a9780b4f10fcb6590f571ff530de92c478d049586b32c",
+        "decoded_changed_outside_source_target_columns": 3043,
+        "decoded_changed_outside_source_target_groups": 0,
+        "decoded_l2_change": 0.5307283072862505,
+        "decoded_max_abs_change": 0.0458984375,
+        "decoded_values_changed": 51863,
+        "deployed_tensor_prefix": "model.layers.15.mlp.down_proj",
+        "quantization_scales_changed": 1914,
+        "quantized_nibbles_changed": 5557,
+        "quantized_weight_words_changed": 2028,
+        "scale_max_abs_change": 0.006561279296875,
+        "source_targeted_quantization_groups": [
+          0,
+          1
+        ],
+        "target_columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59
+        ]
+      },
+      "model.language_model.layers.19.mlp.down_proj.weight": {
+        "decoded_baseline_sha256": "c88cb8d6fdca07f44d76238a75994576fb50d70b7daeaa837e2bd897f886fa15",
+        "decoded_candidate_sha256": "71b78b399e7ae28b1595edf733e49acdb448cba6fb9fe153c6ad4e8f02c40188",
+        "decoded_changed_outside_source_target_columns": 2945,
+        "decoded_changed_outside_source_target_groups": 0,
+        "decoded_l2_change": 0.45942110984516166,
+        "decoded_max_abs_change": 0.044921875,
+        "decoded_values_changed": 53304,
+        "deployed_tensor_prefix": "model.layers.19.mlp.down_proj",
+        "quantization_scales_changed": 1894,
+        "quantized_nibbles_changed": 5622,
+        "quantized_weight_words_changed": 2057,
+        "scale_max_abs_change": 0.0064239501953125,
+        "source_targeted_quantization_groups": [
+          0,
+          1
+        ],
+        "target_columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59
+        ]
+      }
+    },
+    "aggregate_counts": {
+      "quantized_weight_words_changed": 4085,
+      "quantized_nibbles_changed": 11179,
+      "quantization_scales_changed": 3808,
+      "decoded_values_changed": 105167,
+      "decoded_changed_outside_source_target_columns": 5988,
+      "decoded_changed_outside_source_target_groups": 0
+    }
+  },
+  "paired": {
+    "declared_metric": "prompt_level_strict_accuracy",
+    "paired_estimand": "equal item mean of scheduled sample correctness",
+    "semantic_grading_complete": true,
+    "interpretation": "paired descriptive comparison; experimental claims require the declared controls and independent provenance",
+    "delta": 0.03125,
+    "confidence_interval": {
+      "high": 0.09375,
+      "informative": true,
+      "level": 0.95,
+      "low": 0.0,
+      "method": "paired percentile bootstrap clustered by item",
+      "resamples": 10000,
+      "seed": 0
+    },
+    "uncertainty_scope": "one preselected comparison; candidate-selection uncertainty is not included",
+    "weighting": "equal item weight; mean of scheduled repeats",
+    "strict_flips": {
+      "improved": 1,
+      "regressed": 0,
+      "tied": 31,
+      "unresolved": 0
+    },
+    "loose_flips": {
+      "improved": 1,
+      "regressed": 0,
+      "tied": 31,
+      "unresolved": 0
+    },
+    "per_item": [
+      {
+        "schedule_position": 1,
+        "strict": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "ok",
+          "generated_tokens": 89,
+          "generation_seconds": 1.339599853515625
+        },
+        "candidate": {
+          "status": "ok",
+          "generated_tokens": 89,
+          "generation_seconds": 2.035800048828125
+        }
+      },
+      {
+        "schedule_position": 2,
+        "strict": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "ok",
+          "generated_tokens": 21,
+          "generation_seconds": 0.3452998046875
+        },
+        "candidate": {
+          "status": "ok",
+          "generated_tokens": 21,
+          "generation_seconds": 0.430300048828125
+        }
+      },
+      {
+        "schedule_position": 3,
+        "strict": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "ok",
+          "generated_tokens": 11,
+          "generation_seconds": 0.58589990234375
+        },
+        "candidate": {
+          "status": "ok",
+          "generated_tokens": 11,
+          "generation_seconds": 0.671
+        }
+      },
+      {
+        "schedule_position": 4,
+        "strict": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 17.5815
+        },
+        "candidate": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 18.515
+        }
+      },
+      {
+        "schedule_position": 5,
+        "strict": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 17.77839990234375
+        },
+        "candidate": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 19.473699951171874
+        }
+      },
+      {
+        "schedule_position": 6,
+        "strict": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "ok",
+          "generated_tokens": 36,
+          "generation_seconds": 0.61760009765625
+        },
+        "candidate": {
+          "status": "ok",
+          "generated_tokens": 36,
+          "generation_seconds": 0.653900146484375
+        }
+      },
+      {
+        "schedule_position": 7,
+        "strict": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 19.319800048828125
+        },
+        "candidate": {
+          "status": "ok",
+          "generated_tokens": 54,
+          "generation_seconds": 1.058599853515625
+        }
+      },
+      {
+        "schedule_position": 8,
+        "strict": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 18.8587998046875
+        },
+        "candidate": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 18.80339990234375
+        }
+      },
+      {
+        "schedule_position": 9,
+        "strict": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "ok",
+          "generated_tokens": 31,
+          "generation_seconds": 0.56510009765625
+        },
+        "candidate": {
+          "status": "ok",
+          "generated_tokens": 29,
+          "generation_seconds": 0.582199951171875
+        }
+      },
+      {
+        "schedule_position": 10,
+        "strict": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "ok",
+          "generated_tokens": 2,
+          "generation_seconds": 0.382599853515625
+        },
+        "candidate": {
+          "status": "ok",
+          "generated_tokens": 2,
+          "generation_seconds": 0.397
+        }
+      },
+      {
+        "schedule_position": 11,
+        "strict": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 19.764300048828126
+        },
+        "candidate": {
+          "status": "ok",
+          "generated_tokens": 915,
+          "generation_seconds": 16.062199951171873
+        }
+      },
+      {
+        "schedule_position": 12,
+        "strict": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "ok",
+          "generated_tokens": 106,
+          "generation_seconds": 1.789099853515625
+        },
+        "candidate": {
+          "status": "ok",
+          "generated_tokens": 104,
+          "generation_seconds": 1.6815
+        }
+      },
+      {
+        "schedule_position": 13,
+        "strict": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "ok",
+          "generated_tokens": 2,
+          "generation_seconds": 0.47589990234375
+        },
+        "candidate": {
+          "status": "ok",
+          "generated_tokens": 2,
+          "generation_seconds": 0.475
+        }
+      },
+      {
+        "schedule_position": 14,
+        "strict": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 19.02110009765625
+        },
+        "candidate": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 17.961400146484376
+        }
+      },
+      {
+        "schedule_position": 15,
+        "strict": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "ok",
+          "generated_tokens": 2,
+          "generation_seconds": 0.13889990234375
+        },
+        "candidate": {
+          "status": "ok",
+          "generated_tokens": 2,
+          "generation_seconds": 0.124
+        }
+      },
+      {
+        "schedule_position": 16,
+        "strict": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "ok",
+          "generated_tokens": 110,
+          "generation_seconds": 1.72910009765625
+        },
+        "candidate": {
+          "status": "ok",
+          "generated_tokens": 120,
+          "generation_seconds": 1.8017001953125
+        }
+      },
+      {
+        "schedule_position": 17,
+        "strict": {
+          "baseline": false,
+          "candidate": true,
+          "change": "improved"
+        },
+        "loose": {
+          "baseline": false,
+          "candidate": true,
+          "change": "improved"
+        },
+        "baseline": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 27.889300048828126
+        },
+        "candidate": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 28.291699951171875
+        }
+      },
+      {
+        "schedule_position": 18,
+        "strict": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 17.718
+        },
+        "candidate": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 18.128099853515625
+        }
+      },
+      {
+        "schedule_position": 19,
+        "strict": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "ok",
+          "generated_tokens": 158,
+          "generation_seconds": 3.312699951171875
+        },
+        "candidate": {
+          "status": "ok",
+          "generated_tokens": 151,
+          "generation_seconds": 3.081
+        }
+      },
+      {
+        "schedule_position": 20,
+        "strict": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "ok",
+          "generated_tokens": 2,
+          "generation_seconds": 0.2122998046875
+        },
+        "candidate": {
+          "status": "ok",
+          "generated_tokens": 2,
+          "generation_seconds": 0.226300048828125
+        }
+      },
+      {
+        "schedule_position": 21,
+        "strict": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "ok",
+          "generated_tokens": 41,
+          "generation_seconds": 0.6947001953125
+        },
+        "candidate": {
+          "status": "ok",
+          "generated_tokens": 41,
+          "generation_seconds": 0.77089990234375
+        }
+      },
+      {
+        "schedule_position": 22,
+        "strict": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "ok",
+          "generated_tokens": 857,
+          "generation_seconds": 16.753199951171876
+        },
+        "candidate": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 18.674
+        }
+      },
+      {
+        "schedule_position": 23,
+        "strict": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "ok",
+          "generated_tokens": 15,
+          "generation_seconds": 0.30110009765625
+        },
+        "candidate": {
+          "status": "ok",
+          "generated_tokens": 9,
+          "generation_seconds": 0.19889990234375
+        }
+      },
+      {
+        "schedule_position": 24,
+        "strict": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "ok",
+          "generated_tokens": 24,
+          "generation_seconds": 0.44589990234375
+        },
+        "candidate": {
+          "status": "ok",
+          "generated_tokens": 24,
+          "generation_seconds": 0.455800048828125
+        }
+      },
+      {
+        "schedule_position": 25,
+        "strict": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 18.228800048828123
+        },
+        "candidate": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 18.71589990234375
+        }
+      },
+      {
+        "schedule_position": 26,
+        "strict": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "ok",
+          "generated_tokens": 33,
+          "generation_seconds": 0.600699951171875
+        },
+        "candidate": {
+          "status": "ok",
+          "generated_tokens": 33,
+          "generation_seconds": 0.693199951171875
+        }
+      },
+      {
+        "schedule_position": 27,
+        "strict": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 19.229400146484377
+        },
+        "candidate": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 19.2747001953125
+        }
+      },
+      {
+        "schedule_position": 28,
+        "strict": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "ok",
+          "generated_tokens": 11,
+          "generation_seconds": 0.390099853515625
+        },
+        "candidate": {
+          "status": "ok",
+          "generated_tokens": 11,
+          "generation_seconds": 0.381800048828125
+        }
+      },
+      {
+        "schedule_position": 29,
+        "strict": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "ok",
+          "generated_tokens": 143,
+          "generation_seconds": 2.23960009765625
+        },
+        "candidate": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 18.90860009765625
+        }
+      },
+      {
+        "schedule_position": 30,
+        "strict": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": true,
+          "candidate": true,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "ok",
+          "generated_tokens": 7,
+          "generation_seconds": 0.196900146484375
+        },
+        "candidate": {
+          "status": "ok",
+          "generated_tokens": 7,
+          "generation_seconds": 0.1865
+        }
+      },
+      {
+        "schedule_position": 31,
+        "strict": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 17.619199951171876
+        },
+        "candidate": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 19.172
+        }
+      },
+      {
+        "schedule_position": 32,
+        "strict": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "loose": {
+          "baseline": false,
+          "candidate": false,
+          "change": "tied"
+        },
+        "baseline": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 17.420400146484376
+        },
+        "candidate": {
+          "status": "truncated",
+          "generated_tokens": 1020,
+          "generation_seconds": 18.907199951171876
+        }
+      }
+    ]
+  },
+  "selection": {
+    "heldout_generations": 0,
+    "rule": "Compare all 32 fixed development items; prefer candidate only for strictly higher strict prompt compliance with complete technical execution and grading; ties retain pristine.",
+    "selected_arm": "candidate",
+    "technical_and_grading_complete": true
+  },
+  "heldout_examples_left_unexecuted": 128,
+  "independent_verification": {
+    "passed": true,
+    "checks_passed": 44,
+    "checks_total": 44,
+    "verification_file_sha256": "b80f048b01353f2eb11741f533e1fe12ed630f09ca3ecc8d60158ae7dcef51c0"
+  },
+  "token_accounting": "Four injected empty-thinking prefix IDs count toward max_tokens but not reported completion tokens. A 1024 cap permits at most 1020 sampled tokens; the 16-token warmup cap permits at most 12. Reservations retain 1024/16 bounds.",
+  "attribution": [
+    "Arhaan Aggarwal (Arhaan2)",
+    "Existing BrowserLLM work and Gufran's contribution preserved",
+    "Google Research IFEval, Zhou et al., Apache-2.0",
+    "Allen Institute for AI RLVR-IFeval; upstream Ai2 ImpACT and Llama 2 notices preserved"
+  ]
+}

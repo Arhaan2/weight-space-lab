@@ -1,0 +1,491 @@
+{
+  "schema_version": 1,
+  "kind": "ifeval_development_baseline_report",
+  "author": "Arhaan2",
+  "scope": "exploratory on-device experiment; editor isolation unverified",
+  "status": "completed",
+  "checkpoint": {
+    "model_id": "Qwen/Qwen3.5-0.8B",
+    "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d"
+  },
+  "artifact_sha256": "5ead3e9c60107ab7168bee5373f6cd636c839b82557fed6550aaaa30170aa5b0",
+  "configuration_sha256": "11cb758c0f0c043acda7eb035e7456086a5867f47809d326ce63e70bf6e3c1ad",
+  "manifest_sha256": "606c495bce51d504caafc0020be81c0c5981d67140f568c7a4d48b8612f3fa4d",
+  "data_manifest_sha256": "6d577377506b74cca45b56a8c9245c1ffde99598dd2871bde06475c173b7d676",
+  "sources": {
+    "evaluation": {
+      "benchmark": "ifeval",
+      "bytes": 207111,
+      "dataset_id": "google-research/google-research",
+      "format": "jsonl",
+      "key": "ifeval",
+      "path": "instruction_following_eval/data/input_data.jsonl",
+      "revision": "e6890f85757dd84e27ca6df2dd30651dafad28e0",
+      "role": "partition",
+      "row_count": 541,
+      "sha256": "67ffeee0fcb87c317c5b08a2de85557b4a7e96ada6178aa645b4954fe4b53d49",
+      "source_split": "official",
+      "url": "https://raw.githubusercontent.com/google-research/google-research/e6890f85757dd84e27ca6df2dd30651dafad28e0/instruction_following_eval/data/input_data.jsonl"
+    },
+    "practice": {
+      "bytes": 11653857,
+      "dataset_id": "allenai/RLVR-IFeval",
+      "path": "data/train-00000-of-00001.parquet",
+      "revision": "47c03c73621c4aab2b824b7818681117d662770e",
+      "rows": 14973,
+      "sha256": "75f1b1f63039044034fe75d22f51f77f257a79291d0084262bb43695d4aac971",
+      "url": "https://huggingface.co/datasets/allenai/RLVR-IFeval/resolve/47c03c73621c4aab2b824b7818681117d662770e/data/train-00000-of-00001.parquet"
+    }
+  },
+  "coverage": {
+    "development": {
+      "prompts": 32,
+      "instructions": 32,
+      "instruction_families": {
+        "change_case": 6,
+        "combination": 2,
+        "detectable_content": 3,
+        "detectable_format": 6,
+        "keywords": 4,
+        "length_constraints": 5,
+        "punctuation": 2,
+        "startend": 4
+      },
+      "instruction_types": {
+        "change_case:capital_word_frequency": 2,
+        "change_case:english_capital": 2,
+        "change_case:english_lowercase": 2,
+        "combination:two_responses": 2,
+        "detectable_content:number_placeholders": 2,
+        "detectable_content:postscript": 1,
+        "detectable_format:json_format": 1,
+        "detectable_format:number_bullet_lists": 2,
+        "detectable_format:number_highlighted_sections": 1,
+        "detectable_format:title": 2,
+        "keywords:existence": 2,
+        "keywords:forbidden_words": 2,
+        "length_constraints:nth_paragraph_first_word": 2,
+        "length_constraints:number_sentences": 1,
+        "length_constraints:number_words": 2,
+        "punctuation:no_comma": 2,
+        "startend:end_checker": 2,
+        "startend:quotation": 2
+      }
+    },
+    "evaluation": {
+      "prompts": 128,
+      "instructions": 173,
+      "instruction_families": {
+        "change_case": 29,
+        "combination": 10,
+        "detectable_content": 19,
+        "detectable_format": 37,
+        "keywords": 19,
+        "length_constraints": 29,
+        "punctuation": 10,
+        "startend": 20
+      },
+      "instruction_types": {
+        "change_case:capital_word_frequency": 9,
+        "change_case:english_capital": 10,
+        "change_case:english_lowercase": 10,
+        "combination:two_responses": 10,
+        "detectable_content:number_placeholders": 10,
+        "detectable_content:postscript": 9,
+        "detectable_format:json_format": 9,
+        "detectable_format:number_bullet_lists": 10,
+        "detectable_format:number_highlighted_sections": 9,
+        "detectable_format:title": 9,
+        "keywords:existence": 9,
+        "keywords:forbidden_words": 10,
+        "length_constraints:nth_paragraph_first_word": 9,
+        "length_constraints:number_sentences": 10,
+        "length_constraints:number_words": 10,
+        "punctuation:no_comma": 10,
+        "startend:end_checker": 10,
+        "startend:quotation": 10
+      }
+    }
+  },
+  "source_counts": {
+    "evaluation_eligible": 344,
+    "evaluation_excluded": 197,
+    "evaluation_source": 541,
+    "practice_eligible": 10410,
+    "practice_excluded": 4563,
+    "practice_source": 14973
+  },
+  "selection_rule": "stable SHA256 canonical JSON {seed:42,item_id:ID} order; repeatedly select least-covered instruction type, prefer rare uncovered types, then mean coverage and seeded hash order; unique normalized available task; original order retained as selected",
+  "selection_seed": 42,
+  "practice_exclusions": {
+    "ambiguous_around_quantifier": 614,
+    "ambiguous_original_prompt_includes_the_directive_to_exclude": 604,
+    "arbitrary_options_not_supported_by_official_fixed_choice_checker": 615,
+    "binary_label_output_conflicts_with_two_different_responses": 1,
+    "closed_json_schema_conflicts_with_added_constraint": 28,
+    "exact_keyword_frequency_not_a_single_official_relational_constraint": 648,
+    "exact_letter_frequency_not_a_single_official_relational_constraint": 619,
+    "exact_section_requirement_differs_from_official_minimum_checker": 655,
+    "exclusive_short_answer_conflicts_with_added_constraint": 7,
+    "nontext_output_request": 6,
+    "pick_one_option_conflicts_with_added_constraint": 8,
+    "rendered_input_plus_output_exceeds_context": 112,
+    "spaced_markdown_divider_differs_from_official_checker": 614,
+    "task_requires_external_document_not_provided_in_prompt": 1,
+    "task_requires_listing_all_even_numbers_in_logarithmic_time": 1,
+    "task_text_requests_over_400_words": 30
+  },
+  "evaluation_exclusions": {
+    "minimum_sentence_requirement_exceeds_predeclared_limit": 3,
+    "minimum_word_requirement_exceeds_predeclared_limit": 11,
+    "task_text_requests_over_400_words": 9,
+    "unsupported_instruction_type": 185
+  },
+  "overlap": {
+    "exact_and_normalized_selected_prompt_overlap": 0,
+    "familiar_types_intentional": true,
+    "semantic_paraphrases_and_pretraining_exposure_unverified": true
+  },
+  "runtime": {
+    "schema_version": 1,
+    "kind": "actual_wasm_context_and_parameter_audit",
+    "model_library_sha256": "023c24d853746e24599dc99d7649e356986fd3e1c476e6a2b8ef7af4c9f056e0",
+    "metadata_byte_offset": 3560006,
+    "embedded_metadata_sha256": "dbfe616ef710d0c74b1559ea652f2739c239bcd22a46dd19aa8d51c5531dbf2c",
+    "embedded_metadata_equals_previous_extraction": true,
+    "compiled_context_window_size": 262144,
+    "compiled_prefill_chunk_size": 1024,
+    "configured_effective_context_window_size": 4096,
+    "config_sha256": "cb4ec7657570e3f45fafdc5cbb69824c6a9fe072f87dc2973aa8e5d991731e01",
+    "library_supports_configured_context": true,
+    "parameter_contract_count": 435,
+    "all_deployed_parameter_shapes_and_types_match_actual_library": true,
+    "runtime_sha256": "ae2642e73a4a9896c21efb3a067c4666446f8b49cbe2012f4b576f5d83d5f206",
+    "runtime_context_behavior": "LLMChatPipeline uses config.context_window_size for maxTotalSeqLen and KV cache creation; prefill chunk comes from compiled metadata. Runtime adapter asserts actual pipeline.contextWindowSize and segmented tokenizer count before each dispatch.",
+    "thinking_disabled_prefix": "<think>\n\n</think>\n\n",
+    "prefix_completion_token_accounting": "Four injected prefix IDs are included in outputIds and max_tokens stop checks, but excluded from usage.completion_tokens. Usage counts sampled tokens including terminating stop; max_tokens1024 permits at most1020 sampled tokens, warmup16 permits at most12. Reserved generated-token capacity is conservative1024/16.",
+    "engine_loads": 0,
+    "target_forward_passes": 0,
+    "new_weight_conversion_required": false,
+    "memory_fit_claim": "No promise that context feasibility guarantees generation completion or measured memory fit.",
+    "per_request_seed_reset": "asyncGenerate sets pipeline.setSeed(request.seed) after acquiring model lock on every request; engine.resetChat called before every dispatch."
+  },
+  "settings": {
+    "temperature": 0,
+    "topP": 1,
+    "seed": 42,
+    "maxTokens": 1024,
+    "contextWindow": 4096,
+    "warmups": 1,
+    "warmupTokens": 16,
+    "requestLimitMs": 120000,
+    "thinking": false
+  },
+  "grading_policy": {
+    "schema_version": 1,
+    "reasoning_policy": "think_tags",
+    "output_eos_tokens": [],
+    "truncation_policy": "grade",
+    "generation_retry": {
+      "mode": "none",
+      "max_attempts": 1
+    },
+    "grader_timeout_seconds": 20,
+    "grader_retry": {
+      "mode": "none",
+      "max_attempts": 1
+    }
+  },
+  "grader": {
+    "name": "official_ifeval",
+    "revision": "d273d53c0d49aa509641885b183d98facd8d2bb2697725f9a2efbaaec52074fd"
+  },
+  "summary": {
+    "scheduled_prompts": 32,
+    "scheduled_instructions": 32,
+    "attempted": 32,
+    "execution_status_counts": {
+      "ok": 20,
+      "truncated": 12
+    },
+    "unresolved_grader_errors": 0,
+    "semantic_grading_complete": true,
+    "score_interpretation": "measured compliance",
+    "metrics": {
+      "prompt_level_strict_accuracy": {
+        "passed": 16,
+        "scheduled": 32,
+        "value": 0.5
+      },
+      "prompt_level_loose_accuracy": {
+        "passed": 17,
+        "scheduled": 32,
+        "value": 0.53125
+      },
+      "instruction_level_strict_accuracy": {
+        "passed": 16,
+        "scheduled": 32,
+        "value": 0.5
+      },
+      "instruction_level_loose_accuracy": {
+        "passed": 17,
+        "scheduled": 32,
+        "value": 0.53125
+      }
+    },
+    "strict_failures_by_instruction": {
+      "length_constraints:nth_paragraph_first_word": 2,
+      "combination:two_responses": 2,
+      "detectable_format:number_bullet_lists": 2,
+      "change_case:english_lowercase": 2,
+      "change_case:capital_word_frequency": 1,
+      "detectable_content:number_placeholders": 1,
+      "change_case:english_capital": 1,
+      "detectable_format:number_highlighted_sections": 1,
+      "keywords:existence": 1,
+      "startend:quotation": 1,
+      "startend:end_checker": 1,
+      "punctuation:no_comma": 1
+    },
+    "known_generated_tokens": 13941,
+    "known_input_tokens": 6123,
+    "generation_seconds": 263.5452995605469,
+    "technically_valid": true
+  },
+  "resources": {
+    "host_scope": "host-wide samples include unrelated workloads; not model-attributed physical GPU memory",
+    "host_sampled_numeric_ranges": {
+      "hostGpuUtilizationPercent": {
+        "minimum": 15,
+        "maximum": 88,
+        "samples": 54
+      },
+      "hostGpuAllocatedBytes": {
+        "minimum": 20262060032,
+        "maximum": 23387455488,
+        "samples": 54
+      },
+      "hostSwapUsedBytes": {
+        "minimum": 25646470266.88,
+        "maximum": 26916295802.88,
+        "samples": 54
+      },
+      "hostMemoryPressureLevel": {
+        "minimum": 2,
+        "maximum": 2,
+        "samples": 54
+      },
+      "hostFreePagesBytes": {
+        "minimum": 14909440,
+        "maximum": 95993856,
+        "samples": 54
+      },
+      "hostCompressedStorageBytes": {
+        "minimum": 7937163264,
+        "maximum": 11100241920,
+        "samples": 54
+      },
+      "hostThermalState": {
+        "minimum": 0,
+        "maximum": 0,
+        "samples": 54
+      }
+    },
+    "host_sample_count": 54,
+    "owned_process_scope": "maximum single observed process per role; RSS/footprint can include shared memory",
+    "owned_role_sampled_maxima": {
+      "helper": {
+        "footprintBytes": 199825960,
+        "rssBytes": 91815936,
+        "wiredBytes": 0
+      },
+      "browser": {
+        "footprintBytes": 97175352,
+        "rssBytes": 207339520,
+        "wiredBytes": 0
+      },
+      "gpu-process": {
+        "footprintBytes": 2356529000,
+        "rssBytes": 217071616,
+        "wiredBytes": 0
+      },
+      "utility": {
+        "footprintBytes": 57345272,
+        "rssBytes": 88375296,
+        "wiredBytes": 0
+      },
+      "renderer": {
+        "footprintBytes": 710249136,
+        "rssBytes": 318636032,
+        "wiredBytes": 0
+      }
+    },
+    "worker_scope": "GPUBuffer descriptor accounting and WASM address space are not physical VRAM",
+    "sampling_limit": "Observed sample maxima do not establish absolute peaks; unavailable metrics remain unavailable.",
+    "worker_signals": [
+      {
+        "id": "gpu-buffers",
+        "label": "Tracked live GPUBuffer sizes",
+        "scope": "inference worker",
+        "source": "GPUBuffer.size, create/destroy ledger",
+        "unit": "bytes",
+        "status": "available",
+        "reason": "Sum of buffer descriptor sizes not explicitly destroyed on this device. Includes runtime pool buffers; excludes textures, driver overhead and physical VRAM residency."
+      },
+      {
+        "id": "device-loss",
+        "label": "GPU device lifecycle",
+        "scope": "inference worker",
+        "source": "Actual inference GPUDevice.lost promise",
+        "unit": "event",
+        "status": "available",
+        "reason": "Unexpected loss is a failed run; destroy during unload is an expected lifecycle event."
+      },
+      {
+        "id": "worker-wasm",
+        "label": "Reachable WASM linear memory",
+        "scope": "inference worker",
+        "source": "Exported WebAssembly.Memory.buffer.byteLength (weak references)",
+        "unit": "bytes",
+        "status": "pending",
+        "reason": "Linear address-space length, not resident RAM. A retained buffer after unload does not prove a leak; garbage collection is not forced."
+      },
+      {
+        "id": "worker-heap",
+        "label": "Worker JS heap",
+        "scope": "inference worker",
+        "source": "worker performance.memory.usedJSHeapSize",
+        "unit": "bytes",
+        "status": "unavailable",
+        "reason": "performance.memory is not exposed in this worker."
+      },
+      {
+        "id": "worker-lag",
+        "label": "Worker timer delay",
+        "scope": "inference worker",
+        "source": "1-second setInterval scheduling drift",
+        "unit": "ms",
+        "status": "available",
+        "reason": "Worker responsiveness; includes scheduling and synchronous work, not CPU usage."
+      },
+      {
+        "id": "worker-wasm",
+        "label": "Reachable WASM linear memory",
+        "scope": "inference worker",
+        "source": "Exported WebAssembly.Memory.buffer.byteLength (weak references)",
+        "unit": "bytes",
+        "status": "available",
+        "reason": "Linear address-space length, not resident RAM; may remain reachable after unload. No forced GC."
+      }
+    ],
+    "worker_sampled_maxima": {
+      "gpuBufferBytes": 1747698604,
+      "wasmBytes": 283181056,
+      "heapBytes": null,
+      "eventLoopDelayMs": 113.90000009536743
+    },
+    "worker_sample_count": 286,
+    "worker_series_scope": "one complete worker run, including load, warmup, requests and cleanup; the client repeats this shared series on every terminal output",
+    "initialization": [
+      {
+        "applicationGenerationCalls": 0,
+        "applicationWarmupCalls": 0,
+        "observedWebGPUDevices": 1,
+        "queueSubmittedBatchesDuringInitialization": 1,
+        "scope": "Observed GPUQueue.submit calls before application generation; includes runtime initialization/compilation work. No claim of zero model computation during loading.",
+        "runtimeAutomaticModelWarmup": "Not separately identifiable from initialization submissions; no application warmup or debug evaluate() call requested"
+      }
+    ]
+  },
+  "cleanup": {
+    "process_group_stop_requested": true,
+    "controller_exit_verified": true,
+    "controller_returncode": 0,
+    "unload_confirmed": true,
+    "worker_terminated": true,
+    "forced_termination": false,
+    "chrome_exit_confirmed": true,
+    "local_harness_exit_confirmed": true,
+    "owned_browser_and_worker_resources_released": true,
+    "release_scope": "Dedicated browser process/profile, all of its page/worker/device resources, and this local harness only; unrelated browser data untouched",
+    "chrome_os_exit_verified": true,
+    "retained_owned_pids_alive": []
+  },
+  "budget": {
+    "limits": {
+      "engine_load_attempts": 1,
+      "warmup_dispatches": 1,
+      "scored_dispatches": 32,
+      "generation_dispatches": 33,
+      "generated_tokens": 32784,
+      "warmup_tokens": 16,
+      "tokens_per_scored_request": 1024,
+      "request_seconds": 120,
+      "wall_seconds": 5400,
+      "automatic_retries": 0,
+      "candidate_generations": 0,
+      "heldout_generations": 0,
+      "frontier_requests": 0
+    },
+    "engine_load_attempts": 1,
+    "warmup_dispatches": 1,
+    "scored_dispatches": 32,
+    "generation_dispatches": 33,
+    "reserved": {
+      "generated_tokens": 32784,
+      "elapsed_seconds": 3960.0,
+      "billed_units": 0,
+      "pending_generated_tokens": 0,
+      "pending_elapsed_seconds": 0,
+      "pending_billed_units": 0
+    },
+    "observed": {
+      "generated_tokens": 13953,
+      "elapsed_seconds": 264.19289965820315,
+      "billed_units": 0,
+      "token_measurements": 33,
+      "elapsed_measurements": 33,
+      "billing_measurements": 33
+    },
+    "charged": {
+      "editor_requests": 0,
+      "model_probes": 33,
+      "requested_sequences": 33,
+      "completed_sequences": 33,
+      "failed_sequences": 0,
+      "generated_tokens": 13953,
+      "elapsed_seconds": 264.19289965820315,
+      "billed_units": 0,
+      "observed_generated_tokens": 13953,
+      "observed_elapsed_seconds": 264.19289965820315,
+      "observed_billed_units": 0,
+      "retries": 0,
+      "pending_requests": 0,
+      "conservative_requests": 0,
+      "limit_violations": 0
+    },
+    "terminal": true,
+    "candidate_generations": 0,
+    "heldout_generations": 0,
+    "experimental_frontier_requests": 0,
+    "first_load_through_cleanup_seconds": 273.3642682500649
+  },
+  "warmup": [
+    {
+      "generated_tokens": 12,
+      "input_tokens": 27,
+      "response_latency_ms": 647.60009765625,
+      "finish_reason": "length",
+      "assistant_prefix_tokens": 4,
+      "request_max_tokens": 16
+    }
+  ],
+  "load_ms": 2629.4000000953674,
+  "attribution": [
+    "Arhaan Aggarwal (Arhaan2)",
+    "Existing BrowserLLM work and Gufran's contribution preserved",
+    "Google Research IFEval, Zhou et al., Apache-2.0",
+    "Allen Institute for AI RLVR-IFeval; upstream Ai2 ImpACT and Llama 2 notices preserved"
+  ]
+}

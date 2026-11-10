@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "published_patch_replay_plan",
+  "primary_comparison": "unchanged_vs_reconstructed_p50c",
+  "primary_benchmark": "math",
+  "decoding_selection": "none; all settings fixed a priori, no development or test score selection",
+  "alternative_decoding": "temperature_1_thinking; only temperature changes from 0.6 to 1.0",
+  "stages": {
+    "smoke": {"items_per_benchmark": 1, "seeds": [0], "max_new_tokens": 16, "request_timeout_seconds": 180},
+    "pilot": {"items_per_benchmark": 2, "seeds": [0], "max_new_tokens": 128, "request_timeout_seconds": 600},
+    "full": {"items_per_benchmark": null, "seeds": null, "max_new_tokens": 32768, "request_timeout_seconds": 7200}
+  },
+  "full_benchmarks": {
+    "math": {"items": 500, "seeds": [0, 1, 2, 3], "metric": "accuracy"},
+    "gsm8k": {"items": 1319, "seeds": [0, 1], "metric": "accuracy"},
+    "ifeval": {"items": 541, "seeds": [0, 1], "metric": "prompt_level_strict_accuracy"}
+  },
+  "analysis": {"bootstrap_samples": 10000, "seed": 0, "confidence_level": 0.95, "unit": "paired_source_item", "multiplicity": "math primary; GSM8K, IFEval and controls descriptive; no pooled benchmark score"},
+  "published_reference_scores": {
+    "math": {"original": 0.079, "reconstructed": 0.481},
+    "gsm8k": {"original": 0.13836239575435935, "reconstructed": 0.6709628506444276},
+    "ifeval": {"original": 0.2097966728280961, "reconstructed": 0.6229205175600739}
+  },
+  "reference_revision": "4d09ba6d6a7e891dd8063974dfe81b3d78e3494f"
+}

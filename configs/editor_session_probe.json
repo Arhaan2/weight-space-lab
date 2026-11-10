@@ -1,0 +1,51 @@
+{
+  "backend": {
+    "name": "transformers",
+    "versions": {
+      "transformers": "5.3.0",
+      "torch": "2.10.0",
+      "tokenizers": "0.22.2",
+      "safetensors": "0.7.0",
+      "jinja2": "3.1.6"
+    },
+    "device": "cpu",
+    "precision": "bfloat16",
+    "attention_implementation": "eager",
+    "max_model_len": 2048,
+    "cpu_threads": 4,
+    "sampling": {
+      "mode": "greedy",
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "top_k": 0,
+      "min_p": 0.0,
+      "presence_penalty": 0.0,
+      "frequency_penalty": 0.0,
+      "repetition_penalty": 1.0,
+      "max_new_tokens": 128
+    },
+    "chat": {
+      "enable_thinking": false,
+      "add_generation_prompt": true,
+      "chat_template_sha256": "273d8e0e683b885071fb17e08d71e5f2a5ddfb5309756181681de4f5a1822d80"
+    },
+    "stopping": {
+      "eos_token_ids": [
+        248044,
+        248046
+      ],
+      "stop_strings": [],
+      "ignore_eos": false,
+      "include_stop_str_in_output": false
+    },
+    "decoding": {
+      "skip_special_tokens": false,
+      "clean_up_tokenization_spaces": false
+    }
+  },
+  "seeds": [
+    17
+  ],
+  "max_new_tokens": 128,
+  "timeout_seconds": 300
+}

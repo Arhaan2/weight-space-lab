@@ -1,0 +1,545 @@
+--- a/scripts/run-task-evaluation.mjs
++++ b/scripts/run-task-evaluation.mjs
+@@ -108,7 +108,7 @@
+   runId: config.runId,
+   arm: config.arm,
+   retries: 0,
+-  warmups: 0,
++  warmups: config.settings.warmups,
+   callerAuthorizationRequired: true,
+   mode: fetchOnly ? "fetch-only" : loadOnly ? "load-only" : "generation",
+   attempt_id: attemptId,
+@@ -130,6 +130,7 @@
+ let server, chrome, socket, result, cdp;
+ let loadAcknowledged = false,
+   generationAcknowledged = false,
++  generationAcknowledgedCount = 0,
+   generationCallObserved = false;
+ const gateSeen = new Set();
+ let globalDeadline;
+@@ -151,15 +152,24 @@
+       request.configuration_sha256 !== config.configurationSha256 ||
+       request.artifact_sha256 !== config.convertedArtifactSha256 ||
+       request.run_id !== config.runId ||
+-      request.request_id !== `${kind}-1`
++      (kind === "load" ? request.request_id !== "load-1" :
++        request.request_id !== `generation-${[...gateSeen].filter(x => x.startsWith("generation-")).length + 1}`)
+     )
+       throw Error("Worker gate identity mismatch");
+-    if (gateSeen.has(kind))
++    if (gateSeen.has(request.request_id))
+       throw Error("Duplicate dispatch intent; retries disabled");
+-    gateSeen.add(kind);
++    gateSeen.add(request.request_id);
+     const intent = { ...request, created_at_epoch_ms: Date.now() };
+-    durableJson(resolve(outputDir, `${kind}-intent.json`), intent);
+-    const ackFile = resolve(outputDir, `${kind}-ack.json`);
++    if (kind === "generation" && config.study) {
++      const index = Number(request.request_id.split("-")[1]);
++      const warmup = index === 1;
++      if (index > 33 || request.warmup !== warmup || request.sequence_index !== index - 1 ||
++          request.item_id !== (warmup ? "__warmup__" : config.items[index - 2]?.item_id) ||
++          request.max_tokens !== (warmup ? 16 : 1024)) throw Error("Generation schedule mismatch");
++    }
++    const stem = kind === "load" ? "load" : request.request_id;
++    durableJson(resolve(outputDir, `${stem}-intent.json`), intent);
++    const ackFile = resolve(outputDir, `${stem}-ack.json`);
+     const end = Math.min(Date.now() + 60000, globalDeadline ?? Infinity);
+     while (!existsSync(ackFile)) {
+       if (stopRequested || Date.now() >= end)
+@@ -184,7 +194,7 @@
+       throw Error("Supervisor attempted to reset the global deadline");
+     globalDeadline = ack.deadline_epoch_ms;
+     if (kind === "load") loadAcknowledged = true;
+-    if (kind === "generation") generationAcknowledged = true;
++    if (kind === "generation") { generationAcknowledged = true; generationAcknowledgedCount++; }
+     acknowledged = true;
+     event("driver-gate-ack-forwarded", ack);
+     const response = await cdp.send("Runtime.evaluate", {
+@@ -516,7 +526,7 @@
+   );
+   const lastStart = recovered[lastStartIndex]?.data;
+   if (
+-    lastStart &&
++    lastStart?.requestIndex > 0 &&
+     !outputs.some(
+       (s) => s.item_id === config.items[lastStart.requestIndex - 1]?.item_id,
+     )
+@@ -544,6 +554,7 @@
+     arm: config.arm,
+     generatedTokens: generationAcknowledged ? null : 0,
+     outputs,
++    warmupOutputs: recovered.filter((e) => e.type === "warmup-sample").map((e) => e.data),
+     execution_error: String(error),
+     done: { status: "failed", reason: String(error), unloadConfirmed: false },
+     cleanup: {
+@@ -565,12 +576,10 @@
+       : (result.done?.status ?? result.status);
+   result.generatedTokens =
+     result.generatedTokens === null ||
+-    result.outputs.some((s) => s.generated_tokens == null) ||
+-    (generationAcknowledged &&
+-      result.status !== "completed" &&
+-      !result.outputs.length)
++    [...result.outputs, ...(result.warmupOutputs ?? [])].some((s) => s.generated_tokens == null) ||
++    (generationAcknowledgedCount > result.outputs.length + (result.warmupOutputs ?? []).length)
+       ? null
+-      : result.outputs.reduce((n, s) => n + s.generated_tokens, 0);
++      : [...result.outputs, ...(result.warmupOutputs ?? [])].reduce((n, s) => n + s.generated_tokens, 0);
+   result.configuration_sha256 = config.configurationSha256;
+   result.source_checkpoint_sha256 = config.sourceCheckpointSha256;
+   result.converted_artifact_sha256 = config.convertedArtifactSha256;
+@@ -584,15 +593,17 @@
+     server_exit_code: server?.exitCode ?? null,
+     server_signal: server?.signalCode ?? null,
+     no_retries: true,
+-    warmups: 0,
++    warmups: config.settings.warmups,
+     mode: dispatch.mode,
+     attempt_id: attemptId,
+     code_version_sha256: codeVersionSha256,
+-    load_intent_observed: gateSeen.has("load"),
++    load_intent_observed: gateSeen.has("load-1"),
+     load_acknowledged: loadAcknowledged,
+-    generation_intent_observed: gateSeen.has("generation"),
++    generation_intent_observed: [...gateSeen].some(x => x.startsWith("generation-")),
+     generation_acknowledged: generationAcknowledged,
++    generation_acknowledgements: generationAcknowledgedCount,
+     generation_call_intent_observed: generationCallObserved,
++    generation_intents: [...gateSeen].filter(x => x.startsWith("generation-")).length,
+     deadline_epoch_ms: globalDeadline ?? null,
+   };
+   result.cleanup = {
+--- /dev/null
++++ b/scripts/count-task-tokens.mjs
+@@ -0,0 +1,44 @@
++/** Exact installed WebLLM tokenizer, no engine, worker, GPU, or forward pass. */
++import { readFileSync, writeFileSync, mkdtempSync, rmSync } from 'node:fs';
++import { resolve, join } from 'node:path';
++import { pathToFileURL } from 'node:url';
++import { tmpdir } from 'node:os';
++import { createHash } from 'node:crypto';
++const [tokenizerPath, configPath, itemsPath, outputPath] = process.argv.slice(2);
++if (!outputPath) throw Error('Usage: count-task-tokens.mjs TOKENIZER CHAT_CONFIG ITEMS OUTPUT');
++const runtimePath = resolve('node_modules/@mlc-ai/web-llm-next/lib/index.js');
++const runtimeBytes = readFileSync(runtimePath);
++const source = runtimeBytes.toString();
++const start = source.indexOf('var lib$1 = {exports: {}};');
++const endMarker = 'var libExports = requireLib();';
++const end = source.indexOf(endMarker, start) + endMarker.length;
++if (start < 0 || end < start) throw Error('Pinned tokenizer module boundaries unavailable');
++const directory = mkdtempSync(join(tmpdir(), 'ifeval-tokenizer-'));
++try {
++  const extracted = 'import { createRequire } from "node:module";\n' + source.slice(start, end) + '\nexport const Tokenizer = libExports.Tokenizer;\n';
++  const modulePath = join(directory, 'tokenizer.mjs');
++  writeFileSync(modulePath, extracted);
++  globalThis.location = { href: pathToFileURL(modulePath).href };
++  const { Tokenizer } = await import(pathToFileURL(modulePath).href);
++  const bytes = readFileSync(tokenizerPath);
++  const tokenizer = await Tokenizer.fromJSON(bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength));
++  const c = JSON.parse(readFileSync(configPath)).conv_template;
++  const items = JSON.parse(readFileSync(itemsPath));
++  const counts = items.map(item => {
++    const segments = [c.system_template.replace('{system_message}', c.system_message),
++      c.roles.user + c.role_content_sep + item.prompt + c.seps[0],
++      c.roles.assistant + c.role_content_sep + '<think>\n\n</think>\n\n'];
++    const tokens = segments.flatMap(segment => Array.from(tokenizer.encode(segment)));
++    return { item_id: item.item_id, rendered_input_tokens: tokens.length,
++      token_ids_sha256: createHash('sha256').update(JSON.stringify(tokens)).digest('hex') };
++  });
++  tokenizer.dispose();
++  writeFileSync(outputPath, JSON.stringify({ schema: 'ifeval-browser-token-count-audit-v1',
++    runtime_sha256: createHash('sha256').update(runtimeBytes).digest('hex'),
++    extracted_tokenizer_module_sha256: createHash('sha256').update(extracted).digest('hex'),
++    tokenizer_sha256: createHash('sha256').update(bytes).digest('hex'),
++    method: 'Unmodified bundled WebLLM Tokenizer module; exact Conversation segments encoded separately; no engine or GPU API invoked',
++    engine_loads: 0, target_forward_passes: 0, counts }, null, 2) + '\n', { flag: 'wx' });
++} finally {
++  rmSync(directory, { recursive: true });
++}
+--- /dev/null
++++ b/scripts/prepare-ifeval-config.mjs
+@@ -0,0 +1,51 @@
++/** Build the new study's frozen browser configuration; no engine or generation. */
++import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
++import { resolve } from 'node:path';
++import { createHash } from 'node:crypto';
++const [sourceConfigPath, developmentPath, tokenAuditPath, outputPath] = process.argv.slice(2);
++if (!outputPath) throw Error('Usage: prepare-ifeval-config.mjs V2_BASELINE_CONFIG DEVELOPMENT_ITEMS TOKEN_AUDIT NEW_OUTPUT');
++const parse = p => JSON.parse(readFileSync(p));
++const hash = bytes => createHash('sha256').update(bytes).digest('hex');
++const sorted = value => Array.isArray(value) ? value.map(sorted) : value && typeof value === 'object' ? Object.fromEntries(Object.keys(value).sort().map(key => [key, sorted(value[key])])) : value;
++const config = parse(sourceConfigPath), items = parse(developmentPath), audit = parse(tokenAuditPath);
++if (config.arm !== 'baseline' || config.model.quantization !== 'q4f16_1' || items.length !== 32 ||
++    new Set(items.map(item => item.item_id)).size !== 32 ||
++    items.some(item => item.benchmark !== 'ifeval' || item.split !== 'development' || !item.task_text))
++  throw Error('Expected pinned pristine v2 artifact and32 unique development IFEval items');
++if (audit.engine_loads !== 0 || audit.target_forward_passes !== 0 || audit.runtime_sha256 !== hash(readFileSync('node_modules/@mlc-ai/web-llm-next/lib/index.js')))
++  throw Error('Exact tokenizer-only runtime audit missing or changed');
++const counts = new Map(audit.counts.map(item => [item.item_id, item.rendered_input_tokens]));
++if (audit.counts.length !== counts.size) throw Error('Duplicate tokenizer audit rows');
++const origin = 'http://127.0.0.1:4198';
++const remap = url => origin + new URL(url).pathname;
++config.assets = config.assets.map(asset => ({ ...asset, url: remap(asset.url) }));
++config.model.modelUrl = remap(config.model.modelUrl);
++config.model.modelLib = remap(config.model.modelLib);
++for (const asset of config.assets) {
++  if (hash(readFileSync(resolve('public', '.' + new URL(asset.url).pathname))) !== asset.sha256)
++    throw Error('Asset changed from verified v2 artifact: ' + new URL(asset.url).pathname);
++}
++const tokenizerAsset = config.assets.find(a => a.url.endsWith('/tokenizer.json'));
++if (tokenizerAsset.sha256 !== audit.tokenizer_sha256) throw Error('Token audit used another tokenizer');
++config.study = 'ifeval-browser-v1';
++config.runId = 'ifeval-browser-v1-baseline';
++config.warmupPrompt = 'Reply with OK.';
++config.settings = { temperature:0, topP:1, seed:42, maxTokens:1024, contextWindow:4096,
++  warmups:1, warmupTokens:16, requestLimitMs:120000, thinking:false };
++config.totalLimitMs = 5400000;
++config.items = items.map(item => {
++  const tokens = counts.get(item.item_id);
++  if (!Number.isInteger(tokens) || tokens <= 0 || tokens + 1024 > 4096) throw Error('Missing or infeasible exact token count');
++  return { item_id:item.item_id, prompt:item.task_text, rendered_input_tokens:tokens };
++});
++const files = ['task-evaluation.html', 'task-evaluation.js',
++  ...readdirSync('public/benchmark-worker').filter(file => file.endsWith('.js')).sort().map(file => 'benchmark-worker/' + file)];
++config.servedBuild = files.map(file => ({ url:origin + '/' + file, sha256:hash(readFileSync('public/' + file)), kind:file.endsWith('.html') ? 'html' : 'javascript' }));
++delete config.configurationSha256;
++config.configurationSha256 = hash(JSON.stringify(sorted(config)));
++writeFileSync(outputPath, JSON.stringify(config, null, 2) + '\n', { flag:'wx', mode:0o600 });
++console.log(JSON.stringify({ configuration_sha256:config.configurationSha256, items:config.items.length,
++  min_rendered_tokens:Math.min(...config.items.map(x => x.rendered_input_tokens)),
++  max_rendered_tokens:Math.max(...config.items.map(x => x.rendered_input_tokens)),
++  source_data_sha256:hash(readFileSync(developmentPath)), token_audit_sha256:hash(readFileSync(tokenAuditPath)),
++  engine_loads:0, generation_dispatches:0 }));
+--- a/src/benchmark/task-evaluation/protocol.ts
++++ b/src/benchmark/task-evaluation/protocol.ts
+@@ -6,6 +6,8 @@
+ export const taskEvaluationSchema = z
+   .object({
+     schema: z.literal("weight-space-browser-task-v2"),
++    study: z.literal("ifeval-browser-v1").optional(),
++    warmupPrompt: z.string().min(1).max(1000).optional(),
+     runId: z.string().regex(/^[a-zA-Z0-9_-]+$/),
+     configurationSha256: sha,
+     arm: z.enum(["baseline", "candidate"]),
+@@ -37,25 +39,26 @@
+     }),
+     assets: z.array(z.object({ url: z.string().url(), sha256: sha })).min(4),
+     settings: runSettingsSchema,
+-    totalLimitMs: z.number().int().min(20000).max(1200000),
++    totalLimitMs: z.number().int().min(20000).max(5400000),
+     items: z
+       .array(
+         z.object({
+           item_id: z.string().min(1),
+           prompt: z.string().min(1).max(30000),
++          rendered_input_tokens: z.number().int().positive().optional(),
+         }),
+       )
+       .min(1)
+-      .max(14),
++      .max(32),
+   })
+   .superRefine((c, ctx) => {
+-    if (c.settings.warmups !== 0 || c.settings.thinking)
++    if ((!c.study && c.settings.warmups !== 0) || c.settings.thinking)
+       ctx.addIssue({
+         code: "custom",
+         message: "Task protocol requires zero warmups and thinking disabled",
+       });
+     if (
+-      c.integrationGate &&
++      c.integrationGate && !c.study &&
+       (c.items.length !== 1 || c.settings.maxTokens !== 256)
+     )
+       ctx.addIssue({
+@@ -63,6 +66,14 @@
+         message:
+           "Integration v2 permits exactly one item and 256 output tokens per arm",
+       });
++    if (c.study && (c.items.length !== 32 || c.settings.warmups !== 1 ||
++        c.settings.warmupTokens !== 16 || c.settings.maxTokens !== 1024 ||
++        c.settings.contextWindow !== 4096 || c.settings.temperature !== 0 ||
++        c.settings.topP !== 1 || c.settings.seed !== 42 ||
++        c.settings.requestLimitMs !== 120000 || c.totalLimitMs !== 5400000 ||
++        c.warmupPrompt !== "Reply with OK." ||
++        c.items.some((i) => !i.rendered_input_tokens || i.rendered_input_tokens + 1024 > 4096)))
++      ctx.addIssue({ code: "custom", message: "IFEval requires the frozen 32-item, one-warmup, 4096/1024, deterministic budget and input counts" });
+     if (new Set(c.items.map((x) => x.item_id)).size !== c.items.length)
+       ctx.addIssue({ code: "custom", message: "Task item IDs must be unique" });
+     if (new Set(c.assets.map((x) => x.url)).size !== c.assets.length)
+@@ -107,9 +118,9 @@
+       });
+   });
+ export type TaskEvaluation = z.infer<typeof taskEvaluationSchema>;
+-export function taskGenerationOptions(task: TaskEvaluation) {
++export function taskGenerationOptions(task: TaskEvaluation, warmup = false) {
+   return {
+-    ...generationOptions(task.settings, false, true),
++    ...generationOptions(task.settings, warmup, true),
+     presence_penalty: 0,
+     frequency_penalty: 0,
+     repetition_penalty: 1,
+--- a/src/benchmark/task-evaluation/artifacts.ts
++++ b/src/benchmark/task-evaluation/artifacts.ts
+@@ -101,6 +101,13 @@
+         "<think>\n\n</think>\n\n"
+       );
+     },
++    renderedSegments(prompt: string) {
++      // WebLLM getInputData() encodes each Conversation prompt segment separately.
++      const c = chatConfig.conv_template;
++      return [c.system_template.replace("{system_message}", c.system_message),
++        c.roles.user + c.role_content_sep + prompt + c.seps[0],
++        c.roles.assistant + c.role_content_sep + "<think>\n\n</think>\n\n"];
++    },
+     requireAll() {
+       const missing = [...expected.keys()].filter((url) => !verified.has(url));
+       if (missing.length)
+--- a/src/benchmark/task-evaluation/client.ts
++++ b/src/benchmark/task-evaluation/client.ts
+@@ -33,11 +33,11 @@
+   used = true;
+   status(`Loading ${task.arm}; 0 of ${task.items.length} items evaluated`);
+   const events: Event[] = [],
+-    samples: any[] = [];
++    samples: any[] = [], warmupOutputs: any[] = [];
+   const startedEpochMs = clockMs();
+   let partialOutput = "",
+     requestIndex = 0,
+-    requestStart = 0;
++    requestStart = 0, requestInFlight = false;
+   let loadMs: number | null = null;
+   const worker = new Worker("/benchmark-worker/benchmark.worker.js", {
+     type: "module",
+@@ -51,22 +51,25 @@
+   };
+   return await new Promise<any>((resolve) => {
+     let finished = false;
++    let requestWatchdog: ReturnType<typeof setTimeout> | undefined;
+     const complete = (done: any, forced = false) => {
+       if (finished) return;
+       finished = true;
++      clearTimeout(requestWatchdog);
+       clearTimeout(cancelTimer);
+       clearTimeout(forceTimer);
+       worker.terminate();
+       activeWorker = undefined;
+       activeAckReceiver = undefined;
+       if (
+-        requestIndex &&
+-        !samples.some(
++        requestInFlight &&
++        !(requestIndex === 0 ? warmupOutputs.length : samples.some(
+           (s) => s.item_id === task.items[requestIndex - 1]?.item_id,
+-        )
++        ))
+       ) {
+-        samples.push({
+-          item_id: task.items[requestIndex - 1].item_id,
++        const partial = {
++          item_id: requestIndex === 0 ? "__warmup__" : task.items[requestIndex - 1].item_id,
++          request_id: `generation-${requestIndex + 1}`, warmup: requestIndex === 0,
+           raw_output: partialOutput,
+           finish_reason: "error",
+           generated_tokens: null,
+@@ -80,7 +83,9 @@
+           cancelled: done.status === "cancelled",
+           partial_output_scope:
+             "last worker output event; up to 250ms stream lag",
+-        });
++        };
++        (requestIndex === 0 ? warmupOutputs : samples).push(partial);
++        emit(requestIndex === 0 ? "warmup-sample" : "task-sample", partial);
+       }
+       const cleanup = {
+         unload_confirmed: Boolean(done.unloadConfirmed),
+@@ -115,6 +120,7 @@
+         platform: navigator.platform,
+         hardware_concurrency: navigator.hardwareConcurrency,
+         outputs,
++        warmupOutputs,
+         events,
+         done,
+         cleanup,
+@@ -200,9 +206,20 @@
+         if (type === "output") partialOutput = data;
+         if (type === "event" && data.type === "request-start") {
+           requestIndex = data.requestIndex;
++          requestInFlight = true;
+           requestStart = data.tMs;
+           partialOutput = "";
++          clearTimeout(requestWatchdog);
++          requestWatchdog = setTimeout(() => complete({ status: "failed",
++            reason: "Request timeout interruption did not settle within 10-second cleanup reserve",
++            unloadConfirmed: false, completedRequests: samples.length,
++            totalMs: clockMs() - startedEpochMs }, true), task.settings.requestLimitMs + 10000);
+         }
++        if (type === "warmup-sample" || type === "task-sample") {
++          clearTimeout(requestWatchdog);
++          requestInFlight = false;
++        }
++        if (type === "warmup-sample") warmupOutputs.push(data);
+         if (type === "task-sample") {
+           samples.push(data);
+           status(
+--- a/src/benchmark/worker/benchmark.worker.ts
++++ b/src/benchmark/worker/benchmark.worker.ts
+@@ -66,12 +66,14 @@
+   const task = taskEvaluation
+     ? taskEvaluationSchema.parse(taskEvaluation)
+     : undefined;
+-  async function gate(kind: "load" | "generation") {
++  let generationSequence = 0;
++  async function gate(kind: "load" | "generation", details: Record<string, unknown> = {}) {
+     if (!task?.integrationGate)
+       throw Error("Integration dispatch requires a durable host gate");
+-    const request_id = `${kind}-1`;
++    const request_id = kind === "load" ? "load-1" : `generation-${++generationSequence}`;
+     const request = {
+       schema: "browser-v2-dispatch-intent",
++      ...details,
+       kind,
+       arm: task.arm,
+       request_id,
+@@ -263,7 +265,7 @@
+           "Natural EOS and config stop strings/token IDs; ignore_eos=false",
+         thinkingPrefix: "<think>\n\n</think>\n\n",
+         tokenAccounting:
+-          "WebLLM completion token count includes any injected assistant thinking-prefix token IDs; conservative generation budget",
++          "WebLLM completion usage counts sampled tokens including a terminating stop, excluding four injected empty-think prefix IDs. max_tokens bounds outputIds including those four IDs; 1024 permits at most1020 sampled tokens, warmup16 permits at most12. Reserved budgets remain1024/16.",
+         topK: "Not exposed by WebLLM chat-completions API; greedy temperature=0",
+       });
+     }
+@@ -279,13 +281,13 @@
+       if (stopReason) throw Error(stopReason);
+       await engine!.resetChat();
+       const prompt = warmup
+-        ? "Say hello in one short sentence."
++        ? (task?.warmupPrompt ?? "Say hello in one short sentence.")
+         : work === "repeat"
+           ? prompts[0]
+           : prompts[index];
+       if (task)
+         send("task-prompt", {
+-          item_id: task.items[index].item_id,
++          item_id: warmup ? "__warmup__" : task.items[index].item_id,
+           messages: [{ role: "user", content: prompt }],
+           rendered_prompt: assetGuard!.renderedPrompt(prompt),
+           provenance:
+@@ -297,11 +299,24 @@
+           observedWebGPUDevices: profiler.deviceCount,
+           scope: "all work before application generation dispatch",
+         });
+-        await gate("generation");
++        const pipeline = (engine as any).loadedModelIdToPipeline.get(model.id);
++        if (!pipeline || pipeline.contextWindowSize !== settings.contextWindow)
++          throw Error("Actual loaded context differs from frozen context");
++        const rendered = assetGuard!.renderedPrompt(prompt);
++        const observedInputTokens = assetGuard!.renderedSegments(prompt).reduce((n, segment) => n + pipeline.tokenizer.encode(segment).length, 0);
++        const expectedInputTokens = warmup ? undefined : task.items[index].rendered_input_tokens;
++        if (task.study && ((expectedInputTokens !== undefined && observedInputTokens !== expectedInputTokens) ||
++            observedInputTokens + (warmup ? settings.warmupTokens : settings.maxTokens) > pipeline.contextWindowSize))
++          throw Error("Actual tokenizer/template count differs from frozen feasibility or exceeds context");
++        send("task-input-token-audit", { item_id: warmup ? "__warmup__" : task.items[index].item_id,
++          warmup, rendered_input_tokens: observedInputTokens, expected_input_tokens: expectedInputTokens ?? null,
++          effective_context_window: pipeline.contextWindowSize, compiled_prefill_chunk_size: pipeline.prefillChunkSize });
++        await gate("generation", { warmup, item_id: warmup ? "__warmup__" : task.items[index].item_id,
++          max_tokens: warmup ? settings.warmupTokens : settings.maxTokens, sequence_index: generationSequence });
+       }
+       const started = now();
+       const submittedAtStart = submittedBatches;
+-      if (task && !warmup) attempted++;
++      if (task) attempted++;
+       event(
+         "request-start",
+         warmup ? "Warmup" : `Request ${index + 1}`,
+@@ -322,13 +337,14 @@
+         if (task)
+           send("generation-call-intent", {
+             arm: task.arm,
+-            request_id: "generation-1",
+-            item_id: task.items[index].item_id,
+-            max_tokens: settings.maxTokens,
++            request_id: `generation-${generationSequence}`,
++            warmup,
++            item_id: warmup ? "__warmup__" : task.items[index].item_id,
++            max_tokens: warmup ? settings.warmupTokens : settings.maxTokens,
+           });
+         const stream = await engine!.chat.completions.create({
+           ...(task
+-            ? taskGenerationOptions(task)
++            ? taskGenerationOptions(task, warmup)
+             : generationOptions(settings, warmup, model.thinkingDisabled)),
+           messages: [{ role: "user", content: prompt }],
+           stream: true,
+@@ -376,7 +392,7 @@
+       });
+       if (task) {
+         const sample = taskSample({
+-          itemId: task.items[index].item_id,
++          itemId: warmup ? "__warmup__" : task.items[index].item_id,
+           output,
+           finish,
+           tokens: usage?.completion_tokens ?? null,
+@@ -388,7 +404,7 @@
+           stopStatus,
+           submittedBatches: submittedBatches - submittedAtStart,
+         });
+-        send("task-sample", sample);
++        send(warmup ? "warmup-sample" : "task-sample", { ...sample, request_id: `generation-${generationSequence}`, warmup, assistant_prefix_tokens: 4, request_max_tokens: warmup ? settings.warmupTokens : settings.maxTokens });
+         executionError = sample.execution_error;
+       }
+       if (executionError) throw Error(executionError);
+--- /dev/null
++++ b/tests/unit/ifeval-study.test.ts
+@@ -0,0 +1,49 @@
++import assert from 'node:assert/strict';
++import test from 'node:test';
++import { taskEvaluationSchema, taskGenerationOptions, taskPlan } from '../../src/benchmark/task-evaluation/protocol';
++import { taskSample } from '../../src/benchmark/task-evaluation/records';
++const sha = 'a'.repeat(64);
++const fixture = () => ({ schema: 'weight-space-browser-task-v2', study: 'ifeval-browser-v1',
++  runId: 'ifeval-browser-v1-baseline', configurationSha256: sha, arm: 'baseline',
++  sourceCheckpointSha256: sha, convertedArtifactSha256: sha,
++  warmupPrompt: 'Reply with OK.',
++  integrationGate: { attemptId: 'baseline-1', codeVersionSha256: sha },
++  model: { id: `baseline-${sha}`, modelUrl: `http://127.0.0.1:4198/models/${sha}/resolve/${sha}/`,
++    modelLib: 'http://127.0.0.1:4198/model.wasm', quantization: 'q4f16_1', requiredFeatures: ['shader-f16'], bufferSizeRequiredBytes: 0 },
++  assets: ['config', 'manifest', 'tokenizer', 'wasm'].map(n => ({ url: `http://127.0.0.1:4198/${n}`, sha256: sha })),
++  settings: { temperature: 0, topP: 1, seed: 42, maxTokens: 1024, contextWindow: 4096,
++    warmups: 1, warmupTokens: 16, requestLimitMs: 120000, thinking: false },
++  totalLimitMs: 5400000,
++  items: Array.from({ length: 32 }, (_, i) => ({ item_id: `dev-${i}`, prompt: `fixture ${i}`, rendered_input_tokens: 40 })),
++});
++test('IFEval freezes32 scored +1 separate16-token warmup under exact deterministic settings', () => {
++  const c = taskEvaluationSchema.parse(fixture());
++  assert.equal(taskGenerationOptions(c, true).max_tokens, 16);
++  assert.equal(taskGenerationOptions(c).max_tokens, 1024);
++  assert.equal(taskGenerationOptions(c).extra_body?.enable_thinking, false);
++  assert.equal(taskGenerationOptions(c).seed, 42);
++  assert.equal(taskPlan(c).measuredRequests, 32);
++  assert.equal(taskPlan(c).totalLimitMs, 5400000);
++});
++test('IFEval rejects changed schedule, limits, seed, warmup, and unsupported input before dispatch', () => {
++  for (const mutate of [
++    (c:any) => c.items.pop(), (c:any) => c.items.push({ ...c.items[0], item_id: 'extra' }),
++    (c:any) => c.settings.warmups = 0, (c:any) => c.settings.warmupTokens = 17,
++    (c:any) => c.settings.maxTokens = 1025, (c:any) => c.settings.requestLimitMs = 120001,
++    (c:any) => c.settings.contextWindow = 2048, (c:any) => c.settings.seed = 43,
++    (c:any) => c.settings.thinking = true, (c:any) => c.settings.temperature = 0.1,
++    (c:any) => c.settings.topP = 0.9, (c:any) => c.totalLimitMs = 5400001,
++    (c:any) => c.items[0].rendered_input_tokens = 3073,
++    (c:any) => delete c.items[0].rendered_input_tokens,
++    (c:any) => c.warmupPrompt = 'different prompt',
++  ]) { const c = fixture(); mutate(c); assert.equal(taskEvaluationSchema.safeParse(c).success, false); }
++  const edge = fixture(); edge.items[0].rendered_input_tokens = 3072;
++  assert.equal(taskEvaluationSchema.safeParse(edge).success, true);
++});
++test('ordinary truncation remains scored evidence while timeout remains an execution failure', () => {
++  const input = { itemId:'dev-1', output:'partial', finish:'length', tokens:1024,inputTokens:40,
++    responseMs:20000,loadMs:4000,error:null,stopReason:null,stopStatus:'failed',submittedBatches:100 };
++  assert.equal(taskSample(input).execution_error, null);
++  assert.equal(taskSample(input).truncated, true);
++  assert.equal(taskSample({...input,stopReason:'Request exceeded 120-second limit'}).finish_reason,'timeout');
++});

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "allowed_tensors": [
+    "model.language_model.layers.15.mlp.down_proj.weight",
+    "model.language_model.layers.19.mlp.down_proj.weight"
+  ],
+  "allowed_operations": ["scale_columns", "remove_direction_from_columns"],
+  "allowed_columns": {
+    "model.language_model.layers.15.mlp.down_proj.weight": "all",
+    "model.language_model.layers.19.mlp.down_proj.weight": "all"
+  },
+  "max_changed_fraction": 0.001,
+  "max_changed_coordinates": 131072,
+  "max_targeted_coordinates": 131072,
+  "max_operations": 4,
+  "max_working_elements": 131072,
+  "scale_factor_range": [0.0, 2.0],
+  "direction_strength_range": [0.0, 1.0],
+  "max_abs_change": 1.0,
+  "inspection": {
+    "allowed_tensors": [
+      "model.language_model.layers.15.mlp.down_proj.weight",
+      "model.language_model.layers.19.mlp.down_proj.weight"
+    ],
+    "max_requests": 50,
+    "max_values": 4096,
+    "max_scanned_coordinates": 131072,
+    "max_total_values": 16384,
+    "max_total_scanned_coordinates": 1048576
+  }
+}

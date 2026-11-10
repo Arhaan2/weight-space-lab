@@ -1,0 +1,83 @@
+{
+  "budget_limits": {
+    "billed_units": null,
+    "editor_requests": 1,
+    "elapsed_seconds": 1500.0,
+    "generated_tokens": 256,
+    "model_probes": 2,
+    "requested_sequences": 3
+  },
+  "budget_scope": {
+    "elapsed_seconds": "sum_of_conservative_local_reservations",
+    "frontier_usage": "separate_receipt_observation_no_hard_cap",
+    "generated_tokens": "target_model_only"
+  },
+  "candidate_checkpoint_created": false,
+  "charged": {
+    "billed_units": null,
+    "completed_sequences": 0,
+    "conservative_requests": 0,
+    "editor_requests": 0,
+    "elapsed_seconds": 0,
+    "failed_sequences": 0,
+    "generated_tokens": 0,
+    "limit_violations": 0,
+    "model_probes": 0,
+    "observed_billed_units": null,
+    "observed_elapsed_seconds": null,
+    "observed_generated_tokens": null,
+    "pending_requests": 0,
+    "requested_sequences": 0,
+    "retries": 0
+  },
+  "development_comparison_executed": false,
+  "editor": {
+    "requested_effort": "high",
+    "requested_selector": "gpt-6-astra"
+  },
+  "editor_interaction_executed": false,
+  "experiment_executed": false,
+  "experimental_role": "Astra weight-proposal editor",
+  "exported_requests": 0,
+  "final_evaluation_executed": false,
+  "identity_verification": "external_receipt_required",
+  "limits": {
+    "frontier_provider_token_cap": null,
+    "frontier_provider_token_cap_status": "unavailable_subscription_route",
+    "local_elapsed_seconds": 900,
+    "target_max_new_tokens": 128,
+    "target_timeout_seconds": 300
+  },
+  "observed_frontier_usage": {
+    "billed_units": null,
+    "generated_tokens": null
+  },
+  "probe_sha256": "ee21db01382992ea26efbfd7799d528b4e77665f90be6d95c81607a5f6687d6f",
+  "protocol_sha256": "8c96b2efd3ec72a4532ba1e483c367deb68189d5362067cb8221bd7f6f6f47d9",
+  "provenance": null,
+  "provider_enforced_frontier_token_cap": null,
+  "restrictions": {
+    "architecture_changes": false,
+    "development_only": true,
+    "evaluation_changes": false,
+    "grader_changes": false,
+    "gradients": false,
+    "harness_changes": false,
+    "optimizer_updates": false,
+    "training": false
+  },
+  "schema_version": 1,
+  "scientific_result": false,
+  "scope": {
+    "automatic_retries": 0,
+    "baseline_sequences": 1,
+    "candidate_proposals": 1,
+    "candidate_sequences": 1,
+    "development_comparisons": 1,
+    "editor_requests": 1
+  },
+  "session_sha256": "33dec264548790146f32ff2e117fffd897f960a16793e9d3281e32b6c2659a91",
+  "status": "prepared_not_exported",
+  "target_model_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+  "variant": "authenticated_session_v1"
+}

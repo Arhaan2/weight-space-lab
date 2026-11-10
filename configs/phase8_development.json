@@ -1,0 +1,453 @@
+{
+  "author": "Arhaan2",
+  "calibration_ids": [
+    "algebra/train-00000-of-00001.parquet:000595",
+    "algebra/train-00000-of-00001.parquet:000340"
+  ],
+  "editor_exposure": {
+    "allowed_development_feedback": [
+      "fixed development task text and scoring contract",
+      "baseline raw generated responses with IDs",
+      "independent baseline per-item grades and diagnostics",
+      "baseline aggregate correctness, failures, truncation, tokens and time",
+      "candidate development feedback only after proposal is frozen; no additional proposal in this pilot"
+    ],
+    "allowed_task_ids": [
+      "algebra/train-00000-of-00001.parquet:000340",
+      "algebra/train-00000-of-00001.parquet:000595",
+      "counting_and_probability/train-00000-of-00001.parquet:000401",
+      "counting_and_probability/train-00000-of-00001.parquet:000556",
+      "geometry/train-00000-of-00001.parquet:000370",
+      "geometry/train-00000-of-00001.parquet:000807",
+      "intermediate_algebra/train-00000-of-00001.parquet:000214",
+      "intermediate_algebra/train-00000-of-00001.parquet:001179",
+      "number_theory/train-00000-of-00001.parquet:000247",
+      "number_theory/train-00000-of-00001.parquet:000373",
+      "prealgebra/train-00000-of-00001.parquet:000577",
+      "prealgebra/train-00000-of-00001.parquet:000969",
+      "precalculus/train-00000-of-00001.parquet:000035",
+      "precalculus/train-00000-of-00001.parquet:000179"
+    ],
+    "isolation_status": "editor isolation unverified; manual exploratory only",
+    "not_in_editor_input": [
+      "source solutions",
+      "reference answer keys",
+      "validation task text or feedback",
+      "held-out test task text or feedback",
+      "published replay outputs",
+      "smoke-test candidate as a parent checkpoint",
+      "private orchestration prompts"
+    ],
+    "weight_access": "Pristine model metadata and two fixed 32x32 statistical inspections on layer15/layer19 down_proj; 12 returned statistics, 2048 scanned coordinates; no dynamic metadata, slices or extra inspections."
+  },
+  "interpretation": {
+    "freeze_scope": "Fixed data, prompt adapter, scoring and selection contract; execution still requires a new explicit authorization and separately frozen runtime/budget manifest.",
+    "held_out_experiment": false,
+    "scientific_result": false,
+    "strict_readiness_changed": false
+  },
+  "item_refs": [
+    {
+      "benchmark": "math",
+      "contains_asymptote_text": false,
+      "dataset_revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+      "difficulty_band": "higher",
+      "item_id": "algebra/train-00000-of-00001.parquet:000340",
+      "item_sha256": "e690ebc6e65e4469ddb3ddffeeb46e993f46dd1b88f08c10a4ae9de165b3470a",
+      "level": "Level 4",
+      "source": {
+        "dataset_id": "EleutherAI/hendrycks_math",
+        "revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+        "row_id": "algebra/train-00000-of-00001.parquet:000340",
+        "split": "train"
+      },
+      "source_file": "algebra/train-00000-of-00001.parquet",
+      "source_file_sha256": "73347f5b55869f21ff094361025dbd12d291e971aa4d72142eacee10438e449f",
+      "source_row_index": 340,
+      "split": "development",
+      "subject": "Algebra"
+    },
+    {
+      "benchmark": "math",
+      "contains_asymptote_text": false,
+      "dataset_revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+      "difficulty_band": "lower",
+      "item_id": "algebra/train-00000-of-00001.parquet:000595",
+      "item_sha256": "e2cecbba9811c84805d33991500ea86581e8a1e5cbfe99cd79551654b997ded7",
+      "level": "Level 1",
+      "source": {
+        "dataset_id": "EleutherAI/hendrycks_math",
+        "revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+        "row_id": "algebra/train-00000-of-00001.parquet:000595",
+        "split": "train"
+      },
+      "source_file": "algebra/train-00000-of-00001.parquet",
+      "source_file_sha256": "73347f5b55869f21ff094361025dbd12d291e971aa4d72142eacee10438e449f",
+      "source_row_index": 595,
+      "split": "development",
+      "subject": "Algebra"
+    },
+    {
+      "benchmark": "math",
+      "contains_asymptote_text": false,
+      "dataset_revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+      "difficulty_band": "higher",
+      "item_id": "counting_and_probability/train-00000-of-00001.parquet:000401",
+      "item_sha256": "8da67c05e33cba23e90beec3f50a6e537cf466146f70d93db9f6e2cf26c49484",
+      "level": "Level 5",
+      "source": {
+        "dataset_id": "EleutherAI/hendrycks_math",
+        "revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+        "row_id": "counting_and_probability/train-00000-of-00001.parquet:000401",
+        "split": "train"
+      },
+      "source_file": "counting_and_probability/train-00000-of-00001.parquet",
+      "source_file_sha256": "d37ae017930df41678edee50dcde18c17fb06afaff9eb505c1b95f1002bfcb31",
+      "source_row_index": 401,
+      "split": "development",
+      "subject": "Counting & Probability"
+    },
+    {
+      "benchmark": "math",
+      "contains_asymptote_text": true,
+      "dataset_revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+      "difficulty_band": "lower",
+      "item_id": "counting_and_probability/train-00000-of-00001.parquet:000556",
+      "item_sha256": "0287c37380a6d7424bb0e26229d3187822cb8dd5fd818e6fb02c0ecfcbe4dcee",
+      "level": "Level 2",
+      "source": {
+        "dataset_id": "EleutherAI/hendrycks_math",
+        "revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+        "row_id": "counting_and_probability/train-00000-of-00001.parquet:000556",
+        "split": "train"
+      },
+      "source_file": "counting_and_probability/train-00000-of-00001.parquet",
+      "source_file_sha256": "d37ae017930df41678edee50dcde18c17fb06afaff9eb505c1b95f1002bfcb31",
+      "source_row_index": 556,
+      "split": "development",
+      "subject": "Counting & Probability"
+    },
+    {
+      "benchmark": "math",
+      "contains_asymptote_text": false,
+      "dataset_revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+      "difficulty_band": "lower",
+      "item_id": "geometry/train-00000-of-00001.parquet:000370",
+      "item_sha256": "4b387209214c88a78511297d632dafecdc4c41e12bfd86a82c545e6324b702f2",
+      "level": "Level 2",
+      "source": {
+        "dataset_id": "EleutherAI/hendrycks_math",
+        "revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+        "row_id": "geometry/train-00000-of-00001.parquet:000370",
+        "split": "train"
+      },
+      "source_file": "geometry/train-00000-of-00001.parquet",
+      "source_file_sha256": "9dbf5e5b55499e696e0ba72da9d85d4f0be3acbf7eaa6cb014b0fc78bb63784f",
+      "source_row_index": 370,
+      "split": "development",
+      "subject": "Geometry"
+    },
+    {
+      "benchmark": "math",
+      "contains_asymptote_text": true,
+      "dataset_revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+      "difficulty_band": "higher",
+      "item_id": "geometry/train-00000-of-00001.parquet:000807",
+      "item_sha256": "6470d7c959346ef5d98fe3169198723bfc6cb13b5173981ceb6a281424fd7604",
+      "level": "Level 3",
+      "source": {
+        "dataset_id": "EleutherAI/hendrycks_math",
+        "revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+        "row_id": "geometry/train-00000-of-00001.parquet:000807",
+        "split": "train"
+      },
+      "source_file": "geometry/train-00000-of-00001.parquet",
+      "source_file_sha256": "9dbf5e5b55499e696e0ba72da9d85d4f0be3acbf7eaa6cb014b0fc78bb63784f",
+      "source_row_index": 807,
+      "split": "development",
+      "subject": "Geometry"
+    },
+    {
+      "benchmark": "math",
+      "contains_asymptote_text": false,
+      "dataset_revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+      "difficulty_band": "higher",
+      "item_id": "intermediate_algebra/train-00000-of-00001.parquet:000214",
+      "item_sha256": "f8e40c97833e28d8b179c0b5b5601baada10935aad6f6cfefe43056b3a73cbcd",
+      "level": "Level 3",
+      "source": {
+        "dataset_id": "EleutherAI/hendrycks_math",
+        "revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+        "row_id": "intermediate_algebra/train-00000-of-00001.parquet:000214",
+        "split": "train"
+      },
+      "source_file": "intermediate_algebra/train-00000-of-00001.parquet",
+      "source_file_sha256": "0c87f3798ebdfb915b1f9b6fc13c1a8d064c3cb91631ccbe85b83ed5d71150f6",
+      "source_row_index": 214,
+      "split": "development",
+      "subject": "Intermediate Algebra"
+    },
+    {
+      "benchmark": "math",
+      "contains_asymptote_text": false,
+      "dataset_revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+      "difficulty_band": "lower",
+      "item_id": "intermediate_algebra/train-00000-of-00001.parquet:001179",
+      "item_sha256": "3383f4b801879d888c814eec7a02f3bbfc46f143f63f7edcd1ab1d98ffc49fc3",
+      "level": "Level 2",
+      "source": {
+        "dataset_id": "EleutherAI/hendrycks_math",
+        "revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+        "row_id": "intermediate_algebra/train-00000-of-00001.parquet:001179",
+        "split": "train"
+      },
+      "source_file": "intermediate_algebra/train-00000-of-00001.parquet",
+      "source_file_sha256": "0c87f3798ebdfb915b1f9b6fc13c1a8d064c3cb91631ccbe85b83ed5d71150f6",
+      "source_row_index": 1179,
+      "split": "development",
+      "subject": "Intermediate Algebra"
+    },
+    {
+      "benchmark": "math",
+      "contains_asymptote_text": false,
+      "dataset_revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+      "difficulty_band": "lower",
+      "item_id": "number_theory/train-00000-of-00001.parquet:000247",
+      "item_sha256": "e94fbc92e9af030095902d016fb9dbd6328775b06349419451543d94d4e3f7bb",
+      "level": "Level 2",
+      "source": {
+        "dataset_id": "EleutherAI/hendrycks_math",
+        "revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+        "row_id": "number_theory/train-00000-of-00001.parquet:000247",
+        "split": "train"
+      },
+      "source_file": "number_theory/train-00000-of-00001.parquet",
+      "source_file_sha256": "81c08649149b39811f2d1d7ddf5dfccf6c4c8044a2e169cfb24db09160c941f4",
+      "source_row_index": 247,
+      "split": "development",
+      "subject": "Number Theory"
+    },
+    {
+      "benchmark": "math",
+      "contains_asymptote_text": false,
+      "dataset_revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+      "difficulty_band": "higher",
+      "item_id": "number_theory/train-00000-of-00001.parquet:000373",
+      "item_sha256": "4876681f545d3d09f3ec8b419800473de1f93ce159a7e1a7ba1d7edea3c89ef8",
+      "level": "Level 3",
+      "source": {
+        "dataset_id": "EleutherAI/hendrycks_math",
+        "revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+        "row_id": "number_theory/train-00000-of-00001.parquet:000373",
+        "split": "train"
+      },
+      "source_file": "number_theory/train-00000-of-00001.parquet",
+      "source_file_sha256": "81c08649149b39811f2d1d7ddf5dfccf6c4c8044a2e169cfb24db09160c941f4",
+      "source_row_index": 373,
+      "split": "development",
+      "subject": "Number Theory"
+    },
+    {
+      "benchmark": "math",
+      "contains_asymptote_text": false,
+      "dataset_revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+      "difficulty_band": "higher",
+      "item_id": "prealgebra/train-00000-of-00001.parquet:000577",
+      "item_sha256": "f833bbddbc2550348751e02821348923ed26254d964ed77bcbc5eb44acd201fd",
+      "level": "Level 4",
+      "source": {
+        "dataset_id": "EleutherAI/hendrycks_math",
+        "revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+        "row_id": "prealgebra/train-00000-of-00001.parquet:000577",
+        "split": "train"
+      },
+      "source_file": "prealgebra/train-00000-of-00001.parquet",
+      "source_file_sha256": "765b526fb5c0b8385cb7be2c16bf4f6f28cf71f2bc15c826abfbb5fa7f8616cc",
+      "source_row_index": 577,
+      "split": "development",
+      "subject": "Prealgebra"
+    },
+    {
+      "benchmark": "math",
+      "contains_asymptote_text": true,
+      "dataset_revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+      "difficulty_band": "lower",
+      "item_id": "prealgebra/train-00000-of-00001.parquet:000969",
+      "item_sha256": "5c143667270e3ac7ae44a3ad896487e0fbd36c939623d566d96bb5946262d040",
+      "level": "Level 2",
+      "source": {
+        "dataset_id": "EleutherAI/hendrycks_math",
+        "revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+        "row_id": "prealgebra/train-00000-of-00001.parquet:000969",
+        "split": "train"
+      },
+      "source_file": "prealgebra/train-00000-of-00001.parquet",
+      "source_file_sha256": "765b526fb5c0b8385cb7be2c16bf4f6f28cf71f2bc15c826abfbb5fa7f8616cc",
+      "source_row_index": 969,
+      "split": "development",
+      "subject": "Prealgebra"
+    },
+    {
+      "benchmark": "math",
+      "contains_asymptote_text": false,
+      "dataset_revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+      "difficulty_band": "lower",
+      "item_id": "precalculus/train-00000-of-00001.parquet:000035",
+      "item_sha256": "db40edb62f25d7b855188aec0a60529dd98f893d6f86ba632280476c618c5998",
+      "level": "Level 2",
+      "source": {
+        "dataset_id": "EleutherAI/hendrycks_math",
+        "revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+        "row_id": "precalculus/train-00000-of-00001.parquet:000035",
+        "split": "train"
+      },
+      "source_file": "precalculus/train-00000-of-00001.parquet",
+      "source_file_sha256": "28bb1ff95525c8d32521509bef91de76339659f5467a381e6e8deea204538f0e",
+      "source_row_index": 35,
+      "split": "development",
+      "subject": "Precalculus"
+    },
+    {
+      "benchmark": "math",
+      "contains_asymptote_text": false,
+      "dataset_revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+      "difficulty_band": "higher",
+      "item_id": "precalculus/train-00000-of-00001.parquet:000179",
+      "item_sha256": "e12a6bfb7118979d9f56e4b48f398080a828a163b910ebb00124c5962a324791",
+      "level": "Level 5",
+      "source": {
+        "dataset_id": "EleutherAI/hendrycks_math",
+        "revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+        "row_id": "precalculus/train-00000-of-00001.parquet:000179",
+        "split": "train"
+      },
+      "source_file": "precalculus/train-00000-of-00001.parquet",
+      "source_file_sha256": "28bb1ff95525c8d32521509bef91de76339659f5467a381e6e8deea204538f0e",
+      "source_row_index": 179,
+      "split": "development",
+      "subject": "Precalculus"
+    }
+  ],
+  "kind": "phase8_development_configuration",
+  "prompt": {
+    "adapter": "weight_space_lab.published_study.replay_tasks",
+    "base_adapter": "weight_space_lab.benchmark_data.to_generation_tasks",
+    "generation_prompt": true,
+    "private_prompt_publication": false,
+    "roles": [
+      "user"
+    ],
+    "suffix": "\nPlease reason step by step, and put your final answer within \\boxed{}.",
+    "task_text": "Exact source task_text; no source solution or target in target-model input.",
+    "thinking": true
+  },
+  "schema_version": 1,
+  "scoring": {
+    "adapter": "weight_space_lab.grading.grade_record",
+    "answer_extraction": "Last balanced boxed expression in final output; missing, empty, malformed, nested-box or unparsable response is incorrect. Earlier favorable boxes are never selected.",
+    "diagnostics": [
+      "per_item_grade",
+      "improvements_and_regressions",
+      "missing_and_error_count",
+      "truncation_rate",
+      "completion_within_budget",
+      "generated_tokens",
+      "duration_seconds"
+    ],
+    "equivalence": "Math-Verify 0.9.0 with strict normalization, no string fallback, strict comparison, float_rounding=6, numeric_precision=15 and no set/relation relaxation.",
+    "failures": "Execution failures and missing outputs remain in denominator. Grader errors/timeouts retain null correctness and make selection inconclusive; zero-assigned bounds must not be labeled model error.",
+    "grader": {
+      "name": "math_verify",
+      "revision": "c5aee6a180fa9bb3822d72e0397c158373a5946c259e34077086cdfc90d7fff3"
+    },
+    "grader_dependency_preflight": "Grader identity is frozen independently of installed dependencies. Exact Math-Verify package versions must pass preflight before future inference/grading; missing dependencies are not successful validation.",
+    "policy": {
+      "generation_retry": {
+        "max_attempts": 1,
+        "mode": "none"
+      },
+      "grader_retry": {
+        "max_attempts": 1,
+        "mode": "none"
+      },
+      "grader_timeout_seconds": 20,
+      "output_eos_tokens": [
+        "<|im_end|>",
+        "<|endoftext|>"
+      ],
+      "reasoning_policy": "qwen_thinking",
+      "schema_version": 1,
+      "truncation_policy": "grade"
+    },
+    "policy_sha256": "cee1827e60cb5e1ce6edda5d90e7695e1a6ac19f15ff7e15c5881374def98187",
+    "primary_metric": "Mean per-item correctness over all 14 scheduled item/seed pairs; one seed per item. No best-of-N selection.",
+    "python_version": [
+      3,
+      13,
+      5
+    ],
+    "reasoning": "Require exactly one closing </think>; accept opening <think> from rendered prompt. Grade only text after the closing delimiter.",
+    "selection_rule": "A candidate is eligible only after complete planned paired execution and resolved independent grades. Select it only for strictly more correct scheduled items than the unchanged baseline; on equal correct counts retain the unchanged baseline. Incomplete execution or unresolved grading retains the baseline and labels comparison inconclusive. No validation or test feedback is used.",
+    "truncation": "grade: a valid final answer already present in capped output can be correct; separately report token-limit rate and completion-within-budget (truncation fails completion). Unclosed reasoning is incorrect."
+  },
+  "seeds": [
+    0
+  ],
+  "selected_items_sha256": "04ae1ade7bd3cfec0e10e195f2994ce64fc4aa3089f44d7dca60a029e49003dd",
+  "selection": {
+    "benchmark": "math",
+    "count": 14,
+    "difficulty_bands": {
+      "higher": [
+        3,
+        4,
+        5
+      ],
+      "lower": [
+        1,
+        2
+      ]
+    },
+    "excluded_levels": [
+      "Level ?"
+    ],
+    "ordering": "minimum lowercase SHA256 hex digest of UTF-8 (salt + item_id), then item_id on a hash tie",
+    "ordering_after_selection": [
+      "benchmark",
+      "item_id"
+    ],
+    "output_independent": true,
+    "per_subject_per_band": 1,
+    "representativeness": "Coverage-oriented stratified sample of seven subjects and two difficulty bands; not proportional or statistically representative of the source distribution. Three selected Asymptote-bearing questions remain exact source text, without image rendering.",
+    "salt": "phase8a-dev-v1|",
+    "secondary_benchmarks": "GSM8K and IFEval are deferred; no pooled score.",
+    "split": "development",
+    "subjects": [
+      "Algebra",
+      "Counting & Probability",
+      "Geometry",
+      "Intermediate Algebra",
+      "Number Theory",
+      "Prealgebra",
+      "Precalculus"
+    ]
+  },
+  "source": {
+    "audit_limitations": "Existing exact/skeleton split audit does not establish semantic duplicate freedom or absence of training contamination.",
+    "bundle_root": "artifacts/phase04-benchmark-data-verified",
+    "dataset_id": "EleutherAI/hendrycks_math",
+    "dataset_revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+    "development_items": "artifacts/phase04-benchmark-data-verified/editor-development/items.json",
+    "development_items_sha256": "6366c09065883da70375323a49050893151032364e990cafbb632343edb1a79c",
+    "development_manifest_sha256": "0715953ab74c6f57d22009514e3d9681f006164cdca41c96ba8e667dbe8f2258",
+    "held_out_exclusion": "Use only the already audited editor-development bundle; MATH-500 exact, normalized-text and template-family matches were quarantined before partitioning. Validation and test items are never projected into the editor packet.",
+    "overlap_audit_sha256": "673e0056c5addf0b331b49c850d81ea77b1b6644c09dcb96a43f0c8840ed61fb",
+    "source_identity": "Pinned subject shard path and zero-based row offset; original competition filenames are not available from this mirror.",
+    "source_manifest_sha256": "1dc40b15bff068ed3e4bf57bddd26895279995265019db4edd15bcb1f5990977",
+    "split_policy": "template-groups-v1",
+    "study_split": "development",
+    "upstream_split": "train"
+  },
+  "study_id": "phase8a-math-development-v1",
+  "tasks_sha256": "f6360f0ba081202203db297c77d44879ab41dc7fecaddd6a281c325b66e14c51"
+}

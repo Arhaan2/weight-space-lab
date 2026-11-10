@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "observed_date": "2026-11-06",
+  "observation_timezone": "America/Los_Angeles",
+  "purpose": "authenticated_session_boundary_inspection_only",
+  "scientific_result": false,
+  "editor_interaction_executed": false,
+  "experiment_executed": false,
+  "status": "session_boundary_not_verified",
+  "requested_editor_role": "Astra experimental weight-proposal editor",
+  "authentication_route": "existing_authenticated_subscription_session_requested",
+  "credentials_inspected": false,
+  "separate_api_key_required_by_session_variant": false,
+  "nested_frontier_model_call_used": false,
+  "model_provenance": {
+    "requested_selector": "gpt-6-astra",
+    "selector_exposed_by_interface": "gpt-6-astra",
+    "selector_accepted_by_live_execution_interface": null,
+    "observed_session_model_metadata": null,
+    "observed_response_model_metadata": null,
+    "immutable_model_version": null,
+    "immutable_version_status": "unavailable_in_inspected_interface_evidence",
+    "self_description_used_as_evidence": false,
+    "substitution_permitted": false
+  },
+  "effort_provenance": {
+    "exposed_values": ["low", "medium", "high", "xhigh", "max", "ultra"],
+    "requested": "high",
+    "accepted": null,
+    "observed": null
+  },
+  "desktop_session_interface": {
+    "name": "mcp__codex_app__create_thread",
+    "provenance": "tool declaration supplied by the running Codex desktop host",
+    "interface_version": null,
+    "explicit_model_argument": true,
+    "explicit_effort_argument": true,
+    "fresh_history_supported": true,
+    "creation_dispatches_initial_prompt": true,
+    "per_session_permission_profile_argument": false,
+    "filesystem_read_allowlist_argument": false,
+    "network_allowlist_argument": false,
+    "tool_allowlist_argument": false,
+    "plugin_capability_filter_argument": false,
+    "retry_policy_argument": false,
+    "hard_frontier_generation_token_cap_argument": false,
+    "provider_billing_cap_argument": false,
+    "session_created_for_audit": false,
+    "runtime_denial_tests_executed": false
+  },
+  "native_ui_inspection": {
+    "attempted_entry_point": "cua.getApp('Codex')",
+    "available": false,
+    "reported_error": "Computer Use is not allowed to use the app com.openai.codex for safety reasons.",
+    "ui_inspected_or_changed": false,
+    "alternate_ui_access_attempted": false
+  },
+  "installed_interface": {
+    "name": "Codex CLI",
+    "software_version": "codex-cli 0.163.0",
+    "software_version_is_model_version": false,
+    "inspection_method": "local help and experimental JSON-schema generation without a server or model launch",
+    "app_server_schema_fields": {
+      "thread_start_named_permissions": true,
+      "thread_start_dynamic_tools": true,
+      "thread_start_no_provider_fallback": true,
+      "thread_start_environment_selection": true,
+      "thread_start_runtime_workspace_roots": true,
+      "thread_start_selected_capability_roots": true,
+      "thread_response_active_permission_profile": true,
+      "thread_response_model": true,
+      "thread_response_model_provider": true,
+      "thread_response_reasoning_effort": true,
+      "turn_interrupt_method": true
+    },
+    "schema_field_presence_is_behavior_verification": false,
+    "disabled_plugin_ids_filters_capabilities": false,
+    "dynamic_tools_proves_builtin_tools_removed": false,
+    "actual_desktop_launch_bound_to_tested_sandbox": false
+  },
+  "usage": {
+    "provider_enforced_frontier_generation_cap": "unavailable_through_audited_subscription_route",
+    "local_timeout_or_reservation_supplies_provider_cap": false,
+    "account_usage_interface": "mcp__codex_app__get_usage_limits",
+    "account_usage_scope": "shared_account_percentages_and_reset_windows_not_per_request_billing",
+    "account_usage_read_during_this_audit": false,
+    "session_generated_tokens": null,
+    "session_reasoning_tokens": null,
+    "available_billed_usage": null,
+    "app_server_token_usage_fields_available_in_schema_only": [
+      "inputTokens",
+      "cachedInputTokens",
+      "cacheWriteInputTokens",
+      "outputTokens",
+      "reasoningOutputTokens",
+      "totalTokens"
+    ]
+  },
+  "schema_evidence_sha256": {
+    "experimental/v2/ThreadStartParams.json": "80a40a7fac15b4bf70efb7f893fb353acc0a0d30c68f54aee4f01923deca85de",
+    "experimental/v2/ThreadStartResponse.json": "107fe36c99ebaeb750a371580beec807a28c6451e9c8a02cd7d451a0135f1c91",
+    "experimental/v2/TurnStartParams.json": "abf0d6d29d223b38c650ff1155cb9c9f9b4211e6d0e20c57d750a9e1babfdb41",
+    "experimental/v2/PermissionProfileListParams.json": "576d405f6c94cbde982a9f65c9301717043683b83ca35d564247907feb16b1b4",
+    "experimental/v2/PermissionProfileListResponse.json": "4a290b5b9d47c2fc671033e22754671161bc563027ba387e861bd935398f0def",
+    "experimental/v2/ThreadTokenUsageUpdatedNotification.json": "aba4f6c7e4a19b2b842c08ee793b57000c07dafd57b922ad0d8e7c76609108c2",
+    "experimental/v2/ModelReroutedNotification.json": "37cd3c1b3a3560b85b01d4061a07d830fc9ed93b80e4663f975f9197cdb501ef",
+    "experimental/v2/TurnInterruptParams.json": "6dff382dae73d1dbc58406ed045605f647e7a49660e2540fbd2c6c24d60c5f2b"
+  },
+  "remaining_prerequisite": "An authenticated fresh-session launch with an enforced development-only capability boundary, including all tools and connectors, verified on that actual session before exposing the development request."
+}

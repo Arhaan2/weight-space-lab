@@ -1,0 +1,100 @@
+{
+  "author": "Arhaan2",
+  "checks": {
+    "actual_loaded_tokenizer_and_context": true,
+    "actual_origin_fetch_preflight": true,
+    "adapter_known_answers": true,
+    "authorization_hash": true,
+    "authorized_bounds_and_mode": true,
+    "complete_generation_schedule": true,
+    "data_manifest_self_hash": true,
+    "durable_dispatch_gate_order": true,
+    "editor_request_and_observation_separated": true,
+    "event_supervisor_terminal_output_core_parity": true,
+    "exact_engine_and_generation_call_count": true,
+    "excluded_execution_absence_in_experiment_scope": true,
+    "frozen_and_actual_generation_settings": true,
+    "frozen_file_hashes": true,
+    "global_deadline_and_time": true,
+    "gpu_dispatch_observations": true,
+    "grade_content_bindings": true,
+    "handoff_bundle_file_bindings": true,
+    "handoff_development_evidence": true,
+    "handoff_excludes_evaluation_prompts": true,
+    "ledger_integrity": true,
+    "ledger_manifest_binding": true,
+    "ledger_observed_tokens_and_time": true,
+    "ledger_terminal": true,
+    "loaded_artifact_and_asset_proof": true,
+    "manifest_binding": true,
+    "no_retries_and_request_caps": true,
+    "official_aggregation_and_failure_accounting": true,
+    "official_grader_assets": true,
+    "official_metric_vectors": true,
+    "original_evaluation_prompts_and_arguments_preserved": true,
+    "prior_snapshot_preserved": true,
+    "raw_and_grade_schedule": true,
+    "raw_outputs_match_browser_observations": true,
+    "resource_appendix_matches_immutable_evidence": true,
+    "runtime_identity": true,
+    "selected_data_and_task_order": true,
+    "source_file_pins": true,
+    "source_license_hashes": true,
+    "source_manifest_references": true,
+    "terminal_cleanup_evidence": true,
+    "tokenizer_context_feasibility": true
+  },
+  "engine_loads_by_verifier": 0,
+  "identities": {
+    "data_manifest_sha256": "ff063a2a26457f2e581d918210fe881a93311a56455387680f17a4af56456584",
+    "grades_sha256": "fee459f9ff093759ec415a32269ecc2bc83d22b07bbab322a0099d5be1b3b1da",
+    "manifest_sha256": "606c495bce51d504caafc0020be81c0c5981d67140f568c7a4d48b8612f3fa4d",
+    "raw_records_sha256": "c0afb861495ba3e53e72e5ccd33eab0b9a60a3b820a78bc74f4c869067addcc9",
+    "verifier_sha256": "8844313f9ad12f46305db53fd23561a965429678ca74e4b4d668b9cf3634c389"
+  },
+  "input_mutations": 0,
+  "kind": "independent_ifeval_baseline_verification",
+  "measurements": {
+    "engine_loads": 1,
+    "first_load_through_cleanup_seconds": 273.3642682500649,
+    "generation_dispatches": 33,
+    "handoff_bundle_present": true,
+    "heldout_generations": 0,
+    "heldout_subset_prompts": 128,
+    "historical_unavailable_files": 300,
+    "metrics": {
+      "instruction_level_loose_accuracy": {
+        "passed": 17,
+        "scheduled": 32,
+        "value": 0.53125
+      },
+      "instruction_level_strict_accuracy": {
+        "passed": 16,
+        "scheduled": 32,
+        "value": 0.5
+      },
+      "prompt_level_loose_accuracy": {
+        "passed": 17,
+        "scheduled": 32,
+        "value": 0.53125
+      },
+      "prompt_level_strict_accuracy": {
+        "passed": 16,
+        "scheduled": 32,
+        "value": 0.5
+      }
+    },
+    "observed_generated_tokens": 13953,
+    "observed_generation_seconds": 264.19289965820315,
+    "prior_preservation_changed": 0,
+    "prior_preservation_matched": 1387,
+    "prior_preservation_unavailable": 0,
+    "scheduled_development_instructions": 32,
+    "scheduled_development_prompts": 32,
+    "unresolved_grader_errors": 0
+  },
+  "passed": true,
+  "schema_version": 1,
+  "scope": "Recorded evidence and explicit experiment execution directories; no claim about unrelated external sessions or historical unavailable files",
+  "target_forward_passes": 0
+}

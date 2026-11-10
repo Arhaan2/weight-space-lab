@@ -1,0 +1,22 @@
+[
+  {
+    "byte_identical": true,
+    "charged_generated_tokens": 35,
+    "editor_requests": 6,
+    "ledger_sha256_after": "ce055093788357bc6186c70bf59ae1e702ef030f1583ceddf0340bb5f164db54",
+    "ledger_sha256_before": "ce055093788357bc6186c70bf59ae1e702ef030f1583ceddf0340bb5f164db54",
+    "model_probes": 1,
+    "prior_offline_run": "editor-verification",
+    "requested_sequences": 7
+  },
+  {
+    "byte_identical": true,
+    "charged_generated_tokens": 35,
+    "editor_requests": 6,
+    "ledger_sha256_after": "36673524f10691307af5c4bc2b4ed143d1e6a0385e5a850bc488477ba67a2a07",
+    "ledger_sha256_before": "36673524f10691307af5c4bc2b4ed143d1e6a0385e5a850bc488477ba67a2a07",
+    "model_probes": 1,
+    "prior_offline_run": "editor-verification-final",
+    "requested_sequences": 7
+  }
+]

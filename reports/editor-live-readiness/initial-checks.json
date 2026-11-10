@@ -1,0 +1,93 @@
+{
+  "actual_initial_dispatch_gate": {
+    "condition": "unconditional ValueError; no adapter dispatch path",
+    "error": "live Astra access pending: no verified identity, isolation, hard-limit and cancellation adapter registered",
+    "file": "weight_space_lab/editor_controller.py",
+    "function": "EditorController.dispatch_live",
+    "source_sha256": "f4eba3019c748cd15f9319c8bb85e3f223214ea2ff15208c38191db3ff07bfcb"
+  },
+  "existing_live_readiness_command": {
+    "command": ".venv/bin/python -m weight_space_lab editor-live-readiness",
+    "initial_exit_code": 2,
+    "initial_result": "invalid choice: command did not exist"
+  },
+  "existing_search_readiness_check": {
+    "command": ".venv/bin/python -m weight_space_lab check configs/profiles/fresh_editor_search.json --require-ready",
+    "exit_code": 2,
+    "result": {
+      "issues": [
+        "missing requirement: editor_provenance.model_id",
+        "missing requirement: editor_provenance.interface",
+        "missing pin: tokenizer_revision",
+        "missing pin: runtime_version",
+        "missing pin: chat_template_sha256",
+        "missing pin: checkpoint_sha256",
+        "missing pin: editor_model_version",
+        "missing pin: split_audit_sha256",
+        "missing requirement: backend",
+        "missing requirement: precision",
+        "missing requirement: execution_limits.max_sequences",
+        "missing requirement: execution_limits.max_duration_seconds",
+        "missing requirement: benchmarks[0].dataset_revision",
+        "missing requirement: benchmarks[0].task_manifest_sha256",
+        "missing requirement: benchmarks[0].grader_revision",
+        "missing requirement: benchmarks[0].truncation_policy",
+        "missing requirement: benchmarks[0].item_ids",
+        "missing requirement: benchmarks[0].seeds",
+        "missing requirement: benchmarks[1].dataset_revision",
+        "missing requirement: benchmarks[1].task_manifest_sha256",
+        "missing requirement: benchmarks[1].grader_revision",
+        "missing requirement: benchmarks[1].truncation_policy",
+        "missing requirement: benchmarks[1].item_ids",
+        "missing requirement: benchmarks[1].seeds"
+      ],
+      "pending_run_requirements": [
+        "missing requirement: editor_provenance.model_id",
+        "missing requirement: editor_provenance.interface",
+        "missing pin: tokenizer_revision",
+        "missing pin: runtime_version",
+        "missing pin: chat_template_sha256",
+        "missing pin: checkpoint_sha256",
+        "missing pin: editor_model_version",
+        "missing pin: split_audit_sha256",
+        "missing requirement: backend",
+        "missing requirement: precision",
+        "missing requirement: execution_limits.max_sequences",
+        "missing requirement: execution_limits.max_duration_seconds",
+        "missing requirement: benchmarks[0].dataset_revision",
+        "missing requirement: benchmarks[0].task_manifest_sha256",
+        "missing requirement: benchmarks[0].grader_revision",
+        "missing requirement: benchmarks[0].truncation_policy",
+        "missing requirement: benchmarks[0].item_ids",
+        "missing requirement: benchmarks[0].seeds",
+        "missing requirement: benchmarks[1].dataset_revision",
+        "missing requirement: benchmarks[1].task_manifest_sha256",
+        "missing requirement: benchmarks[1].grader_revision",
+        "missing requirement: benchmarks[1].truncation_policy",
+        "missing requirement: benchmarks[1].item_ids",
+        "missing requirement: benchmarks[1].seeds"
+      ],
+      "profile": "fresh_editor_search",
+      "protocol_sha256": "4ae66317428d1f9b3d2e30fa5b996657ad992211182eff0ec3238d03ae03411a",
+      "required_pins": [
+        "model_revision",
+        "tokenizer_revision",
+        "runtime_version",
+        "chat_template_sha256",
+        "checkpoint_sha256",
+        "editor_model_version",
+        "split_audit_sha256"
+      ],
+      "run_configuration_complete": false,
+      "schema_version": 2,
+      "stage": "pilot",
+      "valid_design": true,
+      "verification_scope": "configuration only; artifacts, access, isolation and runtime must be verified separately"
+    }
+  },
+  "experiment_executed": false,
+  "live_editor_request_sent": false,
+  "schema_version": 1,
+  "verification_date": "2026-11-06",
+  "verification_timezone": "America/Los_Angeles"
+}

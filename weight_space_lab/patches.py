@@ -112,6 +112,42 @@ def _stable_norm(values: np.ndarray) -> float:
     return result
 
 
+def _operate_float64(selection: np.ndarray, operation: Mapping[str, Any]) -> np.ndarray:
+    """Evaluate one bounded column selection in binary64, without casting.
+
+    The caller validates the tensor, columns and operation schema. This helper
+    owns an independent copy of the selected coordinates; it is shared by the
+    synthetic-state API and the stored-checkpoint adapter.
+    """
+    work = np.array(selection, dtype=np.float64, copy=True)
+    if work.ndim != 2 or not np.all(np.isfinite(work)):
+        raise ValueError("column selection must be a finite matrix")
+    with np.errstate(over="raise", invalid="raise", divide="raise", under="ignore"):
+        try:
+            if operation["op"] == "scale_columns":
+                work *= _finite_number(operation["factor"], "factor")
+            elif operation["op"] == "remove_direction_from_columns":
+                direction = operation["direction"]
+                if not isinstance(direction, list) or len(direction) != work.shape[0]:
+                    raise ValueError("direction must be a list matching the tensor's row count")
+                u = np.array([_finite_number(v, "direction component") for v in direction],
+                             dtype=np.float64)
+                strength = _finite_number(operation["strength"], "strength")
+                largest = float(np.max(np.abs(u))) if u.size else 0.0
+                if largest == 0.0:
+                    raise ValueError("direction must not be the zero vector")
+                u = u / largest
+                u = u / math.sqrt(float(u @ u))
+                work -= strength * u[:, None] * (u @ work)[None, :]
+            else:
+                raise ValueError("unknown patch operation")
+        except (FloatingPointError, OverflowError) as error:
+            raise ValueError("patch operation overflows binary64 arithmetic") from error
+    if not np.all(np.isfinite(work)):
+        raise ValueError("patch operation produced nonfinite values")
+    return work
+
+
 def apply_patch(
     state: Mapping[str, np.ndarray],
     patch: Mapping[str, Any],
@@ -182,26 +218,9 @@ def apply_patch(
         if tensor.ndim != 2:
             raise ValueError("column operations require a two-dimensional tensor")
         columns = _columns(operation["columns"], tensor.shape[1])
-        work = tensor[:, columns].astype(np.float64)
+        work = _operate_float64(tensor[:, columns], operation)
         with np.errstate(over="raise", invalid="raise", divide="raise", under="ignore"):
             try:
-                if op == "scale_columns":
-                    work *= _finite_number(operation["factor"], "factor")
-                else:
-                    direction = operation["direction"]
-                    if not isinstance(direction, list) or len(direction) != tensor.shape[0]:
-                        raise ValueError("direction must be a list matching the tensor's row count")
-                    u = np.array([_finite_number(v, "direction component") for v in direction],
-                                 dtype=np.float64)
-                    strength = _finite_number(operation["strength"], "strength")
-                    largest = float(np.max(np.abs(u))) if u.size else 0.0
-                    if largest == 0.0:
-                        raise ValueError("direction must not be the zero vector")
-                    # Rescaling the direction leaves its projection unchanged
-                    # and avoids overflow when forming its squared norm.
-                    u = u / largest
-                    u = u / math.sqrt(float(u @ u))
-                    work -= strength * u[:, None] * (u @ work)[None, :]
                 cast = work.astype(tensor.dtype)
             except (FloatingPointError, OverflowError) as error:
                 raise ValueError("patch operation overflows the supported dtype") from error

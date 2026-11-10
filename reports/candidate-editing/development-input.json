@@ -1,0 +1,12 @@
+{
+  "benchmark": "engineering-development-arithmetic",
+  "item_id": "authored-addition-7-5",
+  "messages": [
+    {
+      "content": "Compute 7 + 5.",
+      "role": "user"
+    }
+  ],
+  "origin": "hand_authored_engineering_input",
+  "split": "development"
+}

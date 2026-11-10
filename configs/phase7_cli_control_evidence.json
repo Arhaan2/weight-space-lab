@@ -1,0 +1,420 @@
+{
+  "additional_baseline_controls": {
+    "analytics.enabled": false,
+    "features.apps": false,
+    "features.browser_use": false,
+    "features.computer_use": false,
+    "features.daemon_auto_start": false,
+    "features.enable_request_compression": false,
+    "features.hooks": false,
+    "features.image_generation": false,
+    "features.multi_agent": false,
+    "features.plugins": false,
+    "features.shell_snapshot": false,
+    "feedback.enabled": false,
+    "web_search": "disabled"
+  },
+  "binary_sha256": "8813367285524ac798dd96d1b071aea30d58708c7226fd236cd275cf1cfdee31",
+  "cases": [
+    {
+      "case": "baseline",
+      "configuration_changes": [],
+      "exit_code": 1,
+      "requests": [
+        {
+          "authorization_present": false,
+          "body_sha256": "cbd7611bbb0ca8b5b2e7797a1fb33498470b721de372655928e827064c05d154",
+          "input_tool_markers": {
+            "apply_patch": true,
+            "create_goal": true,
+            "exec_command": true,
+            "list_mcp_resources": true,
+            "request_user_input": true,
+            "view_image": true,
+            "web__run": false,
+            "write_stdin": true
+          },
+          "instruction_budget_markers": {
+            "remaining_tokens": false,
+            "rollout_budget": false,
+            "token_budget": true
+          },
+          "keys": [
+            "client_metadata",
+            "include",
+            "input",
+            "model",
+            "parallel_tool_calls",
+            "prompt_cache_key",
+            "reasoning",
+            "store",
+            "stream",
+            "text",
+            "tool_choice"
+          ],
+          "max_output_tokens": null,
+          "max_tokens": null,
+          "request_path": "/v1/responses",
+          "requested_model": "gpt-6-astra",
+          "tool_choice": "auto",
+          "tools": []
+        }
+      ],
+      "sanitized_error_categories": []
+    },
+    {
+      "case": "max_output_tokens_config",
+      "configuration_changes": [
+        "max_output_tokens=16"
+      ],
+      "exit_code": 1,
+      "requests": [],
+      "sanitized_error_categories": [
+        "Error loading config.toml: unknown configuration field `max_output_tokens` in -c/--config override"
+      ]
+    },
+    {
+      "case": "model_max_output_tokens_config",
+      "configuration_changes": [
+        "model_max_output_tokens=16"
+      ],
+      "exit_code": 1,
+      "requests": [],
+      "sanitized_error_categories": [
+        "Error loading config.toml: unknown configuration field `model_max_output_tokens` in -c/--config override"
+      ]
+    },
+    {
+      "case": "max_tokens_config",
+      "configuration_changes": [
+        "max_tokens=16"
+      ],
+      "exit_code": 1,
+      "requests": [],
+      "sanitized_error_categories": [
+        "Error loading config.toml: unknown configuration field `max_tokens` in -c/--config override"
+      ]
+    },
+    {
+      "case": "max_cost_config",
+      "configuration_changes": [
+        "max_cost=1"
+      ],
+      "exit_code": 1,
+      "requests": [],
+      "sanitized_error_categories": [
+        "Error loading config.toml: unknown configuration field `max_cost` in -c/--config override"
+      ]
+    },
+    {
+      "case": "max_billed_units_config",
+      "configuration_changes": [
+        "max_billed_units=1"
+      ],
+      "exit_code": 1,
+      "requests": [],
+      "sanitized_error_categories": [
+        "Error loading config.toml: unknown configuration field `max_billed_units` in -c/--config override"
+      ]
+    },
+    {
+      "case": "token_budget_feature",
+      "configuration_changes": [
+        "features.token_budget=true"
+      ],
+      "exit_code": 1,
+      "requests": [
+        {
+          "authorization_present": false,
+          "body_sha256": "4262edd8beefdc93a8096ec685afb5b8fb1f90c10597f5f76f585c517bf8e93a",
+          "input_tool_markers": {
+            "apply_patch": true,
+            "create_goal": true,
+            "exec_command": true,
+            "list_mcp_resources": true,
+            "request_user_input": true,
+            "view_image": true,
+            "web__run": false,
+            "write_stdin": true
+          },
+          "instruction_budget_markers": {
+            "remaining_tokens": false,
+            "rollout_budget": false,
+            "token_budget": true
+          },
+          "keys": [
+            "client_metadata",
+            "include",
+            "input",
+            "model",
+            "parallel_tool_calls",
+            "prompt_cache_key",
+            "reasoning",
+            "store",
+            "stream",
+            "text",
+            "tool_choice"
+          ],
+          "max_output_tokens": null,
+          "max_tokens": null,
+          "request_path": "/v1/responses",
+          "requested_model": "gpt-6-astra",
+          "tool_choice": "auto",
+          "tools": []
+        }
+      ],
+      "sanitized_error_categories": []
+    },
+    {
+      "case": "rollout_budget_feature",
+      "configuration_changes": [
+        "features.rollout_budget={limit_tokens=16,reminder_at_remaining_tokens=[8]}"
+      ],
+      "exit_code": 1,
+      "requests": [
+        {
+          "authorization_present": false,
+          "body_sha256": "18dc28b70e527963bd8043fdd87cd5ca0f86c14f5ffaa451d7b41f17508b8991",
+          "input_tool_markers": {
+            "apply_patch": true,
+            "create_goal": true,
+            "exec_command": true,
+            "list_mcp_resources": true,
+            "request_user_input": true,
+            "view_image": true,
+            "web__run": false,
+            "write_stdin": true
+          },
+          "instruction_budget_markers": {
+            "remaining_tokens": false,
+            "rollout_budget": true,
+            "token_budget": true
+          },
+          "keys": [
+            "client_metadata",
+            "include",
+            "input",
+            "model",
+            "parallel_tool_calls",
+            "prompt_cache_key",
+            "reasoning",
+            "store",
+            "stream",
+            "text",
+            "tool_choice"
+          ],
+          "max_output_tokens": null,
+          "max_tokens": null,
+          "request_path": "/v1/responses",
+          "requested_model": "gpt-6-astra",
+          "tool_choice": "auto",
+          "tools": []
+        }
+      ],
+      "sanitized_error_categories": []
+    },
+    {
+      "case": "tool_switches",
+      "configuration_changes": [
+        "features.shell_tool=false",
+        "features.unified_exec=false",
+        "features.view_image=false",
+        "features.goals=false",
+        "features.sleep_tool=false",
+        "features.workspace_dependencies=false",
+        "tools.update_plan.enabled=false",
+        "tools.experimental_request_user_input.enabled=false"
+      ],
+      "exit_code": 1,
+      "requests": [
+        {
+          "authorization_present": false,
+          "body_sha256": "6eea97cf5d37dc6c2dff032c6110ba28c960c2de8d911b277b65421441595151",
+          "input_tool_markers": {
+            "apply_patch": true,
+            "create_goal": false,
+            "exec_command": true,
+            "list_mcp_resources": true,
+            "request_user_input": true,
+            "view_image": false,
+            "web__run": false,
+            "write_stdin": false
+          },
+          "instruction_budget_markers": {
+            "remaining_tokens": false,
+            "rollout_budget": false,
+            "token_budget": false
+          },
+          "keys": [
+            "client_metadata",
+            "include",
+            "input",
+            "model",
+            "parallel_tool_calls",
+            "prompt_cache_key",
+            "reasoning",
+            "store",
+            "stream",
+            "text",
+            "tool_choice"
+          ],
+          "max_output_tokens": null,
+          "max_tokens": null,
+          "request_path": "/v1/responses",
+          "requested_model": "gpt-6-astra",
+          "tool_choice": "auto",
+          "tools": []
+        }
+      ],
+      "sanitized_error_categories": []
+    },
+    {
+      "case": "ambiguous_drop_zero_retries",
+      "configuration_changes": [
+        "features.unbounded_connection_retries=false"
+      ],
+      "exit_code": 1,
+      "requests": [
+        {
+          "authorization_present": false,
+          "body_sha256": "91c427eae717cf39648788e80a342e13e693efdbc60a839c9d9f6497272d58af",
+          "input_tool_markers": {
+            "apply_patch": true,
+            "create_goal": true,
+            "exec_command": true,
+            "list_mcp_resources": true,
+            "request_user_input": true,
+            "view_image": true,
+            "web__run": false,
+            "write_stdin": true
+          },
+          "instruction_budget_markers": {
+            "remaining_tokens": false,
+            "rollout_budget": false,
+            "token_budget": true
+          },
+          "keys": [
+            "client_metadata",
+            "include",
+            "input",
+            "model",
+            "parallel_tool_calls",
+            "prompt_cache_key",
+            "reasoning",
+            "store",
+            "stream",
+            "text",
+            "tool_choice"
+          ],
+          "max_output_tokens": null,
+          "max_tokens": null,
+          "request_path": "/v1/responses",
+          "requested_model": "gpt-6-astra",
+          "tool_choice": "auto",
+          "tools": []
+        }
+      ],
+      "sanitized_error_categories": []
+    }
+  ],
+  "cli_common_options": [
+    "--no-daemon",
+    "exec",
+    "--ignore-user-config",
+    "--ignore-rules",
+    "--strict-config",
+    "--skip-git-repo-check",
+    "--ephemeral",
+    "--json",
+    "--model gpt-6-astra",
+    "--cd <empty approved directory>"
+  ],
+  "cli_version": "codex-cli 0.163.0",
+  "conclusions": {
+    "actual_editor_launch_boundary": "Not verified: dispatch_live remains unimplemented and this diagnostic CLI did not run under the Phase 7 filesystem profile.",
+    "no_model_substitution": "Experimental allowProviderModelFallback field exists in schema; not behaviorally verified against the live provider.",
+    "provider_billing_cap": "No demonstrated provider-side billed-usage ceiling. Tested max_cost/max_billed_units config overrides are rejected.",
+    "provider_max_output_tokens": "Unsupported by the tested CLI flag/config controls; baseline and accepted budget features serialize no max_output_tokens/max_tokens field.",
+    "rollout_budget_feature": "Recognized and adds rollout_budget input text; no provider hard output limit serialized.",
+    "token_budget_feature": "Recognized and present in model-visible input; no provider hard output limit serialized.",
+    "tool_allowlist": "Not verified. Some feature switches alter input markers, but absence of top-level tools does not mean no tools; code-mode descriptions are in input. No complete tool registry or actual denied tool execution established.",
+    "zero_retry_ambiguous_drop": "Verified for the local capture case with explicit zero request/stream retries plus unbounded_connection_retries=false: one request and terminal exit1."
+  },
+  "credential_boundary": {
+    "all_captured_requests_had_authorization": false,
+    "configuration_home": "fresh empty temporary directory",
+    "environment": "minimal PATH/LANG/configuration-home/temporary-directory variables only",
+    "ignore_rules": true,
+    "ignore_user_config": true,
+    "provider_requires_openai_auth": false
+  },
+  "direct_flag_check": {
+    "command": "codex exec --max-output-tokens 16 --help",
+    "exit_code": 2,
+    "result": "unexpected argument --max-output-tokens; parser rejects before dispatch"
+  },
+  "evidence_scope": "Actual installed binary, strict configuration parser, and loopback-only synthetic provider request capture. No real provider response or model generation.",
+  "experiment_executed": false,
+  "immutable_model_version": null,
+  "interpretation_limits": [
+    "A fake server receiving a requested model string is not real-provider acceptance or model identity verification.",
+    "An HTTP400 response deliberately stops before inference; its exit1 is expected.",
+    "Request body digests describe temporary diagnostic payloads; raw prompts/tool dumps/private paths are not published.",
+    "A configuration field being accepted is not evidence of provider-side enforcement.",
+    "These diagnostic requests are not experimental editor interactions and consume no frontier-model generation budget."
+  ],
+  "kind": "installed_cli_control_behavior_audit",
+  "live_editor_request_count": 0,
+  "live_interface_accepted_selector": null,
+  "locally_serialized_selector": "gpt-6-astra",
+  "model_self_description_used": false,
+  "network_boundary": {
+    "external_provider_network": "denied",
+    "loopback_server": "synthetic request capture only",
+    "mechanism": "macOS Seatbelt",
+    "profile": "(version 1)(allow default)(deny network-outbound)(allow network-outbound (remote ip \"localhost:*\"))",
+    "scope": "Network-only restriction for the diagnostic CLI; NOT the Phase 7 editor filesystem isolation profile."
+  },
+  "observed_live_session_model_metadata": null,
+  "private_harness_sha256": {
+    "ambiguous_drop_capture": "907d5d20a9fea034984e6d8ab1fa73854beab6cbf867931155072ff5d83218a3",
+    "request_capture": "9353a9339151493b24a89471a50466e48c0f2ec8b3750ac8b662e8d555e632fd"
+  },
+  "provider_controls": {
+    "base_url": "http://<loopback-listener>/v1",
+    "model_provider": "phase7_capture",
+    "name": "synthetic loopback capture; no model",
+    "request_max_retries": 0,
+    "requires_openai_auth": false,
+    "stream_idle_timeout_ms": 3000,
+    "stream_max_retries": 0,
+    "wire_api": "responses"
+  },
+  "provider_usage": null,
+  "reproduction_harness": {
+    "command": ".venv/bin/python scripts/verify_codex_controls.py --out <new-evidence-file>",
+    "path": "scripts/verify_codex_controls.py",
+    "sha256": "bebe4bac2c18c2704dae76333eab87f76d52af35f33c32cfff6dd9b5d43b1809",
+    "structural_redaction_check_passed": true,
+    "validated_cases": [
+      {
+        "case": "baseline",
+        "exit_code": 1,
+        "invalid_request": false,
+        "request_count": 1
+      },
+      {
+        "case": "ambiguous_drop_zero_retries",
+        "exit_code": 1,
+        "invalid_request": false,
+        "request_count": 1
+      }
+    ],
+    "validation_scope": "Public sanitized harness compiled and ran baseline plus ambiguous-drop cases; ten historical control cases retained above."
+  },
+  "requested_selector": "gpt-6-astra",
+  "schema_version": 1,
+  "scientific_result": false,
+  "verification_date": "2026-11-06",
+  "verification_timezone": "America/Los_Angeles"
+}

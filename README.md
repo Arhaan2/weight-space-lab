@@ -4,17 +4,80 @@ Controlled experiments in which a frontier model proposes direct edits to an ope
 
 Maintainer: [Arhaan Aggarwal (Arhaan2)](https://github.com/Arhaan2).
 
-## Current status
+## Current workflow
 
-**Experimental infrastructure through Phase 4 benchmark preparation, independent grading, and scheduled paired analysis. No language-model improvement has been measured.**
+Improve Qwen instruction compliance through up to four manual Astra / Ultra weight-edit proposals, while preserving or reducing local browser resource use. [The current protocol](docs/ifeval-browser-quality-resource-protocol.md) and [command runbook](docs/ifeval-browser-v2-runbook.md) define one bounded workflow: reuse pristine and its saved 32-item baseline; import, audit, convert and evaluate each genuine proposal; select by strict compliance gain with no more scored output tokens; freeze; then run available final IFEval and the original Browser LLM Bench A–B–B–A resource comparison.
 
-The implementation provides pinned model acquisition, complete file and tensor inventories, transactional reconstruction of the published sparse BF16 patch, independent saved-checkpoint verification, native generation adapters, bounded schedule execution with crash-safe resume, auditable array edits, experiment profiles, execution diagnostics, versioned raw evidence contracts, pinned benchmark loaders and split manifests, exact and template-family overlap audits, independent benchmark graders, and scheduled paired analysis. Its mechanics example uses small synthetic arrays. It does not call a frontier editor. Optional pinned evaluators grade MATH and IFEval; GSM8K uses an explicit numeric final-answer policy.
+```bash
+artifacts/ifeval-browser-v1/evaluator-env/bin/python -m weight_space_lab.ifeval_v2_study status --root artifacts/ifeval-browser-v2-narrowed
+```
 
-Build and fixture validation, real artifact verification, development model execution, and experiments are separate evidence categories. See [native execution](docs/native-execution.md) for the pinned backends, methodological variations, three-arm smoke procedure, and recovery contract. Experiments remain unexecuted. Passing a schema check establishes configuration completeness, not externally verified provenance, model compatibility, or a scientific result.
+The [current preparation report](reports/ifeval-browser-v2-narrowed/README.md) records verification, actual final-data availability and remaining capacity. No V2 model result is implied by implementation or synthetic tests. The first private editor packet is delivered locally; genuine manual responses are the planned execution handoffs. Random controls, authored benchmarks, native/hosted GPU experiments and automated frontier APIs are optional follow-ups.
+
+## Closed results and historical preparation
+
+**IFEval browser V1 is closed: completed experiment, inconclusive held-out compliance.** Strict prompt compliance was 70/128 candidate versus 69/128 baseline (+0.78125 percentage points; frozen 95% interval −5.47 to +7.03). Improvement and equivalence are unestablished. The candidate completed through a separate continuation after the preserved supervisor interruption. See the [canonical V1 results](reports/ifeval-browser-v1-final/README.md), [saved-output interpretation](docs/ifeval-v1-output-review.md), [public reproduction record](docs/ifeval-v1-reproduction.md), and [historical V2 proposal](docs/ifeval-browser-v2-protocol.md). That proposal is superseded by the current workflow above; its preparation evidence is retained unchanged.
+
+**Phase 7 includes one completed manual exploratory proposal/checkpoint/development comparison, with editor isolation unverified. Strict automated Astra integration and the measured full replay result remain pending; no language-model improvement has been established.**
+
+The implementation provides pinned model acquisition, complete file and tensor inventories, transactional reconstruction of the published sparse BF16 patch, independent saved-checkpoint verification, native generation adapters, bounded schedule execution with crash-safe resume, auditable array edits, experiment profiles, execution diagnostics, versioned raw evidence contracts, pinned benchmark loaders and split manifests, exact and template-family overlap audits, independent benchmark graders, and scheduled paired analysis. Phase 5 joins these into a frozen replay workflow with separate development smoke, development pilot, and full-run commands. Its mechanics example uses small synthetic arrays. It does not call a frontier editor. Optional pinned evaluators grade MATH and IFEval; GSM8K uses an explicit numeric final-answer policy.
+
+Build and fixture validation, real artifact verification, development model execution, and experiments are separate evidence categories. See [native execution](docs/native-execution.md) for the pinned backends, methodological variations, three-arm smoke procedure, and recovery contract. Controlled research experiments remain unexecuted. Passing a schema check establishes configuration completeness, not externally verified provenance, model compatibility, or a scientific result.
 
 The [real development smoke](reports/native-smoke/README.md) generated 16 tokens each from the original, identity-copy and reconstructed checkpoints using the explicit Transformers CPU/BF16 variation. All three hit the short token cap; no answer was graded. The report retains the initial failed load, successful raw outputs, recovery checks, and measured resource requirements. The preferred vLLM GPU path is pinned but remains unexecuted.
 
-The [Phase 4 verification report](reports/benchmark-grading/README.md) records pinned benchmark preparation, 25 independent known-answer checks with the real optional evaluators, and complete-schedule analysis fixtures. These are data and evaluator checks, not model accuracy measurements. Editor/final-data isolation remains a Phase 7 prerequisite.
+The [Phase 4 verification report](reports/benchmark-grading/README.md) records pinned benchmark preparation, 25 independent known-answer checks with the real optional evaluators, and complete-schedule analysis fixtures. These are data and evaluator checks, not model accuracy measurements. Phase 7 implements and tests local isolation; a future live editor transport must establish the same boundary.
+
+The [Phase 5 replay workflow](docs/published-patch-replay.md) compares unchanged and reconstructed p50c weights under identical published-reference settings, with a matched identity control and a separately labeled temperature-1 comparison. It freezes benchmark-specific schedules, execution identities, grading rules, and paired item-level analysis after development validation. Full schedules are MATH-500 × 4, GSM8K test × 2, and all 541 IFEval prompts × 2; full IFEval replay is distinct from the Phase 4 held-out subset. Reports retain denominators, failures, truncations, tokens, runtime, improved/regressed items, and discrepancies. The preferred GPU execution and measured full result remain pending. Installing the project or running its tests never starts the full benchmark.
+
+The [Phase 5 evidence report](reports/published-patch-replay/README.md) records 255 passing tests, 15 completed short development generations, 25 passing grader checks, frozen pilot/full inputs, and an explicitly pending 28,600-generation full study. All smoke generations reached the 16-token cap; they do not estimate benchmark accuracy.
+
+The [Phase 6 candidate adapter](docs/candidate-editing.md) applies bounded edits
+to the actual Safetensors tensor names, dtypes, and shard layout. It preserves
+unrelated tensors, buffers, architecture and tokenizer assets, logs bounded
+weight inspections, and independently verifies saved stored-bit and numerical
+changes before publishing a candidate. Every independent proposal starts from
+the immutable original. Its development demonstration is explicitly a
+hand-authored engineering edit, not an Astra-discovered intervention.
+The [development evidence](reports/candidate-editing/README.md) records the
+saved-change counts, inspection disclosures, identity control, and tiny native
+execution checks without making an accuracy claim.
+
+The [Phase 7 editor controller](docs/editor-controller.md) adds a strict
+provider-independent file handoff, an OS-isolated non-scientific fixture,
+development-only tools and probes, and a crash-safe reservation ledger.
+Timeouts, cancellation, retries, interrupted requests, and budget exhaustion
+are enforced in code. The [interface audit](docs/editor-interface-audit.md)
+records the actually exposed `gpt-6-astra` selector and Codex CLI `0.163.0`,
+with unavailable live identity/version/billing left null. No supported live
+adapter yet meets the isolation and hard-limit requirements. No runner-launched
+Astra interaction or controlled research experiment has run.
+
+The [live-readiness diagnosis](reports/editor-live-readiness/README.md) traces
+the precise remaining gates and records behavioral checks of the installed CLI.
+`editor-live-readiness` reports them without dispatch; `editor-prepare-connection`
+saves a zero-tool acknowledgement plan. The tested CLI budget features do not
+serialize a provider hard token cap. No live connection test was launched and
+no exhausted offline budget was reset.
+
+The explicit [authenticated session variant](docs/authenticated-session-editor.md)
+reuses that machinery for one Astra proposal and one baseline/candidate
+development comparison, without a separate API key or nested frontier call.
+It records the subscription route's unavailable provider generation cap and
+preserves the strict automated protocol. The local workflow passes synthetic
+integration tests; the [session boundary audit](docs/session-boundary-audit.md)
+records why the actual desktop session cannot yet be safely launched under the
+strict protocol. The separate development capacity was used once through its
+explicit manual exploratory extension below.
+
+An explicit [manual exploratory handoff](docs/manual-session-handoff.md) now
+accepted the externally supplied proposal attributed by the operator to
+Astra/Ultra. The [sanitized result](reports/editor-session/manual-result.json)
+records a validated checkpoint with 32,768 changed stored entries and one real
+baseline/candidate development pair. Each arm generated three tokens and stopped
+at EOS; no grader ran. This path does not launch the editor, leaves isolation
+unverified, and cannot qualify as a controlled research run. The single proposal
+and comparison capacity is spent; no retry or additional evaluation was run.
 
 The pinned p50c artifacts have been acquired and the complete saved reconstruction verified: **130,188 changed stored BF16 entries**, with a **131,072-coordinate published column footprint**. All 486 unrelated tensors and the remaining model assets are unchanged. See the [artifact verification report and inventories](reports/p50c/README.md); these checks establish byte reconstruction, not task quality or inference compatibility.
 

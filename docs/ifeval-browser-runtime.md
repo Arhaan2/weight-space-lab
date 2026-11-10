@@ -1,0 +1,19 @@
+# IFEval browser runtime
+
+Arhaan2. The new study uses the successful browser integration v2 adapter in a separate private checkout. The source-only [incremental patch](../integrations/ifeval-browser-v1.patch) applies to that v2 checkout; it preserves upstream code and licenses. Previous artifacts and execution ledgers remain unchanged.
+
+The study protocol schedules one application warmup and 32 scored development requests in one pristine-model engine session. Conversation state resets before every request. Temperature is zero, top-p is one, the per-request seed is 42, and thinking is disabled. Requests have a 120-second limit. Failure to settle an interrupted request within 10 seconds terminates the worker and stops the session. A separate supervisor owns the durable accounting and 90-minute absolute deadline.
+
+Every call is gated before dispatch. The load uses `load-intent.json` and `load-ack.json`. Generations use `generation-N-intent.json` and `generation-N-ack.json`, where N=1 is warmup and N=2–33 are the frozen scored schedule. Each intent binds the run, arm, artifact, configuration, source version, item, zero-based sequence index, warmup flag, and token cap. Acknowledgements carry the unchanged absolute deadline. Duplicate requests, changed order, denied gates, and unknown state stop execution; there are no retries.
+
+Warmup output is retained separately from scored outputs. Both have raw content, token usage, timing, finish status, and observed WebGPU submissions. Partial outputs survive cancellation when observable, and unknown counts remain unknown. Ordinary instruction failures and length stops do not stop the remaining schedule.
+
+The existing q4f16_1 deployed artifact supports the intended 4,096-token context. Direct extraction of metadata from the pinned WASM binary reports a 262,144-token compiled context and 1,024-token prefill chunk. All 435 deployed parameter names, shapes, and types match that embedded contract. WebLLM 0.2.86 takes the effective context from configuration when allocating its KV cache. This verifies compatibility; it does not establish that every eligible generation will complete or that a workload has a particular memory peak.
+
+`count-task-tokens.mjs` counts the exact tokenizer's rendered input before inference. It extracts the unmodified tokenizer module from the installed, hashed WebLLM bundle and uses the deployed tokenizer JSON. System, user, and assistant conversation segments are encoded separately, matching WebLLM's `getInputData`. The helper creates no engine, worker, GPU device, or model forward pass. Before each request the worker independently verifies the count against the actual loaded pipeline tokenizer and checks input plus output allowance against the effective context.
+
+WebLLM injects the four-token empty thinking prefix `<think>\n\n</think>\n\n` and includes it in returned content. Its `max_tokens` stop checks include these four IDs, while `usage.completion_tokens` counts only sampled tokens, including a terminating stop token. Consequently, `max_tokens:1024` permits at most 1,020 sampled tokens and warmup `max_tokens:16` permits at most 12. Reservations conservatively retain the requested 1,024/16 bounds. The frozen output policy handles the complete leading thinking block identically for both arms. No JSON repair, rewriting, constrained decoding, or answer retry is added.
+
+Resource evidence preserves distinct scopes: worker GPUBuffer descriptor accounting, WASM address space, owned process observations, and host measurements. Buffer descriptors are not physical VRAM measurements. No native MPS allocation threshold is used.
+
+Offline validation passed typechecking, 79 JavaScript unit tests, 13 focused task/preflight tests after the final corrections, and worker/client builds. The source-only patch applies cleanly to the preserved v2 checkout. Those checks perform no target inference.

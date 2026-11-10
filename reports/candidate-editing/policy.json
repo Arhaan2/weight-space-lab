@@ -1,0 +1,38 @@
+{
+  "allowed_columns": {
+    "model.language_model.layers.15.mlp.down_proj.weight": [
+      0
+    ]
+  },
+  "allowed_operations": [
+    "scale_columns"
+  ],
+  "allowed_tensors": [
+    "model.language_model.layers.15.mlp.down_proj.weight"
+  ],
+  "direction_strength_range": [
+    0.0,
+    0.0
+  ],
+  "inspection": {
+    "allowed_tensors": [
+      "model.language_model.layers.15.mlp.down_proj.weight"
+    ],
+    "max_requests": 3,
+    "max_scanned_coordinates": 16,
+    "max_total_scanned_coordinates": 32,
+    "max_total_values": 32,
+    "max_values": 16
+  },
+  "max_abs_change": 1.0,
+  "max_changed_coordinates": 1024,
+  "max_changed_fraction": 1.1723775252004382e-06,
+  "max_operations": 1,
+  "max_targeted_coordinates": 1024,
+  "max_working_elements": 1024,
+  "scale_factor_range": [
+    0.99,
+    0.99
+  ],
+  "schema_version": 1
+}

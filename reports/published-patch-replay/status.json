@@ -1,0 +1,43 @@
+{
+  "build": {
+    "evidence": [
+      {
+        "kind": "build_log",
+        "sha256": "5066b816dccd90959d042409b854de4d140ac6bf2c32029dfafafd62a04be5a1"
+      }
+    ],
+    "outcome": null,
+    "reason": null,
+    "status": "passed"
+  },
+  "experiment": {
+    "evidence": [],
+    "outcome": null,
+    "reason": "No local configured CUDA/vLLM runtime; CPU full workload impractical and long-context fit unverified.",
+    "status": "not_started"
+  },
+  "fixture_validation": {
+    "evidence": [
+      {
+        "kind": "fixture_report",
+        "sha256": "05dc3c837c20ddc5dab202e8dc4ec6833dc734a73a6026c308402269551e3deb"
+      }
+    ],
+    "outcome": null,
+    "reason": null,
+    "status": "passed"
+  },
+  "real_model_validation": {
+    "evidence": [
+      {
+        "kind": "real_model_report",
+        "sha256": "e004c7d348d26ca2446707cce59d7070f0164826625ad2947000688c60ee4288"
+      }
+    ],
+    "outcome": null,
+    "reason": null,
+    "status": "passed"
+  },
+  "record_type": "status",
+  "schema_version": 1
+}

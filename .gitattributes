@@ -1,2 +1,4 @@
 # Preserve the upstream license bytes, including CRLF line endings.
 /reports/p50c/LICENSE.model -text whitespace=cr-at-eol
+# Unified patch artifacts intentionally contain single-space context lines.
+/integrations/*.patch whitespace=-blank-at-eol

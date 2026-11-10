@@ -1,0 +1,1124 @@
+{
+  "analysis_specification": {
+    "bootstrap": {
+      "confidence": 0.95,
+      "instruction_resample": "resample 128 paired prompts with replacement; sum compliant instruction counts and divide by sum instruction counts in each resample",
+      "method": "paired percentile bootstrap",
+      "order": "lexicographic item_id, matching the existing paired pipeline",
+      "quantile": "numpy.quantile default linear interpolation",
+      "samples": 10000,
+      "seed": 0,
+      "unit": "prompt cluster"
+    },
+    "completion_rule": "complete paired technical execution and resolved grading; significance is not required",
+    "exact_paired_significance_test": {
+      "available": false,
+      "reason": "The existing analysis implementation has no exact paired significance test; none is added after observation."
+    },
+    "grader_error_policy": "retain zero-credit arm bounds; unresolved grader errors are not demonstrated model failures and the paired difference is not an identified semantic effect",
+    "instruction_estimator": "sum compliant instructions / sum scheduled instructions",
+    "missing_output_policy": "retain all scheduled prompts and instructions with zero credit; distinguish unexecuted slots from attempted failures and dispatched outputs not observed",
+    "primary_metric": "prompt_level_strict_accuracy",
+    "prompt_estimator": "existing compare_graded_runs; one seed per prompt",
+    "schema_version": 1,
+    "secondary_metrics": [
+      "prompt_level_loose_accuracy",
+      "instruction_level_strict_accuracy",
+      "instruction_level_loose_accuracy"
+    ],
+    "selection": "candidate already frozen on development; no reselection or further edit",
+    "truncation_policy": "grade returned text under the unchanged frozen policy"
+  },
+  "arms": {
+    "baseline": {
+      "accounting": {
+        "ambiguous_dispatch_outcomes": 0,
+        "attempted_model_failures": 0,
+        "attempted_scored_requests": 128,
+        "dispatched_without_observed_output": 0,
+        "execution_status_counts": {
+          "ok": 69,
+          "truncated": 59
+        },
+        "graded_outputs": 128,
+        "grader_errors": 0,
+        "grader_timeouts": 0,
+        "missing_outputs_including_unexecuted": 0,
+        "natural_completions": 69,
+        "scheduled_prompts": 128,
+        "scored_generated_tokens": 68243,
+        "scored_generation_seconds": 1704.5630007324219,
+        "scored_input_tokens": 8745,
+        "scored_requests_with_unknown_duration": 0,
+        "scored_requests_with_unknown_tokens": 0,
+        "truncations": 59,
+        "unexecuted_slots": 0
+      },
+      "artifact_sha256": "5ead3e9c60107ab7168bee5373f6cd636c839b82557fed6550aaaa30170aa5b0",
+      "cleanup": {
+        "all_graceful_unloads_confirmed": true,
+        "all_owned_process_closures_verified": true,
+        "forced_termination_sessions": 0
+      },
+      "resources": {
+        "host_sample_count": 336,
+        "meaning": "Sample counts summed and sampled worker maxima maximized across source sessions; process counters remain separate by session.",
+        "worker_sample_count": 1684,
+        "worker_sampled_maxima_across_sessions": {
+          "eventLoopDelayMs": 15305.599999904633,
+          "gpuBufferBytes": 1747697720,
+          "heapBytes": null,
+          "wasmBytes": 283181056
+        }
+      },
+      "source_checkpoint_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+      "source_sessions": [
+        "baseline"
+      ],
+      "usage": {
+        "active_load_through_cleanup_seconds": 1740.21307995799,
+        "automatic_retries": 0,
+        "charged_generated_tokens": 68255,
+        "development_reruns": 0,
+        "engine_load_attempts": 1,
+        "execution_failures": 0,
+        "experimental_frontier_requests": 0,
+        "generated_tokens_including_warmup": 68255,
+        "generation_dispatches": 129,
+        "generation_requests_with_unknown_tokens": 0,
+        "generation_seconds_including_warmup": 1705.3187009277344,
+        "known_generated_tokens_including_warmup": 68255,
+        "limit_violations": 0,
+        "new_weight_proposals": 0,
+        "pending_requests": 0,
+        "reserved_generated_tokens": 131088,
+        "scored_dispatches": 128,
+        "scored_generated_tokens": 68243,
+        "scored_generation_seconds": 1704.5630007324219,
+        "supervisor_seconds": 1746.4302218339872,
+        "warmup_dispatches": 1,
+        "warmup_generated_tokens": 12
+      }
+    },
+    "candidate": {
+      "accounting": {
+        "ambiguous_dispatch_outcomes": 0,
+        "attempted_model_failures": 0,
+        "attempted_scored_requests": 128,
+        "dispatched_without_observed_output": 0,
+        "execution_status_counts": {
+          "ok": 77,
+          "truncated": 51
+        },
+        "graded_outputs": 128,
+        "grader_errors": 0,
+        "grader_timeouts": 0,
+        "missing_outputs_including_unexecuted": 0,
+        "natural_completions": 77,
+        "scheduled_prompts": 128,
+        "scored_generated_tokens": 60189,
+        "scored_generation_seconds": 1227.9859008789062,
+        "scored_input_tokens": 8745,
+        "scored_requests_with_unknown_duration": 0,
+        "scored_requests_with_unknown_tokens": 0,
+        "truncations": 51,
+        "unexecuted_slots": 0
+      },
+      "artifact_sha256": "6e18cc4906ce18786b9197bcc7fb5f93ffc706d808b0809150349546eef3627b",
+      "cleanup": {
+        "all_graceful_unloads_confirmed": false,
+        "all_owned_process_closures_verified": true,
+        "forced_termination_sessions": 1
+      },
+      "resources": {
+        "host_sample_count": 255,
+        "meaning": "Sample counts summed and sampled worker maxima maximized across source sessions; process counters remain separate by session.",
+        "worker_sample_count": 1278,
+        "worker_sampled_maxima_across_sessions": {
+          "eventLoopDelayMs": 9645,
+          "gpuBufferBytes": 1747697720,
+          "heapBytes": null,
+          "wasmBytes": 283181056
+        }
+      },
+      "source_checkpoint_sha256": "f9c767c06ec3c17dbdfedc43b695d64d025ae7393d3f425cee71ef45c358d6bf",
+      "source_sessions": [
+        "candidate_interrupted",
+        "candidate_continuation"
+      ],
+      "usage": {
+        "active_load_through_cleanup_seconds": 1292.0112002911046,
+        "automatic_retries": 0,
+        "charged_generated_tokens": 60213,
+        "development_reruns": 0,
+        "engine_load_attempts": 2,
+        "execution_failures": 1,
+        "experimental_frontier_requests": 0,
+        "generated_tokens_including_warmup": 60213,
+        "generation_dispatches": 130,
+        "generation_requests_with_unknown_tokens": 0,
+        "generation_seconds_including_warmup": 1229.60380078125,
+        "known_generated_tokens_including_warmup": 60213,
+        "limit_violations": 0,
+        "new_weight_proposals": 0,
+        "pending_requests": 0,
+        "reserved_generated_tokens": 131104,
+        "scored_dispatches": 128,
+        "scored_generated_tokens": 60189,
+        "scored_generation_seconds": 1227.9859008789062,
+        "supervisor_seconds": 1321.8385954170953,
+        "warmup_dispatches": 2,
+        "warmup_generated_tokens": 24
+      }
+    }
+  },
+  "author": "Arhaan2",
+  "complete_paired_evaluation": true,
+  "conclusion": "The candidate has higher observed strict prompt compliance on this subset. The paired 95% interval includes zero, so the direction remains uncertain.",
+  "continuation_limits": {
+    "automatic_retries": 0,
+    "baseline_reruns": 0,
+    "completed_candidate_reruns": 0,
+    "development_reruns": 0,
+    "engine_load_attempts": 1,
+    "frontier_requests": 0,
+    "generated_tokens": 34832,
+    "generation_dispatches": 35,
+    "new_weight_proposals": 0,
+    "request_seconds": 120,
+    "scored_dispatches": 34,
+    "tokens_per_scored_request": 1024,
+    "wall_seconds": 5400,
+    "warmup_dispatches": 1,
+    "warmup_tokens": 16
+  },
+  "continuation_manifest_sha256": "0faa9ec2b548c5070106701fbe965640b44a678c1ee6b185c3d25aa7fcd4ab83",
+  "continuation_plan_sha256": "f366b08d4d9a25d54307af6638b1c5fa66f8ee9b87174e087de18d1ad8f9dad8",
+  "cumulative_maximum_after_success": {
+    "engine_load_attempts": 3,
+    "generation_dispatches": 259,
+    "reported_generated_tokens_upper_bound": 148687,
+    "reserved_generated_tokens": 262192,
+    "scored_dispatches": 256,
+    "warmup_dispatches": 3
+  },
+  "cumulative_usage": {
+    "active_load_through_cleanup_seconds": 3032.2242802490946,
+    "automatic_retries": 0,
+    "charged_generated_tokens": 128468,
+    "development_reruns": 0,
+    "engine_load_attempts": 3,
+    "execution_failures": 1,
+    "experimental_frontier_requests": 0,
+    "generated_tokens_including_warmup": 128468,
+    "generation_dispatches": 259,
+    "generation_requests_with_unknown_tokens": 0,
+    "generation_seconds_including_warmup": 2934.9225017089843,
+    "known_generated_tokens_including_warmup": 128468,
+    "limit_violations": 0,
+    "new_weight_proposals": 0,
+    "pending_requests": 0,
+    "reserved_generated_tokens": 262192,
+    "scored_dispatches": 256,
+    "scored_generated_tokens": 128432,
+    "scored_generation_seconds": 2932.548901611328,
+    "supervisor_seconds": 3068.2688172510825,
+    "warmup_dispatches": 3,
+    "warmup_generated_tokens": 36
+  },
+  "editor_isolation": "unverified",
+  "environment_diagnostics": {
+    "developer_tool_diagnostic_observed": true,
+    "diagnostic_counted_as_execution_failure": false,
+    "failure_authority": "terminal supervisor evidence",
+    "host_telemetry_available_in_continuation_session": true
+  },
+  "evaluation_items_sha256": "7493091404188ce790e2d6fd61c8a82c79ef8d9e0d8731015e127396d53284e2",
+  "exact_paired_significance_test": {
+    "available": false,
+    "reason": "The existing analysis implementation has no exact paired significance test; none is added after observation."
+  },
+  "grader": {
+    "name": "official_ifeval",
+    "revision": "d273d53c0d49aa509641885b183d98facd8d2bb2697725f9a2efbaaec52074fd"
+  },
+  "incomplete_suffix_schedule_positions": [],
+  "kind": "continued_ifeval_subset_combined_report",
+  "label": "128-example IFEval on-device subset",
+  "limitations": "This remains an exploratory manual-editor study with editor isolation unverified. It evaluates 128 prompts, not the full 541-example IFEval benchmark, and does not establish representative full-benchmark performance or absence of pretraining exposure. The bootstrap describes one preselected comparison and does not include candidate-selection uncertainty. Instruction compliance is distinct from substantive answer correctness. The selected weight columns are not a verified causal explanation of response behavior. The subset is exposed and cannot be called untouched for future edits. No new proposal, checkpoint conversion, weight edit, baseline rerun, previously dispatched scored rerun, or development experiment was performed.",
+  "merge_plan_internal_sha256": "fff1d6f8c2fbf4e8efb25c267364b8acee284a34678f8a0493f8fb4322810246",
+  "merge_plan_object_sha256": "380102a47d0a369d55c4f7a22b5ec5dca60e4f7247f7420709b1268a91a57dd1",
+  "metrics": {
+    "instruction_loose": {
+      "baseline": {
+        "denominator": 173,
+        "numerator": 112,
+        "value": 0.6473988439306358
+      },
+      "candidate": {
+        "denominator": 173,
+        "numerator": 116,
+        "value": 0.6705202312138728
+      },
+      "ci95_percentage_points": [
+        -2.9069767441860463,
+        7.6923076923076925
+      ],
+      "difference_percentage_points": 2.312138728323699
+    },
+    "instruction_strict": {
+      "baseline": {
+        "denominator": 173,
+        "numerator": 106,
+        "value": 0.6127167630057804
+      },
+      "candidate": {
+        "denominator": 173,
+        "numerator": 108,
+        "value": 0.6242774566473989
+      },
+      "ci95_percentage_points": [
+        -3.8461538461538463,
+        6.2857142857142865
+      ],
+      "difference_percentage_points": 1.1560693641618496
+    },
+    "prompt_loose": {
+      "baseline": {
+        "denominator": 128,
+        "numerator": 74,
+        "value": 0.578125
+      },
+      "candidate": {
+        "denominator": 128,
+        "numerator": 77,
+        "value": 0.6015625
+      },
+      "ci95_percentage_points": [
+        -3.90625,
+        8.59375
+      ],
+      "difference_percentage_points": 2.34375
+    },
+    "prompt_strict": {
+      "baseline": {
+        "denominator": 128,
+        "numerator": 69,
+        "value": 0.5390625
+      },
+      "candidate": {
+        "denominator": 128,
+        "numerator": 70,
+        "value": 0.546875
+      },
+      "ci95_percentage_points": [
+        -5.46875,
+        7.03125
+      ],
+      "difference_percentage_points": 0.78125
+    }
+  },
+  "model_library_sha256": "023c24d853746e24599dc99d7649e356986fd3e1c476e6a2b8ef7af4c9f056e0",
+  "new_suffix_outputs_graded": 34,
+  "original_data_manifest_file_sha256": "939d914f6f13fafcdc755182f5dc0fbe78c0a861ba885b82506c21287a867f54",
+  "original_data_manifest_sha256": "6d577377506b74cca45b56a8c9245c1ffde99598dd2871bde06475c173b7d676",
+  "original_evaluation_freeze_sha256": "89ed9703869ab7c8b1032b3d8c5fa59fefed0215d9d0341016684d60b39b8a27",
+  "original_interruption": "The original candidate session stopped after 94 scored completions when its supervisor used an event snapshot missing the durable predecessor completion and rejected the gate for position 95. The dispatch audit found no acknowledgement, reservation or model call for positions 95\u2013128. The original session required forced termination; process closure was verified, but graceful unload was not confirmed. Its failure, grades, artifacts, closed ledger and timing records remain unchanged. The separately versioned continuation runner uses the prepared supervisor repair.",
+  "original_outputs_regraded": 0,
+  "original_records_rewritten": 0,
+  "paired_instruction_outcomes": {
+    "loose": {
+      "both_failed": 49,
+      "both_passed": 104,
+      "improved": 12,
+      "regressed": 8,
+      "tied": 153,
+      "unresolved": 0
+    },
+    "strict": {
+      "both_failed": 56,
+      "both_passed": 97,
+      "improved": 11,
+      "regressed": 9,
+      "tied": 153,
+      "unresolved": 0
+    }
+  },
+  "paired_prompt_outcomes": {
+    "loose": {
+      "improved": 10,
+      "regressed": 7,
+      "tied": 111,
+      "unresolved": 0
+    },
+    "strict": {
+      "improved": 8,
+      "regressed": 7,
+      "tied": 113,
+      "unresolved": 0
+    }
+  },
+  "policy": {
+    "generation_retry": {
+      "max_attempts": 1,
+      "mode": "none"
+    },
+    "grader_retry": {
+      "max_attempts": 1,
+      "mode": "none"
+    },
+    "grader_timeout_seconds": 20,
+    "output_eos_tokens": [],
+    "reasoning_policy": "think_tags",
+    "schema_version": 1,
+    "truncation_policy": "grade"
+  },
+  "private_combined_analysis_sha256": "1d9f83beaf270658fe86255a1ad9db2f75750ccd4db2cdc6a8818a8775fa36f3",
+  "proposal_provenance": "Original exploratory proposal based on the supplied development packet. The proposal session used file-reading and JSON-parsing tools to ingest that packet. It used no external research, additional weight inspections, or target forward passes.",
+  "proposal_provenance_independently_observed": false,
+  "quantization": "q4f16_1",
+  "report_generator_sha256": "0e6e14255d5430a7fbe8246c63e1350d5341f57d2ee6b31ab6c9e8e4d0bea0c1",
+  "resource_improvements_demonstrated": false,
+  "resource_interpretation": "A single sequential comparison with an interrupted and resumed candidate does not demonstrate a controlled speed or energy improvement. GPUBuffer descriptor allocations and WASM address space are not physical VRAM. CPU, disk and kernel-energy observations are cumulative counters since process creation and are reported as maximum single observed process values per role, not task-only deltas or sums. Kernel energy is not battery energy. Host activity, shared allocations and sample spacing limit these observations. All three sessions retain their own worker and host sample counts and numeric ranges in the JSON.",
+  "runner_source_identities": {
+    "continuation_runner": "bda28582f9efbc04b2fd1cb624ce33baa5edbbc5db85097cf965caf79fb54e65",
+    "continuation_supervisor_repair": "5609efba2f7bf9ef334c75b8abdb2345e315dc32de8d3e5066d6cb25529a6c66",
+    "frozen_continuation_merger": "9ac7875ee4d76c75fe8bc48edbb99d6d1665b63da0e5240c416ac631638955f7",
+    "frozen_original_runner": "cfbd51cbb79349442770022bb0dfcbb3a7b089debc3437bab9baeab69cca8bcf"
+  },
+  "runtime_sha256": "ae2642e73a4a9896c21efb3a067c4666446f8b49cbe2012f4b576f5d83d5f206",
+  "scheduled_instructions_per_arm": 173,
+  "scheduled_prompts_per_arm": 128,
+  "schema_version": 1,
+  "semantic_grading_complete": true,
+  "sessions": {
+    "baseline": {
+      "accounting": {
+        "ambiguous_dispatch_outcomes": 0,
+        "attempted_model_failures": 0,
+        "attempted_scored_requests": 128,
+        "dispatched_without_observed_output": 0,
+        "execution_status_counts": {
+          "ok": 69,
+          "truncated": 59
+        },
+        "graded_outputs": 128,
+        "grader_errors": 0,
+        "grader_timeouts": 0,
+        "missing_outputs_including_unexecuted": 0,
+        "natural_completions": 69,
+        "scheduled_prompts": 128,
+        "scored_generated_tokens": 68243,
+        "scored_generation_seconds": 1704.5630007324219,
+        "scored_input_tokens": 8745,
+        "scored_requests_with_unknown_duration": 0,
+        "scored_requests_with_unknown_tokens": 0,
+        "truncations": 59,
+        "unexecuted_slots": 0
+      },
+      "artifact_sha256": "5ead3e9c60107ab7168bee5373f6cd636c839b82557fed6550aaaa30170aa5b0",
+      "cleanup": {
+        "chrome_exit_confirmed": true,
+        "chrome_os_exit_verified": true,
+        "controller_exit_verified": true,
+        "forced_termination": false,
+        "local_harness_exit_confirmed": true,
+        "owned_browser_and_worker_resources_released": true,
+        "unload_confirmed": true,
+        "worker_terminated": true
+      },
+      "clock": {
+        "cleanup_epoch_seconds_derived": 1794110635.7449079,
+        "deadline_epoch_seconds": 1794114295.531828,
+        "start_epoch_seconds": 1794108895.531828
+      },
+      "configuration_sha256": "da7d716d8e851ee05027b6b7ccaef581591d8ff63b55c3394d52af37d98a528f",
+      "execution_status": "completed",
+      "failure": null,
+      "ledger": {
+        "cancelled": true,
+        "charged": {
+          "billed_units": 0,
+          "completed_sequences": 129,
+          "conservative_requests": 0,
+          "editor_requests": 0,
+          "elapsed_seconds": 1705.3187009277344,
+          "failed_sequences": 0,
+          "generated_tokens": 68255,
+          "limit_violations": 0,
+          "model_probes": 129,
+          "observed_billed_units": 0,
+          "observed_elapsed_seconds": 1705.3187009277344,
+          "observed_generated_tokens": 68255,
+          "pending_requests": 0,
+          "requested_sequences": 129,
+          "retries": 0
+        },
+        "limits": {
+          "billed_units": 0,
+          "editor_requests": 0,
+          "elapsed_seconds": 5400.0,
+          "generated_tokens": 131088,
+          "model_probes": 129,
+          "requested_sequences": 129
+        },
+        "observed": {
+          "billed_units": 0,
+          "billing_measurements": 129,
+          "elapsed_measurements": 129,
+          "elapsed_seconds": 1705.3187009277344,
+          "generated_tokens": 68255,
+          "token_measurements": 129
+        },
+        "reserved": {
+          "billed_units": 0,
+          "elapsed_seconds": 15480.0,
+          "generated_tokens": 131088,
+          "pending_billed_units": 0,
+          "pending_elapsed_seconds": 0,
+          "pending_generated_tokens": 0
+        }
+      },
+      "ledger_file_sha256": "8032c5b7751bf9cf733a84645ee86eab87c72497d35efaf9dacfed0a58f8b167",
+      "manifest_sha256": "ec4045835b3ec13cac54b93befeb6655e782e3acc639d73291b03e11ff180368",
+      "original_schedule_positions": [
+        1,
+        128
+      ],
+      "remaining_owned_processes": 0,
+      "resources": {
+        "available": true,
+        "host_sample_count": 336,
+        "host_sampled_numeric_ranges": {
+          "hostCompressedStorageBytes": {
+            "max": 11304042496,
+            "min": 8627453952,
+            "samples": 336
+          },
+          "hostFreePagesBytes": {
+            "max": 186056704,
+            "min": 41631744,
+            "samples": 336
+          },
+          "hostGpuAllocatedBytes": {
+            "max": 14847623168,
+            "min": 11711250432,
+            "samples": 336
+          },
+          "hostGpuUtilizationPercent": {
+            "max": 86,
+            "min": 0,
+            "samples": 336
+          },
+          "hostMemoryPressureLevel": {
+            "max": 2,
+            "min": 2,
+            "samples": 336
+          },
+          "hostSwapUsedBytes": {
+            "max": 27609928826.88,
+            "min": 25854088314.88,
+            "samples": 336
+          },
+          "hostThermalState": {
+            "max": 0,
+            "min": 0,
+            "samples": 336
+          }
+        },
+        "meaning": "GPUBuffer descriptor bytes and WASM address space are not physical VRAM. Host readings include unrelated work; process memory can include shared allocations; sampled maxima are not absolute peaks.",
+        "owned_process_counter_meaning": "CPU time, disk bytes and kernel energy are cumulative counters since each process was created. Values are maximum single observed process counters per role, not task-only deltas or sums across processes. Kernel energy is not battery energy and these observations do not establish a controlled energy difference.",
+        "owned_role_single_process_maxima": {
+          "browser": {
+            "diskReadBytes": 221458432,
+            "diskWrittenBytes": 479940608,
+            "footprintBytes": 92506032,
+            "kernelEnergyNanojoules": 27801708784,
+            "rssBytes": 218955776,
+            "systemCpuNs": 8710064708,
+            "userCpuNs": 4899472375,
+            "wiredBytes": 0
+          },
+          "gpu-process": {
+            "diskReadBytes": 23855104,
+            "diskWrittenBytes": 0,
+            "footprintBytes": 2298791520,
+            "kernelEnergyNanojoules": 1064021583903,
+            "rssBytes": 226639872,
+            "systemCpuNs": 69524452167,
+            "userCpuNs": 233776787000,
+            "wiredBytes": 0
+          },
+          "helper": {
+            "diskReadBytes": 516325376,
+            "diskWrittenBytes": 165605376,
+            "footprintBytes": 345055824,
+            "kernelEnergyNanojoules": 11049647003,
+            "rssBytes": 255524864,
+            "systemCpuNs": 3887943875,
+            "userCpuNs": 2196328667,
+            "wiredBytes": 344064
+          },
+          "renderer": {
+            "diskReadBytes": 43732992,
+            "diskWrittenBytes": 0,
+            "footprintBytes": 713804488,
+            "kernelEnergyNanojoules": 967915943138,
+            "rssBytes": 600375296,
+            "systemCpuNs": 71535389458,
+            "userCpuNs": 333170596917,
+            "wiredBytes": 0
+          },
+          "utility": {
+            "diskReadBytes": 17723392,
+            "diskWrittenBytes": 9117696,
+            "footprintBytes": 158614728,
+            "kernelEnergyNanojoules": 2165827411,
+            "rssBytes": 105447424,
+            "systemCpuNs": 723790333,
+            "userCpuNs": 266502750,
+            "wiredBytes": 0
+          }
+        },
+        "trailing_incomplete_resource_record": false,
+        "worker_sample_count": 1684,
+        "worker_sampled_maxima": {
+          "eventLoopDelayMs": 15305.599999904633,
+          "gpuBufferBytes": 1747697720,
+          "heapBytes": null,
+          "wasmBytes": 283181056
+        }
+      },
+      "run_id": "ifeval-browser-v1-heldout-baseline",
+      "source_checkpoint_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+      "supervisor_result_sha256": "f54892e358bef25b44158197d27cb17e280874ba230633a72f8c71d3dc399823",
+      "usage": {
+        "automatic_retries": 0,
+        "charged_generated_tokens": 68255,
+        "engine_load_attempts": 1,
+        "generated_tokens_including_warmup": 68255,
+        "generation_dispatches": 129,
+        "generation_requests_with_unknown_tokens": 0,
+        "generation_seconds_including_warmup": 1705.3187009277344,
+        "known_generated_tokens_including_warmup": 68255,
+        "limit_violations": 0,
+        "load_through_cleanup_seconds": 1740.21307995799,
+        "pending_requests": 0,
+        "reserved_generated_tokens": 131088,
+        "scored_dispatches": 128,
+        "supervisor_seconds": 1746.4302218339872,
+        "warmup_dispatches": 1
+      },
+      "warmups": [
+        {
+          "finish_reason": "length",
+          "generated_tokens": 12,
+          "input_tokens": 27,
+          "response_latency_ms": 755.7001953125
+        }
+      ]
+    },
+    "candidate_continuation": {
+      "accounting": {
+        "ambiguous_dispatch_outcomes": 0,
+        "attempted_model_failures": 0,
+        "attempted_scored_requests": 34,
+        "dispatched_without_observed_output": 0,
+        "execution_status_counts": {
+          "ok": 22,
+          "truncated": 12
+        },
+        "graded_outputs": 34,
+        "grader_errors": 0,
+        "grader_timeouts": 0,
+        "missing_outputs_including_unexecuted": 0,
+        "natural_completions": 22,
+        "scheduled_prompts": 34,
+        "scored_generated_tokens": 14601,
+        "scored_generation_seconds": 259.09270068359376,
+        "scored_input_tokens": 2164,
+        "scored_requests_with_unknown_duration": 0,
+        "scored_requests_with_unknown_tokens": 0,
+        "truncations": 12,
+        "unexecuted_slots": 0
+      },
+      "artifact_sha256": "6e18cc4906ce18786b9197bcc7fb5f93ffc706d808b0809150349546eef3627b",
+      "cleanup": {
+        "chrome_exit_confirmed": true,
+        "chrome_os_exit_verified": true,
+        "controller_exit_verified": true,
+        "forced_termination": false,
+        "local_harness_exit_confirmed": true,
+        "owned_browser_and_worker_resources_released": true,
+        "unload_confirmed": true,
+        "worker_terminated": true
+      },
+      "clock": {
+        "cleanup_epoch_seconds_derived": 1794186960.8474848,
+        "deadline_epoch_seconds": 1794192091.01277,
+        "start_epoch_seconds": 1794186691.01277
+      },
+      "configuration_sha256": "b1c1a50efcf880bf06bc74bcaac5145c0865191e17ba106da0a48e37614efdbc",
+      "execution_status": "completed",
+      "failure": null,
+      "ledger": {
+        "cancelled": true,
+        "charged": {
+          "billed_units": 0,
+          "completed_sequences": 35,
+          "conservative_requests": 0,
+          "editor_requests": 0,
+          "elapsed_seconds": 259.91050048828123,
+          "failed_sequences": 0,
+          "generated_tokens": 14613,
+          "limit_violations": 0,
+          "model_probes": 35,
+          "observed_billed_units": 0,
+          "observed_elapsed_seconds": 259.91050048828123,
+          "observed_generated_tokens": 14613,
+          "pending_requests": 0,
+          "requested_sequences": 35,
+          "retries": 0
+        },
+        "limits": {
+          "billed_units": 0,
+          "editor_requests": 0,
+          "elapsed_seconds": 5400.0,
+          "generated_tokens": 34832,
+          "model_probes": 35,
+          "requested_sequences": 35
+        },
+        "observed": {
+          "billed_units": 0,
+          "billing_measurements": 35,
+          "elapsed_measurements": 35,
+          "elapsed_seconds": 259.91050048828123,
+          "generated_tokens": 14613,
+          "token_measurements": 35
+        },
+        "reserved": {
+          "billed_units": 0,
+          "elapsed_seconds": 4200.0,
+          "generated_tokens": 34832,
+          "pending_billed_units": 0,
+          "pending_elapsed_seconds": 0,
+          "pending_generated_tokens": 0
+        }
+      },
+      "ledger_file_sha256": "d2dbf97e7bb7d991bb2e3e41d001c100b2f14ac15d935773fc5c5c7f4692afeb",
+      "manifest_sha256": "0faa9ec2b548c5070106701fbe965640b44a678c1ee6b185c3d25aa7fcd4ab83",
+      "original_schedule_positions": [
+        95,
+        128
+      ],
+      "remaining_owned_processes": 0,
+      "resources": {
+        "available": true,
+        "host_sample_count": 53,
+        "host_sampled_numeric_ranges": {
+          "hostCompressedStorageBytes": {
+            "max": 11209441280,
+            "min": 8823144448,
+            "samples": 53
+          },
+          "hostFreePagesBytes": {
+            "max": 169443328,
+            "min": 14909440,
+            "samples": 53
+          },
+          "hostGpuAllocatedBytes": {
+            "max": 15061630976,
+            "min": 12387205120,
+            "samples": 53
+          },
+          "hostGpuUtilizationPercent": {
+            "max": 81,
+            "min": 11,
+            "samples": 53
+          },
+          "hostMemoryPressureLevel": {
+            "max": 2,
+            "min": 2,
+            "samples": 53
+          },
+          "hostSwapUsedBytes": {
+            "max": 26838428549.12,
+            "min": 24569582714.88,
+            "samples": 53
+          },
+          "hostThermalState": {
+            "max": 0,
+            "min": 0,
+            "samples": 53
+          }
+        },
+        "meaning": "GPUBuffer descriptor bytes and WASM address space are not physical VRAM. Host readings include unrelated work; process memory can include shared allocations; sampled maxima are not absolute peaks.",
+        "owned_process_counter_meaning": "CPU time, disk bytes and kernel energy are cumulative counters since each process was created. Values are maximum single observed process counters per role, not task-only deltas or sums across processes. Kernel energy is not battery energy and these observations do not establish a controlled energy difference.",
+        "owned_role_single_process_maxima": {
+          "browser": {
+            "diskReadBytes": 261271552,
+            "diskWrittenBytes": 479744000,
+            "footprintBytes": 91047832,
+            "kernelEnergyNanojoules": 15210417071,
+            "rssBytes": 198639616,
+            "systemCpuNs": 4501243083,
+            "userCpuNs": 2560777833,
+            "wiredBytes": 0
+          },
+          "gpu-process": {
+            "diskReadBytes": 16171008,
+            "diskWrittenBytes": 0,
+            "footprintBytes": 2354693944,
+            "kernelEnergyNanojoules": 236503541158,
+            "rssBytes": 206077952,
+            "systemCpuNs": 15530518042,
+            "userCpuNs": 50852616375,
+            "wiredBytes": 0
+          },
+          "helper": {
+            "diskReadBytes": 336621568,
+            "diskWrittenBytes": 30769152,
+            "footprintBytes": 342532640,
+            "kernelEnergyNanojoules": 3720157942,
+            "rssBytes": 318504960,
+            "systemCpuNs": 1076249917,
+            "userCpuNs": 738259875,
+            "wiredBytes": 327680
+          },
+          "renderer": {
+            "diskReadBytes": 22106112,
+            "diskWrittenBytes": 0,
+            "footprintBytes": 576227896,
+            "kernelEnergyNanojoules": 253172288220,
+            "rssBytes": 288784384,
+            "systemCpuNs": 20493327250,
+            "userCpuNs": 58086123042,
+            "wiredBytes": 0
+          },
+          "utility": {
+            "diskReadBytes": 85565440,
+            "diskWrittenBytes": 9105408,
+            "footprintBytes": 59294920,
+            "kernelEnergyNanojoules": 2039702851,
+            "rssBytes": 106479616,
+            "systemCpuNs": 557340625,
+            "userCpuNs": 285008167,
+            "wiredBytes": 0
+          }
+        },
+        "trailing_incomplete_resource_record": false,
+        "worker_sample_count": 282,
+        "worker_sampled_maxima": {
+          "eventLoopDelayMs": 62.5,
+          "gpuBufferBytes": 1747697720,
+          "heapBytes": null,
+          "wasmBytes": 283181056
+        }
+      },
+      "run_id": "ifeval-browser-v1-heldout-continuation-candidate",
+      "source_checkpoint_sha256": "f9c767c06ec3c17dbdfedc43b695d64d025ae7393d3f425cee71ef45c358d6bf",
+      "supervisor_result_sha256": "a40e3c267419444dbee77d6eddec5710f2b34ab494738b219005558faba02ae7",
+      "usage": {
+        "automatic_retries": 0,
+        "charged_generated_tokens": 14613,
+        "engine_load_attempts": 1,
+        "generated_tokens_including_warmup": 14613,
+        "generation_dispatches": 35,
+        "generation_requests_with_unknown_tokens": 0,
+        "generation_seconds_including_warmup": 259.91050048828123,
+        "known_generated_tokens_including_warmup": 14613,
+        "limit_violations": 0,
+        "load_through_cleanup_seconds": 269.8347150001209,
+        "pending_requests": 0,
+        "reserved_generated_tokens": 34832,
+        "scored_dispatches": 34,
+        "supervisor_seconds": 276.5163915420417,
+        "warmup_dispatches": 1
+      },
+      "warmups": [
+        {
+          "finish_reason": "length",
+          "generated_tokens": 12,
+          "input_tokens": 27,
+          "response_latency_ms": 817.7998046875
+        }
+      ]
+    },
+    "candidate_interrupted": {
+      "accounting": {
+        "ambiguous_dispatch_outcomes": 0,
+        "attempted_model_failures": 0,
+        "attempted_scored_requests": 94,
+        "dispatched_without_observed_output": 0,
+        "execution_status_counts": {
+          "ok": 55,
+          "truncated": 39
+        },
+        "graded_outputs": 94,
+        "grader_errors": 0,
+        "grader_timeouts": 0,
+        "missing_outputs_including_unexecuted": 34,
+        "natural_completions": 55,
+        "scheduled_prompts": 128,
+        "scored_generated_tokens": 45588,
+        "scored_generation_seconds": 968.8932001953125,
+        "scored_input_tokens": 6581,
+        "scored_requests_with_unknown_duration": 0,
+        "scored_requests_with_unknown_tokens": 0,
+        "truncations": 39,
+        "unexecuted_slots": 34
+      },
+      "artifact_sha256": "6e18cc4906ce18786b9197bcc7fb5f93ffc706d808b0809150349546eef3627b",
+      "cleanup": {
+        "chrome_exit_confirmed": true,
+        "chrome_os_exit_verified": true,
+        "controller_exit_verified": true,
+        "forced_termination": true,
+        "local_harness_exit_confirmed": true,
+        "owned_browser_and_worker_resources_released": true,
+        "unload_confirmed": false,
+        "worker_terminated": true
+      },
+      "clock": {
+        "cleanup_epoch_seconds_derived": 1794111681.6741042,
+        "deadline_epoch_seconds": 1794116059.497619,
+        "start_epoch_seconds": 1794110659.497619
+      },
+      "configuration_sha256": "68052bd1bc67c07e25029ff8c7161bcdb0afa8bb0e665f475f6ba308480aca0a",
+      "execution_status": "stopped",
+      "failure": {
+        "category": "original_supervisor_sequence_guard_race",
+        "detail_policy": "Exact original error retained privately; no automatic retry.",
+        "preserved_error_sha256": "ed59b6396536f374b90b186c0b840a400270dd96e0601637f4f23de151bf0efa"
+      },
+      "ledger": {
+        "cancelled": true,
+        "charged": {
+          "billed_units": 0,
+          "completed_sequences": 95,
+          "conservative_requests": 0,
+          "editor_requests": 0,
+          "elapsed_seconds": 969.6933002929687,
+          "failed_sequences": 0,
+          "generated_tokens": 45600,
+          "limit_violations": 0,
+          "model_probes": 95,
+          "observed_billed_units": 0,
+          "observed_elapsed_seconds": 969.6933002929687,
+          "observed_generated_tokens": 45600,
+          "pending_requests": 0,
+          "requested_sequences": 95,
+          "retries": 0
+        },
+        "limits": {
+          "billed_units": 0,
+          "editor_requests": 0,
+          "elapsed_seconds": 5400.0,
+          "generated_tokens": 131088,
+          "model_probes": 129,
+          "requested_sequences": 129
+        },
+        "observed": {
+          "billed_units": 0,
+          "billing_measurements": 95,
+          "elapsed_measurements": 95,
+          "elapsed_seconds": 969.6933002929687,
+          "generated_tokens": 45600,
+          "token_measurements": 95
+        },
+        "reserved": {
+          "billed_units": 0,
+          "elapsed_seconds": 11400.0,
+          "generated_tokens": 96272,
+          "pending_billed_units": 0,
+          "pending_elapsed_seconds": 0,
+          "pending_generated_tokens": 0
+        }
+      },
+      "ledger_file_sha256": "66d5d6128d75fcfb07f06e0a685cf6bbc324c898f8b60bf8aab4ceec191d2840",
+      "manifest_sha256": "1ef17e4e6bf82967b3fa1570a0fc9afd90eea7e8d71fb1a6e1c354c8a6512229",
+      "original_schedule_positions": [
+        1,
+        128
+      ],
+      "remaining_owned_processes": 0,
+      "resources": {
+        "available": true,
+        "host_sample_count": 202,
+        "host_sampled_numeric_ranges": {
+          "hostCompressedStorageBytes": {
+            "max": 11837800448,
+            "min": 9289105408,
+            "samples": 202
+          },
+          "hostFreePagesBytes": {
+            "max": 448348160,
+            "min": 14843904,
+            "samples": 202
+          },
+          "hostGpuAllocatedBytes": {
+            "max": 13796655104,
+            "min": 11583127552,
+            "samples": 202
+          },
+          "hostGpuUtilizationPercent": {
+            "max": 77,
+            "min": 0,
+            "samples": 202
+          },
+          "hostMemoryPressureLevel": {
+            "max": 2,
+            "min": 2,
+            "samples": 202
+          },
+          "hostSwapUsedBytes": {
+            "max": 26648185405.44,
+            "min": 26312242626.56,
+            "samples": 202
+          },
+          "hostThermalState": {
+            "max": 0,
+            "min": 0,
+            "samples": 202
+          }
+        },
+        "meaning": "GPUBuffer descriptor bytes and WASM address space are not physical VRAM. Host readings include unrelated work; process memory can include shared allocations; sampled maxima are not absolute peaks.",
+        "owned_process_counter_meaning": "CPU time, disk bytes and kernel energy are cumulative counters since each process was created. Values are maximum single observed process counters per role, not task-only deltas or sums across processes. Kernel energy is not battery energy and these observations do not establish a controlled energy difference.",
+        "owned_role_single_process_maxima": {
+          "browser": {
+            "diskReadBytes": 329068544,
+            "diskWrittenBytes": 479911936,
+            "footprintBytes": 122095488,
+            "kernelEnergyNanojoules": 155217300796,
+            "rssBytes": 250413056,
+            "systemCpuNs": 21081720167,
+            "userCpuNs": 31408806750,
+            "wiredBytes": 0
+          },
+          "gpu-process": {
+            "diskReadBytes": 11743232,
+            "diskWrittenBytes": 0,
+            "footprintBytes": 2177402584,
+            "kernelEnergyNanojoules": 692134960009,
+            "rssBytes": 325500928,
+            "systemCpuNs": 40498109750,
+            "userCpuNs": 151995958083,
+            "wiredBytes": 0
+          },
+          "helper": {
+            "diskReadBytes": 493944832,
+            "diskWrittenBytes": 93978624,
+            "footprintBytes": 433704464,
+            "kernelEnergyNanojoules": 34168934969,
+            "rssBytes": 300711936,
+            "systemCpuNs": 8840725417,
+            "userCpuNs": 1482007125,
+            "wiredBytes": 0
+          },
+          "renderer": {
+            "diskReadBytes": 6791168,
+            "diskWrittenBytes": 0,
+            "footprintBytes": 653691256,
+            "kernelEnergyNanojoules": 580868001061,
+            "rssBytes": 374325248,
+            "systemCpuNs": 42008453167,
+            "userCpuNs": 239000894375,
+            "wiredBytes": 0
+          },
+          "utility": {
+            "diskReadBytes": 12169216,
+            "diskWrittenBytes": 9101312,
+            "footprintBytes": 231146696,
+            "kernelEnergyNanojoules": 1567365643,
+            "rssBytes": 114311168,
+            "systemCpuNs": 654537583,
+            "userCpuNs": 341965750,
+            "wiredBytes": 0
+          }
+        },
+        "trailing_incomplete_resource_record": false,
+        "worker_sample_count": 996,
+        "worker_sampled_maxima": {
+          "eventLoopDelayMs": 9645,
+          "gpuBufferBytes": 1747697720,
+          "heapBytes": null,
+          "wasmBytes": 283181056
+        }
+      },
+      "run_id": "ifeval-browser-v1-heldout-candidate",
+      "source_checkpoint_sha256": "f9c767c06ec3c17dbdfedc43b695d64d025ae7393d3f425cee71ef45c358d6bf",
+      "supervisor_result_sha256": "af8bac0aff93b021da4dd28dad0a14919da41891785f9fa00802d88eccf4be38",
+      "usage": {
+        "automatic_retries": 0,
+        "charged_generated_tokens": 45600,
+        "engine_load_attempts": 1,
+        "generated_tokens_including_warmup": 45600,
+        "generation_dispatches": 95,
+        "generation_requests_with_unknown_tokens": 0,
+        "generation_seconds_including_warmup": 969.6933002929687,
+        "known_generated_tokens_including_warmup": 45600,
+        "limit_violations": 0,
+        "load_through_cleanup_seconds": 1022.1764852909837,
+        "pending_requests": 0,
+        "reserved_generated_tokens": 96272,
+        "scored_dispatches": 94,
+        "supervisor_seconds": 1045.3222038750537,
+        "warmup_dispatches": 1
+      },
+      "warmups": [
+        {
+          "finish_reason": "length",
+          "generated_tokens": 12,
+          "input_tokens": 27,
+          "response_latency_ms": 800.10009765625
+        }
+      ]
+    }
+  },
+  "settings": {
+    "contextWindow": 4096,
+    "maxTokens": 1024,
+    "requestLimitMs": 120000,
+    "seed": 42,
+    "temperature": 0,
+    "thinking": false,
+    "topP": 1,
+    "warmupTokens": 16,
+    "warmups": 1
+  },
+  "status": "complete_manually_continued",
+  "subset_exposed_for_future_edits": true,
+  "suffix_qualitative_interpretation": {
+    "changed_outcomes": [
+      {
+        "loose_change": "regressed",
+        "observation": "The baseline stops naturally after two short, similarly worded responses with the requested separator, receiving both official instruction credits. The candidate repeats quotation marks until truncation and never supplies the checked two-response structure. It retains forbidden-word credit. The regression reflects a loss of response structure within repetitive output; the baseline's checker pass does not establish that its two responses are substantively different or informative.",
+        "schedule_position": 98,
+        "strict_change": "regressed"
+      },
+      {
+        "loose_change": "regressed",
+        "observation": "Both responses repeat uppercase text until truncation. The baseline repeatedly cycles through a phrase, while the candidate collapses into repetition of a single word. The saved official English-and-capitals grade changes from pass to fail even though the candidate's visible text uses capital letters. This checker also performs automatic language identification; its internal language label was not saved, so the regression should not be described as an observed lowercase violation. Neither repetitive response demonstrates a substantive song with explanations, and the official grades remain unchanged.",
+        "schedule_position": 114,
+        "strict_change": "regressed"
+      }
+    ],
+    "summary": "All 34 newly completed candidate suffix outputs were compared with their preserved baseline grades. Two pairs changed at least one strict or loose instruction outcome, at schedule positions 98 and 114. Both are regressions under both prompt metrics; the remaining 32 pairs are ties, with no suffix improvements or additional instruction-only changes. These observations use the saved official grades without regrading or introducing a new scoring rule. Repetitive output is visible in both changed pairs. Compliance grades do not establish substantive answer correctness, and the English-and-capitals checker combines capitalization with automatic language identification."
+  },
+  "template_sha256": "0c8e7d1f1cb59e754a9a9d6d963fa07e23c720943f71f26be519f828315ca19a",
+  "timing": {
+    "calendar_method": "Epoch load timestamps plus preserved monotonic session durations; includes gaps and excludes post-cleanup grading/reporting.",
+    "candidate_interruption_gap_seconds": 75009.3386657238,
+    "continuation_clock_limit_seconds": 5400,
+    "first_load_to_final_cleanup_calendar_seconds": 78065.3156569004,
+    "original_clock_limit_seconds_preserved": 10800,
+    "original_clock_reopened": false,
+    "preserved_original_active_session_seconds": 2762.3895652489737,
+    "preserved_original_aggregate_span_seconds": 2786.1340919160284
+  },
+  "tokenizer_sha256": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+  "unexecuted_suffix_schedule_positions": [],
+  "upstream_source_file_sha256": "67ffeee0fcb87c317c5b08a2de85557b4a7e96ada6178aa645b4954fe4b53d49",
+  "upstream_source_revision": "e6890f85757dd84e27ca6df2dd30651dafad28e0",
+  "verification_sha256": "ee1ec5300418aa126c19d846edcdfe7b1880cbbb59204bc83eaa0fc0428a3d8e"
+}

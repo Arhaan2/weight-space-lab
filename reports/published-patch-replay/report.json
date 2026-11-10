@@ -1,0 +1,1022 @@
+{
+  "all_phase5_development_resource_totals": {
+    "accounted_wall_seconds": 656.3127199173905,
+    "completed_generations": 26,
+    "generation_seconds": 581.8592031674925,
+    "input_tokens": 2442,
+    "output_tokens": 416,
+    "scope": "Pre-freeze trial plus final validated smoke; excluded from full replay correctness."
+  },
+  "date": "2026-11-06",
+  "development_smoke": {
+    "accounted_wall_seconds": 378.17038979381323,
+    "correct_generations_under_frozen_extraction": 0,
+    "development_validation": {
+      "binding_sha256": "e929c32d375e55b7f4561fb1be8ad0261536daf84397f55cd42b3b91e2f8003b",
+      "generation_paths_complete": true,
+      "grading_resolved": true,
+      "known_answer_checks_passed": true,
+      "meaning": "development mechanics validated, including short truncation; not long-context fit or accuracy validation",
+      "passed": true
+    },
+    "generation_seconds": 335.58081341860816,
+    "generation_status_counts": {
+      "truncated": 15
+    },
+    "generations": 15,
+    "grader_status_counts": {
+      "graded": 15
+    },
+    "identity_token_checks": {
+      "gsm8k": {
+        "checked": true,
+        "token_ids_equal": true
+      },
+      "ifeval": {
+        "checked": true,
+        "token_ids_equal": true
+      },
+      "math": {
+        "checked": true,
+        "token_ids_equal": true
+      }
+    },
+    "input_tokens": 1395,
+    "known_answer_checks": {
+      "count": 25,
+      "passed": true,
+      "sha256": "c574ba5433676a9e3de4e5024b2fcc67f7cc8933a1fa4b294cc8b782d6373738"
+    },
+    "output_tokens": 240,
+    "primary_item_changes": {
+      "gsm8k": {
+        "improved": 0,
+        "regressed": 0,
+        "tied": 1
+      },
+      "ifeval": {
+        "improved": 0,
+        "regressed": 0,
+        "tied": 1
+      },
+      "math": {
+        "improved": 0,
+        "regressed": 0,
+        "tied": 1
+      }
+    },
+    "report_sha256": "dbdc2d4a15ebdb8a1acf099ec0bc453cb2f85946f7db104f00a2f787ee9068d5",
+    "reporting_runtime": {
+      "cache_note": "prior grading runtime is not remeasured; each cached grade is reused without retry",
+      "cached_grades": 0,
+      "new_grade_wall_seconds": 0.003686080453917384,
+      "new_grades": 15,
+      "report_wall_seconds_before_serialization": 3.7748903748579323
+    },
+    "score_scope": "Short capped development checks only; no benchmark accuracy estimate; not best-of-N."
+  },
+  "discrepancies": [
+    "Published-patch replay, regardless of agreement with the published improvement; no fresh editor discovery claim.",
+    "The full conditional-generation checkpoint is retained; upstream used a text-only export.",
+    "Our native runtime versions are pinned now; the upstream installed vLLM version was not pinned.",
+    "Each sample is a separate request with its own explicit seed; upstream used n samples with shared seed 0. Random streams differ.",
+    "Explicit EOS union [248044,248046]; upstream exported implicit generation metadata was not fully pinned.",
+    "Independent pinned graders differ from upstream: Qwen output extraction requires a closed thinking block; upstream math grading could inspect unclosed reasoning.",
+    "GSM8K uses the declared Decimal numeric final-answer policy, while upstream used Math-Verify for its last boxed answer.",
+    "IFEval uses all 541 official source prompts for replay, including development examples; this is not a fresh held-out IFEval estimate.",
+    "Math-Verify, official IFEval code/resources, extraction, retries and truncation rules are independently pinned; no exact upstream evaluator-environment reproduction is claimed.",
+    "Identity control is an independently reopened byte copy, not a framework reserialization.",
+    "Smoke and pilot use short output caps and development subsets; their scores do not estimate full benchmark correctness.",
+    "Temperature 1.0 is a predeclared alternative, not a development-selected winner or the primary comparison.",
+    "Transformers CPU eager BF16 with preserved F32 tensors is a methodological variation from the released vLLM runtime.",
+    "Full-stage requests have a predeclared 7200-second hard timeout and no generation retries; timed-out cases remain in the denominator even if the output-token cap was not reached."
+  ],
+  "experiment_executed": false,
+  "freezes": {
+    "full": {
+      "freeze_sha256": "bac80c76bf1828b751d19171723b83fdc2a72300e2f0cd89c8a320ab699beab9",
+      "jobs": 15,
+      "scheduled_generations": 28600
+    },
+    "pilot": {
+      "freeze_sha256": "a8364e07f67e2bfceb76c596835515e0f33a0cc2bbd40c7917ecf8cffa594ee7",
+      "jobs": 15,
+      "scheduled_generations": 30
+    },
+    "smoke": {
+      "freeze_sha256": "3c617afc00dcba0eada3c2ecb940e4eab99fc3422b64e6115699646ea8c2b1d6",
+      "jobs": 15,
+      "scheduled_generations": 15
+    }
+  },
+  "full_generation_attempts": 0,
+  "full_measured_result": "pending",
+  "full_primary_comparisons": {
+    "gsm8k": {
+      "arms": {
+        "baseline": {
+          "generation_status_counts": {
+            "error": 0,
+            "missing": 2638,
+            "ok": 0,
+            "timeout": 0,
+            "truncated": 0
+          },
+          "grading_accounting": {
+            "absent_raw_records": 2638,
+            "graded": 0,
+            "graded_incorrect": 0,
+            "grader_error": 0,
+            "grader_timeout": 0,
+            "model_failures": 0,
+            "truncation_policy_failures": 0
+          },
+          "label": "gsm8k-original",
+          "measured_average_per_generation": null,
+          "resources": {
+            "accounted_wall_seconds": null,
+            "attempt_duration_seconds": {
+              "known_total": 0,
+              "unknown_attempts": 0
+            },
+            "attempts": 0,
+            "duration_scope": "successful attempt durations cover generation; failure durations may cover startup; no final-outcome double counting",
+            "observed_records": 0,
+            "retried_generations": 0,
+            "retry_attempts": 0,
+            "token_use_all_attempts": {
+              "input": {
+                "known_total": 0,
+                "unknown_attempts": 0
+              },
+              "output": {
+                "known_total": 0,
+                "unknown_attempts": 0
+              },
+              "total": {
+                "known_total": 0,
+                "unknown_attempts": 0
+              }
+            },
+            "unattempted_scheduled_generations": 2638,
+            "unknown_measurements_are_zero": false,
+            "wall_time_scope": "journal accounting includes startup and may include reserved time for interrupted attempts; excludes offline grading"
+          },
+          "scheduled_generations": 2638,
+          "scheduled_items": 1319
+        },
+        "candidate": {
+          "generation_status_counts": {
+            "error": 0,
+            "missing": 2638,
+            "ok": 0,
+            "timeout": 0,
+            "truncated": 0
+          },
+          "grading_accounting": {
+            "absent_raw_records": 2638,
+            "graded": 0,
+            "graded_incorrect": 0,
+            "grader_error": 0,
+            "grader_timeout": 0,
+            "model_failures": 0,
+            "truncation_policy_failures": 0
+          },
+          "label": "gsm8k-reconstructed",
+          "measured_average_per_generation": null,
+          "resources": {
+            "accounted_wall_seconds": null,
+            "attempt_duration_seconds": {
+              "known_total": 0,
+              "unknown_attempts": 0
+            },
+            "attempts": 0,
+            "duration_scope": "successful attempt durations cover generation; failure durations may cover startup; no final-outcome double counting",
+            "observed_records": 0,
+            "retried_generations": 0,
+            "retry_attempts": 0,
+            "token_use_all_attempts": {
+              "input": {
+                "known_total": 0,
+                "unknown_attempts": 0
+              },
+              "output": {
+                "known_total": 0,
+                "unknown_attempts": 0
+              },
+              "total": {
+                "known_total": 0,
+                "unknown_attempts": 0
+              }
+            },
+            "unattempted_scheduled_generations": 2638,
+            "unknown_measurements_are_zero": false,
+            "wall_time_scope": "journal accounting includes startup and may include reserved time for interrupted attempts; excludes offline grading"
+          },
+          "scheduled_generations": 2638,
+          "scheduled_items": 1319
+        }
+      },
+      "estimand": "average per-generation correctness; not best-of-N",
+      "improved_items": null,
+      "measured_delta": null,
+      "measurement_status": "pending",
+      "metric": "accuracy",
+      "paired_item_confidence_interval": null,
+      "regressed_items": null
+    },
+    "ifeval": {
+      "arms": {
+        "baseline": {
+          "generation_status_counts": {
+            "error": 0,
+            "missing": 1082,
+            "ok": 0,
+            "timeout": 0,
+            "truncated": 0
+          },
+          "grading_accounting": {
+            "absent_raw_records": 1082,
+            "graded": 0,
+            "graded_incorrect": 0,
+            "grader_error": 0,
+            "grader_timeout": 0,
+            "model_failures": 0,
+            "truncation_policy_failures": 0
+          },
+          "label": "ifeval-original",
+          "measured_average_per_generation": null,
+          "resources": {
+            "accounted_wall_seconds": null,
+            "attempt_duration_seconds": {
+              "known_total": 0,
+              "unknown_attempts": 0
+            },
+            "attempts": 0,
+            "duration_scope": "successful attempt durations cover generation; failure durations may cover startup; no final-outcome double counting",
+            "observed_records": 0,
+            "retried_generations": 0,
+            "retry_attempts": 0,
+            "token_use_all_attempts": {
+              "input": {
+                "known_total": 0,
+                "unknown_attempts": 0
+              },
+              "output": {
+                "known_total": 0,
+                "unknown_attempts": 0
+              },
+              "total": {
+                "known_total": 0,
+                "unknown_attempts": 0
+              }
+            },
+            "unattempted_scheduled_generations": 1082,
+            "unknown_measurements_are_zero": false,
+            "wall_time_scope": "journal accounting includes startup and may include reserved time for interrupted attempts; excludes offline grading"
+          },
+          "scheduled_generations": 1082,
+          "scheduled_items": 541
+        },
+        "candidate": {
+          "generation_status_counts": {
+            "error": 0,
+            "missing": 1082,
+            "ok": 0,
+            "timeout": 0,
+            "truncated": 0
+          },
+          "grading_accounting": {
+            "absent_raw_records": 1082,
+            "graded": 0,
+            "graded_incorrect": 0,
+            "grader_error": 0,
+            "grader_timeout": 0,
+            "model_failures": 0,
+            "truncation_policy_failures": 0
+          },
+          "label": "ifeval-reconstructed",
+          "measured_average_per_generation": null,
+          "resources": {
+            "accounted_wall_seconds": null,
+            "attempt_duration_seconds": {
+              "known_total": 0,
+              "unknown_attempts": 0
+            },
+            "attempts": 0,
+            "duration_scope": "successful attempt durations cover generation; failure durations may cover startup; no final-outcome double counting",
+            "observed_records": 0,
+            "retried_generations": 0,
+            "retry_attempts": 0,
+            "token_use_all_attempts": {
+              "input": {
+                "known_total": 0,
+                "unknown_attempts": 0
+              },
+              "output": {
+                "known_total": 0,
+                "unknown_attempts": 0
+              },
+              "total": {
+                "known_total": 0,
+                "unknown_attempts": 0
+              }
+            },
+            "unattempted_scheduled_generations": 1082,
+            "unknown_measurements_are_zero": false,
+            "wall_time_scope": "journal accounting includes startup and may include reserved time for interrupted attempts; excludes offline grading"
+          },
+          "scheduled_generations": 1082,
+          "scheduled_items": 541
+        }
+      },
+      "estimand": "average per-generation correctness; not best-of-N",
+      "improved_items": null,
+      "measured_delta": null,
+      "measurement_status": "pending",
+      "metric": "prompt_level_strict_accuracy",
+      "paired_item_confidence_interval": null,
+      "regressed_items": null
+    },
+    "math": {
+      "arms": {
+        "baseline": {
+          "generation_status_counts": {
+            "error": 0,
+            "missing": 2000,
+            "ok": 0,
+            "timeout": 0,
+            "truncated": 0
+          },
+          "grading_accounting": {
+            "absent_raw_records": 2000,
+            "graded": 0,
+            "graded_incorrect": 0,
+            "grader_error": 0,
+            "grader_timeout": 0,
+            "model_failures": 0,
+            "truncation_policy_failures": 0
+          },
+          "label": "math-original",
+          "measured_average_per_generation": null,
+          "resources": {
+            "accounted_wall_seconds": null,
+            "attempt_duration_seconds": {
+              "known_total": 0,
+              "unknown_attempts": 0
+            },
+            "attempts": 0,
+            "duration_scope": "successful attempt durations cover generation; failure durations may cover startup; no final-outcome double counting",
+            "observed_records": 0,
+            "retried_generations": 0,
+            "retry_attempts": 0,
+            "token_use_all_attempts": {
+              "input": {
+                "known_total": 0,
+                "unknown_attempts": 0
+              },
+              "output": {
+                "known_total": 0,
+                "unknown_attempts": 0
+              },
+              "total": {
+                "known_total": 0,
+                "unknown_attempts": 0
+              }
+            },
+            "unattempted_scheduled_generations": 2000,
+            "unknown_measurements_are_zero": false,
+            "wall_time_scope": "journal accounting includes startup and may include reserved time for interrupted attempts; excludes offline grading"
+          },
+          "scheduled_generations": 2000,
+          "scheduled_items": 500
+        },
+        "candidate": {
+          "generation_status_counts": {
+            "error": 0,
+            "missing": 2000,
+            "ok": 0,
+            "timeout": 0,
+            "truncated": 0
+          },
+          "grading_accounting": {
+            "absent_raw_records": 2000,
+            "graded": 0,
+            "graded_incorrect": 0,
+            "grader_error": 0,
+            "grader_timeout": 0,
+            "model_failures": 0,
+            "truncation_policy_failures": 0
+          },
+          "label": "math-reconstructed",
+          "measured_average_per_generation": null,
+          "resources": {
+            "accounted_wall_seconds": null,
+            "attempt_duration_seconds": {
+              "known_total": 0,
+              "unknown_attempts": 0
+            },
+            "attempts": 0,
+            "duration_scope": "successful attempt durations cover generation; failure durations may cover startup; no final-outcome double counting",
+            "observed_records": 0,
+            "retried_generations": 0,
+            "retry_attempts": 0,
+            "token_use_all_attempts": {
+              "input": {
+                "known_total": 0,
+                "unknown_attempts": 0
+              },
+              "output": {
+                "known_total": 0,
+                "unknown_attempts": 0
+              },
+              "total": {
+                "known_total": 0,
+                "unknown_attempts": 0
+              }
+            },
+            "unattempted_scheduled_generations": 2000,
+            "unknown_measurements_are_zero": false,
+            "wall_time_scope": "journal accounting includes startup and may include reserved time for interrupted attempts; excludes offline grading"
+          },
+          "scheduled_generations": 2000,
+          "scheduled_items": 500
+        }
+      },
+      "estimand": "average per-generation correctness; not best-of-N",
+      "improved_items": null,
+      "measured_delta": null,
+      "measurement_status": "pending",
+      "metric": "accuracy",
+      "paired_item_confidence_interval": null,
+      "regressed_items": null
+    }
+  },
+  "full_report_sha256": "8e0b4baf46863efb623aecdeb0f723c30da17011d51d17893d06d7acf09fea21",
+  "kind": "real_model_report",
+  "output_separation": {
+    "enforced_phase7_access_boundary": false,
+    "final_outputs_copied_to_editor": false,
+    "reserved_editor_workspace_created": false
+  },
+  "pending_reason": "No local configured CUDA/vLLM runtime; CPU full workload impractical and long-context fit unverified.",
+  "pilot_generation_attempts": 0,
+  "pre_freeze_trial": {
+    "accounted_wall_seconds": 278.14233012357727,
+    "command_exit_code": 2,
+    "complete_generations": 11,
+    "generation_seconds": 246.27838974888436,
+    "generation_status_counts": {
+      "truncated": 11
+    },
+    "graded": false,
+    "guard_failure": "source_changed_before_next_job_execution",
+    "implementation_sha256": "43eb2704dcc004b3a134698a628659ad9379343e24e4263a809c822a3e73733c",
+    "input_tokens": 1047,
+    "kind": "pre_freeze_development_trial",
+    "matching_source_wheel_preserved": true,
+    "output_tokens": 176,
+    "reason": "Interrupted by source-drift guard after fixing all-load-failure pending reporting; no final study was run.",
+    "scheduled_generations": 15,
+    "scientific_result": false,
+    "unattempted_generations": 4
+  },
+  "published_reference_scores": {
+    "gsm8k": {
+      "original": 0.13836239575435935,
+      "reconstructed": 0.6709628506444276
+    },
+    "ifeval": {
+      "original": 0.2097966728280961,
+      "reconstructed": 0.6229205175600739
+    },
+    "math": {
+      "original": 0.079,
+      "reconstructed": 0.481
+    }
+  },
+  "reporting_environment_repair": {
+    "before_grading": true,
+    "error": "missing_project_numpy_dependency",
+    "generation_repeated_for_repair": false,
+    "installed_numpy": "2.3.5",
+    "matches_native_numpy": true
+  },
+  "schema_version": 1,
+  "scientific_result": false,
+  "smoke_primary_comparisons": {
+    "gsm8k": {
+      "arms": {
+        "baseline": {
+          "generation_status_counts": {
+            "error": 0,
+            "missing": 0,
+            "ok": 0,
+            "timeout": 0,
+            "truncated": 1
+          },
+          "grading_accounting": {
+            "absent_raw_records": 0,
+            "graded": 1,
+            "graded_incorrect": 1,
+            "grader_error": 0,
+            "grader_timeout": 0,
+            "model_failures": 0,
+            "truncation_policy_failures": 0
+          },
+          "label": "gsm8k-original",
+          "measured_average_per_generation": 0.0,
+          "resources": {
+            "accounted_wall_seconds": 24.714478458976373,
+            "attempt_duration_seconds": {
+              "known_total": 21.875908916816115,
+              "unknown_attempts": 0
+            },
+            "attempts": 1,
+            "duration_scope": "successful attempt durations cover generation; failure durations may cover startup; no final-outcome double counting",
+            "observed_records": 1,
+            "retried_generations": 0,
+            "retry_attempts": 0,
+            "token_use_all_attempts": {
+              "input": {
+                "known_total": 57,
+                "unknown_attempts": 0
+              },
+              "output": {
+                "known_total": 16,
+                "unknown_attempts": 0
+              },
+              "total": {
+                "known_total": 73,
+                "unknown_attempts": 0
+              }
+            },
+            "unattempted_scheduled_generations": 0,
+            "unknown_measurements_are_zero": false,
+            "wall_time_scope": "journal accounting includes startup and may include reserved time for interrupted attempts; excludes offline grading"
+          },
+          "scheduled_generations": 1,
+          "scheduled_items": 1
+        },
+        "candidate": {
+          "generation_status_counts": {
+            "error": 0,
+            "missing": 0,
+            "ok": 0,
+            "timeout": 0,
+            "truncated": 1
+          },
+          "grading_accounting": {
+            "absent_raw_records": 0,
+            "graded": 1,
+            "graded_incorrect": 1,
+            "grader_error": 0,
+            "grader_timeout": 0,
+            "model_failures": 0,
+            "truncation_policy_failures": 0
+          },
+          "label": "gsm8k-reconstructed",
+          "measured_average_per_generation": 0.0,
+          "resources": {
+            "accounted_wall_seconds": 24.77591208391823,
+            "attempt_duration_seconds": {
+              "known_total": 22.146366083994508,
+              "unknown_attempts": 0
+            },
+            "attempts": 1,
+            "duration_scope": "successful attempt durations cover generation; failure durations may cover startup; no final-outcome double counting",
+            "observed_records": 1,
+            "retried_generations": 0,
+            "retry_attempts": 0,
+            "token_use_all_attempts": {
+              "input": {
+                "known_total": 57,
+                "unknown_attempts": 0
+              },
+              "output": {
+                "known_total": 16,
+                "unknown_attempts": 0
+              },
+              "total": {
+                "known_total": 73,
+                "unknown_attempts": 0
+              }
+            },
+            "unattempted_scheduled_generations": 0,
+            "unknown_measurements_are_zero": false,
+            "wall_time_scope": "journal accounting includes startup and may include reserved time for interrupted attempts; excludes offline grading"
+          },
+          "scheduled_generations": 1,
+          "scheduled_items": 1
+        }
+      },
+      "estimand": "average per-generation correctness; not best-of-N",
+      "improved_items": 0,
+      "measured_delta": 0.0,
+      "measurement_status": "complete",
+      "metric": "accuracy",
+      "paired_item_confidence_interval": {
+        "high": 0.0,
+        "informative": false,
+        "level": 0.95,
+        "low": 0.0,
+        "method": "paired percentile bootstrap clustered by item",
+        "resamples": 10000,
+        "seed": 0
+      },
+      "regressed_items": 0
+    },
+    "ifeval": {
+      "arms": {
+        "baseline": {
+          "generation_status_counts": {
+            "error": 0,
+            "missing": 0,
+            "ok": 0,
+            "timeout": 0,
+            "truncated": 1
+          },
+          "grading_accounting": {
+            "absent_raw_records": 0,
+            "graded": 1,
+            "graded_incorrect": 1,
+            "grader_error": 0,
+            "grader_timeout": 0,
+            "model_failures": 0,
+            "truncation_policy_failures": 0
+          },
+          "label": "ifeval-original",
+          "measured_average_per_generation": 0.0,
+          "resources": {
+            "accounted_wall_seconds": 24.763439000118524,
+            "attempt_duration_seconds": {
+              "known_total": 22.161960291909054,
+              "unknown_attempts": 0
+            },
+            "attempts": 1,
+            "duration_scope": "successful attempt durations cover generation; failure durations may cover startup; no final-outcome double counting",
+            "observed_records": 1,
+            "retried_generations": 0,
+            "retry_attempts": 0,
+            "token_use_all_attempts": {
+              "input": {
+                "known_total": 87,
+                "unknown_attempts": 0
+              },
+              "output": {
+                "known_total": 16,
+                "unknown_attempts": 0
+              },
+              "total": {
+                "known_total": 103,
+                "unknown_attempts": 0
+              }
+            },
+            "unattempted_scheduled_generations": 0,
+            "unknown_measurements_are_zero": false,
+            "wall_time_scope": "journal accounting includes startup and may include reserved time for interrupted attempts; excludes offline grading"
+          },
+          "scheduled_generations": 1,
+          "scheduled_items": 1
+        },
+        "candidate": {
+          "generation_status_counts": {
+            "error": 0,
+            "missing": 0,
+            "ok": 0,
+            "timeout": 0,
+            "truncated": 1
+          },
+          "grading_accounting": {
+            "absent_raw_records": 0,
+            "graded": 1,
+            "graded_incorrect": 1,
+            "grader_error": 0,
+            "grader_timeout": 0,
+            "model_failures": 0,
+            "truncation_policy_failures": 0
+          },
+          "label": "ifeval-reconstructed",
+          "measured_average_per_generation": 0.0,
+          "resources": {
+            "accounted_wall_seconds": 24.72791862487793,
+            "attempt_duration_seconds": {
+              "known_total": 22.01972679211758,
+              "unknown_attempts": 0
+            },
+            "attempts": 1,
+            "duration_scope": "successful attempt durations cover generation; failure durations may cover startup; no final-outcome double counting",
+            "observed_records": 1,
+            "retried_generations": 0,
+            "retry_attempts": 0,
+            "token_use_all_attempts": {
+              "input": {
+                "known_total": 87,
+                "unknown_attempts": 0
+              },
+              "output": {
+                "known_total": 16,
+                "unknown_attempts": 0
+              },
+              "total": {
+                "known_total": 103,
+                "unknown_attempts": 0
+              }
+            },
+            "unattempted_scheduled_generations": 0,
+            "unknown_measurements_are_zero": false,
+            "wall_time_scope": "journal accounting includes startup and may include reserved time for interrupted attempts; excludes offline grading"
+          },
+          "scheduled_generations": 1,
+          "scheduled_items": 1
+        }
+      },
+      "estimand": "average per-generation correctness; not best-of-N",
+      "improved_items": 0,
+      "measured_delta": 0.0,
+      "measurement_status": "complete",
+      "metric": "prompt_level_strict_accuracy",
+      "paired_item_confidence_interval": {
+        "high": 0.0,
+        "informative": false,
+        "level": 0.95,
+        "low": 0.0,
+        "method": "paired percentile bootstrap clustered by item",
+        "resamples": 10000,
+        "seed": 0
+      },
+      "regressed_items": 0
+    },
+    "math": {
+      "arms": {
+        "baseline": {
+          "generation_status_counts": {
+            "error": 0,
+            "missing": 0,
+            "ok": 0,
+            "timeout": 0,
+            "truncated": 1
+          },
+          "grading_accounting": {
+            "absent_raw_records": 0,
+            "graded": 1,
+            "graded_incorrect": 1,
+            "grader_error": 0,
+            "grader_timeout": 0,
+            "model_failures": 0,
+            "truncation_policy_failures": 0
+          },
+          "label": "math-original",
+          "measured_average_per_generation": 0.0,
+          "resources": {
+            "accounted_wall_seconds": 25.99240708304569,
+            "attempt_duration_seconds": {
+              "known_total": 22.784983791876584,
+              "unknown_attempts": 0
+            },
+            "attempts": 1,
+            "duration_scope": "successful attempt durations cover generation; failure durations may cover startup; no final-outcome double counting",
+            "observed_records": 1,
+            "retried_generations": 0,
+            "retry_attempts": 0,
+            "token_use_all_attempts": {
+              "input": {
+                "known_total": 135,
+                "unknown_attempts": 0
+              },
+              "output": {
+                "known_total": 16,
+                "unknown_attempts": 0
+              },
+              "total": {
+                "known_total": 151,
+                "unknown_attempts": 0
+              }
+            },
+            "unattempted_scheduled_generations": 0,
+            "unknown_measurements_are_zero": false,
+            "wall_time_scope": "journal accounting includes startup and may include reserved time for interrupted attempts; excludes offline grading"
+          },
+          "scheduled_generations": 1,
+          "scheduled_items": 1
+        },
+        "candidate": {
+          "generation_status_counts": {
+            "error": 0,
+            "missing": 0,
+            "ok": 0,
+            "timeout": 0,
+            "truncated": 1
+          },
+          "grading_accounting": {
+            "absent_raw_records": 0,
+            "graded": 1,
+            "graded_incorrect": 1,
+            "grader_error": 0,
+            "grader_timeout": 0,
+            "model_failures": 0,
+            "truncation_policy_failures": 0
+          },
+          "label": "math-reconstructed",
+          "measured_average_per_generation": 0.0,
+          "resources": {
+            "accounted_wall_seconds": 25.203014000086114,
+            "attempt_duration_seconds": {
+              "known_total": 22.278250915929675,
+              "unknown_attempts": 0
+            },
+            "attempts": 1,
+            "duration_scope": "successful attempt durations cover generation; failure durations may cover startup; no final-outcome double counting",
+            "observed_records": 1,
+            "retried_generations": 0,
+            "retry_attempts": 0,
+            "token_use_all_attempts": {
+              "input": {
+                "known_total": 135,
+                "unknown_attempts": 0
+              },
+              "output": {
+                "known_total": 16,
+                "unknown_attempts": 0
+              },
+              "total": {
+                "known_total": 151,
+                "unknown_attempts": 0
+              }
+            },
+            "unattempted_scheduled_generations": 0,
+            "unknown_measurements_are_zero": false,
+            "wall_time_scope": "journal accounting includes startup and may include reserved time for interrupted attempts; excludes offline grading"
+          },
+          "scheduled_generations": 1,
+          "scheduled_items": 1
+        }
+      },
+      "estimand": "average per-generation correctness; not best-of-N",
+      "improved_items": 0,
+      "measured_delta": 0.0,
+      "measurement_status": "complete",
+      "metric": "accuracy",
+      "paired_item_confidence_interval": {
+        "high": 0.0,
+        "informative": false,
+        "level": 0.95,
+        "low": 0.0,
+        "method": "paired percentile bootstrap clustered by item",
+        "resamples": 10000,
+        "seed": 0
+      },
+      "regressed_items": 0
+    }
+  },
+  "study_label": "published-patch replay",
+  "workload_estimate": {
+    "assumptions": [
+      "Serial requests on the same hardware, precision, kernels and runtime as the measured smoke.",
+      "Every scheduled generation reaches its declared output cap; actual stopping may use fewer tokens.",
+      "Constant short-context measured rate; this is not a validated long-context runtime or time upper bound.",
+      "Generation component only; model loading, grading, queueing, retries and interruption reservations excluded.",
+      "Each benchmark/arm execution requires model startup; measured load observations are reported separately."
+    ],
+    "hardware_runtime_match_verified": false,
+    "kind": "measured_smoke_workload_extrapolation",
+    "long_context_memory_fit_verified": false,
+    "maximum_scheduled_output_tokens": 937164800,
+    "measured_backend": "transformers",
+    "measured_backend_token_cap_reference": {
+      "generation_days_range": [
+        14427.784489564321,
+        15940.408773170577
+      ],
+      "generation_seconds_range": [
+        1246560579.8983574,
+        1377251318.0019379
+      ]
+    },
+    "measured_generation_seconds": 335.58081341860816,
+    "measured_generations": 15,
+    "measured_load_seconds_range": [
+      2.502283542184159,
+      3.11195862502791
+    ],
+    "measured_output_tokens": 240,
+    "measured_rate_range_tokens_per_second": [
+      0.6804602673095291,
+      0.7518004460532636
+    ],
+    "scheduled_generations": 28600,
+    "schema_version": 1,
+    "smoke_report_sha256": "cc276d9b2db990a262b508258c22296a6a08f2f041a10daf5fee5a40287e9f2f",
+    "target_backend": "transformers",
+    "target_estimate_available": false,
+    "target_estimate_pending_reason": "Target hardware and complete runtime have not been verified against a matching measured smoke; measured-backend reference is not its ETA.",
+    "target_token_cap_projection": null,
+    "workload": [
+      {
+        "arm": "original",
+        "benchmark": "math",
+        "max_new_tokens": 32768,
+        "maximum_scheduled_output_tokens": 65536000,
+        "scheduled_generations": 2000
+      },
+      {
+        "arm": "identity",
+        "benchmark": "math",
+        "max_new_tokens": 32768,
+        "maximum_scheduled_output_tokens": 65536000,
+        "scheduled_generations": 2000
+      },
+      {
+        "arm": "reconstructed",
+        "benchmark": "math",
+        "max_new_tokens": 32768,
+        "maximum_scheduled_output_tokens": 65536000,
+        "scheduled_generations": 2000
+      },
+      {
+        "arm": "original_temperature1",
+        "benchmark": "math",
+        "max_new_tokens": 32768,
+        "maximum_scheduled_output_tokens": 65536000,
+        "scheduled_generations": 2000
+      },
+      {
+        "arm": "reconstructed_temperature1",
+        "benchmark": "math",
+        "max_new_tokens": 32768,
+        "maximum_scheduled_output_tokens": 65536000,
+        "scheduled_generations": 2000
+      },
+      {
+        "arm": "original",
+        "benchmark": "gsm8k",
+        "max_new_tokens": 32768,
+        "maximum_scheduled_output_tokens": 86441984,
+        "scheduled_generations": 2638
+      },
+      {
+        "arm": "identity",
+        "benchmark": "gsm8k",
+        "max_new_tokens": 32768,
+        "maximum_scheduled_output_tokens": 86441984,
+        "scheduled_generations": 2638
+      },
+      {
+        "arm": "reconstructed",
+        "benchmark": "gsm8k",
+        "max_new_tokens": 32768,
+        "maximum_scheduled_output_tokens": 86441984,
+        "scheduled_generations": 2638
+      },
+      {
+        "arm": "original_temperature1",
+        "benchmark": "gsm8k",
+        "max_new_tokens": 32768,
+        "maximum_scheduled_output_tokens": 86441984,
+        "scheduled_generations": 2638
+      },
+      {
+        "arm": "reconstructed_temperature1",
+        "benchmark": "gsm8k",
+        "max_new_tokens": 32768,
+        "maximum_scheduled_output_tokens": 86441984,
+        "scheduled_generations": 2638
+      },
+      {
+        "arm": "original",
+        "benchmark": "ifeval",
+        "max_new_tokens": 32768,
+        "maximum_scheduled_output_tokens": 35454976,
+        "scheduled_generations": 1082
+      },
+      {
+        "arm": "identity",
+        "benchmark": "ifeval",
+        "max_new_tokens": 32768,
+        "maximum_scheduled_output_tokens": 35454976,
+        "scheduled_generations": 1082
+      },
+      {
+        "arm": "reconstructed",
+        "benchmark": "ifeval",
+        "max_new_tokens": 32768,
+        "maximum_scheduled_output_tokens": 35454976,
+        "scheduled_generations": 1082
+      },
+      {
+        "arm": "original_temperature1",
+        "benchmark": "ifeval",
+        "max_new_tokens": 32768,
+        "maximum_scheduled_output_tokens": 35454976,
+        "scheduled_generations": 1082
+      },
+      {
+        "arm": "reconstructed_temperature1",
+        "benchmark": "ifeval",
+        "max_new_tokens": 32768,
+        "maximum_scheduled_output_tokens": 35454976,
+        "scheduled_generations": 1082
+      }
+    ]
+  }
+}

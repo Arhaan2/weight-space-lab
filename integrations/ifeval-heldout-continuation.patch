@@ -1,0 +1,89 @@
+--- a/src/benchmark/task-evaluation/protocol.ts
++++ b/src/benchmark/task-evaluation/protocol.ts
+@@ -7,7 +7,9 @@
+   .object({
+     schema: z.literal("weight-space-browser-task-v2"),
+     study: z.literal("ifeval-browser-v1").optional(),
+-    evaluationStage: z.literal("heldout").optional(),
++    evaluationStage: z.enum(["heldout", "heldout-continuation"]).optional(),
++    originalScheduleOffset: z.literal(94).optional(),
++    originalScheduleLength: z.literal(128).optional(),
+     warmupPrompt: z.string().min(1).max(1000).optional(),
+     runId: z.string().regex(/^[a-zA-Z0-9_-]+$/),
+     configurationSha256: sha,
+@@ -55,6 +57,11 @@
+   .superRefine((c, ctx) => {
+     if (c.evaluationStage && !c.study)
+       ctx.addIssue({ code: "custom", message: "Held-out stage requires the frozen IFEval study" });
++    const continuation = c.evaluationStage === "heldout-continuation";
++    if (continuation && (c.arm !== "candidate" || c.originalScheduleOffset !== 94 || c.originalScheduleLength !== 128))
++      ctx.addIssue({ code: "custom", message: "Continuation requires candidate slots 95 through 128 of the frozen original schedule" });
++    if (!continuation && (c.originalScheduleOffset !== undefined || c.originalScheduleLength !== undefined))
++      ctx.addIssue({ code: "custom", message: "Original schedule offset is only valid for the explicit continuation stage" });
+     if (!c.study && c.items.length > 32)
+       ctx.addIssue({ code: "custom", message: "Non-IFEval tasks retain the 32-item limit" });
+     if ((!c.study && c.settings.warmups !== 0) || c.settings.thinking)
+@@ -71,7 +78,7 @@
+         message:
+           "Integration v2 permits exactly one item and 256 output tokens per arm",
+       });
+-    if (c.study && (c.items.length !== (c.evaluationStage === "heldout" ? 128 : 32) || c.settings.warmups !== 1 ||
++    if (c.study && (c.items.length !== (continuation ? 34 : c.evaluationStage === "heldout" ? 128 : 32) || c.settings.warmups !== 1 ||
+         c.settings.warmupTokens !== 16 || c.settings.maxTokens !== 1024 ||
+         c.settings.contextWindow !== 4096 || c.settings.temperature !== 0 ||
+         c.settings.topP !== 1 || c.settings.seed !== 42 ||
+@@ -141,6 +148,6 @@
+     baselineMs: 2000,
+     idleMs: 0,
+     recoveryMs: 2000,
+-    resetPolicy: `resetChat before each frozen ${task.evaluationStage === "heldout" ? "held-out" : "development"} item; seed ${task.settings.seed}`,
++    resetPolicy: `resetChat before each frozen ${task.evaluationStage === "heldout-continuation" ? "held-out continuation" : task.evaluationStage === "heldout" ? "held-out" : "development"} item; seed ${task.settings.seed}`,
+   };
+ }
+--- a/tests/unit/ifeval-study.test.ts
++++ b/tests/unit/ifeval-study.test.ts
+@@ -79,3 +79,44 @@
+     (c:any) => c.warmupPrompt = 'different prompt',
+   ]) { const c = heldoutFixture(); mutate(c); assert.equal(taskEvaluationSchema.safeParse(c).success, false); }
+ });
++
++const continuationFixture = () => ({ ...heldoutFixture(), evaluationStage: 'heldout-continuation',
++  arm: 'candidate', runId: 'ifeval-browser-v1-heldout-continuation-candidate',
++  originalScheduleOffset: 94, originalScheduleLength: 128,
++  integrationGate: { attemptId: 'candidate-1', codeVersionSha256: sha },
++  items: heldoutFixture().items.slice(94),
++});
++test('explicit candidate continuation retains only34 remaining slots and identical generation options', () => {
++  const original = taskEvaluationSchema.parse(heldoutFixture());
++  const continuation = taskEvaluationSchema.parse(continuationFixture());
++  assert.equal(continuation.arm, 'candidate');
++  assert.equal(continuation.originalScheduleOffset, 94);
++  assert.equal(continuation.originalScheduleLength, 128);
++  assert.deepEqual(continuation.items, original.items.slice(94));
++  assert.equal(taskPlan(continuation).measuredRequests, 34);
++  assert.equal(taskPlan(continuation).resetPolicy, 'resetChat before each frozen held-out continuation item; seed 42');
++  assert.deepEqual(taskGenerationOptions(continuation), taskGenerationOptions(original));
++  assert.deepEqual(taskGenerationOptions(continuation, true), taskGenerationOptions(original, true));
++  assert.equal(continuation.settings.warmups + continuation.items.length, 35);
++  assert.equal(continuation.settings.warmupTokens + continuation.items.length * continuation.settings.maxTokens, 34832);
++});
++test('continuation rejects wrong arm, count, source offset, decoding and missing provenance stage', () => {
++  for (const mutate of [
++    (c:any) => c.arm = 'baseline',
++    (c:any) => c.items.pop(), (c:any) => c.items.push({ ...c.items[0], item_id: 'extra' }),
++    (c:any) => c.originalScheduleOffset = 93, (c:any) => c.originalScheduleOffset = 95,
++    (c:any) => c.originalScheduleLength = 127, (c:any) => c.originalScheduleLength = 129,
++    (c:any) => delete c.originalScheduleOffset, (c:any) => delete c.originalScheduleLength,
++    (c:any) => delete c.evaluationStage, (c:any) => c.evaluationStage = 'heldout',
++    (c:any) => delete c.study, (c:any) => c.items[1].item_id = c.items[0].item_id,
++    (c:any) => c.settings.warmups = 2, (c:any) => c.settings.warmupTokens = 17,
++    (c:any) => c.settings.maxTokens = 1025, (c:any) => c.settings.requestLimitMs = 120001,
++    (c:any) => c.settings.contextWindow = 2048, (c:any) => c.settings.seed = 43,
++    (c:any) => c.settings.thinking = true, (c:any) => c.settings.temperature = 0.1,
++    (c:any) => c.settings.topP = 0.9, (c:any) => c.totalLimitMs = 5400001,
++    (c:any) => c.items[0].rendered_input_tokens = 3073,
++    (c:any) => c.warmupPrompt = 'different prompt',
++  ]) { const c = continuationFixture(); mutate(c); assert.equal(taskEvaluationSchema.safeParse(c).success, false); }
++  const originalWithOffset = { ...heldoutFixture(), originalScheduleOffset: 94, originalScheduleLength: 128 };
++  assert.equal(taskEvaluationSchema.safeParse(originalWithOffset).success, false);
++});

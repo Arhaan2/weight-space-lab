@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "kind": "ifeval_candidate_continuation_preparation",
+  "author": "Arhaan2",
+  "label": "128-example IFEval on-device subset \u2014 candidate suffix continuation",
+  "status": "prepared_awaiting_explicit_additional_authorization",
+  "execution_authorized": false,
+  "continuation_plan_sha256": "f366b08d4d9a25d54307af6638b1c5fa66f8ee9b87174e087de18d1ad8f9dad8",
+  "continuation_manifest_sha256": "0faa9ec2b548c5070106701fbe965640b44a678c1ee6b185c3d25aa7fcd4ab83",
+  "configuration_sha256": "b1c1a50efcf880bf06bc74bcaac5145c0865191e17ba106da0a48e37614efdbc",
+  "original_evaluation_freeze_sha256": "89ed9703869ab7c8b1032b3d8c5fa59fefed0215d9d0341016684d60b39b8a27",
+  "candidate_source_checkpoint_sha256": "f9c767c06ec3c17dbdfedc43b695d64d025ae7393d3f425cee71ef45c358d6bf",
+  "candidate_deployed_artifact_sha256": "6e18cc4906ce18786b9197bcc7fb5f93ffc706d808b0809150349546eef3627b",
+  "original_schedule_positions": [
+    95,
+    128
+  ],
+  "remaining_prompts": 34,
+  "remaining_instructions": 45,
+  "original_completed_results_preserved": {
+    "baseline": 128,
+    "candidate": 94
+  },
+  "limits_requiring_additional_authorization": {
+    "engine_load_attempts": 1,
+    "warmup_dispatches": 1,
+    "scored_dispatches": 34,
+    "generation_dispatches": 35,
+    "generated_tokens": 34832,
+    "warmup_tokens": 16,
+    "tokens_per_scored_request": 1024,
+    "request_seconds": 120,
+    "wall_seconds": 5400,
+    "automatic_retries": 0,
+    "new_weight_proposals": 0,
+    "development_reruns": 0,
+    "baseline_reruns": 0,
+    "completed_candidate_reruns": 0,
+    "frontier_requests": 0
+  },
+  "cumulative_maximum_after_success": {
+    "engine_load_attempts": 3,
+    "warmup_dispatches": 3,
+    "scored_dispatches": 256,
+    "generation_dispatches": 259,
+    "reported_generated_tokens_upper_bound": 148687,
+    "reserved_generated_tokens": 262192
+  },
+  "authorization_reason": "Both original engine-load and warmup slots were consumed; the stopped ledger is closed. One fresh session adds one dispatch beyond the original aggregate ceiling and needs a new absolute session deadline. Old limits, clocks and ledgers are never reset or borrowed from.",
+  "clock_policy": "New at-most-5400-second clock starts at continuation load grant and includes cleanup; original 10800-second absolute clock stays immutable and is not resumed. Report interruption/calendar gap and summed active session duration separately.",
+  "stop_policy": "No automatic retries, extensions, new proposals, conversions, baseline reruns or completed-candidate reruns; preserve partial suffix and verify cleanup on any failure.",
+  "completion_policy": "Merge only separately validated records and grades under their real session/configuration identities. Preserve original incomplete report; write a new continuation report, disclosing restarted candidate session and the exposed subset.",
+  "offline_checks": {
+    "python_tests_passed": 71,
+    "python_tests_failed": 0,
+    "browser_tests_passed": 17,
+    "browser_tests_failed": 0,
+    "browser_typecheck_passed": true,
+    "driver_syntax_check_passed": true,
+    "browser_build_passed": true,
+    "original_independent_verifier_checks_passed": 57,
+    "original_verifier_input_mutations": 0,
+    "continuation_historical_files_unchanged": 858,
+    "all_prepared_file_pins_verified": 1117,
+    "independent_final_preparation_audit_checks_passed": 20,
+    "independent_merge_source_pins_verified": 22,
+    "original_record_grade_references_verified": 222
+  },
+  "preparation_activity": {
+    "engine_load_attempts": 0,
+    "generation_dispatches": 0,
+    "generated_tokens": 0,
+    "grader_calls": 0,
+    "production_ledger_created": false,
+    "authorization_created": false
+  },
+  "original_report_preserved": true,
+  "original_evaluation_remains_incomplete": true,
+  "editor_isolation": "unverified",
+  "proposal_session_provenance_preserved": true,
+  "limitations": [
+    "Offline verification does not claim a completed real continuation.",
+    "The original 94 completed candidate prompts are reused without rerunning or regrading.",
+    "The candidate would span two engine sessions; the extra warmup and interruption must be disclosed.",
+    "The 128-example subset is exposed and is not a full 541-example evaluation.",
+    "Instruction compliance does not establish substantive answer correctness; resource gains are not demonstrated."
+  ]
+}
