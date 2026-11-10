@@ -52,6 +52,21 @@ class SupervisorGateTests(unittest.TestCase):
         self.append(root, self.event(1))
         gate.reconcile_events(root, book, config, handled, seen)
 
+    def test_resource_workload_uses_64_token_60_second_reservations(self):
+        with self.fixture() as (root,book,config,handled,seen,grant):
+            config["settings"]={"maxTokens":64,"requestLimitMs":60000}
+            for index in (1,2):
+                book.reserve(f"generation-{index}",kind="probe",sequences=1,
+                    max_generated_tokens=16 if index==1 else 64,timeout_seconds=60,max_billed_units=0)
+                book.mark_dispatched(f"generation-{index}"); handled.add(index)
+                self.append(root,self.event(index,generated_tokens=2 if index==1 else 64))
+            gate.reconcile_events(root,book,config,handled,seen)
+            self.assertEqual(len(seen),2)
+        for updates in ({"generated_tokens":65},{"response_latency_ms":60001}):
+            with self.assertRaises(ValueError):
+                gate._validate_sample(self.event(2,**updates),2,["__warmup__","tail-0"],
+                    {"maxTokens":64,"requestLimitMs":60000})
+
     def test_stale_snapshot_old_guard_fails_but_gate_reread_reconciles_once(self):
         with self.fixture() as (root, book, config, handled, seen, grant):
             self.complete_warmup(root, book, config, handled, seen)

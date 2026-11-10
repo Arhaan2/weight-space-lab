@@ -1,0 +1,84 @@
+{
+  "adapter_patch_sha256": "dde233126b49c437861ebda2ec07700bffcafeab2e60d40127041b2e14e240ea",
+  "changes": [
+    "queue only the two selected local artifact identities in separate A-B-B-A sessions",
+    "requirePower=false: supported unprivileged native capture",
+    "fresh dedicated profile, hash-verified local assets, durable per-dispatch study gates"
+  ],
+  "resolved_standard": {
+    "defaultSettings": {
+      "contextWindow": 4096,
+      "maxTokens": 64,
+      "requestLimitMs": 60000,
+      "seed": 42,
+      "temperature": 0,
+      "thinking": false,
+      "topP": 1,
+      "warmupTokens": 16,
+      "warmups": 1
+    },
+    "plan": {
+      "activeLimitMs": null,
+      "baselineMs": 15000,
+      "countSchedule": {
+        "betweenMs": 90000,
+        "bursts": 3,
+        "requestGapMs": 0,
+        "requestsPerBurst": 20
+      },
+      "finishInFlight": true,
+      "idleMs": 30000,
+      "measuredRequests": 60,
+      "mode": "count",
+      "recoveryMs": 15000,
+      "requestLimitMs": 60000,
+      "resetPolicy": "resetChat before every request; fixed prompt for repeats; seed 42",
+      "totalLimitMs": 1800000
+    },
+    "preset": {
+      "deviceLabel": "Dedicated Chrome \u00b7 set your device label",
+      "mode": "session-count",
+      "models": [
+        "Qwen3-0.6B-q4f16_1-MLC",
+        "Qwen3-4B-q4f16_1-MLC",
+        "Qwen2.5-7B-Instruct-q4f16_1-MLC",
+        "Qwen2.5-0.5B-Instruct-q4f16_1-MLC",
+        "Qwen2.5-1.5B-Instruct-q4f16_1-MLC",
+        "Llama-3.2-1B-Instruct-q4f16_1-MLC",
+        "Qwen2.5-3B-Instruct-q4f16_1-MLC",
+        "Qwen3-1.7B-q4f16_1-MLC",
+        "Mistral-7B-Instruct-v0.3-q4f16_1-MLC",
+        "Mistral-7B-Instruct-v0.2-q4f16_1-MLC"
+      ],
+      "name": "Comparison \u00b7 60 requests per model",
+      "profiling": true,
+      "requirePower": true,
+      "settings": {
+        "contextWindow": 4096,
+        "maxTokens": 64,
+        "requestLimitMs": 60000,
+        "seed": 42,
+        "temperature": 0,
+        "thinking": false,
+        "topP": 1,
+        "warmupTokens": 16,
+        "warmups": 1
+      },
+      "workload": "repeat"
+    },
+    "prompts": [
+      "In three short sentences, explain why leaves change color in autumn.",
+      "In three short sentences, explain why leaves change color in autumn.",
+      "In three short sentences, explain why leaves change color in autumn."
+    ]
+  },
+  "source_files": {
+    "harness/presets/comparison.json": "ab11f10c2d53ea1b3c908d8187c26c508b59e022f6d3b612f1d88e8fcad39de6",
+    "src/benchmark/protocol/schedule.ts": "ebf87ca46b6d46f6f590a15f851e0ec3a1d1086277d711b6337a976e48c56ddd",
+    "src/benchmark/protocol/settings.ts": "61d9c7e89196b49ee468a1e75089ca213423bcb9026c4087417665a97ad3632b",
+    "src/benchmark/protocol/workloads.ts": "12b2d44f1261f489445cfc2d25a62007ba54e1a67e02240f0848fcd3634d4c51"
+  },
+  "upstream_repository": "https://github.com/gufranmirza/browser-llm-bench",
+  "upstream_revision": "b39187b1aff1f218493622d7fcf3cd5d24773b41",
+  "workload_identity": "browser-llm-bench-standard"
+}

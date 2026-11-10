@@ -1,0 +1,120 @@
+{
+  "calendar": {
+    "anchor_epoch_seconds": 1794344106.160109,
+    "deadline_epoch_seconds": 1794948906.160109,
+    "study_sha256": "bf38a30cb9bd0bac1b4afc2167b9293c32bb4d61b1af3e178a0f474e502b4e0c"
+  },
+  "consumption": {
+    "browser_seconds": 0,
+    "conversions": 0,
+    "dispatches": 0,
+    "editor_submissions": 0,
+    "engine_loads": 0,
+    "generated_tokens": 0,
+    "imports": 0,
+    "local_seconds": 0,
+    "packages": 0,
+    "resource_requests": 0,
+    "retained_bytes": 477626331,
+    "scored_requests": 0,
+    "task_requests": 0,
+    "warmups": 0
+  },
+  "earlier_v2_reconciliation": {
+    "generation_sessions": 0,
+    "old_tree_and_window_reopened": false,
+    "stages": 0,
+    "status": "superseded_preparation_preserved_unchanged",
+    "submissions": 0
+  },
+  "editor_packet_hashes": {
+    "packet_sha256": "859ea2e0978ad939033409f508e7ec9a0dfd0f3afb433742136d280123ebe05b",
+    "request_sha256": "48124cd60e3818cef973d533d16103521369007d1cc4b5305f106a5855b4b24a"
+  },
+  "effective_capacity": {
+    "automatic_retries": 0,
+    "browser_seconds": 5400,
+    "calendar_seconds": 604800,
+    "conversions": 4,
+    "dispatches": 376,
+    "editor_submissions": 4,
+    "engine_loads": 8,
+    "generated_tokens": 146560,
+    "imports": 4,
+    "local_seconds": 9000,
+    "packages": 4,
+    "resource_requests": 240,
+    "retained_bytes": 34359738368,
+    "scored_requests": 368,
+    "task_requests": 128,
+    "warmups": 8
+  },
+  "final_set": {
+    "fresh_final_quality_available": false,
+    "instructions": 0,
+    "manifest_sha256": "e065bb970b99b3cb14f684b0d20afc5b596374a820cb263e9cd2b059f21cf440",
+    "prompts": 0
+  },
+  "historical_preservation": {
+    "changed": [],
+    "git_placeholders_remaining": 0,
+    "historical_files": 3656,
+    "missing": [],
+    "unrelated_changed": [],
+    "unrelated_working_files_checked": 5
+  },
+  "implementation_commit": "3222a3ad572e732725c499e46c8fdae06c5e3670",
+  "protocol_sha256": "5c0163519d1ca580761b90112a5db3da1d6eb503e8af9756aa1225b718f07cc4",
+  "resource_adapter_patch_sha256": "dde233126b49c437861ebda2ec07700bffcafeab2e60d40127041b2e14e240ea",
+  "resource_preset_derivation_sha256": "1ab018fd7196512338f13a34fd27a524fcb248f5ad27226385e71c395cad66b8",
+  "schema_version": 1,
+  "source_publication_note": "Exact local runtime sources are privately snapshotted; pre-existing unrelated source changes remain outside workflow commits.",
+  "source_snapshot_files": 72,
+  "source_snapshot_sha256": "f897e226fbd81560ea72bd81234a5638cf2be2134f125af18558052c297f853b",
+  "status": "implementation_verified_awaiting_genuine_round_1_response",
+  "study_sha256": "bf38a30cb9bd0bac1b4afc2167b9293c32bb4d61b1af3e178a0f474e502b4e0c",
+  "v2_final_quality_results": null,
+  "v2_model_results": null,
+  "v2_standard_resource_results": null,
+  "verification": {
+    "actual_production_worker_client_build": "passed",
+    "additional_public_supervisor_suite": {
+      "result": "passed",
+      "tests": 11
+    },
+    "browser_production_build": "passed",
+    "browser_typecheck": "passed",
+    "browser_unit": {
+      "result": "passed",
+      "tests": 88
+    },
+    "core_focused": {
+      "result": "passed",
+      "tests": 44
+    },
+    "full_workspace_frozen_sources": {
+      "result": "passed",
+      "skipped": 2,
+      "tests": 682
+    },
+    "native_harness": {
+      "result": "passed",
+      "tests": 21
+    },
+    "packet_privacy_integrity": {
+      "checks": 92,
+      "result": "passed"
+    },
+    "public_clean_export": {
+      "result": "passed",
+      "skipped": 3,
+      "tests": 621
+    },
+    "resource_adapter_python": {
+      "result": "passed",
+      "tests": 8
+    },
+    "target_generations_during_verification": 0,
+    "v1_public_closeout": "passed"
+  }
+}
