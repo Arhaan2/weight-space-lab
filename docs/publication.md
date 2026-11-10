@@ -19,18 +19,19 @@ git diff --cached --stat
 
 Use `main` and descriptive topic branches. Do not add automated coauthor trailers. When another person contributes, retain their legitimate authorship and permission; this project's attribution policy does not authorize rewriting someone else's history.
 
-If starting from a source archive, initialize the repository before setting its local identity:
+This repository already exists. Publish reviewed changes through a descriptive topic branch and a pull request to `main`; preserve local history and push normally:
 
 ```bash
-git init -b main
-git config --local user.name "Arhaan Aggarwal"
-git config --local user.email "59648536+Arhaan2@users.noreply.github.com"
-git add README.md LICENSE pyproject.toml .gitignore configs docs examples scripts tests weight_space_lab
+git switch -c ifeval-browser-quality-resource
+# Stage only the reviewed files belonging to this change.
 git diff --cached --stat
-git commit -m "Initialize controlled weight-editing study"
+git diff --cached --check
+git commit -m "Implement bounded browser quality and resource study"
+git push -u origin HEAD
+gh pr create --base main --title "Implement bounded browser quality and resource study" --body-file /tmp/weight-space-release.md
 ```
 
-With the GitHub CLI installed and signed in as Arhaan2, `python scripts/publish.py` creates the public `Arhaan2/weight-space-lab` repository and pushes the reviewed commit. It checks account, commit identities, coauthor trailers, branch, working tree, and existing remote before publication. It never makes up benchmark results or claims the destination already exists. Do not run it if this repository has already been created; inspect the existing destination and set its remote explicitly instead.
+Verify the destination is `Arhaan2/weight-space-lab` and the authenticated account is `Arhaan2`. Inspect all outgoing commits and blobs, including historical versions, for private content before pushing. Do not force-push or rewrite history. Preserve unrelated working files outside the staged change. The obsolete one-time repository-creation script was removed because its required state (no origin, initial publication from main) no longer applies; its exact source remains in earlier commits.
 
 ## Public content
 
