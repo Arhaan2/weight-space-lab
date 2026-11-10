@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "study_id": "resource-all-edits-v1",
+  "workload_identity": "browser-llm-bench-standard",
+  "artifact_order": ["pristine", "v1", "v2-r1", "v2-r2", "v2-r3"],
+  "session_order": ["pristine", "v1", "v2-r1", "v2-r2", "v2-r3", "v2-r3", "v2-r2", "v2-r1", "v1", "pristine"],
+  "expected_artifacts": {
+    "pristine": "5ead3e9c60107ab7168bee5373f6cd636c839b82557fed6550aaaa30170aa5b0",
+    "v1": "6e18cc4906ce18786b9197bcc7fb5f93ffc706d808b0809150349546eef3627b",
+    "v2-r1": "704590e6512285752e25795f2a81c389429ed662bf80f58d5a89227ea89e40fc",
+    "v2-r2": "f78b942268e7fd5cfbb7747eaad2a93724a9658b31e9d6d1670e86b950495a66",
+    "v2-r3": "eaa72067ef9bea370bd80398dafecbea5437379c8d6ddf27678b0068eebb0c38"
+  },
+  "limits": {
+    "sessions": 10,
+    "engine_loads": 10,
+    "warmups": 10,
+    "measured_requests": 600,
+    "dispatches": 610,
+    "reserved_target_tokens": 38560,
+    "browser_seconds": 5400,
+    "local_seconds": 7200,
+    "calendar_seconds": 86400,
+    "retained_bytes": 34359738368,
+    "minimum_free_bytes": 8589934592,
+    "automatic_retries": 0,
+    "frontier_calls": 0
+  },
+  "quality_gate": "not required; explicit separate descriptive resource study of all existing edits",
+  "quality_reruns": 0,
+  "cache_policy": "Fresh dedicated Chrome profile and empty IndexedDB weights per session; same local hash-verified no-store fetch. OS filesystem caches are not cleared and may be warmed by verification.",
+  "analysis": "Session is the replication unit: two observations per artifact, individual values and mean/min/max; descriptive deltas against current pristine. No request-level pseudoreplication, precise equality claim or quality improvement inferred. Missing or incomplete paired sessions yield unavailable means/deltas.",
+  "host_guards": {"memory_pressure_stop_at": 4, "thermal_state_stop_at": 2, "unknown_state": "stop"}
+}

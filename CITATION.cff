@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: >-
+  If you use this code or its measurements, cite this research artifact and
+  the upstream model, benchmarks, and runtimes credited in the methodology.
+title: Weight Space Lab
+abstract: >-
+  Exploratory direct weight-editing experiments on Qwen3.5-0.8B, with
+  instruction-following evaluation in WebLLM and separately measured browser
+  resource comparisons. The artifact preserves negative and inconclusive
+  results, experiment provenance, execution limits, and measurement scope.
+authors:
+  - family-names: Aggarwal
+    given-names: Arhaan
+    website: https://github.com/Arhaan2
+repository-code: https://github.com/Arhaan2/weight-space-lab
+url: https://arhaan2.github.io/weight-space-lab/
+license: MIT
+keywords:
+  - weight-space programming
+  - WebLLM
+  - instruction following
+  - browser inference
+  - resource measurement
+preferred-citation:
+  type: report
+  authors:
+    - family-names: Aggarwal
+      given-names: Arhaan
+  title: 'Weight Space Lab: benchmark quality and browser resource measurements'
+  year: 2026
+  url: https://arhaan2.github.io/weight-space-lab/
+  notes: Exploratory research artifact; not a peer-reviewed publication.

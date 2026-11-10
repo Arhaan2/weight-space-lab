@@ -33,3 +33,28 @@ A read-only check of the same native collector outside the sandbox returned memo
 A separate continuation adopts the exact already-built candidate and carries all spent costs, the original calendar and original limits. The failed pre-dispatch stage still consumes one of four browser-development attempts, leaving room for at most three real candidate evaluations. Only two further Astra proposals may be dispatched; the fourth proposal turn will be closed without an Astra call when development-attempt capacity is exhausted. The new continuation manifest records the original state and evidence hashes, the explicit mapping of the inherited failed stage, and zero load/generation evidence. Original state and ledgers are not reset.
 
 The third Astra agent initially returned no proposal because tool output truncated the growing feedback packet. An additional delivery turn to that same agent is explicitly recorded. It permits lossless whitespace minification and bounded reads of the unchanged original packet, with all keys/values retained; it adds no scientific feedback or target-model attempt. Reports distinguish distinct editor agents/submission slots from editor delivery turns and leave provider request/token/billing totals unavailable.
+
+## Separately authorized all-edit resource study and research website
+
+The user subsequently clarified that resource comparisons are required for the
+edits even when they do not qualify on quality. A new resource-only study measures
+pristine, the canonical V1 candidate and the three existing V2 candidates. It
+preserves the completed quality reports, V2's pristine selection and the original
+skipped conditional resource stage. It does not edit weights, call Astra again or
+reuse exposed prompts for a new quality claim.
+
+The [new protocol](resource-all-edits-protocol.md) fixes ten mirrored sessions,
+two per artifact, on the original Browser LLM Bench standard workload. The study
+uses a clean published source checkout plus its new controller and freezes one
+current device/browser/runtime environment. The [separate result](../reports/resource-all-edits-v1/result.json)
+is authoritative for completion, actual usage, individual sessions, telemetry
+coverage and descriptive comparisons. Missing observations and incomplete pairs
+remain unavailable. The run is not a test of precise resource equality.
+
+The website is rebuilt as an interactive research workbench under both Taste and
+Apple design guidance. It separates Results, Methodology and Evidence; selecting
+an artifact composes actual measurements, baseline differences, verified weight
+edit maps and session records. The [research methods](research-methodology.md),
+sanitized request-level measurements, complete artifact identities and citation
+metadata make its conclusions inspectable. The prior colorful landing page is
+superseded; the original numerical evidence remains unchanged.

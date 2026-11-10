@@ -1,0 +1,29 @@
+# Resource comparison of every existing edit
+
+This is a new, separately authorized resource-only study. It preserves the completed V1 and V2 quality results, V2 pristine selection and old skipped resource stage. The user explicitly requested measurements of the existing edits regardless of their quality qualification. No new editor call, weight edit, conversion or quality benchmark is part of this study.
+
+Measure pristine Qwen3.5-0.8B, the canonical V1 manual candidate and all three V2 Astra candidates, using their already audited deployed `q4f16_1` artifacts. Freeze exact artifact, model-library, tokenizer, runtime, source/build and current device/browser identities before execution. The earlier integration smoke candidate is excluded.
+
+## Frozen workload and schedule
+
+Use the original Browser LLM Bench standard profile at revision `b39187b1aff1f218493622d7fcf3cd5d24773b41`: 60 measured requests per session in three windows of 20, two 90-second loaded-idle gaps, original 15-second baseline/30-second loaded-idle/15-second recovery intervals, resetChat before each request, temperature 0, top-p 1, seed 42, thinking disabled, context 4,096, output ceiling 64, one 16-position warm-up and 60-second request limit. The inherited per-session safety ceiling remains 30 minutes; the new aggregate ceiling is lower than ten such ceilings.
+
+The ten fixed sessions are **pristine, V1, V2-R1, V2-R2, V2-R3, V2-R3, V2-R2, V2-R1, V1, pristine**. Every artifact has two sessions and mean schedule position 5.5. This mirrored order reduces confounding from a simple linear drift; it is neither randomized nor a complete counterbalance. Session is the replication unit, not each of the 600 requests.
+
+Each session uses a fresh dedicated Chrome profile, empty IndexedDB weights and identical local no-store fetching. OS filesystem caches are not cleared and can be warmed by integrity checks. Keep browser preview/website QA sessions closed during measurement. Use the original unprivileged native collectors and report merger; no fabricated power values or weakened resource guards. Missing host memory-pressure/thermal state stops before inference; memory-pressure level 4 or thermal state 2 stops the affected run.
+
+## New finite budget
+
+The new manifest caps the study at 10 loads, 10 warm-ups, 600 measured requests, 610 total dispatches, 38,560 reserved target-token positions, 90 browser minutes, 120 active local minutes, 24 calendar hours and 32 GiB newly retained artifacts, with at least 8 GiB free. There are zero retries and zero frontier calls. Preparation, per-session integrity verification, execution and report verification are charged to the new local clock; the calendar starts once at the new freeze. A 95-second allowance within each session reservation is retained for the existing bounded finalizer. Session intent is saved before session preparation, and the existing per-dispatch gate reserves before model calls. A failed or interrupted session cannot be replaced or silently redispatched. Stop on an actual integrity/runtime/resource/cleanup failure, preserving partial outcomes and spent reservations.
+
+Before freeze and dispatch, verify all required exact hashes. For a dataless file, permit bounded ordinary filesystem materialization and verify its expected hash before accepting it. Restore only a verified byte-identical copy when available, recording provenance. Never treat an empty read as a valid artifact or waive a frozen integrity guard.
+
+## Metrics and interpretation
+
+Publish each session plus its sanitized request-level timing/token rows, without prompts or generated text. Report output lengths, natural completions/truncations, load/session duration, total and mean response time, reported first-output latency/decode rate when actually measured, and full-response tokens/second and milliseconds/output token. These full-response ratios are not decode-only throughput and can change when output lengths change.
+
+Retain the native collector's scopes and intervals. CPU is an interval-weighted percentage of total logical-CPU capacity during the original profile active-phase windows; partial and boundary-crossing intervals are excluded. GPU time is experimental AGX driver-accounted command-buffer time for the owned Chrome process tree, including rendering; it is not GPU capacity/utilization, shader occupancy or model-only time. Concurrent queues can overlap. Native footprint uses decimal GB and its documented process-tree/shared-memory scope. GPUBuffer descriptors and WASM address space are allocation accounting, not physical VRAM. Do not add overlapping counters. Power is unavailable unless actually measured; missing signals remain null, with coverage preserved.
+
+Show both individual session values and mean/min/max for each artifact. Compute descriptive absolute and percentage differences against the two current pristine sessions, with null means/deltas when required values or completed replicates are missing. Comparison deltas also require all ten completed sessions to have matched frozen and observed browser/runtime environments. Two sessions per artifact cannot establish precise equality, general speedups or quality preservation. The previous Chrome 156-to-157 confound remains attached to historical development quality; these resource sessions use one frozen current environment and do not rerun or revise quality scores.
+
+The executable configuration is [resource_all_edits.json](../configs/resource_all_edits.json). The new controller delegates inference, native collection and merging to the existing unchanged runtime; only scheduling, finite accounting and multi-artifact reporting are new. Raw private evidence remains in ignored artifacts. The public report is [resource-all-edits-v1](../reports/resource-all-edits-v1/README.md), separate from the completed V2 quality report.
