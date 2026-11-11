@@ -1,5 +1,9 @@
 # Weight and activation inspection
 
+This describes the historical bounded v1 tools. The recommended
+[research workflow](research-browser-workflow.md) adds persistent Python,
+arbitrary internal edits and general original/edited forward probes.
+
 The new mechanistic tool path gives Astra actual bounded weight slices, selected
 teacher-forced activations, and directional edits. The original V1/V2/R4 policies
 and results remain historical. This path does not silently extend their budgets

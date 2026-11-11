@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "study_id": "ifeval-research-browser-v2",
+  "accuracy_benchmark": "ifeval",
+  "scope": "practice_then_frozen_comparison",
+  "schedule": {"arms": ["baseline", "candidate"], "runs_per_arm": 1, "maximum_prompts": 128, "warmups_per_arm": 1, "separate_resource_workload": false},
+  "objective": {
+    "primary": "prompt_level_strict_accuracy",
+    "resource_metrics": ["output_tokens", "response_latency_ms", "native_peak_footprint_gb", "cpu_time_ms", "gpu_time_ms", "host_energy_joules"],
+    "comparison": "report_quality_and_resource_deltas_on_the_same_scheduled_requests",
+    "unavailable_measurements": "null",
+    "selection": "one_frozen_candidate_reported_even_when_worse"
+  },
+  "editor": {"requested_selector": "gpt-6-astra", "interface": "persistent_python_and_metered_forward_tools", "max_submissions": 1},
+  "limits": {"python_calls": 300, "forward_calls": 50, "snapshots": 300, "restores": 300, "kernel_starts": 8, "candidate_submissions": 1, "conversions": 1, "browser_runs": 2, "browser_seconds_per_arm": 5400, "automatic_retries": 0},
+  "kernel_limits": {},
+  "probe_limits": {}
+}

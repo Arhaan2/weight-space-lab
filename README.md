@@ -4,6 +4,22 @@ Controlled experiments in which a frontier model proposes direct edits to an ope
 
 Maintainer: [Arhaan Aggarwal (Arhaan2)](https://github.com/Arhaan2).
 
+## Next experiment — open weight research, one final comparison
+
+The recommended [research harness](docs/research-browser-workflow.md) gives Astra
+persistent CPU Python, arbitrary internal tensor edits, named candidate
+snapshots, and original/edited/paired diagnostic generations and teacher-forced
+probes (log probabilities, hidden states, MLP activations and full attention).
+It permits dose, layer, neuron and random-control experiments without prescribing
+a direction estimator or fixed edit family. Development has separate budgets
+of up to 300 Python calls and 50 forward attempts.
+
+One final snapshot closes editing before the **single baseline/candidate WebLLM
+comparison**, measuring IFEval accuracy and resource usage on the same responses.
+Practice and final prompts are separate. This is an implementation update; no new
+model-performance result is claimed. Completed results below retain their
+original methods and limitations.
+
 ## Current result — one mechanistic IFEval / browser pair
 
 **The first directional edit did not improve accuracy and resource usage together.** Strict compliance fell from 16/32 to 15/32, with 1.25% more output tokens. Observed response time was 2.97% shorter, but time per compliant answer increased 3.50%. This is one exposed development comparison, not evidence of a robust speedup.

@@ -1,5 +1,10 @@
 # Mechanistic editing with one joint browser comparison
 
+**Historical v1 workflow.** New experiments should use the
+[open research harness](research-browser-workflow.md), which adds general Python
+weight editing and original/edited diagnostic probes before one frozen browser
+comparison. This document retains the workflow used for the completed v1 result.
+
 The objective is to let Astra inspect model weights and behavior, make a targeted
 weight edit, and test whether that edit improves **IFEval instruction compliance
 and browser resource usage on the same requests**. IFEval is the only accuracy
