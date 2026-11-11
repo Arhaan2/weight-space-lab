@@ -1,0 +1,588 @@
+{
+  "schema_version": 1,
+  "title": "Research methodology and provenance",
+  "updated": "2026-11-10",
+  "overview": "Explicit weight interventions are evaluated on instruction following and a separate fixed browser resource workload. Historical V1 quality, adaptive V2 development, the first all-edit resource pilot and the fresh six-version comparison remain distinct. Lower token counts do not establish lower memory, computation or energy.",
+  "model": {
+    "name": "Qwen3.5-0.8B",
+    "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "runtime": "WebLLM 0.2.86 / MLC / WebGPU",
+    "quantization": "q4f16_1",
+    "source_manifest_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+    "model_library_sha256": "023c24d853746e24599dc99d7649e356986fd3e1c476e6a2b8ef7af4c9f056e0",
+    "tokenizer_sha256": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+    "architecture": {
+      "deployed_scope": "Text backbone; vision and MTP excluded",
+      "layers": 24,
+      "hidden_size": 1024,
+      "intermediate_size": 3584,
+      "attention_heads": 8,
+      "key_value_heads": 2,
+      "full_attention_interval": 4
+    },
+    "source_stored_coordinates": 873438784,
+    "coordinate_count_note": "Stored aliases and buffers included; not independent trainable parameters.",
+    "intervention_scope": "Weight values change; tensor shapes, parameter count, bit width and compiled graph remain fixed. No smaller architecture or sparse inference kernel is introduced. Output length and runtime behavior can affect measured resource use."
+  },
+  "studies": [
+    {
+      "id": "v1",
+      "title": "V1 historical quality",
+      "question": "Does the frozen edit improve instruction compliance on the selected evaluation subset?",
+      "status": "complete_manually_continued_inconclusive",
+      "scope": "32 development prompts; selected 128-prompt / 173-instruction Google IFEval evaluation subset. Not the full benchmark.",
+      "generation_settings": {
+        "temperature": 0,
+        "top_p": 1,
+        "seed": 42,
+        "thinking": false,
+        "context_positions": 4096,
+        "quality_output_cap_positions": 1024,
+        "quality_max_sampled_output_tokens": 1020,
+        "quality_request_timeout_seconds": 120,
+        "warmups_per_load": 1,
+        "warmup_cap_positions": 16,
+        "warmup_max_sampled_tokens": 12,
+        "fresh_conversation_per_request": true
+      },
+      "selection_rule": "Candidate frozen before the final comparison; final observations did not choose the edit.",
+      "limitations": [
+        "Strict 69/128 versus 70/128; difference +0.78125 percentage points, paired 95% interval \u22125.46875 to +7.03125 points. Improvement and equivalence are unestablished.",
+        "Candidate final execution was interrupted after 94 outputs and separately continued for 34 undispatched suffix items.",
+        "Final prompts are now exposed; historical outcomes cannot become new untouched confirmation."
+      ],
+      "sources": [
+        {
+          "label": "V1 result",
+          "url": "https://github.com/Arhaan2/weight-space-lab/blob/43a01f81ededd3b5f7b9c24997ce6c720db84c0f/reports/ifeval-browser-v1-final/README.md"
+        },
+        {
+          "label": "V1 reproduction and exact source pins",
+          "url": "https://github.com/Arhaan2/weight-space-lab/blob/43a01f81ededd3b5f7b9c24997ce6c720db84c0f/docs/ifeval-v1-reproduction.md"
+        },
+        {
+          "label": "V1 selected item IDs",
+          "url": "https://github.com/Arhaan2/weight-space-lab/blob/43a01f81ededd3b5f7b9c24997ce6c720db84c0f/reports/ifeval-browser-v1-final/item-ids.json"
+        }
+      ]
+    },
+    {
+      "id": "v2",
+      "title": "V2 adaptive development search",
+      "question": "Can Astra produce strict compliance above 16/32 using at most 13,941 sampled output tokens?",
+      "status": "complete_no_qualifying_edit",
+      "scope": "Three actual Astra proposals evaluated on the same 32-prompt Ai2 RLVR-IFeval development set against the saved pristine baseline; no untouched final prompts.",
+      "generation_settings": {
+        "temperature": 0,
+        "top_p": 1,
+        "seed": 42,
+        "thinking": false,
+        "context_positions": 4096,
+        "quality_output_cap_positions": 1024,
+        "quality_max_sampled_output_tokens": 1020,
+        "quality_request_timeout_seconds": 120,
+        "warmups_per_load": 1,
+        "warmup_cap_positions": 16,
+        "warmup_max_sampled_tokens": 12,
+        "fresh_conversation_per_request": true
+      },
+      "selection_rule": "Require strict > 16/32, tokens \u2264 13,941 and complete technical validation. Rank strict compliance, then fewer tokens, then earlier round; pristine wins quality ties.",
+      "limitations": [
+        "All three candidates scored strict 16/32 and loose 17/32. Pristine was retained under the frozen rule.",
+        "One adaptive editor trajectory; three fresh agents are not independent editor replications.",
+        "Historical baseline Chrome 156.0.8078.80 versus candidates 157.0.8103.39 prevents isolated weight-only causal attribution.",
+        "The original conditional resource comparison was skipped; the separately authorized all-edit pilot does not reopen this selection."
+      ],
+      "sources": [
+        {
+          "label": "V2 development result",
+          "url": "https://github.com/Arhaan2/weight-space-lab/blob/70a41ac9fc2f9e3bffa2d231ebfaba0819505995/reports/ifeval-browser-v2-collaboration-run/result.json"
+        },
+        {
+          "label": "Untouched-final-data audit",
+          "url": "https://github.com/Arhaan2/weight-space-lab/blob/43a01f81ededd3b5f7b9c24997ce6c720db84c0f/docs/ifeval-v2-final-data.md"
+        }
+      ]
+    },
+    {
+      "id": "resource-all-edits-v1",
+      "title": "All-edit resource pilot",
+      "question": "How do pristine and every completed edit compare on the same current browser resource workload?",
+      "status": "complete",
+      "scope": "Five artifacts \u00d7 two browser sessions; 60 fixed-prompt measured requests per session. Quality qualification is not required. See the separate result for actual completion status.",
+      "generation_settings": {
+        "temperature": 0,
+        "top_p": 1,
+        "seed": 42,
+        "thinking": false,
+        "context_positions": 4096,
+        "output_cap_positions": 64,
+        "max_sampled_output_tokens": 60,
+        "request_timeout_seconds": 60,
+        "warmups_per_load": 1,
+        "warmup_cap_positions": 16,
+        "warmup_max_sampled_tokens": 12,
+        "fresh_conversation_per_request": true,
+        "measured_requests_per_session": 60,
+        "windows": 3,
+        "requests_per_window": 20,
+        "between_windows_seconds": 90,
+        "baseline_seconds": 15,
+        "final_loaded_idle_seconds": 30,
+        "recovery_seconds": 15,
+        "public_workload_prompt": "In three short sentences, explain why leaves change color in autumn."
+      },
+      "selection_rule": "Include all five frozen deployed artifacts regardless of development quality; do not select retrospectively from resource outcomes.",
+      "order": [
+        "pristine",
+        "v1",
+        "v2-r1",
+        "v2-r2",
+        "v2-r3",
+        "v2-r3",
+        "v2-r2",
+        "v2-r1",
+        "v1",
+        "pristine"
+      ],
+      "replication_unit": "Browser session; two planned sessions per artifact",
+      "limits": {
+        "model_loads": 10,
+        "warmups": 10,
+        "measured_requests": 600,
+        "generation_dispatches": 610,
+        "reserved_output_positions": 38560,
+        "browser_seconds": 5400,
+        "local_seconds": 7200,
+        "calendar_seconds": 86400,
+        "retained_bytes": 34359738368,
+        "minimum_free_bytes": 8589934592,
+        "retries": 0,
+        "frontier_calls": 0,
+        "quality_reruns": 0
+      },
+      "analysis": "Publish both session values and mean/minimum/maximum; descriptive differences from pristine only. Missing or invalid required measurements yield null, not zero.",
+      "limitations": [
+        "Mirrored order balances a linear trend in session position, not necessarily elapsed time when durations differ. It is not randomized or fully counterbalanced and does not eliminate nonlinear drift or carryover.",
+        "One device and two sessions per artifact; 60 repeated fixed-prompt requests are not 60 independent experiments or a quality benchmark sample.",
+        "No significance, equivalence, general efficiency or fresh quality-preservation claim.",
+        "Fresh browser profile and IndexedDB do not imply a cold operating-system disk cache.",
+        "The historical Chrome-version mismatch concerns quality; the current resource environment is independently checked for matching.",
+        "Lower CPU/GPU activity or power rates with longer responses do not establish lower cumulative computation or energy; compare duration and coverage."
+      ],
+      "sources": [
+        {
+          "label": "All-edit resource protocol",
+          "url": "https://github.com/Arhaan2/weight-space-lab/blob/28f9b87dafefe05572272120a6d2295262bf7f69/docs/resource-all-edits-protocol.md"
+        },
+        {
+          "label": "All-edit resource result",
+          "url": "https://github.com/Arhaan2/weight-space-lab/blob/28f9b87dafefe05572272120a6d2295262bf7f69/reports/resource-all-edits-v1/result.json"
+        }
+      ],
+      "public_workload_prompt": "In three short sentences, explain why leaves change color in autumn.",
+      "aggregation": "Compute each metric within each session first, then report both values and their equal-weight arithmetic mean/minimum/maximum. Artifact throughput is the mean of the two session throughput ratios, not pooled tokens divided by pooled seconds. Independently averaged throughput and milliseconds per token need not be reciprocals."
+    }
+  ],
+  "edit_operations": {
+    "pristine": {
+      "label": "Pristine",
+      "artifact_sha256": "5ead3e9c60107ab7168bee5373f6cd636c839b82557fed6550aaaa30170aa5b0",
+      "base": "pristine",
+      "operations": [],
+      "changed_source_entries": 0
+    },
+    "v1": {
+      "label": "V1 edit",
+      "artifact_sha256": "6e18cc4906ce18786b9197bcc7fb5f93ffc706d808b0809150349546eef3627b",
+      "base": "pristine",
+      "operations": [
+        {
+          "op": "scale_columns",
+          "tensor": "model.language_model.layers.15.mlp.down_proj.weight",
+          "columns_inclusive": [
+            0,
+            59
+          ],
+          "factor": 0.75
+        },
+        {
+          "op": "scale_columns",
+          "tensor": "model.language_model.layers.19.mlp.down_proj.weight",
+          "columns_inclusive": [
+            0,
+            59
+          ],
+          "factor": 0.75
+        }
+      ],
+      "changed_source_entries": 122880
+    },
+    "v2-r1": {
+      "label": "V2 round 1",
+      "artifact_sha256": "704590e6512285752e25795f2a81c389429ed662bf80f58d5a89227ea89e40fc",
+      "base": "pristine",
+      "operations": [
+        {
+          "op": "scale_columns",
+          "tensor": "model.language_model.layers.15.mlp.down_proj.weight",
+          "columns_inclusive": [
+            2014,
+            2073
+          ],
+          "factor": 0.75
+        },
+        {
+          "op": "scale_columns",
+          "tensor": "model.language_model.layers.19.mlp.down_proj.weight",
+          "columns_inclusive": [
+            3524,
+            3583
+          ],
+          "factor": 0.75
+        }
+      ],
+      "changed_source_entries": 122880
+    },
+    "v2-r2": {
+      "label": "V2 round 2",
+      "artifact_sha256": "f78b942268e7fd5cfbb7747eaad2a93724a9658b31e9d6d1670e86b950495a66",
+      "base": "pristine",
+      "operations": [
+        {
+          "op": "scale_columns",
+          "tensor": "model.language_model.layers.15.mlp.down_proj.weight",
+          "columns_inclusive": [
+            2014,
+            2073
+          ],
+          "factor": 1.25
+        },
+        {
+          "op": "scale_columns",
+          "tensor": "model.language_model.layers.19.mlp.down_proj.weight",
+          "columns_inclusive": [
+            3524,
+            3583
+          ],
+          "factor": 1.25
+        }
+      ],
+      "changed_source_entries": 122880
+    },
+    "v2-r3": {
+      "label": "V2 round 3",
+      "artifact_sha256": "eaa72067ef9bea370bd80398dafecbea5437379c8d6ddf27678b0068eebb0c38",
+      "base": "pristine",
+      "operations": [
+        {
+          "op": "scale_columns",
+          "tensor": "model.language_model.layers.15.mlp.down_proj.weight",
+          "columns_inclusive": [
+            2014,
+            2073
+          ],
+          "factor": 1.5
+        },
+        {
+          "op": "scale_columns",
+          "tensor": "model.language_model.layers.19.mlp.down_proj.weight",
+          "columns_inclusive": [
+            3524,
+            3583
+          ],
+          "factor": 1.5
+        }
+      ],
+      "changed_source_entries": 122880
+    }
+  },
+  "editor_provenance": {
+    "v1": {
+      "route": "manual returned-JSON import",
+      "requested_model": "Astra/Ultra",
+      "provider_identity_verified": false,
+      "technical_isolation_verified": false,
+      "provider_tokens": null,
+      "provider_billing": null
+    },
+    "v2": {
+      "route": "Codex collaboration subagent",
+      "requested_model": "gpt-6-astra",
+      "agent_dispatches": 3,
+      "delivery_turns": 4,
+      "proposals": 3,
+      "fresh_context_each_round": true,
+      "reasoning_effort_override": null,
+      "ultra_verified": false,
+      "immutable_provider_version": null,
+      "technical_isolation_verified": false,
+      "provider_tokens": null,
+      "provider_billing": null
+    },
+    "feedback": "Approved weight information, 32 development tasks, saved baseline outputs/grades and preceding candidate feedback. No new final-quality outcomes were supplied. Round 3 packet delivery continued without new scientific feedback."
+  },
+  "benchmarks": {
+    "development": {
+      "source": "allenai/RLVR-IFeval",
+      "revision": "47c03c73621c4aab2b824b7818681117d662770e",
+      "prompts": 32,
+      "instructions": 32,
+      "ordered_items_sha256": "9aa732f4c0dbe06248a93c329299f3fb732a5f148447d3be5a057c93e5fae627",
+      "exposure": "Provided to editor"
+    },
+    "v1_final": {
+      "source": "Google Research IFEval",
+      "revision": "e6890f85757dd84e27ca6df2dd30651dafad28e0",
+      "source_prompts": 541,
+      "selected_prompts": 128,
+      "selected_instructions": 173,
+      "exposure": "Now exposed; not reusable as new untouched confirmation"
+    },
+    "v2_final": {
+      "eligible_untouched_prompts": 0,
+      "runtime_feasible_prompts": 344,
+      "confirmed_exposed_feasible_prompts": 129,
+      "unresolved_exposure_feasible_prompts": 215
+    },
+    "resource": {
+      "source": "gufranmirza/browser-llm-bench",
+      "revision": "b39187b1aff1f218493622d7fcf3cd5d24773b41",
+      "profile": "standard repeat/session-count",
+      "quality_scoring": false,
+      "public_workload_prompt": "In three short sentences, explain why leaves change color in autumn."
+    }
+  },
+  "scoring": {
+    "grader_identity": "official_ifeval:d273d53c0d49aa509641885b183d98facd8d2bb2697725f9a2efbaaec52074fd",
+    "strict_prompt": "All instructions in the prompt must pass official strict checks.",
+    "strict_instruction": "Passing instructions divided by scheduled instructions.",
+    "loose": "Official IFEval loose alternatives; secondary metric.",
+    "truncations": "Retained and graded",
+    "reasoning_policy": "Extract answer after complete leading think block; no answer repair.",
+    "grader_timeout_seconds": 20,
+    "grader_retries": 0,
+    "v1_uncertainty": "10,000 paired prompt-cluster percentile bootstrap samples; seed 0, lexicographic item order and linear quantiles; not an equivalence test."
+  },
+  "telemetry_definitions": {
+    "scored_output_tokens": {
+      "label": "Sampled output tokens",
+      "unit": "tokens",
+      "definition": "Sum across measured requests; excludes warm-up and four injected boundary IDs.",
+      "scope": "Measured completions",
+      "limitations": "Different output lengths mean different realized work.",
+      "coverage": null,
+      "missing": "Unavailable/null, never zero-filled"
+    },
+    "response_ms_sum": {
+      "label": "Total response time",
+      "unit": "ms",
+      "definition": "Sum of browser wall time around measured completion calls, including prefill and decode.",
+      "scope": "Measured requests",
+      "limitations": "Excludes load, warm-up and idle gaps; not full-session or decode-only time.",
+      "coverage": null,
+      "missing": "Unavailable/null, never zero-filled"
+    },
+    "response_ms_per_output_token": {
+      "label": "Response time per sampled token",
+      "unit": "ms/token",
+      "definition": "Within each session: summed response milliseconds divided by sampled output tokens. Across sessions: equal-weight mean of the two session values; it need not be the inverse of mean throughput.",
+      "scope": "Session ratio of sums",
+      "limitations": "Includes prefill overhead; output-length differences affect normalization.",
+      "coverage": null,
+      "missing": "Unavailable/null, never zero-filled"
+    },
+    "load_ms": {
+      "label": "Model load time",
+      "unit": "ms",
+      "definition": "Reported model load duration.",
+      "scope": "One load",
+      "limitations": "Separate from warm-up and session timing; browser cache policy does not guarantee a cold operating-system cache.",
+      "coverage": null,
+      "missing": "Unavailable/null, never zero-filled"
+    },
+    "session_ms": {
+      "label": "Profile session time",
+      "unit": "ms",
+      "definition": "Total measured profile duration, including prescribed baseline, idle and recovery phases.",
+      "scope": "Browser profile",
+      "limitations": "Separate from response time and controller-stage ledger time.",
+      "coverage": null,
+      "missing": "Unavailable/null, never zero-filled"
+    },
+    "native_peak_footprint_gb": {
+      "label": "Peak accounted process footprint",
+      "unit": "decimal GB",
+      "definition": "Maximum sampled sum of per-process ri_phys_footprint during the profile, divided by 1e9.",
+      "scope": "Dedicated Chrome process tree",
+      "limitations": "Not globally deduplicated physical RAM; do not add GPU descriptors, WASM address space or RSS.",
+      "coverage": null,
+      "missing": "Unavailable/null, never zero-filled"
+    },
+    "native_idle_footprint_gb": {
+      "label": "Final loaded-idle footprint",
+      "unit": "decimal GB",
+      "definition": "Median sampled footprint in the idle phase after the final active window.",
+      "scope": "Dedicated Chrome process tree",
+      "limitations": "A retained-memory observation, not all machine memory.",
+      "coverage": null,
+      "missing": "Unavailable/null, never zero-filled"
+    },
+    "native_recovery_footprint_gb": {
+      "label": "Recovery footprint",
+      "unit": "decimal GB",
+      "definition": "Median sampled footprint during recovery.",
+      "scope": "Dedicated Chrome process tree",
+      "limitations": "A remaining level, not the amount of memory freed.",
+      "coverage": null,
+      "missing": "Unavailable/null, never zero-filled"
+    },
+    "cpu_capacity_percent": {
+      "label": "CPU capacity",
+      "unit": "%",
+      "definition": "Time-weighted complete process-tree CPU intervals divided by logical CPU count.",
+      "scope": "Dedicated Chrome process tree",
+      "limitations": "100% means total logical CPU capacity under this normalization, not one core. This is an activity rate, not cumulative computation; a lower rate with a longer response does not establish less total work.",
+      "coverage": "Valid, wholly contained active-interval duration divided by total active duration",
+      "missing": "Unavailable/null, never zero-filled"
+    },
+    "gpu_time_ms_per_second": {
+      "label": "Experimental GPU time",
+      "unit": "ms/s",
+      "definition": "Driver-accounted command-buffer time per elapsed second via AGX AppUsage.",
+      "scope": "Dedicated Chrome process tree, including rendering",
+      "limitations": "Not GPU utilization, occupancy, arithmetic-operation count or model-only time; queues may overlap and counter changes invalidate intervals. This is a rate: lower GPU milliseconds per second with a longer response does not establish less cumulative work.",
+      "coverage": "Valid, wholly contained active-interval duration divided by total active duration",
+      "missing": "Unavailable/null, never zero-filled"
+    },
+    "gpu_buffer_descriptor_bytes_sampled_max": {
+      "label": "GPU buffer descriptors",
+      "unit": "bytes",
+      "definition": "Sampled maximum of WebGPU buffer descriptor byte accounting.",
+      "scope": "WebGPU allocation bookkeeping",
+      "limitations": "Not physical VRAM or residency.",
+      "coverage": null,
+      "missing": "Unavailable/null, never zero-filled"
+    },
+    "wasm_address_space_bytes_sampled_max": {
+      "label": "WASM address space",
+      "unit": "bytes",
+      "definition": "Sampled maximum of WebAssembly linear-memory byte length.",
+      "scope": "WASM linear address space",
+      "limitations": "Not physical residency; do not add to native footprint.",
+      "coverage": null,
+      "missing": "Unavailable/null, never zero-filled"
+    },
+    "host_power_watts": {
+      "label": "Host subsystem power",
+      "unit": "W",
+      "definition": "Observed CPU/GPU/ANE subsystem estimate, interval-weighted over valid active intervals.",
+      "scope": "Whole-host subsystems",
+      "limitations": "Not wall power or model watts; unprivileged capture may leave it unavailable. Watts are a rate, not energy: lower power with longer duration does not establish lower joules.",
+      "coverage": "Valid, wholly contained active-interval duration divided by total active duration",
+      "missing": "Unavailable/null, never zero-filled"
+    },
+    "energy": {
+      "label": "Host subsystem energy",
+      "unit": "J",
+      "definition": "Original merger integrates observed power-interval overlap across first-active to last-active bounds; may include between-burst idle.",
+      "scope": "Whole-host subsystems",
+      "limitations": "Not request-only energy or causal model energy; five-second observed pre-run baseline where available.",
+      "coverage": "Original observed covered-interval duration; missing intervals are not filled",
+      "missing": "Unavailable/null, never zero-filled"
+    },
+    "mean_response_ms": {
+      "label": "Mean response time",
+      "unit": "ms/request",
+      "definition": "Summed measured response time divided by measured request count.",
+      "scope": "Session",
+      "limitations": "A mean within a session does not add independent experimental replicates.",
+      "coverage": null,
+      "missing": "Unavailable/null, never zero-filled"
+    },
+    "full_response_tokens_per_second": {
+      "label": "End-to-end output throughput",
+      "unit": "tokens/s",
+      "definition": "Within each session: summed measured output tokens divided by summed response seconds. Across two sessions: equal-weight arithmetic mean of those two ratios, not a pooled token/second ratio.",
+      "scope": "Session ratio of sums",
+      "limitations": "Not a mean of request rates, decode-only throughput or equal work when lengths differ.",
+      "coverage": null,
+      "missing": "Unavailable/null, never zero-filled"
+    }
+  },
+  "preserved_failures": [
+    "V1 conversion-environment failure and the 94+34 manually continued candidate final evaluation remain documented.",
+    "V2 initial sandbox failure generated nothing but consumed one browser attempt; only three real candidate evaluations remained.",
+    "V2 round 3 offline grading stopped before any checker call after completed browser output and cleanup. Exact-byte recovery and one 27.657-second offline pass added zero model loads/generations or editor calls. Nineteen harness files, 171 pinned evaluator payloads and four frozen inputs were recovered; 347 unavailable bytecodes were quarantined; the 758/758 frozen-input preflight matched.",
+    "The all-artifact resource study stopped after six completed sessions when the position-7 integrity check timed out on an offloaded protected historical file. The failed check charged 28.943 seconds, with no session-7 reservation, model load or generation. The original 10,135 bytes were later ordinarily materialized with the exact frozen hash and no overwrite. A separate continuation is limited to original positions 7\u201310 under the retained clocks and deadline. The slow second R3 observation and the inter-session gap remain part of the evidence; no uninterrupted run is claimed."
+  ],
+  "reproduction": [
+    "Use pinned source model/data revisions and released ordered item IDs; selection reruns without private exclusions may differ.",
+    "Reconstruct each independent deterministic source transformation and verify complete source/deployment manifest identities.",
+    "Verify current environment, actual fetched model/runtime bytes, per-session manifests and durable accounting before interpreting resource differences.",
+    "Public hashes and aggregates support reconstruction and arithmetic audits; withheld raw outputs and private custody records are needed for independent original regrading and editor-access verification."
+  ],
+  "publication_scope": {
+    "included": "Sanitized metrics, IDs, operations, hashes, methods and verification logic",
+    "excluded": "Private prompt/response text, editor packets, authorization, credentials, local machine paths and session transcripts"
+  },
+  "sources": [
+    {
+      "label": "Full research methodology",
+      "url": "https://github.com/Arhaan2/weight-space-lab/blob/c5c6fda32bde69bbe3207be8e17ad53373143d8c/docs/research-methodology.md"
+    },
+    {
+      "label": "V1 result",
+      "url": "https://github.com/Arhaan2/weight-space-lab/blob/43a01f81ededd3b5f7b9c24997ce6c720db84c0f/reports/ifeval-browser-v1-final/README.md"
+    },
+    {
+      "label": "V1 reproduction and exact source pins",
+      "url": "https://github.com/Arhaan2/weight-space-lab/blob/43a01f81ededd3b5f7b9c24997ce6c720db84c0f/docs/ifeval-v1-reproduction.md"
+    },
+    {
+      "label": "V1 selected item IDs",
+      "url": "https://github.com/Arhaan2/weight-space-lab/blob/43a01f81ededd3b5f7b9c24997ce6c720db84c0f/reports/ifeval-browser-v1-final/item-ids.json"
+    },
+    {
+      "label": "V2 development result",
+      "url": "https://github.com/Arhaan2/weight-space-lab/blob/70a41ac9fc2f9e3bffa2d231ebfaba0819505995/reports/ifeval-browser-v2-collaboration-run/result.json"
+    },
+    {
+      "label": "Untouched-final-data audit",
+      "url": "https://github.com/Arhaan2/weight-space-lab/blob/43a01f81ededd3b5f7b9c24997ce6c720db84c0f/docs/ifeval-v2-final-data.md"
+    },
+    {
+      "label": "All-edit resource protocol",
+      "url": "https://github.com/Arhaan2/weight-space-lab/blob/28f9b87dafefe05572272120a6d2295262bf7f69/docs/resource-all-edits-protocol.md"
+    },
+    {
+      "label": "All-edit resource result",
+      "url": "https://github.com/Arhaan2/weight-space-lab/blob/28f9b87dafefe05572272120a6d2295262bf7f69/reports/resource-all-edits-v1/result.json"
+    },
+    {
+      "label": "Fresh six-version comparison",
+      "url": "https://github.com/Arhaan2/weight-space-lab/blob/c5c6fda32bde69bbe3207be8e17ad53373143d8c/reports/fresh-baseline-r4-v1/result.json"
+    },
+    {
+      "label": "Fresh comparison cache-maintenance evidence",
+      "url": "https://github.com/Arhaan2/weight-space-lab/blob/c5c6fda32bde69bbe3207be8e17ad53373143d8c/reports/fresh-baseline-r4-v1/maintenance.json"
+    }
+  ],
+  "upstream_attribution": [
+    "Qwen",
+    "Google Research IFEval (Zhou et al.)",
+    "Ai2 Tulu 3 / RLVR-IFeval",
+    "WebLLM / MLC",
+    "Browser LLM Bench contributors: Gufran Mirza and Arhaan Aggarwal"
+  ],
+  "fresh_comparison": {
+    "report": "fresh-comparison.json",
+    "source": "https://github.com/Arhaan2/weight-space-lab/blob/c5c6fda32bde69bbe3207be8e17ad53373143d8c/reports/fresh-baseline-r4-v1/result.json",
+    "scope": "Planned schedule: six fresh executions on the same 32 exposed development prompts and two separate resource sessions per artifact. Actual completion, observations and failures are reported in the linked comparison.",
+    "status": "complete",
+    "maintenance": {
+      "report": "fresh-maintenance.json",
+      "source": "https://github.com/Arhaan2/weight-space-lab/blob/c5c6fda32bde69bbe3207be8e17ad53373143d8c/reports/fresh-baseline-r4-v1/maintenance.json"
+    }
+  }
+}

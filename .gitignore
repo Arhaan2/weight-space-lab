@@ -20,3 +20,4 @@ datasets/
 *.npy
 *.log
 .DS_Store
+.taste-skill/
