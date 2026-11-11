@@ -1,15 +1,21 @@
 # Weight Space Lab research workbench
 
+## Latest study: November 11, 2026
+
+The default Study view now shows the first completed paired IFEval/resource result. Strict compliance fell from 16/32 to 15/32, output tokens increased 1.25%, and observed response time fell 2.97%. Both tokens and time per compliant answer increased; the joint objective was not met. The exact intervention, original rationale, partial telemetry and zero-call pre-load interruption are disclosed.
+
+`joint-comparison.json` and `intervention.json` are sanitized public imports. Regenerate from the source repository with both `--joint-report` and `--intervention-report`, then run the updater check and evidence verifier. Historical cohorts remain separate. The importer also retains an honest fallback for a study that has not run.
+
 Buildless GitHub Pages site. Serve this directory with a static HTTP server; no
 package installation, model download or build is required. Only this directory
 belongs in the Pages deployment.
 
-The default **Harness** view describes the current weight/activation inspection,
+The default **Study** view presents the measured comparison and describes the current weight/activation inspection,
 directional-edit and same-request browser evaluation workflow. IFEval is the
 single accuracy benchmark. One pristine and one frozen candidate run supply both
 the grades and resource measurements; bounded diagnostic probes are separately
 accounted. Source Transformers activations are explicitly distinguished from
-quantized browser execution. The new paired result remains unmeasured.
+quantized browser execution. The first paired result is complete; its outcome and limitations appear above the workflow.
 
 Three additional views separate completed results, methodology and evidence. Select a
 weight artifact, quality scope or resource metric to inspect actual observations,
@@ -43,8 +49,8 @@ measurements are idle.
 
 `harness.json` is the versioned public workflow contract, separate from historical
 evidence. The updater renders its stage explorer, no-JavaScript explanation,
-measurement definitions and awaiting-results table into `index.html`, and embeds
-a script-safe copy. Import the first canonical paired report with:
+measurement definitions and paired-result table into `index.html`, and embeds
+a script-safe copy. Import a canonical paired report with:
 
 ```sh
 python -m weight_space_lab.mechanistic_study report --root STUDY --output REPORT.json
