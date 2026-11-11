@@ -2,21 +2,21 @@
   "schema_version": 1,
   "kind": "mechanistic_browser_harness_contract",
   "updated": "2026-11-11",
-  "status": "implemented_not_run",
+  "status": "implemented",
   "title": "Inspect, edit, measure together",
   "question": "Can a targeted weight edit improve instruction following within the same browser resource budget?",
   "accuracy_benchmark": "IFEval",
   "resource_benchmark": "Browser LLM Bench / WebLLM",
   "workload": "The same IFEval prompts and generated responses supply both accuracy and resource evidence.",
   "evaluation": {
-    "status": "not_run",
+    "status": "complete",
     "arms": [
       "pristine",
       "candidate"
     ],
     "runs_per_arm": 1,
     "candidate_count": 1,
-    "results": null,
+    "results": "joint-comparison.json",
     "diagnostics": "Bounded diagnostic calls are logged separately from the one baseline and one frozen-candidate browser evaluation."
   },
   "stages": [
@@ -74,7 +74,7 @@
     "Source Transformers activations can inform an edit; its effect must still be tested after quantization in WebLLM.",
     "Development feedback is not untouched confirmation. Dataset exposure and split roles must be recorded before execution."
   ],
-  "source_base": "https://github.com/Arhaan2/weight-space-lab/blob/d97831ce283665610d898e44bd7fc68a0a010267/",
+  "source_base": "https://github.com/Arhaan2/weight-space-lab/blob/3630ead13aeb05f5a17a7a335b466e69d14539f6/",
   "sources": [
     {
       "label": "Workflow and execution contract",
@@ -92,5 +92,6 @@
       "label": "IFEval harness configuration",
       "path": "configs/ifeval_mechanistic_browser.json"
     }
-  ]
+  ],
+  "intervention_source_base": "https://github.com/Arhaan2/weight-space-lab/blob/a5bc8ba69b4009d61ba92f1eeb7fce95affa395b/reports/mechanistic-browser-v1/"
 }

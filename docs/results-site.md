@@ -261,3 +261,24 @@ presentation, not scientific validity. The final screenshots and inspection
 record are under `.taste-skill/fresh-r4-review-2/` in the publication checkout;
 functional results and full-scale screenshots are under
 `.taste-skill/research-interactions/`.
+
+## First measured joint result — November 11, 2026
+
+The live Harness view now leads with the actual 32-prompt comparison, followed by
+the edit and workflow. The canonical result is
+`reports/mechanistic-browser-v1/joint-comparison.json`; `intervention.json` binds
+the selected columns, source/effective quantization audits, diagnostic accounting
+and unchanged pre-evaluation rationale. Import with both `--joint-report` and
+`--intervention-report`, then run the updater check and evidence verifier.
+
+Strict compliance fell from 16/32 to 15/32, output tokens increased 1.25%, and
+observed total response time decreased 2.97%. Both tokens and response time per
+compliant answer increased. The page explicitly says the joint objective was not
+met; it does not turn this one timing observation into a causal speedup claim.
+It retains partial telemetry coverage and unavailable energy.
+
+The first candidate Chrome launch ended with zero model calls. A preserved,
+explicit pre-load continuation completed the same frozen candidate's first
+evaluation. The public record retains the zero-call proof, 6.120 seconds of
+pre-load supervisor time, and distinct browser-launch/model-load counts.
+Historical comparison files remain byte-for-byte unchanged.
