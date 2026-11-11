@@ -14,6 +14,11 @@ PUBLIC_BASE = "https://github.com/Arhaan2/weight-space-lab/blob/codex/results-si
 ARTIFACTS = {"pristine": "Pristine", "v1": "V1 edit", "v2-r1": "Astra round 1", "v2-r2": "Astra round 2", "v2-r3": "Astra round 3"}
 
 
+def evidence_url(url):
+    """Keep explanatory report prose on the site; link external raw evidence."""
+    return url.removesuffix("README.md") + "result.json" if url.endswith("README.md") else url
+
+
 def replace_region(document: str, name: str, markup: str) -> str:
     start, end = f"<!-- {name}_START -->", f"<!-- {name}_END -->"
     if document.count(start) != 1 or document.count(end) != 1:
@@ -72,7 +77,7 @@ def static_evidence(data):
         content += '<p>Two sessions per artifact are planned in mirrored order. Native footprint is sampled owned-Chrome-process-tree footprint in decimal GB, not physical VRAM. CPU, GPU and power coverage are retained in the complete JSON. No equivalence claim is established.</p>'
     else:
         content += '<p>No measured resource session summary is published in this snapshot. No placeholders are treated as observations.</p>'
-    content += f'<p><a href="results.json" download>Download complete results JSON</a> · <a href="{escape(data["sources"]["v1_report"], quote=True)}">V1 report</a> · <a href="{escape(data["sources"]["v2_execution"], quote=True)}">V2 report</a></p>'
+    content += f'<p><a href="results.json" download>Download complete results JSON</a> · <a href="{escape(evidence_url(data["sources"]["v1_report"]), quote=True)}">V1 evidence JSON</a> · <a href="{escape(evidence_url(data["sources"]["v2_execution"]), quote=True)}">V2 evidence JSON</a></p>'
     return content
 
 
@@ -87,12 +92,85 @@ def continuation_summary(resource):
     return f"Documented continuation. Integrity verification stopped before position {remaining[0] if remaining else 'unavailable'}; {len(inherited)} completed sessions were retained. {gap_text} Both R3 observations remain included. Matching hardware/runtime does not establish uninterrupted or constant host conditions."
 
 
+def fresh_evidence(fresh):
+    if not fresh:
+        return '<p>The new comparison has no published measurements yet. Historical observations remain available separately.</p>'
+    quality = {row['artifact_key']: row for row in fresh.get('quality', {}).get('artifacts', [])}
+    resources = fresh.get('resource', {})
+    aggregates = resources.get('aggregates', {})
+    rows, resource_rows = [], []
+    for artifact in fresh.get('artifacts', []):
+        key = artifact['key']
+        label = artifact.get('label', ARTIFACTS.get(key, key))
+        q = quality.get(key, {})
+        metrics = q.get('metrics') or {}
+        denominator = metrics.get('denominator')
+        score = lambda name: f'{numeric(metrics.get(name))}/{numeric(denominator)}' if denominator else '—'
+        rows.append((label, [score('strict_passes'), score('loose_passes'), numeric(metrics.get('scored_output_tokens')), q.get('status', 'not_run').replace('_', ' ')]))
+        aggregate = aggregates.get(key, {})
+        measurements = aggregate.get('metrics', {})
+        mean = lambda name, decimals: numeric((measurements.get(name) or {}).get('mean'), decimals)
+        resource_rows.append((label, [f"{numeric(aggregate.get('n_completed', 0))}/2", mean('mean_response_ms', 2), mean('native_peak_footprint_gb', 3), mean('cpu_capacity_percent', 2), mean('gpu_time_ms_per_second', 2), mean('host_power_watts', 2)]))
+    content = '<h3>Fresh development scores</h3>'
+    content += table(['Artifact', 'Strict passes', 'Loose passes', 'Output tokens', 'Status'], rows, 'Fresh IFEval development measurements for every version')
+    content += '<p>All versions use the same 32 previously exposed development prompts. These are fresh executions, not untouched test-set confirmation. Warm-ups are excluded from scored token counts.</p>'
+    content += '<h3>Fresh browser resource measurements</h3>'
+    content += table(['Artifact', 'Sessions', 'Response (ms/request)', 'Native peak (GB)', 'CPU capacity (%)', 'GPU time (ms/s)', 'Host power (W)'], resource_rows, 'Means of two standard-workload browser sessions per artifact')
+    content += '<p>Each available mean weights two complete sessions equally. Native footprint is sampled process-tree accounting, not physical VRAM. CPU and GPU values are activity rates, not total computation; unavailable power stays unavailable. Two sessions do not establish resource equivalence.</p>'
+    content += '<p><a href="fresh-comparison.json" download>Download the complete fresh comparison</a></p>'
+    return content
+
+
+def fresh_methods(fresh, maintenance=None):
+    if not fresh:
+        return '<p>A fresh six-version comparison is being prepared. No new measurement is implied by this description.</p>'
+    quality = fresh.get('quality', {})
+    resource = fresh.get('resource', {})
+    n_quality = sum(row.get('status') == 'completed' for row in quality.get('artifacts', []))
+    n_resource = sum(row.get('status') == 'completed' and (row.get('summary') or {}).get('status') == 'complete' for row in resource.get('sessions', []))
+    content = f'<h2>Fresh six-version study</h2><p><strong>Recorded progress.</strong> {n_quality} of 6 quality evaluations and {n_resource} of 12 resource sessions are complete. The report status is {escape(fresh.get("status", "unavailable").replace("_", " "))}.</p>'
+    content += '<p>Pristine, V1 and the three prior Astra edits are evaluated first on the same 32 development prompts. A fresh-context Astra agent receives the approved weight information and all five fresh development results before proposing one fourth edit. The new edit starts from pristine and scales one contiguous 60-column block in each of layers 15 and 19, with an independent multiplier chosen from 0.5, 0.75, 1.25 and 1.5. Tensor shapes, tokenizer, grading and decoding rules stay fixed.</p>'
+    content += '<p>The primary target is higher strict compliance than both fresh pristine and the best fresh prior edit. Equal or fewer output tokens is a secondary target, not evidence of equal compute. Every technically valid version proceeds to resource measurement regardless of its quality score; quality gains and cost changes are reported separately.</p>'
+    editor = fresh.get('editor_provenance') or {}
+    if editor.get('pre_evaluation_rationale'):
+        content += '<details><summary>Astra round 4 · pre-evaluation hypothesis</summary><div class="method-body"><p>The following decision summary was saved and hashed with the proposal before the new weights were built or evaluated. It records a prediction, not an explanation established by the eventual score.</p><blockquote><p>' + escape(editor['pre_evaluation_rationale']) + '</p></blockquote>'
+        content += '<p>One fresh-context collaboration agent was requested with the <code>gpt-6-astra</code> selector. It received the approved weight packet and five fresh development evaluations. Provider-side immutable model identity, accepted effort, token usage and billing are unavailable; browser inference measurements below do not include the editor’s compute.</p></div></details>'
+    content += '<p>The resource schedule runs pristine, V1, Astra rounds 1–4, then reverses that order. Each of the twelve sessions includes one warm-up and 60 measured fixed-prompt requests. The browser session is the replication unit. The mirrored schedule is deterministic, not randomized, and cannot eliminate nonlinear drift or background activity.</p>'
+    quality_match = 'verified' if quality.get('matched_environment') is True else 'not yet established'
+    resource_match = 'verified' if resource.get('matched_environment') is True else 'not yet established'
+    content += f'<p><strong>Recorded environment matching.</strong> Quality: {quality_match}. Resources: {resource_match}. Matching runtime identities does not prove constant host conditions. The actual observations, failures, completion status and accounting are preserved in the downloadable report.</p>'
+    content += '<p>This adaptive development comparison supplies no untouched final-quality evaluation. Higher development scores are not a generalization claim. CPU/GPU rates and footprint are measured within their stated scopes; no FLOP count, causal energy saving or resource equivalence is inferred.</p>'
+    limits = fresh.get('limits', {})
+    if limits:
+        content += f'<details><summary>Frozen limits and accounting</summary><div class="method-body"><p>The schedule permits {numeric(limits.get("engine_loads"))} model loads, {numeric(limits.get("warmups"))} warm-ups, {numeric(limits.get("quality_requests"))} quality requests and {numeric(limits.get("resource_requests"))} resource requests. The {numeric(limits.get("dispatches"))} total dispatches reserve at most {numeric(limits.get("reserved_target_tokens"))} output positions, including control positions; this is a capacity ceiling, not observed model output.</p>'
+        content += f'<p>One editor proposal, response import, source build, conversion and package are allowed. Automatic retries are zero. Browser time is capped at {numeric(limits.get("browser_seconds"), divisor=60)} minutes, charged local time at {numeric(limits.get("local_seconds"), divisor=60)} minutes and calendar time at {numeric(limits.get("calendar_seconds"), divisor=3600)} hours. Failed preparation, integrity checks, grading and reporting consume the local allowance. Reservations, actual usage and cleanup status are retained separately in the report.</p></div></details>'
+    preparation = fresh.get('preparation', {})
+    if preparation.get('notes'):
+        content += '<details><summary>Preparation and provenance</summary><div class="method-body">'
+        content += ''.join('<p>' + escape(note) + '</p>' for note in preparation['notes'])
+        failures = preparation.get('failed_preparation_stages', [])
+        if failures:
+            content += table(['Preparation stage', 'Target-model calls', 'Charged seconds'], [(row['stage'], [numeric(row.get('target_calls')), numeric(row.get('charged_seconds'), 2)]) for row in failures], 'Preserved preparation failures before the study freeze')
+        content += '<p>These checks establish the identities and transformations actually recorded. They do not turn unavailable historical dependency metadata into verified evidence.</p></div></details>'
+    if maintenance:
+        operations = maintenance.get('operations', [])
+        content += '<details><summary>Browser cache housekeeping</summary><div class="method-body"><p>' + escape(maintenance.get('scope', '')) + '</p>'
+        notes = maintenance.get('notes', [])
+        if isinstance(notes, str):
+            notes = [notes]
+        content += ''.join('<p>' + escape(note) + '</p>' for note in notes)
+        content += f'<p>{numeric(len(operations))} completed-profile maintenance records are retained. The documented addition was introduced after {numeric(maintenance.get("introduced_after_quality_sessions"))} quality sessions; it was not part of the initial freeze. It changes neither the scheduled model calls nor the study’s limits.</p>'
+        content += '<p><a href="fresh-maintenance.json" download>Download cache-maintenance receipts and source bindings</a></p></div></details>'
+    content += '<p><a href="fresh-comparison.json" download>Download fresh comparison methods and evidence</a></p>'
+    return content
+
+
 def static_methods(methods, resource=None):
     def fields(values):
-        return '<dl>' + ''.join(f'<div><dt>{escape(key.replace("_", " ")[:1].upper() + key.replace("_", " ")[1:])}</dt><dd>{escape(json.dumps(value) if isinstance(value, (dict, list)) else str(value))}</dd></div>' for key, value in values.items()) + '</dl>'
+        return '<dl>' + ''.join(f'<div><dt>{escape(key.replace("_", " ")[:1].upper() + key.replace("_", " ")[1:])}</dt><dd>{escape(json.dumps(value) if isinstance(value, (dict, list)) else "Unavailable" if value is None else str(value))}</dd></div>' for key, value in values.items()) + '</dl>'
     blocks = []
     for study in methods.get("studies", []):
-        sources = ' · '.join(f'<a href="{escape(source["url"], quote=True)}">{escape(source["label"])}</a>' for source in study.get("sources", []))
+        sources = ' · '.join(f'<a href="{escape(evidence_url(source["url"]), quote=True)}">{escape(source["label"])}</a>' for source in study.get("sources", []))
         aggregation = f'<p><strong>Aggregation.</strong> {escape(study["aggregation"])}</p>' if study.get("aggregation") else ""
         public_prompt = f'<p><strong>Public resource workload prompt.</strong> “{escape(study["public_workload_prompt"])}”</p>' if study.get("public_workload_prompt") else ""
         limitations = '<ul>' + ''.join(f'<li>{escape(item)}</li>' for item in study.get("limitations", [])) + '</ul>'
@@ -116,7 +194,7 @@ def static_methods(methods, resource=None):
     blocks.append('<details><summary>Scoring and uncertainty</summary><div class="method-body">' + fields(methods.get('scoring', {})) + '</div></details>')
     telemetry = []
     for definition in methods.get("telemetry_definitions", {}).values():
-        prose = ' '.join(str(definition.get(key, '')) for key in ('definition', 'scope', 'coverage', 'limitations', 'missing'))
+        prose = ' '.join(str(definition[key]) for key in ('definition', 'scope', 'coverage', 'limitations', 'missing') if definition.get(key) is not None)
         telemetry.append(f'<div><dt>{escape(definition["label"])} · {escape(definition.get("unit", ""))}</dt><dd>{escape(prose)}</dd></div>')
     blocks.append('<details><summary>Telemetry definitions and coverage</summary><div class="method-body"><dl>' + ''.join(telemetry) + '</dl></div></details>')
     notes = methods.get("reproduction", []) + methods.get("preserved_failures", [])
@@ -156,10 +234,25 @@ def update(args):
             raise ValueError("Expected versioned public resource report with session records")
         data["resource_study"] = resource
         data["sources"]["resource_study"] = args.resource_source_url or data["sources"].get("resource_study") or base + "reports/resource-all-edits-v1/result.json"
+    if args.fresh_report.exists():
+        fresh = json.loads(args.fresh_report.read_text())
+        if fresh.get("schema_version") != 1 or not isinstance(fresh.get("quality"), dict) or not isinstance(fresh.get("resource"), dict) or not isinstance(fresh.get("artifacts"), list):
+            raise ValueError("Expected a versioned fresh quality/resource comparison")
+        data["fresh_comparison"] = fresh
+        data["sources"]["fresh_comparison"] = args.fresh_source_url or data["sources"].get("fresh_comparison") or PUBLIC_BASE + "reports/fresh-baseline-r4-v1/result.json"
+    fresh = data.get("fresh_comparison")
+    if args.fresh_maintenance.exists():
+        maintenance = json.loads(args.fresh_maintenance.read_text())
+        if maintenance.get('kind') != 'fresh_profile_cache_maintenance' or not fresh or maintenance.get('study_sha256') != fresh['study_sha256']:
+            raise ValueError('Fresh cache-maintenance record must bind to the fresh study')
+        data['fresh_maintenance'] = maintenance
+        data['sources']['fresh_maintenance'] = args.fresh_maintenance_source_url or data['sources'].get('fresh_maintenance') or PUBLIC_BASE + 'reports/fresh-baseline-r4-v1/maintenance.json'
     data["updated"] = datetime.fromisoformat(report["updated_at_utc"]).astimezone(ZoneInfo("America/Los_Angeles")).date().isoformat()
     resource_updated = data.get("resource_study", {}).get("updated_at_utc")
     if resource_updated:
         data["updated"] = max(data["updated"], datetime.fromisoformat(resource_updated).astimezone(ZoneInfo("America/Los_Angeles")).date().isoformat())
+    if fresh and fresh.get("updated_at_utc"):
+        data["updated"] = max(data["updated"], datetime.fromisoformat(fresh["updated_at_utc"]).astimezone(ZoneInfo("America/Los_Angeles")).date().isoformat())
     methods = json.loads(methods_path.read_text())
     v1_base = data["sources"]["v1_report"].split("reports/", 1)[0]
     source_map = {"reports/ifeval-browser-v2-collaboration-run/result.json": data["sources"]["v2_execution"].replace("README.md", "result.json"), "reports/ifeval-browser-v2-collaboration-run/README.md": data["sources"]["v2_execution"], "reports/resource-all-edits-v1/result.json": data["sources"].get("resource_study", base + "reports/resource-all-edits-v1/result.json")}
@@ -174,6 +267,14 @@ def update(args):
             return out
         return [normalize(v) for v in value] if isinstance(value, list) else value
     methods = normalize(methods)
+    if fresh:
+        methods["fresh_comparison"] = {"report": "fresh-comparison.json", "source": data["sources"]["fresh_comparison"], "scope": "Planned schedule: six fresh executions on the same 32 exposed development prompts and two separate resource sessions per artifact. Actual completion, observations and failures are reported in the linked comparison.", "status": fresh['status']}
+        sources = [item for item in methods.get("sources", []) if item.get("label") not in ("Fresh six-version comparison", "Fresh comparison cache-maintenance evidence")]
+        sources.append({"label": "Fresh six-version comparison", "url": data["sources"]["fresh_comparison"]})
+        if data.get('fresh_maintenance'):
+            methods['fresh_comparison']['maintenance'] = {'report': 'fresh-maintenance.json', 'source': data['sources']['fresh_maintenance']}
+            sources.append({'label': 'Fresh comparison cache-maintenance evidence', 'url': data['sources']['fresh_maintenance']})
+        methods["sources"] = sources
     resource = data.get("resource_study")
     if resource:
         for study in methods.get("studies", []):
@@ -183,6 +284,8 @@ def update(args):
     html = replace_region(html, "RESEARCH_DATA", script_json("research-data", data))
     html = replace_region(html, "METHODOLOGY_DATA", script_json("methodology-data", methods))
     html = replace_region(html, "METHODS_DETAIL", static_methods(methods, resource))
+    html = replace_region(html, "FRESH_EVIDENCE", fresh_evidence(fresh))
+    html = replace_region(html, "FRESH_METHODS", fresh_methods(fresh, data.get('fresh_maintenance')))
     if resource:
         count = sum(row.get("status") == "completed" and (row.get("summary") or {}).get("status") == "complete" and (row.get("summary") or {}).get("measured_requests") == 60 and (row.get("summary") or {}).get("scheduled_requests") == 60 for row in resource["sessions"])
         method_status = f"{count} of 10 planned sessions are complete in the public report. Quality eligibility was not required. Two sessions per artifact form a descriptive pilot, not an equivalence test."
@@ -196,28 +299,57 @@ def update(args):
     html = replace_region(html, "RESOURCE_METHOD_STATE", escape(method_state))
     html = replace_region(html, "RESOURCE_DOWNLOAD", download)
     finding = (f"Quality improvement remains unestablished. {count} of {len(resource['sessions'])} resource sessions are complete across {len(resource['artifacts'])} artifacts." if resource else "V1’s held-out change is inconclusive. None of the three new Astra edits improved the strict development score.")
+    if fresh:
+        quality_rows = {row['artifact_key']: row for row in fresh.get('quality', {}).get('artifacts', [])}
+        pristine = (quality_rows.get('pristine') or {}).get('metrics') or {}
+        r4 = (quality_rows.get('astra-r4') or {}).get('metrics') or {}
+        completed_resources = sum(row.get('status') == 'completed' and (row.get('summary') or {}).get('status') == 'complete' for row in fresh.get('resource', {}).get('sessions', []))
+        if pristine and r4:
+            finding = f"Astra round 4: {numeric(r4.get('strict_passes'))}/{numeric(r4.get('denominator'))} strict passes; fresh pristine: {numeric(pristine.get('strict_passes'))}/{numeric(pristine.get('denominator'))}. {completed_resources}/12 resource sessions complete. Development evidence; no untouched confirmation."
+            observed = [(key, row['metrics']) for key, row in quality_rows.items() if row.get('status') == 'completed' and row.get('metrics')]
+            if observed:
+                best = max(metrics['strict_passes'] for _, metrics in observed)
+                leaders = [key for key, metrics in observed if metrics['strict_passes'] == best]
+                names = {artifact['key']: artifact['label'] for artifact in fresh.get('artifacts', [])}
+                if len(leaders) == 1:
+                    finding = f"Astra round 4: {numeric(r4['strict_passes'])}/32 strict passes; fresh pristine: {numeric(pristine['strict_passes'])}/32. {names.get(leaders[0], leaders[0])} leads at {numeric(best)}/32. {completed_resources}/12 resource sessions complete. Exposed development data; no untouched confirmation."
+        else:
+            finding = f"The fresh six-version comparison is {fresh.get('status', 'pending').replace('_', ' ')}. Historical results remain separate."
     html = replace_region(html, "CURRENT_FINDING", escape(finding))
     outputs = {data_path: json.dumps(data, indent=2) + "\n", methods_path: json.dumps(methods, indent=2) + "\n", html_path: html}
     if resource:
         outputs[args.site / "resource-study.json"] = json.dumps(resource, indent=2) + "\n"
+    if fresh:
+        outputs[args.site / "fresh-comparison.json"] = json.dumps(fresh, indent=2) + "\n"
+    if data.get('fresh_maintenance'):
+        outputs[args.site / 'fresh-maintenance.json'] = json.dumps(data['fresh_maintenance'], indent=2) + '\n'
+    snapshot = f'historical: {len(evaluated)} Astra candidates, {len((resource or {}).get("sessions", []))} resource sessions'
+    if fresh:
+        quality_done = sum(row.get('status') == 'completed' for row in fresh.get('quality', {}).get('artifacts', []))
+        resource_done = sum(row.get('status') == 'completed' and (row.get('summary') or {}).get('status') == 'complete' for row in fresh.get('resource', {}).get('sessions', []))
+        snapshot += f'; fresh: {quality_done}/6 quality runs, {resource_done}/12 resource sessions'
     if args.check:
         stale = [str(path.relative_to(REPOSITORY)) for path, text in outputs.items() if not path.exists() or path.read_text() != text]
         if stale:
             raise SystemExit("Stale site evidence: " + ", ".join(stale))
-        print(f'PASS: embedded/static evidence synchronized ({len(evaluated)} candidates; {len((resource or {}).get("sessions", []))} resource sessions)')
+        print(f'PASS: embedded/static evidence synchronized ({snapshot})')
     else:
         for path, text in outputs.items():
             path.write_text(text)
-        print(f'Updated research snapshot ({len(evaluated)} candidates; {len((resource or {}).get("sessions", []))} resource sessions)')
+        print(f'Updated research snapshot ({snapshot})')
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--report", type=Path, default=REPOSITORY / "reports/ifeval-browser-v2-collaboration-run/result.json")
     parser.add_argument("--resource-report", type=Path, default=REPOSITORY / "reports/resource-all-edits-v1/result.json")
+    parser.add_argument("--fresh-report", type=Path, default=REPOSITORY / "reports/fresh-baseline-r4-v1/result.json")
+    parser.add_argument("--fresh-maintenance", type=Path, default=REPOSITORY / "reports/fresh-baseline-r4-v1/maintenance.json")
     parser.add_argument("--site", type=Path, default=REPOSITORY / "site")
     parser.add_argument("--source-url", help="Public V2 report link; existing pin is retained by default")
     parser.add_argument("--resource-source-url", help="Public resource JSON link")
+    parser.add_argument("--fresh-source-url", help="Immutable public fresh-comparison JSON link")
+    parser.add_argument("--fresh-maintenance-source-url", help="Immutable public cache-maintenance evidence link")
     parser.add_argument("--repository-base", help="Public blob/COMMIT/ prefix for newly published methodology and sources")
     parser.add_argument("--check", action="store_true")
     update(parser.parse_args())

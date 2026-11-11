@@ -96,8 +96,8 @@ or external model call is used. Printing methodology temporarily expands details
 and restores their prior state. The complete numerical fallback and source links
 remain usable without JavaScript.
 
-Final review used a clean publication checkout after all ten target sessions
-ended. Taste app inspection passed with **zero failures** at 1,440, 768 and
+The prior five-artifact revision was reviewed in a clean publication checkout
+after its ten historical target sessions ended. Taste app inspection passed with **zero failures** at 1,440, 768 and
 390 pixels. All six images in each of two rounds were visually examined.
 The second round kept the phone metric selector at full width, set its measurement
 unit as one unbroken line below the number, and shortened the adjacent continuation
@@ -119,7 +119,7 @@ syntax, Python compilation and updater idempotence also pass. No review browser
 ran during target measurement, and no frozen report or benchmark source changed
 as part of interface review.
 
-Final visual critique: design 8.4, usability 8.3, creativity 8.0, content 9.1;
+Prior revision’s visual critique: design 8.4, usability 8.3, creativity 8.0, content 9.1;
 overall approximately 8.4/10. The main comparison, actual weight-column locations
 and request traces give the interface a specific research purpose. Dense caveats
 remain in expandable methods; the resource view preserves its interruption notice
@@ -136,3 +136,81 @@ to pin newly published methodology/source links, `--source-url` for the V2 repor
 and `--resource-source-url` for the independent resource report. Preserve historical
 immutable pins. `--check` performs no writes and confirms JSON, embedded data and
 static tables remain synchronized.
+
+## Fresh-baseline comparison extension
+
+The six-artifact comparison preserves the Achromatic ledger direction (seed
+1571155384). Its main question is whether a measured quality change coincides
+with a resource tradeoff. The new **All versions** view places all available
+artifacts on one quality-versus-resource figure, with selectable strict/loose
+quality and twelve resource metrics, a selected-version reading and a complete
+score/resource table. Points and table rows share the selected artifact. Exact
+coincident values share a numbered native button that cycles through their
+versions. Small dots remain at the exact measured coordinates; connected labels
+are placed independently to keep their 44px targets clear of nearby labels.
+No jitter or synthetic separation changes the observations. Focused
+axes are explicitly labeled and can switch to full scales beginning at zero.
+
+A cohort selector separates fresh baseline measurements from historical values.
+Fresh observations are never filled from old runs. Missing quality or either
+resource replicate yields an unavailable paired figure; resource session values
+remain inspectable in their detail view. Fresh baseline deltas require both
+quality and resource environment checks. CPU/GPU counters remain activity rates,
+not model-only FLOPs or energy. Activity-rate views display measured response and profile durations alongside the selected observation; both durations are also selectable plot metrics. These durations are context, not a model-only integration interval for the counters. The historical figure retains its Chrome-version
+and separate-study caveats.
+
+The data contract is `results.json.fresh_comparison`, an unchanged copy of the
+new public report. Artifact metadata use `key` or `artifact_key`; the fourth
+Astra artifact is `astra-r4`. Quality rows live under `quality.artifacts`, and
+resource sessions retain the existing session schema under `resource.sessions`.
+The report does not add placeholder fourth-round results to the older cohorts.
+`FRESH_EVIDENCE` and `FRESH_METHODS` regions are filled by the release updater for
+script-free evidence and complete on-page fresh methodology.
+
+Six bibliographic references now sit at the bottom of every view: the motivating
+Sparks of Weight-Space Programming report, the IFEval paper and pinned checker,
+Ai2 RLVR-IFeval, the pinned Qwen model, the WebLLM paper/runtime and Browser LLM
+Bench. Titles and authors for the motivating report, IFEval and WebLLM were
+checked against their primary pages. Study narratives and methods are readable
+on the website; report actions lead to on-page sections or exact JSON, not a
+README. The existing repository link remains available for implementation code.
+
+The final six-artifact interface was reviewed only after all six quality sessions
+and twelve resource sessions ended and their cleanup passed. Both browser QA
+rounds used the final canonical measurements in the clean publication checkout;
+the final round also used the immutable scientific source pins. The prior
+five-artifact review above remains a separate historical record.
+
+The final Taste app inspection reports **zero failures** at 1,440, 768 and
+390 pixels. All six images from each of two rounds were opened and visually
+examined. The second round shortened native-select options, removed the duplicate
+phone cohort label, and used 24px phone readings with the percentage unit inline.
+The near-point fix keeps small dots at measured coordinates and separates only
+the connected 44px label controls. Full axes and focused axes retain the same
+values; exact coincidences remain keyboard-selectable groups.
+
+The full interaction harness passed historical and fresh quality/resource values,
+all six artifacts, all twelve resource metrics, both scales at all three widths,
+nonoverlapping plot targets, coincident-point keyboard cycling, paired fresh
+outcomes (three improved, three regressed, 26 tied for R4), session/request traces,
+CSV exports, shared links, printing, six references, and no rendered README links.
+No-JavaScript review verified the fresh six-row fallback, R4's 16,998 quality
+tokens, frozen prediction and cache-maintenance methodology. Direct-file rendering
+and the fresh methodology were also checked at desktop and phone widths. No
+browser exceptions, missing local requests or horizontal overflow were observed.
+
+The two retained inspector warnings have the same rationale as before: the
+nearly neutral ground belongs to the established direction; phone numeric fields
+sit beneath their own labels in per-artifact rows, while desktop columns remain
+right-aligned. There is no synthetic data or stock imagery. The interface remains
+dense on a phone because the selected metrics, limitations and six complete
+artifact records are retained.
+
+Final app critique: design 8.5, usability 8.5, creativity 8.0 and content 9.2;
+weighted presentation score approximately 8.5/10. The all-version figure now
+answers the quality–resource question without losing coincident versions, and
+the complete methods and references stay on the website. These scores concern
+presentation, not scientific validity. The final screenshots and inspection
+record are under `.taste-skill/fresh-r4-review-2/` in the publication checkout;
+functional results and full-scale screenshots are under
+`.taste-skill/research-interactions/`.

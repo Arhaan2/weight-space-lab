@@ -12,15 +12,25 @@ never pooled. Missing measurements remain unavailable; resource means require tw
 completed sessions with available readings. There are no synthetic results or AI
 backend calls.
 
+The fresh cohort contains pristine, V1 and all four Astra edits. Its All versions
+figure compares strict or loose compliance against twelve selectable resource
+metrics. Small dots retain exact measured coordinates; connected control labels
+remain selectable when results are close. Fresh and historical cohorts stay
+separate, and both resource sessions remain inspectable. Methods and six primary
+references are readable on the website without a README detour.
+
 `results.json` preserves the public V1/V2 evidence and includes the full sanitized
 independent resource report when available. `research-methodology.json` describes
 scopes, generation, scoring, provenance and telemetry semantics. The updater embeds
 both JSON files safely in `index.html`, alongside generated no-JavaScript tables.
 The evidence view links complete data, source reports and `citation.cff`.
+`fresh-comparison.json` and `fresh-maintenance.json` retain the new canonical
+comparison and its separately bound cache-maintenance record unchanged.
 
 Run `python3 scripts/update_results_site.py` from the repository root, then use
 `--check` for read-only synchronization verification. Source-link flags are
-`--source-url`, `--resource-source-url` and `--repository-base`. No inference or
+`--source-url`, `--resource-source-url`, `--fresh-source-url`,
+`--fresh-maintenance-source-url` and `--repository-base`. No inference or
 browser is launched by the updater. Perform visual checks only when target resource
 measurements are idle.
 

@@ -12,6 +12,7 @@ import base64
 import math
 from pathlib import Path
 import re
+from verify_fresh_results import verify_fresh_comparison
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -321,7 +322,11 @@ def main() -> None:
             equal(row["qualifies"], qualifies, f"round {row['round']} qualification")
 
     verify_resource_study(data, source, equal)
+    verify_fresh_comparison(ROOT, data, equal)
     verify_methodology(data, equal)
+    html = (site / 'index.html').read_text()
+    equal(bool(re.search(r'href\s*=\s*[\"\'][^\"\']*README\.md', html, re.IGNORECASE)), False,
+          'website prose does not redirect readers to README files')
     if (ROOT / "CITATION.cff").exists():
         equal((site / "citation.cff").read_text(), (ROOT / "CITATION.cff").read_text(), "citation metadata")
 
