@@ -74,7 +74,7 @@
     "Source Transformers activations can inform an edit; its effect must still be tested after quantization in WebLLM.",
     "Development feedback is not untouched confirmation. Dataset exposure and split roles must be recorded before execution."
   ],
-  "source_base": "https://github.com/Arhaan2/weight-space-lab/blob/3447ea31b60fbe81a1040d6f789cdd77346410f6/",
+  "source_base": "https://github.com/Arhaan2/weight-space-lab/blob/d97831ce283665610d898e44bd7fc68a0a010267/",
   "sources": [
     {
       "label": "Workflow and execution contract",
