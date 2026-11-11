@@ -209,9 +209,9 @@ def script_json(identifier, data):
 
 
 JOINT_NUMERIC_FIELDS = {
-    "quality": ("strict_passed", "scheduled", "strict_accuracy", "unresolved_grades"),
+    "quality": ("strict_passed", "loose_passed", "scheduled", "strict_accuracy", "loose_accuracy", "unresolved_grades"),
     "totals": ("output_tokens", "response_ms", "known_output_tokens", "known_response_ms", "measured_requests", "mean_response_ms", "full_response_tokens_per_second"),
-    "resources": ("native_peak_footprint_gb", "gpu_buffer_descriptor_bytes_sampled_max", "wasm_address_space_bytes_sampled_max", "cpu_capacity_percent", "cpu_coverage", "gpu_time_ms_per_second", "gpu_coverage", "host_power_watts", "power_coverage", "observed_host_energy_joules", "host_energy_joules", "native_samples"),
+    "resources": ("native_peak_footprint_gb", "gpu_buffer_descriptor_bytes_sampled_max", "wasm_address_space_bytes_sampled_max", "cpu_capacity_percent", "cpu_coverage", "observed_cpu_time_ms", "cpu_time_ms", "gpu_time_ms_per_second", "gpu_coverage", "observed_gpu_time_ms", "gpu_time_ms", "host_power_watts", "power_coverage", "observed_host_energy_joules", "host_energy_joules", "native_samples"),
     "cost_per_compliant_answer": ("tokens_per_strict_pass", "response_ms_per_strict_pass", "host_joules_per_strict_pass"),
 }
 
@@ -238,6 +238,17 @@ def public_joint_report(report):
         return value
 
     public = {key: report[key] for key in ("schema_version", "kind", "status", "accuracy_benchmark", "runs_per_arm", "separate_resource_generations")}
+    deployment_fields = ("deployment_outcome", "conversion_erases_edit", "candidate_evaluation_skipped")
+    if any(field in report for field in deployment_fields):
+        if not all(field in report for field in deployment_fields):
+            raise ValueError("Joint deployment outcome requires all conversion flags")
+        outcome, erased, skipped = (report[field] for field in deployment_fields)
+        expected_flags = {"not_converted": (None, False), "effective_edit": (False, False), "erased_by_quantization": (True, True)}
+        if (outcome not in expected_flags or (erased is not None and type(erased) is not bool)
+                or type(skipped) is not bool or (erased, skipped) != expected_flags[outcome]):
+            raise ValueError("Inconsistent joint conversion outcome flags")
+        public.update({field: report[field] for field in deployment_fields})
+    skipped_candidate = public.get("candidate_evaluation_skipped") is True
     public["scheduled_prompts"] = numbers(report, ("scheduled_prompts",))["scheduled_prompts"]
     public["arms"] = {}
     for key, arm in report.get("arms", {}).items():
@@ -273,9 +284,21 @@ def public_joint_report(report):
             raise ValueError("Joint report must retain every scheduled request exactly once")
         if sum(row["strict_pass"] is True for row in clean["items"]) != quality["strict_passed"]:
             raise ValueError("Joint pass count differs from request grades")
+        for total in ("output_tokens", "response_ms"):
+            values = [row[total] for row in clean["items"]]
+            if clean["totals"][total] is not None and (None in values or not math.isclose(clean["totals"][total], sum(values))):
+                raise ValueError("Joint totals differ from same-request observations")
+        if (not quality["strict_passed"] or quality["unresolved_grades"]) and any(value is not None for value in clean["cost_per_compliant_answer"].values()):
+            raise ValueError("Cost per compliant answer needs a resolved nonzero denominator")
         public["arms"][key] = clean
     keys = set(public["arms"])
     expected = {"not_run": set(), "baseline_only": {"baseline"}, "complete": {"baseline", "candidate"}, "incomplete": {"baseline", "candidate"}}
+    if skipped_candidate:
+        if public["status"] != "incomplete" or keys != {"baseline"} or report.get("comparison") is not None:
+            raise ValueError("An erased edit requires baseline-only evidence, incomplete status and no paired comparison")
+        expected["incomplete"] = {"baseline"}
+    if public.get("deployment_outcome") == "not_converted" and "candidate" in keys:
+        raise ValueError("Candidate observations require a converted deployment")
     if keys != expected[public["status"]]:
         raise ValueError("Joint report state disagrees with its arms")
     comparison = report.get("comparison")
@@ -301,13 +324,15 @@ def public_joint_report(report):
 
 def joint_markup(report):
     """Render current observations without blending them with past protocols."""
-    rows, costs, resource_rows, request_rows = [], [], [], []
+    rows, costs, resource_rows, activity_rows, request_rows = [], [], [], [], []
     present = bool(report and report["arms"])
+    skipped_candidate = bool(report and report.get("candidate_evaluation_skipped"))
     missing = lambda value, digits=0, divisor=1: "Unavailable" if value is None else numeric(value, digits, divisor)
     for key, label in (("baseline", "Pristine"), ("candidate", "Frozen candidate")):
         arm = (report or {}).get("arms", {}).get(key)
         if not arm:
-            rows.append((label, ["Not run", "Unavailable", "Unavailable", "Unavailable", "Unavailable"]))
+            status = "Skipped after quantization" if key == "candidate" and skipped_candidate else "Not run"
+            rows.append((label, [status, "Unavailable", "Unavailable", "Unavailable", "Unavailable"]))
             continue
         q, t, r, c = (arm[name] for name in ("quality", "totals", "resources", "cost_per_compliant_answer"))
         grade = f'{numeric(q["strict_passed"])}/{numeric(q["scheduled"])}'
@@ -316,7 +341,8 @@ def joint_markup(report):
         rows.append((label, [arm["status"].capitalize(), grade, missing(t["output_tokens"]), missing(t["response_ms"], 2, 1000), missing(r["native_peak_footprint_gb"], 3)]))
         costs.append((label, [missing(c["tokens_per_strict_pass"], 1), missing(c["response_ms_per_strict_pass"], 2, 1000), missing(c["host_joules_per_strict_pass"], 2)]))
         coverage = lambda metric, cov: f'{missing(r[metric], 2)} · {numeric(r[cov], 1, .01)}% coverage' if r[cov] is not None else 'Unavailable'
-        resource_rows.append((label, [coverage("cpu_capacity_percent", "cpu_coverage"), coverage("gpu_time_ms_per_second", "gpu_coverage"), coverage("host_power_watts", "power_coverage"), missing(r["host_energy_joules"], 2)]))
+        resource_rows.append((label, [coverage("cpu_capacity_percent", "cpu_coverage"), coverage("gpu_time_ms_per_second", "gpu_coverage"), coverage("host_power_watts", "power_coverage")]))
+        activity_rows.append((label, [missing(r["cpu_time_ms"], 2, 1000), missing(r["gpu_time_ms"], 2, 1000), missing(r["host_energy_joules"], 2)]))
         for index, item in enumerate(arm["items"], 1):
             result = "Pass" if item["strict_pass"] is True else "Fail" if item["strict_pass"] is False else "Unresolved"
             request_rows.append((f'{label} · {index}', [item["item_id"], item["status"].replace("_", " "), result, missing(item["output_tokens"]), missing(item["response_ms"], 2, 1000), missing(item["resources"]["native_peak_footprint_gb"], 3)]))
@@ -324,16 +350,19 @@ def joint_markup(report):
     if not present:
         return content + '<p class="small-note">No historical value is used to fill these fields. A completed record must bind grades and resource observations to the same prompts, requests, runtime and deployed artifacts.</p>'
     comparison = report.get("comparison") or {}
-    if report["status"] == "complete" and comparison.get("matched_environment_and_workload"):
+    if skipped_candidate:
+        content += '<p class="harness-joint-reading">Quantization erased the source edit. Candidate evaluation was skipped; only pristine browser observations are available, so no paired effect is reported.</p>'
+    elif report["status"] == "complete" and comparison.get("matched_environment_and_workload"):
         content += f'<p class="harness-joint-reading">Candidate minus pristine: <strong>{numeric(comparison["strict_accuracy_delta"], 2, .01)} percentage points</strong> strict compliance; <strong>{missing(comparison["output_tokens_delta"])}</strong> output tokens; <strong>{missing(comparison["response_ms_delta"], 2, 1000)} seconds</strong> summed response time.</p>'
     else:
         content += '<p class="small-note">Paired change is unavailable until both arms complete with matched workload and environment identities.</p>'
-    content += '<p class="small-note">One browser session per arm. These are descriptive observations on the same requests, including unsuccessful answers. Missing totals remain unavailable; individual recorded requests remain inspectable. Native footprint is sampled process-tree memory, not physical VRAM.</p>'
+    content += '<p class="small-note">The protocol permits one browser session per arm. These are descriptive observations on the same requests, including unsuccessful answers. Missing totals remain unavailable; individual recorded requests remain inspectable. Native footprint is sampled process-tree memory, not physical VRAM.</p>'
     content += '<h3>Cost per strictly compliant answer</h3>' + table(["Artifact", "Tokens / pass", "Response seconds / pass", "Host joules / pass"], costs, "Total scored workload cost divided by strict passes")
     content += '<p class="small-note">All scored outputs contribute to cost, including failed and truncated answers. A zero-pass or unresolved-grade denominator has no defined cost per pass. Warm-up and model load are outside these scored totals.</p>'
     content += '<details class="harness-request-records"><summary>Resource coverage and request records</summary>'
-    content += table(["Artifact", "CPU capacity (%)", "GPU time (ms/s)", "Host power (W)", "Host energy (J)"], resource_rows, "Observed resource rates and interval coverage")
-    content += '<p class="small-note">CPU and GPU are activity rates. Host energy is reported only for complete measured intervals; it is not model-only energy. Coverage below 100% is retained explicitly.</p>'
+    content += table(["Artifact", "CPU capacity (%)", "GPU time (ms/s)", "Host power (W)"], resource_rows, "Observed resource rates and interval coverage")
+    content += table(["Artifact", "CPU time (s)", "GPU time (s)", "Host energy (J)"], activity_rows, "Full scored-workload activity and energy, when completely covered")
+    content += '<p class="small-note">Rates retain their measured coverage. Full activity and energy totals require 100% interval coverage across the scored workload. CPU time sums process-tree work across cores; host energy is not model-only energy. Partial observed integrals remain in the downloadable report.</p>'
     content += table(["Artifact / request", "IFEval item", "Status", "Strict grade", "Output tokens", "Response (s)", "Native peak (GB)"], request_rows, "Each graded request and its own browser resource observations")
     return content + '</details><p><a href="joint-comparison.json" download>Download public paired observations</a></p>'
 
@@ -364,6 +393,8 @@ def harness_markup(contract, joint=None):
         raise ValueError("Harness source links must identify the public repository")
     sources = ''.join(f'<a href="{escape(base + row["path"], quote=True)}"><span>{escape(row["label"])}</span><span aria-hidden="true">↗</span></a>' for row in contract["sources"])
     record_status = {"not_run": "Awaiting first execution", "baseline_only": "Pristine arm recorded", "complete": "Both arms complete", "incomplete": "Incomplete or unmatched pair"}[(joint or {}).get("status", "not_run")]
+    if joint and joint.get("candidate_evaluation_skipped"):
+        record_status = "Candidate skipped after quantization"
     implementation_status = "Updated harness. First paired browser evaluation has not run." if not joint or joint["status"] == "not_run" else f"{record_status}. One-session observations; no repeated-run uncertainty estimate."
     return f'''<div class="page-heading"><div><p class="eyebrow">IFEval + Browser LLM Bench</p><h1 id="harness-heading">{escape(contract["title"])}</h1><p class="page-intro">{escape(contract["question"])}</p></div><a class="outline-button" href="harness.json" download>Download harness contract <span aria-hidden="true">↓</span></a></div>
     <div class="finding-strip harness-status"><span class="finding-label">Harness status</span><p>{implementation_status}</p><a href="#results">Earlier results <span aria-hidden="true">→</span></a></div>
@@ -371,7 +402,7 @@ def harness_markup(contract, joint=None):
     <section class="harness-workflow" aria-labelledby="harness-workflow-heading"><div class="section-heading"><h2 id="harness-workflow-heading">From diagnosis to one paired comparison</h2><span>Inspect each stage</span></div><div class="harness-flow"><div class="harness-stage-controls" role="group" aria-label="Inspection and evaluation stages">{controls}</div><div class="harness-stage-panels">{panels}</div></div><p class="small-note">{escape(evaluation["diagnostics"])}</p></section>
     <div class="harness-measurement-grid"><section aria-labelledby="harness-request-heading"><div class="section-heading"><h2 id="harness-request-heading">One answer, two measurements</h2><span>Joined by request identity</span></div><p class="harness-lead">{escape(contract["workload"])}</p><dl class="harness-measurements">{metrics}</dl></section><aside class="harness-comparison-note"><h2>What changes from the earlier studies</h2><p>The editor can inspect weights and activation evidence, then change a selected direction instead of being limited to scaling contiguous columns.</p><p>The accuracy workload now also supplies the browser resource workload. The standard repeated-prompt pilot remains in the historical record.</p><p>Additional accuracy benchmarks are a later extension. This version uses IFEval only.</p></aside></div>
     <section class="harness-paired-results" aria-labelledby="harness-paired-heading"><div class="section-heading"><h2 id="harness-paired-heading">Paired evaluation record</h2><span>{record_status}</span></div>{joint_markup(joint)}</section>
-    <div class="harness-bottom"><details class="harness-boundaries"><summary>How to interpret the next result</summary><ul>{limits}</ul></details><section class="harness-sources" aria-labelledby="harness-sources-heading"><h2 id="harness-sources-heading">Implementation and protocol</h2>{sources}</section></div>'''
+    <div class="harness-bottom"><details class="harness-boundaries"><summary>How to interpret this comparison</summary><ul>{limits}</ul></details><section class="harness-sources" aria-labelledby="harness-sources-heading"><h2 id="harness-sources-heading">Implementation and protocol</h2>{sources}</section></div>'''
 
 
 def update(args):
