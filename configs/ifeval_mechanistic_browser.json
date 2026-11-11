@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "study_id": "ifeval-mechanistic-browser-v1",
+  "accuracy_benchmark": "ifeval",
+  "scope": "adaptive_development",
+  "schedule": {"arms": ["baseline", "candidate"], "runs_per_arm": 1, "maximum_prompts": 128, "warmups_per_arm": 1, "separate_resource_workload": false},
+  "objective": {
+    "primary": "prompt_level_strict_accuracy",
+    "resource_metrics": ["output_tokens", "response_latency_ms", "native_peak_footprint_gb", "cpu_time_ms", "gpu_time_ms", "host_energy_joules"],
+    "comparison": "report_quality_and_resource_deltas_on_the_same_scheduled_requests",
+    "unavailable_measurements": "null",
+    "selection": "one_frozen_candidate_reported_even_when_worse"
+  },
+  "editor": {"requested_selector": "gpt-6-astra", "interface": "adaptive_local_tool_session", "isolation": "unverified", "max_submissions": 1},
+  "limits": {"weight_inspections": 100, "activation_requests": 16, "direction_derivations": 16, "candidate_submissions": 1, "conversions": 1, "browser_runs": 2, "browser_seconds_per_arm": 5400, "automatic_retries": 0},
+  "activation_limits": {"max_texts": 16, "max_layers": 24, "max_selected_positions": 32, "max_activation_elements": 16777216, "max_text_bytes": 65536, "max_checkpoint_bytes": 4294967296, "max_rss_bytes": 8589934592, "wall_seconds": 180}
+}

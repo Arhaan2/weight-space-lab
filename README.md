@@ -4,7 +4,15 @@ Controlled experiments in which a frontier model proposes direct edits to an ope
 
 Maintainer: [Arhaan Aggarwal (Arhaan2)](https://github.com/Arhaan2).
 
-## Current results — fresh baseline and Astra round 4
+## Current result — one mechanistic IFEval / browser pair
+
+**The first directional edit did not improve accuracy and resource usage together.** Strict compliance fell from 16/32 to 15/32, with 1.25% more output tokens. Observed response time was 2.97% shorter, but time per compliant answer increased 3.50%. This is one exposed development comparison, not evidence of a robust speedup.
+
+Astra inspected actual weights and source-model activations, then edited 127 noncontiguous columns in layers 19 and 22 with strength 2. Both models were graded and resource-measured on the same 32 IFEval responses. An initial candidate browser closure made zero model calls; its preserved evidence and explicit pre-load continuation are disclosed.
+
+See the [complete result and limitations](reports/mechanistic-browser-v1/README.md), [canonical measurements](reports/mechanistic-browser-v1/joint-comparison.json), [exact intervention](reports/mechanistic-browser-v1/intervention.json), and [workflow instructions](docs/mechanistic-browser-workflow.md). IFEval is the only accuracy benchmark in this version. CPU diagnostic activations remain distinct from quantized WebGPU execution.
+
+## Earlier results — fresh baseline and Astra round 4
 
 **The new Astra edit did not improve benchmark compliance or demonstrate lower resource use.** All six artifacts were evaluated afresh on the same current browser: pristine, V1 and all four Astra edits. Round 4 scored 16/32 strict passes, equal to pristine and below V1's 17/32. It used 16,998 scored quality-output tokens versus 13,941 for pristine (+21.93%), with 16 versus 12 truncated outputs. Three prompt outcomes improved and three regressed; 26 were tied.
 
