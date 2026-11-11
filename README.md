@@ -4,7 +4,28 @@ Controlled experiments in which a frontier model proposes direct edits to an ope
 
 Maintainer: [Arhaan Aggarwal (Arhaan2)](https://github.com/Arhaan2).
 
-## Current results — November 10, 2026
+## Current results — fresh baseline and Astra round 4
+
+**The new Astra edit did not improve benchmark compliance or demonstrate lower resource use.** All six artifacts were evaluated afresh on the same current browser: pristine, V1 and all four Astra edits. Round 4 scored 16/32 strict passes, equal to pristine and below V1's 17/32. It used 16,998 scored quality-output tokens versus 13,941 for pristine (+21.93%), with 16 versus 12 truncated outputs. Three prompt outcomes improved and three regressed; 26 were tied.
+
+| Fresh artifact | Strict passes | Loose passes | Quality output tokens | Resource response (ms/request) | Sampled native peak (GB) |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Pristine | 16/32 | 17/32 | 13,941 | 612.88 | 2.990 |
+| V1 edit | 17/32 | 18/32 | 13,903 | 663.82 | 2.884 |
+| Astra round 1 | 16/32 | 17/32 | 15,019 | 674.79 | 2.869 |
+| Astra round 2 | 16/32 | 17/32 | 12,644 | 656.89 | 2.886 |
+| Astra round 3 | 16/32 | 17/32 | 12,591 | 768.90 | 2.963 |
+| Astra round 4 | 16/32 | 17/32 | 16,998 | 737.83 | 3.062 |
+
+Resource columns are equal-weight means of two independent browser sessions per artifact, each with 60 measured fixed-prompt requests. Round 4's mean response was 737.83 ms versus 612.88 ms for pristine (+20.39%), and its mean sampled native peak was 3.062 versus 2.990 GB (+2.41%). The resource workload generated 48 tokens per request for round 4 versus 39 for the other artifacts (+23.08%); full-response throughput was 65.06 versus 63.64 tokens/s (+2.23%). Thus answer length, response cost and per-token speed must be interpreted together. GPUBuffer descriptor and WASM address-space maxima were unchanged allocation bookkeeping. Power was unavailable, and CPU/GPU activity rates are not cumulative computation or energy. Two sessions on one device do not establish significance, causality or resource equivalence.
+
+The first five fresh quality results were supplied to one fresh-context collaboration agent requested with `gpt-6-astra`. It proposed scaling columns 0–59 of the layer 15 and 19 MLP down-projection matrices by 0.5, starting from pristine. Its 140-word prediction was saved before building or evaluating the candidate. Independent source and effective deployment audits passed. Provider immutable identity, accepted reasoning effort, tokens, billing and technical isolation remain unverified or unavailable. This was one proposal, not an unreported optimization search.
+
+All 18 model sessions and 930 planned generation dispatches completed without a target failure or retry: 192 scored quality requests, 720 measured resource requests and 18 warm-ups. Both quality and resource cohorts match the recorded browser/device/runtime identities. The mirrored resource order, fixed workload, observed variation, finite limits, preparation failure and narrow post-session cache maintenance are retained. These are exposed development tasks, with **no untouched final-quality confirmation**.
+
+The [interactive research website](https://arhaan2.github.io/weight-space-lab/) includes all six versions, an interactive quality/resource figure, individual sessions and requests, exact edits, on-page methodology, primary references and downloads. The [canonical fresh comparison](reports/fresh-baseline-r4-v1/result.json), [maintenance evidence](reports/fresh-baseline-r4-v1/maintenance.json), [frozen protocol](docs/fresh-baseline-r4-protocol.md) and [research methodology](docs/research-methodology.md) preserve the detailed record. Historical studies below remain separate.
+
+## Earlier development search and resource pilot — November 10, 2026
 
 **The combined goal is not established.** Three fresh Astra weight edits were independently audited, converted and evaluated in WebLLM on the same 32 development prompts. All three matched the original model's 16/32 strict passes. None met the frozen requirement of higher strict compliance with no more scored output tokens, so pristine was retained and the conditional Browser LLM Bench A–B–B–A comparison was skipped.
 
@@ -39,7 +60,7 @@ The [interactive research website](https://arhaan2.github.io/weight-space-lab/) 
 
 ## Closed results and historical preparation
 
-These records retain prior milestones. Statements about pending execution or authorization below refer to their named historical workflows; the current V2 result is above.
+These records retain prior milestones. Statements about pending execution or authorization below refer to their named historical workflows; the fresh six-version result is above.
 
 **IFEval browser V1 is closed: completed experiment, inconclusive held-out compliance.** Strict prompt compliance was 70/128 candidate versus 69/128 baseline (+0.78125 percentage points; frozen 95% interval −5.47 to +7.03). Improvement and equivalence are unestablished. The candidate completed through a separate continuation after the preserved supervisor interruption. See the [canonical V1 results](reports/ifeval-browser-v1-final/README.md), [saved-output interpretation](docs/ifeval-v1-output-review.md), [public reproduction record](docs/ifeval-v1-reproduction.md), and [historical V2 proposal](docs/ifeval-browser-v2-protocol.md). That proposal is superseded by the current workflow above; its preparation evidence is retained unchanged.
 

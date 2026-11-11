@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "study_id": "fresh-baseline-r4-v1",
+  "quality_order": [
+    "pristine",
+    "v1",
+    "v2-r1",
+    "v2-r2",
+    "v2-r3",
+    "astra-r4"
+  ],
+  "resource_order": [
+    "pristine",
+    "v1",
+    "v2-r1",
+    "v2-r2",
+    "v2-r3",
+    "astra-r4",
+    "astra-r4",
+    "v2-r3",
+    "v2-r2",
+    "v2-r1",
+    "v1",
+    "pristine"
+  ],
+  "quality_settings": {
+    "contextWindow": 4096,
+    "maxTokens": 1024,
+    "requestLimitMs": 120000,
+    "seed": 42,
+    "temperature": 0,
+    "thinking": false,
+    "topP": 1,
+    "warmupTokens": 16,
+    "warmups": 1
+  },
+  "resource_settings": {
+    "temperature": 0,
+    "topP": 1,
+    "seed": 42,
+    "maxTokens": 64,
+    "contextWindow": 4096,
+    "thinking": false,
+    "warmups": 1,
+    "warmupTokens": 16,
+    "requestLimitMs": 60000
+  },
+  "limits": {
+    "engine_loads": 18,
+    "warmups": 18,
+    "quality_requests": 192,
+    "resource_requests": 720,
+    "dispatches": 930,
+    "reserved_target_tokens": 242976,
+    "browser_seconds": 10800,
+    "local_seconds": 14400,
+    "calendar_seconds": 86400,
+    "retained_bytes": 34359738368,
+    "minimum_free_bytes": 8589934592,
+    "editor_proposals": 1,
+    "imports": 1,
+    "builds": 1,
+    "conversions": 1,
+    "packages": 1,
+    "automatic_retries": 0
+  },
+  "edit_family": {
+    "base_sha256": "f3272ddbea59cc854268e91e387416cd84a633a97ae7d9cfaa1325890eac602d",
+    "block_start_range": [
+      0,
+      3524
+    ],
+    "columns_per_tensor": 60,
+    "factors": [
+      0.5,
+      0.75,
+      1.25,
+      1.5
+    ],
+    "operation": "scale_columns",
+    "operations": 2,
+    "shape": [
+      1024,
+      3584
+    ],
+    "targeted_coordinates": 122880,
+    "tensors": [
+      "model.language_model.layers.15.mlp.down_proj.weight",
+      "model.language_model.layers.19.mlp.down_proj.weight"
+    ]
+  },
+  "selection": {
+    "primary": "Maximize strict prompt compliance; compare independently against fresh pristine and best fresh existing artifact.",
+    "secondary": "At most fresh-pristine sampled output tokens is a secondary efficiency target, not a gate for resource measurement.",
+    "resource_gate": "All technically valid artifacts regardless of quality outcome."
+  },
+  "exposure": "The same 32 previously exposed development prompts; no untouched final confirmation.",
+  "cache_policy": "Fresh dedicated Chrome profile and empty IndexedDB weights per session; same local hash-verified no-store fetch. OS filesystem caches are not cleared and may be warmed by verification.",
+  "host_guards": {
+    "memory_pressure_stop_at": 4,
+    "thermal_state_stop_at": 2,
+    "unknown_state": "stop"
+  },
+  "editor": {
+    "requested_model": "gpt-6-astra",
+    "requested_effort": "inherited/default; no verified Ultra claim",
+    "fresh_context": true,
+    "isolation": "unverified",
+    "proposals": 1,
+    "provider_usage": null,
+    "provider_billing": null
+  },
+  "per_attempt_seconds": {
+    "quality": 3600,
+    "resource": 1800,
+    "grading": 900,
+    "verification": 600,
+    "candidate_build_and_conversion": 3600
+  }
+}
