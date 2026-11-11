@@ -4,7 +4,14 @@ Buildless GitHub Pages site. Serve this directory with a static HTTP server; no
 package installation, model download or build is required. Only this directory
 belongs in the Pages deployment.
 
-Three views separate interactive results, methodology and evidence. Select a
+The default **Harness** view describes the current weight/activation inspection,
+directional-edit and same-request browser evaluation workflow. IFEval is the
+single accuracy benchmark. One pristine and one frozen candidate run supply both
+the grades and resource measurements; bounded diagnostic probes are separately
+accounted. Source Transformers activations are explicitly distinguished from
+quantized browser execution. The new paired result remains unmeasured.
+
+Three additional views separate completed results, methodology and evidence. Select a
 weight artifact, quality scope or resource metric to inspect actual observations,
 paired baseline differences, edit operations and individual sessions. Historical
 V1 held-out quality, development quality and the independent resource pilot are
@@ -33,6 +40,27 @@ Run `python3 scripts/update_results_site.py` from the repository root, then use
 `--fresh-maintenance-source-url` and `--repository-base`. No inference or
 browser is launched by the updater. Perform visual checks only when target resource
 measurements are idle.
+
+`harness.json` is the versioned public workflow contract, separate from historical
+evidence. The updater renders its stage explorer, no-JavaScript explanation,
+measurement definitions and awaiting-results table into `index.html`, and embeds
+a script-safe copy. Import the first canonical paired report with:
+
+```sh
+python -m weight_space_lab.mechanistic_study report --root STUDY --output REPORT.json
+python3 scripts/update_results_site.py --joint-report REPORT.json
+python3 scripts/update_results_site.py --check
+```
+
+The updater writes `joint-comparison.json` using an explicit public field list,
+then renders arm totals, cost per strict pass, telemetry coverage and each request.
+Prompts, answers, machine paths and arbitrary execution fields are omitted. Partial
+arms stay visible; paired deltas require a completed matched comparison in the
+canonical report. Missing measurements stay unavailable. Later updates reuse this
+public report without needing the import flag. This is publication validation,
+not an independent regrade or authentication of the original capture. Source links
+use the contract's `source_base`; pin it to the actual published implementation
+when releasing the harness.
 
 Design: Taste's app-screen Achromatic ledger, seed 1571155384, adapted to the user's
 explicit restrained professional direction. Apple guidance supplies feedback,

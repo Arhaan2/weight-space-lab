@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "kind": "mechanistic_browser_harness_contract",
+  "updated": "2026-11-11",
+  "status": "implemented_not_run",
+  "title": "Inspect, edit, measure together",
+  "question": "Can a targeted weight edit improve instruction following within the same browser resource budget?",
+  "accuracy_benchmark": "IFEval",
+  "resource_benchmark": "Browser LLM Bench / WebLLM",
+  "workload": "The same IFEval prompts and generated responses supply both accuracy and resource evidence.",
+  "evaluation": {
+    "status": "not_run",
+    "arms": [
+      "pristine",
+      "candidate"
+    ],
+    "runs_per_arm": 1,
+    "candidate_count": 1,
+    "results": null,
+    "diagnostics": "Bounded diagnostic calls are logged separately from the one baseline and one frozen-candidate browser evaluation."
+  },
+  "stages": [
+    {
+      "key": "weights",
+      "label": "Inspect weights",
+      "summary": "Read actual tensor values and statistics on demand.",
+      "detail": "Astra can request bounded slices and summaries from the pinned source checkpoint. Each disclosure records the requested tensor, selection and checkpoint identity, rather than relying only on a preselected statistics packet.",
+      "evidence": "Checkpoint identity, tensor coordinates, inspection result and budget receipt."
+    },
+    {
+      "key": "activations",
+      "label": "Probe activations",
+      "summary": "Compare productive and failing continuations.",
+      "detail": "Teacher-forced probes capture bounded hidden states and MLP activations from the source model through local Transformers. Matched contrasts estimate a direction and rank the neurons that write it. These are source-model diagnostics, not activations measured inside the quantized WebGPU runtime.",
+      "evidence": "Probe input identity, backend provenance, layer and position selections, captured activations and direction derivation."
+    },
+    {
+      "key": "edit",
+      "label": "Make a directional edit",
+      "summary": "Change a selected component of neuron outputs.",
+      "detail": "The candidate policy supports explicit directional changes on selected columns, including noncontiguous selections and intervention strengths up to six. The pristine checkpoint remains immutable. Source verification and effective quantization checks bind the candidate to the actual deployed model.",
+      "evidence": "Direction vector, selected columns, strength, changed-coordinate audit and deployment identity."
+    },
+    {
+      "key": "evaluate",
+      "label": "Evaluate once per arm",
+      "summary": "Grade and measure each browser request together.",
+      "detail": "Run the frozen IFEval workload once with pristine and once with the candidate. The official instruction checker grades each saved answer while the same request record carries output tokens, response duration and available resource telemetry. There is no separate autumn-leaves workload in this comparison.",
+      "evidence": "Matched prompt IDs, both artifact identities, response grades, token counts, timing and telemetry coverage."
+    }
+  ],
+  "measurements": [
+    {
+      "label": "Instruction compliance",
+      "definition": "Official strict IFEval prompt and instruction outcomes; loose scores remain secondary."
+    },
+    {
+      "label": "Response cost",
+      "definition": "Generated tokens and full-response duration for the same graded requests, including unsuccessful outputs."
+    },
+    {
+      "label": "Memory and activity",
+      "definition": "Available browser resource observations with their coverage and scope. Process footprint and allocation descriptors remain distinct."
+    },
+    {
+      "label": "Power and energy",
+      "definition": "Unavailable unless actually observed. Missing telemetry is never filled with zero or inferred from output length."
+    }
+  ],
+  "limitations": [
+    "Historical scores belong to earlier protocols and do not validate this harness.",
+    "IFEval measures explicit instruction compliance, not general factual correctness or overall usefulness.",
+    "A single run per arm provides a paired observation, not repeated-run uncertainty or an efficiency-equivalence claim.",
+    "Source Transformers activations can inform an edit; its effect must still be tested after quantization in WebLLM.",
+    "Development feedback is not untouched confirmation. Dataset exposure and split roles must be recorded before execution."
+  ],
+  "source_base": "https://github.com/Arhaan2/weight-space-lab/blob/3447ea31b60fbe81a1040d6f789cdd77346410f6/",
+  "sources": [
+    {
+      "label": "Workflow and execution contract",
+      "path": "docs/mechanistic-browser-workflow.md"
+    },
+    {
+      "label": "Weight and activation inspection",
+      "path": "docs/mechanistic-inspection.md"
+    },
+    {
+      "label": "Same-request browser measurement",
+      "path": "docs/joint-browser-measurement.md"
+    },
+    {
+      "label": "IFEval harness configuration",
+      "path": "configs/ifeval_mechanistic_browser.json"
+    }
+  ]
+}
