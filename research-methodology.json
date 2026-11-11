@@ -2,7 +2,7 @@
   "schema_version": 1,
   "title": "Research methodology and provenance",
   "updated": "2026-11-10",
-  "overview": "A small explicit weight intervention is evaluated on instruction following and, separately, a fixed browser resource workload. Historical V1 quality, adaptive V2 development and the new all-edit resource pilot remain distinct. Lower token counts do not establish lower memory, computation or energy.",
+  "overview": "Explicit weight interventions are evaluated on instruction following and a separate fixed browser resource workload. Historical V1 quality, adaptive V2 development, the first all-edit resource pilot and the fresh six-version comparison remain distinct. Lower token counts do not establish lower memory, computation or energy.",
   "model": {
     "name": "Qwen3.5-0.8B",
     "revision": "2fc06364715b967f1860aea9cf38778875588b17",
@@ -529,7 +529,7 @@
   "sources": [
     {
       "label": "Full research methodology",
-      "url": "https://github.com/Arhaan2/weight-space-lab/blob/28f9b87dafefe05572272120a6d2295262bf7f69/docs/research-methodology.md"
+      "url": "https://github.com/Arhaan2/weight-space-lab/blob/c5c6fda32bde69bbe3207be8e17ad53373143d8c/docs/research-methodology.md"
     },
     {
       "label": "V1 result",
@@ -558,6 +558,14 @@
     {
       "label": "All-edit resource result",
       "url": "https://github.com/Arhaan2/weight-space-lab/blob/28f9b87dafefe05572272120a6d2295262bf7f69/reports/resource-all-edits-v1/result.json"
+    },
+    {
+      "label": "Fresh six-version comparison",
+      "url": "https://github.com/Arhaan2/weight-space-lab/blob/c5c6fda32bde69bbe3207be8e17ad53373143d8c/reports/fresh-baseline-r4-v1/result.json"
+    },
+    {
+      "label": "Fresh comparison cache-maintenance evidence",
+      "url": "https://github.com/Arhaan2/weight-space-lab/blob/c5c6fda32bde69bbe3207be8e17ad53373143d8c/reports/fresh-baseline-r4-v1/maintenance.json"
     }
   ],
   "upstream_attribution": [
@@ -566,5 +574,15 @@
     "Ai2 Tulu 3 / RLVR-IFeval",
     "WebLLM / MLC",
     "Browser LLM Bench contributors: Gufran Mirza and Arhaan Aggarwal"
-  ]
+  ],
+  "fresh_comparison": {
+    "report": "fresh-comparison.json",
+    "source": "https://github.com/Arhaan2/weight-space-lab/blob/c5c6fda32bde69bbe3207be8e17ad53373143d8c/reports/fresh-baseline-r4-v1/result.json",
+    "scope": "Planned schedule: six fresh executions on the same 32 exposed development prompts and two separate resource sessions per artifact. Actual completion, observations and failures are reported in the linked comparison.",
+    "status": "complete",
+    "maintenance": {
+      "report": "fresh-maintenance.json",
+      "source": "https://github.com/Arhaan2/weight-space-lab/blob/c5c6fda32bde69bbe3207be8e17ad53373143d8c/reports/fresh-baseline-r4-v1/maintenance.json"
+    }
+  }
 }
