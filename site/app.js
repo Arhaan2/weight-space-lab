@@ -13,7 +13,7 @@
   const shortLabels = {pristine:'Pristine',v1:'V1 edit','v2-r1':'Astra 1','v2-r2':'Astra 2','v2-r3':'Astra 3','astra-r4':'Astra 4'};
   const pointLabels = {pristine:'P',v1:'V1','v2-r1':'A1','v2-r2':'A2','v2-r3':'A3','astra-r4':'A4'};
   const subtitles = {pristine:'Original checkpoint',v1:'Historical selected edit','v2-r1':'Development candidate','v2-r2':'Development candidate','v2-r3':'Development candidate','astra-r4':'Fresh-baseline candidate'};
-  let data, methods, state = {route:'results',model:'v1',view:'overview',cohort:'historical',scope:'development',metric:'response',qualityMetric:'prompt_strict',zoom:true,session:null,request:1,trace:'response_ms',record:null};
+  let data, methods, state = {route:'harness',model:'v1',view:'overview',cohort:'historical',scope:'development',metric:'response',qualityMetric:'prompt_strict',zoom:true,session:null,request:1,trace:'response_ms',record:null};
   try {
     data = JSON.parse($('#research-data').textContent);
     methods = JSON.parse($('#methodology-data').textContent);
@@ -102,7 +102,7 @@
   function readHash() {
     const [route,query='']=location.hash.slice(1).split('?');
     const params=new URLSearchParams(query);
-    state.route=['results','methodology','evidence'].includes(route)?route:'results';
+    state.route=['harness','results','methodology','evidence'].includes(route)?route:'harness';
     if(params.has('cohort')&&['fresh','historical'].includes(params.get('cohort')))state.cohort=params.get('cohort');
     syncCohort();
     if(params.has('model')&&keys.includes(params.get('model')))state.model=params.get('model');
@@ -126,6 +126,13 @@
     history.replaceState(null,'',`#${state.route}${state.route==='results'?'?'+params:''}`);
   }
   function announce(text) { $('#announcement').textContent=text; }
+  function selectHarnessStage(key, notify = true) {
+    const selected = document.querySelector(`[data-harness-stage="${key}"]`);
+    if (!selected) return;
+    $$('[data-harness-stage]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.harnessStage === key)));
+    $$('[data-stage-detail]').forEach(panel => { panel.hidden = panel.dataset.stageDetail !== key; });
+    if (notify) announce(`${selected.querySelector('span').textContent}. ${selected.querySelector('small').textContent}`);
+  }
   function renderNavigation() {
     $$('.route-view').forEach(el=>el.classList.toggle('active',el.id===state.route));
     $$('[data-route]').forEach(el=>{if(el.dataset.route===state.route)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});
@@ -463,6 +470,7 @@
     const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);
   }
   $('.skip-link').addEventListener('click',event=>{event.preventDefault();const target=$(`#${state.route}-heading`)||$('#main');target.setAttribute('tabindex','-1');target.focus({preventScroll:true});target.scrollIntoView({block:'start'});});
+  $$('[data-harness-stage]').forEach(button => button.addEventListener('click', () => selectHarnessStage(button.dataset.harnessStage)));
   document.addEventListener('click',event=>{const point=event.target.closest('[data-point-models]');const button=event.target.closest('[data-model]');if(point){const models=point.dataset.pointModels.split('|'),index=models.indexOf(state.model);selectArtifact(models[(index+1)%models.length]);}else if(button)selectArtifact(button.dataset.model);if(event.target.closest('#inspect-version')){state.view='resources';render();saveHash();$('#chart-title').setAttribute('tabindex','-1');$('#chart-title').focus({preventScroll:true});}if(event.target.closest('#export-requests'))exportRequests();const step=event.target.closest('#previous-request')?-1:event.target.closest('#next-request')?1:0;if(step){state.request=Math.max(1,Math.min(observedRequests(activeSession()).length,state.request+step));renderRequestTrace();saveHash();}});
   document.addEventListener('change',event=>{if(event.target.id==='resource-session'){state.session=Number(event.target.value);state.request=1;renderRequestExplorer();$('#resource-session')?.focus({preventScroll:true});saveHash();}if(event.target.id==='request-metric'){state.trace=event.target.value;renderRequestTrace();saveHash();}});
   document.addEventListener('input',event=>{if(event.target.id==='request-index'){state.request=Number(event.target.value);renderRequestTrace();saveHash();}});
@@ -482,7 +490,7 @@
   window.addEventListener('beforeprint',()=>{printDetails=$$('.methods-details details').map(el=>[el,el.open]);printDetails.forEach(([el])=>el.open=true);});
   window.addEventListener('afterprint',()=>{printDetails.forEach(([el,open])=>el.open=open);printDetails=[];});
   if(!location.hash && ['complete','completed'].includes(fresh()?.status)) {state.cohort='fresh';state.view='overview';state.metric='response';state.model=allKeys.includes('astra-r4')?'astra-r4':'pristine';}
-  readHash();renderMethods();renderSources();render();
+  readHash();renderMethods();renderSources();render();selectHarnessStage('weights', false);
   $('.interactive-workspace').hidden=false;document.documentElement.classList.add('js-ready');renderOverviewPlot();focusRecord();
   if(typeof ResizeObserver==='function'){let frame;new ResizeObserver(()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(renderOverviewPlot);}).observe($('#tradeoff-plot'));}
   $('#snapshot-date').textContent=new Date(data.updated+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
