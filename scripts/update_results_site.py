@@ -7,6 +7,7 @@ from html import escape
 import json
 import math
 from pathlib import Path
+import re
 from zoneinfo import ZoneInfo
 
 REPOSITORY = Path(__file__).resolve().parents[1]
@@ -207,6 +208,172 @@ def script_json(identifier, data):
     return f'<script id="{identifier}" type="application/json">{encoded}</script>'
 
 
+JOINT_NUMERIC_FIELDS = {
+    "quality": ("strict_passed", "scheduled", "strict_accuracy", "unresolved_grades"),
+    "totals": ("output_tokens", "response_ms", "known_output_tokens", "known_response_ms", "measured_requests", "mean_response_ms", "full_response_tokens_per_second"),
+    "resources": ("native_peak_footprint_gb", "gpu_buffer_descriptor_bytes_sampled_max", "wasm_address_space_bytes_sampled_max", "cpu_capacity_percent", "cpu_coverage", "gpu_time_ms_per_second", "gpu_coverage", "host_power_watts", "power_coverage", "observed_host_energy_joules", "host_energy_joules", "native_samples"),
+    "cost_per_compliant_answer": ("tokens_per_strict_pass", "response_ms_per_strict_pass", "host_joules_per_strict_pass"),
+}
+
+
+def public_joint_report(report):
+    """Whitelist canonical joint measurements; never publish arbitrary execution data."""
+    if (report.get("schema_version") != 1 or report.get("kind") != "mechanistic_browser_comparison"
+            or report.get("accuracy_benchmark") != "ifeval" or report.get("runs_per_arm") != 1
+            or report.get("separate_resource_generations") != 0
+            or report.get("status") not in ("not_run", "baseline_only", "complete", "incomplete")):
+        raise ValueError("Expected the canonical one-pair IFEval mechanistic study report")
+
+    def numbers(source, names):
+        out = {}
+        for name in names:
+            value = source.get(name)
+            numeric(value)  # Reject NaN, Infinity, booleans and strings; retain missing as null.
+            out[name] = value
+        return out
+
+    def identity(value):
+        if not isinstance(value, str) or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,128}", value):
+            raise ValueError("Invalid public request identity")
+        return value
+
+    public = {key: report[key] for key in ("schema_version", "kind", "status", "accuracy_benchmark", "runs_per_arm", "separate_resource_generations")}
+    public["scheduled_prompts"] = numbers(report, ("scheduled_prompts",))["scheduled_prompts"]
+    public["arms"] = {}
+    for key, arm in report.get("arms", {}).items():
+        if key not in ("baseline", "candidate") or arm.get("kind") != "joint_browser_accuracy_resource_result" or arm.get("status") not in ("completed", "incomplete"):
+            raise ValueError("Unexpected joint evaluation arm")
+        clean = {"kind": arm["kind"], "status": arm["status"]}
+        for field in ("study_sha256", "manifest_sha256", "artifact_sha256", "source_checkpoint_sha256", "items_sha256", "model_lib_sha256", "harness_sha256", "evidence_sha256"):
+            value = arm.get(field)
+            if value is not None and (not isinstance(value, str) or not re.fullmatch(r"[0-9a-f]{64}", value)):
+                raise ValueError("Invalid joint report digest")
+            clean[field] = value
+        for section, fields in JOINT_NUMERIC_FIELDS.items():
+            clean[section] = numbers(arm.get(section) or {}, fields)
+        quality = clean["quality"]
+        if (quality["scheduled"] != public["scheduled_prompts"] or not isinstance(quality["scheduled"], int)
+                or not 1 <= quality["scheduled"] <= 128 or not isinstance(quality["strict_passed"], int)
+                or not 0 <= quality["strict_passed"] <= quality["scheduled"]
+                or quality["strict_accuracy"] != quality["strict_passed"] / quality["scheduled"]):
+            raise ValueError("Inconsistent joint IFEval denominator")
+        clean["items"] = []
+        for item in arm.get("items", []):
+            row = {"item_id": identity(str(item["item_id"])), "request_id": identity(item["request_id"])}
+            # Execution/grader statuses are constrained tokens, never free-form exception text.
+            row.update({name: identity(item[name]) for name in ("status", "grading_status")})
+            for field in ("strict_pass", "loose_pass"):
+                if item.get(field) is not None and (not isinstance(item[field], (bool, int, float)) or item[field] not in (0, 1)):
+                    raise ValueError("Invalid joint grade")
+                row[field] = None if item.get(field) is None else bool(item[field])
+            row.update(numbers(item, ("output_tokens", "response_ms")))
+            row["resources"] = numbers(item.get("resources") or {}, JOINT_NUMERIC_FIELDS["resources"])
+            clean["items"].append(row)
+        if len(clean["items"]) != quality["scheduled"] or len({row["item_id"] for row in clean["items"]}) != quality["scheduled"]:
+            raise ValueError("Joint report must retain every scheduled request exactly once")
+        if sum(row["strict_pass"] is True for row in clean["items"]) != quality["strict_passed"]:
+            raise ValueError("Joint pass count differs from request grades")
+        public["arms"][key] = clean
+    keys = set(public["arms"])
+    expected = {"not_run": set(), "baseline_only": {"baseline"}, "complete": {"baseline", "candidate"}, "incomplete": {"baseline", "candidate"}}
+    if keys != expected[public["status"]]:
+        raise ValueError("Joint report state disagrees with its arms")
+    comparison = report.get("comparison")
+    public["comparison"] = None
+    if comparison:
+        if comparison.get("kind") != "joint_browser_accuracy_resource_comparison" or comparison.get("status") not in ("completed", "unmatched_or_incomplete"):
+            raise ValueError("Unexpected joint comparison")
+        matched = comparison.get("matched_environment_and_workload") is True
+        complete = comparison["status"] == "completed"
+        if complete != (public["status"] == "complete") or (complete and not matched):
+            raise ValueError("Inconsistent paired comparison status")
+        public["comparison"] = {"kind": comparison["kind"], "status": comparison["status"], "matched_environment_and_workload": matched}
+        public["comparison"].update(numbers(comparison, ("strict_accuracy_delta", "output_tokens_delta", "response_ms_delta", "native_peak_footprint_gb_delta", "host_energy_joules_delta")))
+        public["comparison"]["paired_outcomes"] = numbers(comparison["paired_outcomes"], ("improved", "regressed", "tied")) if comparison.get("paired_outcomes") else None
+        if complete:
+            arms = public["arms"]
+            if any(arms[a]["status"] != "completed" for a in arms) or [r["item_id"] for r in arms["baseline"]["items"]] != [r["item_id"] for r in arms["candidate"]["items"]]:
+                raise ValueError("Completed pair requires complete arms and matching request order")
+    elif len(keys) == 2:
+        raise ValueError("Two-arm report requires a comparison record")
+    return public
+
+
+def joint_markup(report):
+    """Render current observations without blending them with past protocols."""
+    rows, costs, resource_rows, request_rows = [], [], [], []
+    present = bool(report and report["arms"])
+    missing = lambda value, digits=0, divisor=1: "Unavailable" if value is None else numeric(value, digits, divisor)
+    for key, label in (("baseline", "Pristine"), ("candidate", "Frozen candidate")):
+        arm = (report or {}).get("arms", {}).get(key)
+        if not arm:
+            rows.append((label, ["Not run", "Unavailable", "Unavailable", "Unavailable", "Unavailable"]))
+            continue
+        q, t, r, c = (arm[name] for name in ("quality", "totals", "resources", "cost_per_compliant_answer"))
+        grade = f'{numeric(q["strict_passed"])}/{numeric(q["scheduled"])}'
+        if q["unresolved_grades"]:
+            grade += " · lower bound"
+        rows.append((label, [arm["status"].capitalize(), grade, missing(t["output_tokens"]), missing(t["response_ms"], 2, 1000), missing(r["native_peak_footprint_gb"], 3)]))
+        costs.append((label, [missing(c["tokens_per_strict_pass"], 1), missing(c["response_ms_per_strict_pass"], 2, 1000), missing(c["host_joules_per_strict_pass"], 2)]))
+        coverage = lambda metric, cov: f'{missing(r[metric], 2)} · {numeric(r[cov], 1, .01)}% coverage' if r[cov] is not None else 'Unavailable'
+        resource_rows.append((label, [coverage("cpu_capacity_percent", "cpu_coverage"), coverage("gpu_time_ms_per_second", "gpu_coverage"), coverage("host_power_watts", "power_coverage"), missing(r["host_energy_joules"], 2)]))
+        for index, item in enumerate(arm["items"], 1):
+            result = "Pass" if item["strict_pass"] is True else "Fail" if item["strict_pass"] is False else "Unresolved"
+            request_rows.append((f'{label} · {index}', [item["item_id"], item["status"].replace("_", " "), result, missing(item["output_tokens"]), missing(item["response_ms"], 2, 1000), missing(item["resources"]["native_peak_footprint_gb"], 3)]))
+    content = table(["Artifact", "Status", "Strict passes", "Output tokens", "Response sum (s)", "Native peak (GB)"], rows, "Same-request IFEval accuracy and browser resource measurements")
+    if not present:
+        return content + '<p class="small-note">No historical value is used to fill these fields. A completed record must bind grades and resource observations to the same prompts, requests, runtime and deployed artifacts.</p>'
+    comparison = report.get("comparison") or {}
+    if report["status"] == "complete" and comparison.get("matched_environment_and_workload"):
+        content += f'<p class="harness-joint-reading">Candidate minus pristine: <strong>{numeric(comparison["strict_accuracy_delta"], 2, .01)} percentage points</strong> strict compliance; <strong>{missing(comparison["output_tokens_delta"])}</strong> output tokens; <strong>{missing(comparison["response_ms_delta"], 2, 1000)} seconds</strong> summed response time.</p>'
+    else:
+        content += '<p class="small-note">Paired change is unavailable until both arms complete with matched workload and environment identities.</p>'
+    content += '<p class="small-note">One browser session per arm. These are descriptive observations on the same requests, including unsuccessful answers. Missing totals remain unavailable; individual recorded requests remain inspectable. Native footprint is sampled process-tree memory, not physical VRAM.</p>'
+    content += '<h3>Cost per strictly compliant answer</h3>' + table(["Artifact", "Tokens / pass", "Response seconds / pass", "Host joules / pass"], costs, "Total scored workload cost divided by strict passes")
+    content += '<p class="small-note">All scored outputs contribute to cost, including failed and truncated answers. A zero-pass or unresolved-grade denominator has no defined cost per pass. Warm-up and model load are outside these scored totals.</p>'
+    content += '<details class="harness-request-records"><summary>Resource coverage and request records</summary>'
+    content += table(["Artifact", "CPU capacity (%)", "GPU time (ms/s)", "Host power (W)", "Host energy (J)"], resource_rows, "Observed resource rates and interval coverage")
+    content += '<p class="small-note">CPU and GPU are activity rates. Host energy is reported only for complete measured intervals; it is not model-only energy. Coverage below 100% is retained explicitly.</p>'
+    content += table(["Artifact / request", "IFEval item", "Status", "Strict grade", "Output tokens", "Response (s)", "Native peak (GB)"], request_rows, "Each graded request and its own browser resource observations")
+    return content + '</details><p><a href="joint-comparison.json" download>Download public paired observations</a></p>'
+
+
+def harness_markup(contract, joint=None):
+    """Publish the implemented workflow separately from measured historical results."""
+    if (contract.get("kind") != "mechanistic_browser_harness_contract"
+            or contract.get("status") not in ("implemented_not_run", "implemented")
+            or contract.get("accuracy_benchmark") != "IFEval"
+            or contract.get("evaluation", {}).get("results") not in (None, "joint-comparison.json")):
+        raise ValueError("Expected the versioned IFEval harness contract; import measurements with --joint-report")
+    evaluation = contract["evaluation"]
+    if evaluation.get("arms") != ["pristine", "candidate"] or evaluation.get("runs_per_arm") != 1:
+        raise ValueError("Harness presentation expects one baseline and one candidate evaluation")
+    stages = contract["stages"]
+    if [stage["key"] for stage in stages] != ["weights", "activations", "edit", "evaluate"]:
+        raise ValueError("Unexpected diagnostic workflow")
+    controls = ''.join(
+        f'<button type="button" data-harness-stage="{escape(stage["key"])}" aria-pressed="{str(index == 0).lower()}" aria-controls="harness-stage-{escape(stage["key"])}"><span>{escape(stage["label"])}</span><small>{escape(stage["summary"])}</small></button>'
+        for index, stage in enumerate(stages))
+    panels = ''.join(
+        f'<article id="harness-stage-{escape(stage["key"])}" class="harness-stage-detail" data-stage-detail="{escape(stage["key"])}"><h3>{escape(stage["label"])}</h3><p>{escape(stage["detail"])}</p><dl><div><dt>Recorded evidence</dt><dd>{escape(stage["evidence"])}</dd></div></dl></article>'
+        for stage in stages)
+    metrics = ''.join(f'<div><dt>{escape(row["label"])}</dt><dd>{escape(row["definition"])}</dd></div>' for row in contract["measurements"])
+    limits = ''.join(f'<li>{escape(value)}</li>' for value in contract["limitations"] if not joint or not joint["arms"] or not value.startswith("No new paired evaluation"))
+    base = contract["source_base"]
+    if not base.startswith("https://github.com/Arhaan2/weight-space-lab/blob/"):
+        raise ValueError("Harness source links must identify the public repository")
+    sources = ''.join(f'<a href="{escape(base + row["path"], quote=True)}"><span>{escape(row["label"])}</span><span aria-hidden="true">↗</span></a>' for row in contract["sources"])
+    record_status = {"not_run": "Awaiting first execution", "baseline_only": "Pristine arm recorded", "complete": "Both arms complete", "incomplete": "Incomplete or unmatched pair"}[(joint or {}).get("status", "not_run")]
+    implementation_status = "Updated harness. First paired browser evaluation has not run." if not joint or joint["status"] == "not_run" else f"{record_status}. One-session observations; no repeated-run uncertainty estimate."
+    return f'''<div class="page-heading"><div><p class="eyebrow">IFEval + Browser LLM Bench</p><h1 id="harness-heading">{escape(contract["title"])}</h1><p class="page-intro">{escape(contract["question"])}</p></div><a class="outline-button" href="harness.json" download>Download harness contract <span aria-hidden="true">↓</span></a></div>
+    <div class="finding-strip harness-status"><span class="finding-label">Harness status</span><p>{implementation_status}</p><a href="#results">Earlier results <span aria-hidden="true">→</span></a></div>
+    <div class="harness-scope"><div><span>Accuracy</span><strong>IFEval instruction following</strong></div><div><span>Resource measurement</span><strong>Browser LLM Bench / WebLLM</strong></div><div><span>Main comparison</span><strong>One pristine + one candidate run</strong></div></div>
+    <section class="harness-workflow" aria-labelledby="harness-workflow-heading"><div class="section-heading"><h2 id="harness-workflow-heading">From diagnosis to one paired comparison</h2><span>Inspect each stage</span></div><div class="harness-flow"><div class="harness-stage-controls" role="group" aria-label="Inspection and evaluation stages">{controls}</div><div class="harness-stage-panels">{panels}</div></div><p class="small-note">{escape(evaluation["diagnostics"])}</p></section>
+    <div class="harness-measurement-grid"><section aria-labelledby="harness-request-heading"><div class="section-heading"><h2 id="harness-request-heading">One answer, two measurements</h2><span>Joined by request identity</span></div><p class="harness-lead">{escape(contract["workload"])}</p><dl class="harness-measurements">{metrics}</dl></section><aside class="harness-comparison-note"><h2>What changes from the earlier studies</h2><p>The editor can inspect weights and activation evidence, then change a selected direction instead of being limited to scaling contiguous columns.</p><p>The accuracy workload now also supplies the browser resource workload. The standard repeated-prompt pilot remains in the historical record.</p><p>Additional accuracy benchmarks are a later extension. This version uses IFEval only.</p></aside></div>
+    <section class="harness-paired-results" aria-labelledby="harness-paired-heading"><div class="section-heading"><h2 id="harness-paired-heading">Paired evaluation record</h2><span>{record_status}</span></div>{joint_markup(joint)}</section>
+    <div class="harness-bottom"><details class="harness-boundaries"><summary>How to interpret the next result</summary><ul>{limits}</ul></details><section class="harness-sources" aria-labelledby="harness-sources-heading"><h2 id="harness-sources-heading">Implementation and protocol</h2>{sources}</section></div>'''
+
+
 def update(args):
     report = json.loads(args.report.read_text())
     if report.get("schema_version") != 1 or report.get("kind") != "sanitized_v2_collaboration_result":
@@ -316,7 +483,22 @@ def update(args):
         else:
             finding = f"The fresh six-version comparison is {fresh.get('status', 'pending').replace('_', ' ')}. Historical results remain separate."
     html = replace_region(html, "CURRENT_FINDING", escape(finding))
+    harness_path = args.site / "harness.json"
+    joint_path = args.site / "joint-comparison.json"
+    joint_source = args.joint_report or (joint_path if joint_path.exists() else None)
+    joint = public_joint_report(json.loads(joint_source.read_text())) if joint_source else None
+    if harness_path.exists():
+        harness = json.loads(harness_path.read_text())
+        harness["status"] = "implemented" if joint and joint["arms"] else "implemented_not_run"
+        harness["evaluation"]["status"] = joint["status"] if joint else "not_run"
+        harness["evaluation"]["results"] = "joint-comparison.json" if joint else None
+        html = replace_region(html, "HARNESS_CONTENT", harness_markup(harness, joint))
+        html = replace_region(html, "HARNESS_DATA", script_json("harness-data", harness))
     outputs = {data_path: json.dumps(data, indent=2) + "\n", methods_path: json.dumps(methods, indent=2) + "\n", html_path: html}
+    if harness_path.exists():
+        outputs[harness_path] = json.dumps(harness, indent=2) + "\n"
+    if joint:
+        outputs[joint_path] = json.dumps(joint, indent=2, allow_nan=False) + "\n"
     if resource:
         outputs[args.site / "resource-study.json"] = json.dumps(resource, indent=2) + "\n"
     if fresh:
@@ -345,6 +527,7 @@ def main():
     parser.add_argument("--resource-report", type=Path, default=REPOSITORY / "reports/resource-all-edits-v1/result.json")
     parser.add_argument("--fresh-report", type=Path, default=REPOSITORY / "reports/fresh-baseline-r4-v1/result.json")
     parser.add_argument("--fresh-maintenance", type=Path, default=REPOSITORY / "reports/fresh-baseline-r4-v1/maintenance.json")
+    parser.add_argument("--joint-report", type=Path, help="Canonical mechanistic_study report; publishes whitelisted same-request observations separately")
     parser.add_argument("--site", type=Path, default=REPOSITORY / "site")
     parser.add_argument("--source-url", help="Public V2 report link; existing pin is retained by default")
     parser.add_argument("--resource-source-url", help="Public resource JSON link")

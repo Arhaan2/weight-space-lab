@@ -1,5 +1,52 @@
 # Public results site
 
+## Current mechanistic harness view
+
+The default `#harness` route presents the updated workflow separately from the
+completed studies. It keeps IFEval as the only accuracy benchmark and describes
+one pristine and one frozen-candidate browser evaluation, with compliance and
+resource observations joined on the same requests. Diagnostic probes have their
+own accounting. The weight/activation/direction/evaluation explorer is keyboard
+accessible, retains focus when stages change, and has complete script-free text.
+CPU Transformers source-model activations are not described as WebGPU activations.
+
+The public contract lives in `site/harness.json`. `HARNESS_CONTENT` and
+`HARNESS_DATA` are updater-controlled regions; no historical report is changed.
+The initial state is `implemented_not_run`, with an explicit empty paired table.
+The optional `--joint-report REPORT.json` imports the canonical
+`mechanistic_study report` output into a separate `joint-comparison.json`. It
+whitelists aggregate numerics, hashes, bounded item identities, grades and request
+observations; free-form provenance, model answers and prompts are excluded. The
+updater checks report state, per-arm denominators, pass counts, finite numerics
+and request order for completed pairs, but does not independently regrade or
+authenticate a source capture. A later update reuses the saved public report.
+Arm status, grades, response cost, native peak, cost per strict pass and expandable
+coverage/request tables are generated as ordinary HTML, including without scripts.
+Paired changes require the canonical report's completed, matched comparison;
+partial records cannot borrow historical values. Missing results are unavailable,
+never zero. The workflow contract's evaluation status and result link follow the
+imported record while historical evidence stays separate.
+`source_base` identifies the implementation release separately from historical
+evidence pins. Preserve or update that link when publishing the matching source.
+
+The existing Achromatic ledger style, type and palette are retained. Four
+navigation links fit at phone width, stage buttons remain at least 44px tall,
+and the same-request measurement contract is readable without JavaScript. The
+historical Results, Methodology and Evidence routes keep their original data
+and separate-study denominators.
+
+The harness extension was checked at 1,440, 768 and 390 pixels with reduced
+motion, keyboard stage selection, destination focus, historical navigation and
+script-free fallback. Taste's app inspection found zero failures. Three retained
+warnings reflect the established neutral palette, a protocol explorer occupying
+the initial view, and phone table values beneath their labels. Both inspection
+rounds' six images were reviewed; the second used the preserved Achromatic ledger
+app direction. A separate disposable fixture site exercised the future imported
+record at all three widths, including coverage and request disclosure, without
+publishing fixture numbers or launching target inference. No horizontal overflow
+or browser errors were observed. Review records are under
+`.taste-skill/harness-design/`; these are presentation checks, not benchmark data.
+
 The buildless site in `site/` presents the measured V1 comparison and the actual
 status of the V2 follow-up. It runs on GitHub Pages without a framework, package
 installation, external analytics or a model download. Only the contents of
@@ -77,7 +124,7 @@ interface font. The product-specific element is a five-artifact comparison and a
 exact weight-edit map: actual affected column intervals are positioned within the
 verified 3,584-column down-projection dimension. No decorative weights are drawn.
 
-Three hash routes answer separate questions: **Results** compares artifacts;
+The three historical hash routes answer separate questions: **Results** compares artifacts;
 **Methodology** explains how measurements were obtained; **Evidence** supplies
 reports, identities and downloads. Selection composes the chart, selected reading,
 paired baseline difference, edit operations and individual resource sessions. Each resource session also exposes its actual

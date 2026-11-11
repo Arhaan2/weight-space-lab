@@ -4,6 +4,23 @@ Controlled experiments in which a frontier model proposes direct edits to an ope
 
 Maintainer: [Arhaan Aggarwal (Arhaan2)](https://github.com/Arhaan2).
 
+## Current harness — joint IFEval and browser measurement
+
+The new [mechanistic browser workflow](docs/mechanistic-browser-workflow.md) lets
+Astra inspect actual weight slices and teacher-forced source-model activations,
+derive behavioral directions, and submit an audited directional edit. The main
+comparison is one pristine browser run and one candidate browser run. Each
+IFEval answer is graded and measured for browser resource usage on the same
+request; no separate repeated-prompt resource workload or multi-edit sweep is
+required. IFEval is the only accuracy benchmark in this version.
+
+This implementation has not yet produced a new target-model result. CPU
+diagnostic activations are labeled separately from quantized WebGPU evaluation.
+The [configuration](configs/ifeval_mechanistic_browser.json),
+[inspection tools](docs/mechanistic-inspection.md), and
+[joint measurement contract](docs/joint-browser-measurement.md) define the new
+path. Historical results below retain their original scope and settings.
+
 ## Current results — fresh baseline and Astra round 4
 
 **The new Astra edit did not improve benchmark compliance or demonstrate lower resource use.** All six artifacts were evaluated afresh on the same current browser: pristine, V1 and all four Astra edits. Round 4 scored 16/32 strict passes, equal to pristine and below V1's 17/32. It used 16,998 scored quality-output tokens versus 13,941 for pristine (+21.93%), with 16 versus 12 truncated outputs. Three prompt outcomes improved and three regressed; 26 were tied.
