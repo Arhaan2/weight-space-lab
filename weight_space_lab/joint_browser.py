@@ -44,7 +44,8 @@ def install_adapter(benchmark):
         if value["adapter_sha256"] != file_sha256(__file__) or value["helper_sha256"] != file_sha256(SOURCE_ROOT / "integrations/joint-resource-report.ts"):
             raise ValueError("Installed joint adapter revision differs; use a fresh harness copy")
         return value
-    names = ["src/benchmark/task-evaluation/protocol.ts", "src/benchmark/task-evaluation/client.ts", "scripts/run-task-evaluation.mjs"]
+    names = ["src/benchmark/task-evaluation/protocol.ts", "src/benchmark/task-evaluation/client.ts", "scripts/run-task-evaluation.mjs",
+             "harness/controller/capture.py"]
     originals = {name: (benchmark / name).read_text() for name in names}
     changes = dict(originals)
     name = names[0]
@@ -76,6 +77,19 @@ def install_adapter(benchmark):
     changes[name] = _replace_once(changes[name], ': !config.resourceComparison,', ': !(config.resourceComparison || config.jointMeasurement),', name)
     changes[name] = _replace_once(changes[name], '(!config.resourceComparison || result.cleanup.native_capture_exit_confirmed)',
         '(!(config.resourceComparison || config.jointMeasurement) || result.cleanup.native_capture_exit_confirmed)', name)
+    name = names[3]
+    changes[name] = _replace_once(changes[name], 'from harness.collectors.macos.power_capture import capture_seconds',
+        'def native_capture_seconds(value):\n'
+        '    """Bound native-only capture to the joint browser session allowance."""\n'
+        '    try:\n'
+        '        seconds = int(value)\n'
+        '    except (TypeError, ValueError):\n'
+        '        raise argparse.ArgumentTypeError("Native capture duration must be an integer number of seconds")\n'
+        '    if not 1 <= seconds <= 5400:\n'
+        '        raise argparse.ArgumentTypeError("Native capture duration must be between 1 and 5400 seconds")\n'
+        '    return seconds', name)
+    changes[name] = _replace_once(changes[name], 'type=capture_seconds, default=3600',
+        'type=native_capture_seconds, default=3600', name)
     helper = "src/benchmark/task-evaluation/joint-resource-report.ts"
     destination = benchmark / helper
     if destination.exists():

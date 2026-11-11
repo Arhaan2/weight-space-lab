@@ -1,7 +1,9 @@
 """Same-generation identity, resource attribution, failures and one-pass contracts."""
 import copy
+import argparse
 import json
 from pathlib import Path
+import runpy
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -216,7 +218,16 @@ c.items.length !== (continuation ? 34 : c.evaluationStage === "heldout" ? (c.nar
 "--max-seconds", "1800"], "native-capture");
 : !config.resourceComparison,
 (!config.resourceComparison || result.cleanup.native_capture_exit_confirmed)
-'''}
+''',
+            "harness/controller/capture.py": '''import argparse
+from harness.collectors.macos.power_capture import capture_seconds
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--max-seconds", type=capture_seconds, default=3600)
+    args = parser.parse_args()
+''',
+            "harness/collectors/macos/power_capture.py": "MAX_CAPTURE_SECONDS = 3600\n"}
         for name, source in sources.items():
             path = root / name; path.parent.mkdir(parents=True, exist_ok=True); path.write_text(source)
         return sources
@@ -238,6 +249,22 @@ c.items.length !== (continuation ? 34 : c.evaluationStage === "heldout" ? (c.nar
             with self.assertRaises(ValueError):
                 install_adapter(root)
             self.assertEqual((root / "src/benchmark/task-evaluation/protocol.ts").read_text(), sources["src/benchmark/task-evaluation/protocol.ts"])
+
+    def test_native_capture_accepts_full_joint_budget_without_changing_power_limit(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); originals = self.install_fixture(root)
+            receipt = install_adapter(root)
+            capture = root / "harness/controller/capture.py"
+            # Exercise the installed native CLI parser without collector/model dispatch.
+            with patch("sys.argv", [str(capture), "--max-seconds", "5400"]):
+                parsed = runpy.run_path(str(capture), run_name="__main__")
+            self.assertEqual(parsed["args"].max_seconds, 5400)
+            for value in ("0", "5401", "1.5", "unbounded"):
+                with self.assertRaises(argparse.ArgumentTypeError):
+                    parsed["native_capture_seconds"](value)
+            self.assertEqual((root / "harness/collectors/macos/power_capture.py").read_text(),
+                             originals["harness/collectors/macos/power_capture.py"])
+            self.assertIn("harness/controller/capture.py", receipt["after"])
 
 
 if __name__ == "__main__":
