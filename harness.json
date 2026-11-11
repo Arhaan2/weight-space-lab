@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "kind": "mechanistic_browser_harness_contract",
+  "kind": "research_browser_harness_contract",
   "updated": "2026-11-11",
   "status": "implemented",
   "title": "Inspect, edit, measure together",
-  "question": "Can a targeted weight edit improve instruction following within the same browser resource budget?",
+  "question": "Can broader weight editing improve IFEval instruction following and browser resource use together?",
   "accuracy_benchmark": "IFEval",
   "resource_benchmark": "Browser LLM Bench / WebLLM",
   "workload": "The same IFEval prompts and generated responses supply both accuracy and resource evidence.",
@@ -17,42 +17,44 @@
     "runs_per_arm": 1,
     "candidate_count": 1,
     "results": "joint-comparison.json",
-    "diagnostics": "Bounded diagnostic calls are logged separately from the one baseline and one frozen-candidate browser evaluation."
+    "diagnostics": "Persistent Python exploration and metered forward probes have separate accounting. Up to 300 Python calls and 50 forward calls are available; these are ceilings, not repeated final evaluations. One frozen candidate closes development before either browser arm.",
+    "practice_prompts": 96,
+    "final_prompts": 32
   },
   "stages": [
     {
       "key": "weights",
-      "label": "Inspect weights",
-      "summary": "Read actual tensor values and statistics on demand.",
-      "detail": "Astra can request bounded slices and summaries from the pinned source checkpoint. Each disclosure records the requested tensor, selection and checkpoint identity, rather than relying only on a preselected statistics packet.",
-      "evidence": "Checkpoint identity, tensor coordinates, inspection result and budget receipt."
+      "label": "Explore in Python",
+      "summary": "Inspect actual tensors in a persistent workspace.",
+      "detail": "Astra can load original tensors, inspect their values, use NumPy and PyTorch for analysis, and keep arrays and hypotheses across calls. Attention, linear-attention, MLP and internal normalization weights across all 24 decoder blocks are available. The source checkpoint remains immutable.",
+      "evidence": "Pinned checkpoint and code identities, executed-cell hashes, outputs, resource limits and attempted/completed call receipts."
     },
     {
       "key": "activations",
-      "label": "Probe activations",
-      "summary": "Compare productive and failing continuations.",
-      "detail": "Teacher-forced probes capture bounded hidden states and MLP activations from the source model through local Transformers. Matched contrasts estimate a direction and rank the neurons that write it. These are source-model diagnostics, not activations measured inside the quantized WebGPU runtime.",
-      "evidence": "Probe input identity, backend provenance, layer and position selections, captured activations and direction derivation."
+      "label": "Probe both models",
+      "summary": "Compare original and edited behavior on practice inputs.",
+      "detail": "Metered source-model probes support generation and teacher forcing on original, edited or both weights, with per-token log probabilities, top-k predictions, hidden states, MLP inputs and full-attention tensors at supported layers. Paired seeds and practice IFEval scoring support diagnostics. These are BF16 CPU Transformers observations, not q4 WebGPU activations. Final prompts stay outside the editor packet and kernel.",
+      "evidence": "Probe identities, original/edited pairing, token and sequence accounting, activation captures, practice grades and failed attempts."
     },
     {
       "key": "edit",
-      "label": "Make a directional edit",
-      "summary": "Change a selected component of neuron outputs.",
-      "detail": "The candidate policy supports explicit directional changes on selected columns, including noncontiguous selections and intervention strengths up to six. The pristine checkpoint remains immutable. Source verification and effective quantization checks bind the candidate to the actual deployed model.",
-      "evidence": "Direction vector, selected columns, strength, changed-coordinate audit and deployment identity."
+      "label": "Edit and snapshot",
+      "summary": "Try arbitrary internal tensor edits, then freeze one.",
+      "detail": "Astra can make arbitrary direct floating-point changes inside the decoder blocks, save and restore candidate snapshots, and choose one final edit. There is no fixed direction, layer list, rank, column count or strength ceiling. Shapes and dtypes stay fixed; embeddings, the output head and final normalization are excluded, as are training and pure whole-tensor scaling. The frozen candidate is audited in stored source bytes and after one MLC conversion.",
+      "evidence": "Named snapshot and hashes, frozen rationale, changed-tensor audit, conversion identity and effective deployed-weight audit."
     },
     {
       "key": "evaluate",
-      "label": "Evaluate once per arm",
-      "summary": "Grade and measure each browser request together.",
-      "detail": "Run the frozen IFEval workload once with pristine and once with the candidate. The official instruction checker grades each saved answer while the same request record carries output tokens, response duration and available resource telemetry. There is no separate autumn-leaves workload in this comparison.",
-      "evidence": "Matched prompt IDs, both artifact identities, response grades, token counts, timing and telemetry coverage."
+      "label": "Compare once",
+      "summary": "Grade and profile the same final browser responses.",
+      "detail": "After the candidate is frozen and diagnostic workers close, run pristine once and the candidate once on 32 final IFEval prompts withheld during this editor session. Each model has one excluded warm-up. The official checker grades the same answers whose request records contain tokens, latency and available resource telemetry. There is no extra resource generation loop.",
+      "evidence": "64 scored generations plus two warm-ups when both arms complete; matched prompts, frozen artifacts, grades, resource observations and coverage."
     }
   ],
   "measurements": [
     {
       "label": "Instruction compliance",
-      "definition": "Official strict IFEval prompt and instruction outcomes; loose scores remain secondary."
+      "definition": "Official strict prompt-level IFEval compliance; loose prompt scores remain secondary."
     },
     {
       "label": "Response cost",
@@ -68,30 +70,46 @@
     }
   ],
   "limitations": [
-    "Historical scores belong to earlier protocols and do not validate this harness.",
-    "IFEval measures explicit instruction compliance, not general factual correctness or overall usefulness.",
-    "A single run per arm provides a paired observation, not repeated-run uncertainty or an efficiency-equivalence claim.",
-    "Source Transformers activations can inform an edit; its effect must still be tested after quantization in WebLLM.",
-    "Development feedback is not untouched confirmation. Dataset exposure and split roles must be recorded before execution."
+    "The final set is withheld during this editor session. Prior external exposure and training-data independence are not established.",
+    "The 32 final prompts are a selected Google IFEval subset, disjoint from the 96 Ai2 practice prompts and the 128 known prompts in our earlier V1 final run. This is not a full-benchmark score or a comparison against the earlier 16/32 development score.",
+    "The practice set and final set are checked for item, source, prompt-text and instruction-family overlap before execution.",
+    "IFEval measures explicit instruction compliance, not general factual correctness or usefulness. It is the only accuracy benchmark in this run.",
+    "One final browser session per arm provides descriptive paired observations, not repeated-run uncertainty or causal efficiency evidence.",
+    "CPU source diagnostics and quantized WebGPU deployment use different execution paths. A useful source edit can be altered or erased by quantization.",
+    "Failed and truncated scored answers remain in accuracy denominators and resource totals. Missing telemetry remains unavailable.",
+    "Earlier studies use different scopes and protocols and are not pooled into the new comparison.",
+    "Implementation links point to the immutable code frozen before this run. Notes at that commit about results not yet existing describe its earlier publication state; the observations on this page are the subsequent completed run."
   ],
-  "source_base": "https://github.com/Arhaan2/weight-space-lab/blob/3630ead13aeb05f5a17a7a335b466e69d14539f6/",
+  "source_base": "https://github.com/Arhaan2/weight-space-lab/blob/353c6b454d54a3b7b8aacaa26b5f1e6b5e4bfb42/",
   "sources": [
     {
-      "label": "Workflow and execution contract",
-      "path": "docs/mechanistic-browser-workflow.md"
+      "label": "Workflow at the frozen implementation commit",
+      "path": "docs/research-browser-workflow.md"
     },
     {
-      "label": "Weight and activation inspection",
-      "path": "docs/mechanistic-inspection.md"
+      "label": "Persistent Python and diagnostic probes",
+      "path": "weight_space_lab/research_probes.py"
     },
     {
-      "label": "Same-request browser measurement",
+      "label": "Measurement protocol at the frozen commit",
       "path": "docs/joint-browser-measurement.md"
     },
     {
-      "label": "IFEval harness configuration",
-      "path": "configs/ifeval_mechanistic_browser.json"
+      "label": "Frozen IFEval research configuration",
+      "path": "configs/ifeval_research_browser.json"
     }
   ],
-  "intervention_source_base": "https://github.com/Arhaan2/weight-space-lab/blob/a5bc8ba69b4009d61ba92f1eeb7fce95affa395b/reports/mechanistic-browser-v1/"
+  "differences": [
+    "The earlier harness exposed a predefined directional edit with bounded columns and strength. The new persistent Python workspace permits arbitrary internal tensor edits, iterative probes and snapshot/restore exploration.",
+    "Original/edited generation and teacher forcing now provide token probabilities, hidden states and supported attention probes. Development has explicit 300 Python / 50 forward call ceilings.",
+    "Astra selects one snapshot using practice evidence, then loses development access before either final browser run. IFEval accuracy and WebLLM resource usage still come from the same final responses.",
+    "We also use Qwen3.5-0.8B. Our final test uses thinking off, greedy decoding and q4 WebGPU with a 1,024-token cap; the original Experiment 8 used thinking on, sampled decoding and up to 32,768 tokens. Our objective pairs IFEval accuracy with browser resource use. It does not reproduce their MATH result. Additional accuracy benchmarks come later.",
+    "Their edit subtracted a direction from 64 columns each in layers 15 and 19. This run independently selected eight columns in layer 23 and multiplied them by 1.5."
+  ],
+  "historical_joint": {
+    "page": "mechanistic-v1.html",
+    "report": "mechanistic-v1-comparison.json",
+    "intervention": "mechanistic-v1-intervention.json"
+  },
+  "canonical_report": "reports/research-browser-v2/joint-comparison.json"
 }
