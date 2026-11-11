@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "kind": "mechanistic_public_result_provenance",
+  "date_local": "2026-11-11",
+  "timezone": "America/Los_Angeles",
+  "study_sha256": "dd075d935b2988e58ecb944695d07ee6326b18f83db9fda6c11e4119557f9935",
+  "runtime_source_commit": "3630ead13aeb05f5a17a7a335b466e69d14539f6",
+  "continuation_source_script_sha256": "4268f21a25b74b17d485771036704f74833275cc70d8b4e9577a2f85f8d489ff",
+  "continuation_plan_sha256": "63f8ac60ebcaa3700bd06654e261c543f52dd8f01ff2f6e79aa09ade419aa8a4",
+  "candidate_proposal_sha256": "d261648adbba0446db9cfd17327721e17f4f5317dcbb0d90267e59d0b6039a00",
+  "canonical_report_sha256": "3e9e6a74cca89c776cc76906a02ddc1d2fcf74eb449c95b1417833aa7834947d",
+  "launch_accounting": [
+    {
+      "launch": "baseline",
+      "status": "completed",
+      "engine_load_attempts": 1,
+      "warmup_dispatches": 1,
+      "scored_dispatches": 32,
+      "generation_dispatches": 33,
+      "owned_resources_released": true,
+      "retained_owned_pids_alive": [],
+      "supervisor_file_sha256": "aaddf7e4e552e5776bbdf8a9176d5daca3df28b3c703afba1fab7f3b35d6d35e"
+    },
+    {
+      "launch": "candidate_preload_failure",
+      "status": "stopped",
+      "engine_load_attempts": 0,
+      "warmup_dispatches": 0,
+      "scored_dispatches": 0,
+      "generation_dispatches": 0,
+      "owned_resources_released": true,
+      "retained_owned_pids_alive": [],
+      "supervisor_file_sha256": "19410573f4b112315d530e14cb411ffa9a04755a9e26e993a0711af27f3ff2d0"
+    },
+    {
+      "launch": "candidate",
+      "status": "completed",
+      "engine_load_attempts": 1,
+      "warmup_dispatches": 1,
+      "scored_dispatches": 32,
+      "generation_dispatches": 33,
+      "owned_resources_released": true,
+      "retained_owned_pids_alive": [],
+      "supervisor_file_sha256": "3732977414fd696cb551dceeedb9bce166cd59288cc0957020dc7f831d92b0d2"
+    }
+  ],
+  "measured_model_sessions_per_arm": 1,
+  "generation_sequences_including_warmup": 66,
+  "scored_generation_sequences": 64,
+  "automatic_target_retries": 0,
+  "new_weight_proposals": 1,
+  "conversions": 1,
+  "environment_and_workload_matched": true,
+  "paired_outcomes": {
+    "improved": 0,
+    "regressed": 1,
+    "tied": 31
+  },
+  "files": {
+    "README.md": "42c5341e6fa98c450ddc314d2904e7fa54b67d70ceeab4886e06581fe4cb5287",
+    "intervention.json": "b5704c5615336570e52a0753122ce5b0c40bda58dee1faf1c4b16bb5be749bcf",
+    "joint-comparison.json": "509f250e4860e47aa0b82ff9affa8d36522efe5c110ed225c71bfd6cdc65b6aa",
+    "proposal.evidence.json": "57042c10b54add9bc60ad1a218374d04f58fd0dbf2bc12a8886922f7dad3c493",
+    "proposal.json": "043792ac1b562fca05992eb9376158cabbb2db9bd196631d40713ef530a08f73",
+    "rationale.txt": "6ddaf70f9cbed82657d2691fdacb9071ddbffee1a9720549b4d6974297c0cc8b"
+  },
+  "privacy": "No prompts, answers, activation arrays, host paths or credentials are included in public result files."
+}

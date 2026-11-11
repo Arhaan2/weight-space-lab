@@ -7,9 +7,10 @@ benchmark in this version. Browser LLM Bench supplies the runtime measurement;
 there is no separate autumn-leaves workload and no required four- or five-edit
 sweep. More accuracy benchmarks can be added after this workflow is evaluated.
 
-This harness is implemented and tested with fixtures and the browser build. No
-new Astra discovery session or target-model experiment has been executed as part
-of its implementation. Historical V1, V2, R4 and resource results remain unchanged.
+The first actual paired study completed on November 11, 2026: strict compliance
+fell from 16/32 to 15/32 and output tokens rose 1.25%. It did not demonstrate a
+joint improvement. See the [result, exact edit and limitations](../reports/mechanistic-browser-v1/README.md).
+Historical V1, V2, R4 and resource results remain unchanged.
 
 The default schedule is one baseline browser session, adaptive diagnostic tools,
 one submitted candidate, one audited conversion, and one candidate browser
@@ -209,3 +210,15 @@ The implementation checks exercise actual synthetic directional checkpoint edits
 activation hooks and capture limits, telemetry/grade alignment, failure costs,
 single-use state, and the compiled browser integration. They are engineering
 validation, not new model-performance measurements.
+
+## First-run startup amendment
+
+The first candidate browser process closed before any model load or generation.
+The original failure, zero-call ledger and study state were preserved. A separate
+[explicit pre-load continuation](../scripts/run_mechanistic_preload_continuation.py)
+verified zero prior target calls, froze the same candidate/workload/runtime, and
+completed its first model evaluation. This amends the original no-retry launch
+protocol without repeating target inference. Its gate refuses existing load
+grants, target events, nonzero/unknown counts, ledger attempts, incomplete cleanup,
+changed evidence or a consumed continuation. The public report retains the failed
+launch's 6.120-second supervisor cost and separate browser/model counts.
