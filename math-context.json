@@ -1,0 +1,55 @@
+{
+  "dataset_source_sha256": "35dc41080a3680858b27fa7e0533d2d547825316fc5dafe5d316f4ccc5a06132",
+  "date": "2026-11-12",
+  "development_note": "The review counted 15 diagnostic forward attempts: 14 completed and one failed. There were 217 completed teacher-forced sequences and five completed generated sequences; all five generations hit their token limit, with 352 recorded output tokens in total. The failed first generation started 129 internal forward calls and completed 128 without completing its sequence; its partial output-token cost is unknown. Across recorded diagnostic counters there were 34,971 input tokens and 697 completed internal model calls, with 698 started. The original conversion action failed before subprocess launch because its pinned adapter file was absent. The exact pinned bytes were restored through an explicit one-use continuation; the failed action remains in the record, development stayed closed, and exactly one actual conversion completed with zero target generations. Diagnostic energy and total development token cost are unavailable.",
+  "evidence_downloads": [
+    "math-research-audit.json",
+    "math-final-audit.json"
+  ],
+  "grading_note": "Math-Verify 0.9.0 grades final-answer equivalence using the last balanced boxed answer, plain reasoning mode, strict equivalence, and no string fallback. A valid boxed answer in a truncated response can pass. Before target inference, a preflight found eight valid references rejected by the earlier strict LaTeX normalization. The frozen standard_latex option enables malformed_operators and nits identically for references and predictions; no final item or answer was excluded or rewritten. The paper accepts additional box forms and uses different parser defaults. This is a documented local grading policy, and it does not verify the reasoning or proof.",
+  "grading_policy": {
+    "generation_retry": {
+      "max_attempts": 1,
+      "mode": "none"
+    },
+    "grader_retry": {
+      "max_attempts": 1,
+      "mode": "none"
+    },
+    "grader_timeout_seconds": 20,
+    "math_normalization": "standard_latex",
+    "output_eos_tokens": [
+      "<|im_end|>",
+      "<|endoftext|>"
+    ],
+    "reasoning_policy": "plain",
+    "schema_version": 1,
+    "truncation_policy": "grade"
+  },
+  "grading_policy_sha256": "5eee56379aa291f65b39324acc2de4ae66a6331727b9b2c1ca4a4724d120acb5",
+  "intervention": {
+    "rationale_summary": "Seven practice solutions supplied an arithmetic-versus-prose activation contrast used to rank columns in blocks 12, 16 and 20. The initial amplification hypothesis was unsupported. Selection then used an adapted conditional correct-answer likelihood assay: the chosen attenuation gained 0.005060 nats per token on average across 21 practice items, but its median was -0.003540 and only 8 items improved. A separate seven-item confirmation, unused by earlier forward requests, gained 0.031047 on average with 5 items improving. These small proxy assays and one random control do not establish a mechanism or generated-answer accuracy improvement. The full MATH-500 comparison evaluates the already frozen candidate.",
+    "summary": "A fresh exploratory edit multiplies 48 MLP output columns in zero-based transformer block 20 by 0.8. The stored BF16 source audit found 49,152 changed values and 487 other tensors unchanged. The q4f16_1 deployment audit found 73,046 changed decoded values: 49,206 lie outside the exact source coordinates because quantization shares scales within groups of 32, and none lie outside affected source groups. There are 39,114 changed 4-bit values and 1,903 changed scales; 433 other deployed tensors are unchanged.",
+    "tensors": [
+      {
+        "changed_coordinates": 49152,
+        "name": "model.language_model.layers.20.mlp.down_proj.weight",
+        "operation": "For the original 1,024 \u00d7 3,584 tensor, multiply every row of the following zero-based columns by 0.8 in float32, then materialize with the original BF16 dtype: 4, 18, 22, 23, 38, 58, 62, 66, 67, 85, 121, 135, 160, 207, 211, 217, 222, 224, 228, 244, 258, 273, 284, 304, 308, 313, 316, 366, 410, 427, 457, 504, 569, 589, 622, 637, 659, 686, 796, 1089, 1465, 1531, 1585, 1779, 1997, 2262, 2357, 2541. All other source entries remain unchanged."
+      }
+    ]
+  },
+  "limitations": [
+    "This is a browser benchmark extension, not a numerical reproduction of the paper. We use one greedy sample, thinking disabled, q4f16_1 WebGPU and a 1,024-output-position ceiling (up to 1,020 sampled tokens). The paper uses BF16 vLLM, thinking enabled, temperature 0.6, top-p 0.95, top-k 20, presence penalty 1.5, up to 32,768 new tokens and four samples per problem with averaged correctness.",
+    "The 70 practice problems are balanced across seven subjects and five difficulty levels. They come from MATH training data and are disjoint under the recorded identity, normalized-text, source-row and template-family checks; this does not prove semantic uniqueness or freedom from pretraining contamination.",
+    "The likelihood selection endpoint was adapted after the initial trace assay. Small selected proxy gains and the seven-item confirmation are development evidence, not an independent estimate of MATH-500 accuracy.",
+    "The requested editor selector was gpt-6-astra. Provider-side model version and service tier were not independently authenticated. The notebook was reviewed and its kernel shutdown verified, but perfect outer-editor access isolation is not established.",
+    "Published rows support independent recomputation of correctness counts, paired outcomes, intervals and resource summaries. They omit generated answers and therefore do not enable independent answer regrading. The new runtime source has no confirmed public immutable commit yet.",
+    "Recovery uses all retained worker allocation samples. The original profile combined main-page and worker samples under a 10,000-point cap; lost main-page samples and that cap interaction cannot be reconstructed. This is a qualified re-analysis, not a byte-exact copy of the original combined profile.",
+    "The declared host, Chrome binary and settings were frozen and verified. The recovered observed environment contains only the retained user agent; navigator platform and hardwareConcurrency are unavailable. The original supervisor memory/deployment acceptance flags remain false as runner-failure flags; they do not establish a measured memory breach or certify recovered physical-memory acceptance."
+  ],
+  "practice_count": 70,
+  "reporting_note": "Both browser workers completed all 500 scored responses and cleanup before the driver lost its CDP connection during terminal export. The original driver status remains failed, and the original arm reports remain incomplete. These results use saved grades and a qualified offline reconstruction of durable response events, with zero new model generations or grading calls. The same recovery policy was frozen before the candidate run and applied to both arms. Response tokens and durations are retained; native CPU, GPU, physical memory and energy cannot be aligned because the absolute clock export was lost.",
+  "schema_version": 1,
+  "source_commit": null,
+  "study_id": "math-research-browser-v1"
+}
