@@ -15,3 +15,16 @@
 .math-page{--font:"Schibsted Grotesk",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--small:13px}.math-table{font-size:13px}
 
 .math-page .outline-button{min-height:44px}
+
+.math-controls{margin-top:0;padding-top:0;border-top:0;padding-bottom:28px;margin-bottom:28px;border-bottom:1px solid var(--rule)}
+.math-control-table th:first-child{width:31%}.math-control-table td{font-variant-numeric:tabular-nums}
+.math-control-details{margin-top:18px}.math-control-details summary{min-height:44px;display:list-item;padding-top:10px;font-weight:600;cursor:pointer}
+.math-control-details summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.math-control-reference{margin-top:24px}.math-controls .math-breakdowns p{font-size:var(--body);line-height:1.8}
+@media(max-width:760px){.math-control-table th:first-child{width:auto}.math-control-table td:last-child{grid-column:1/-1}.math-controls{padding-bottom:20px;margin-bottom:20px}}
+
+.math-controls>p:not(.small-note),.math-controls .math-limitations{max-width:84ch}
+
+.math-control-incomplete{max-width:84ch;margin:24px 0;padding:4px 0 4px 20px;border-left:3px solid var(--rule)}
+.math-control-incomplete h3{font-size:var(--body)}
+.math-control-incomplete p{margin-top:8px;font-size:var(--body);line-height:1.8}

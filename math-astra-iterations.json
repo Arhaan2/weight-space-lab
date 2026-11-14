@@ -1,0 +1,437 @@
+{
+  "schema_version": 1,
+  "kind": "astra_open_research_iteration_record",
+  "scope": "adaptive_training_practice",
+  "study_sha256": "aa2c62b9344b7f17afe3a32e0589d2e0d9c9cdff24af443626461f5713e43e4d",
+  "requested_researcher": {
+    "requested_selector": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "execution_interface": "collaboration subagent",
+    "provider_model_version": null,
+    "provider_service_tier": null,
+    "identity_attestation": "Requested selector exposed by the operator handoff; exact provider backend version is not attested."
+  },
+  "implementation_source": "Five adaptive scientific probes retain the frozen first resident release. One separately requested engineering control uses the subsequent accounting/recovery/delta-logging version; all existing studies remain immutable.",
+  "baseline_reference": {
+    "source": "Published control A35 original arm, selected six-item subset",
+    "correct": 1,
+    "scheduled": 6,
+    "truncated": 3,
+    "output_tokens": 4550
+  },
+  "actions": [
+    {
+      "action_id": "6bd8ab655ea44555899d5b01d7387fde",
+      "request_sha256": "41a273fa224bed34e01ea5b27e2f2d47532973eb4a6de93125569f31c1aa1792",
+      "decoding": {
+        "schema": "weight-space-browser-research-v1",
+        "scope": "adaptive_development",
+        "presencePenalty": 0,
+        "frequencyPenalty": 0,
+        "repetitionPenalty": 1,
+        "topK": "unsupported",
+        "promptMode": "browser_default"
+      },
+      "settings": {
+        "temperature": 0,
+        "topP": 1,
+        "seed": 42,
+        "maxTokens": 1024,
+        "contextWindow": 4096,
+        "warmups": 1,
+        "warmupTokens": 16,
+        "requestLimitMs": 120000,
+        "thinking": false
+      },
+      "rationale": "Reproduce the saved A35 factorial response at identical original weights, prompt and decoding to verify the independent development route before interpreting adaptive differences.",
+      "items": [
+        "counting_and_probability/train-00000-of-00001.parquet:000680"
+      ],
+      "summary": {
+        "sequences": 1,
+        "graded": 1,
+        "ungraded": 0,
+        "accuracy": 0.0,
+        "mean_output_tokens": 1020.0,
+        "truncated": 1
+      },
+      "accounting": {
+        "browser_scored_sequences_scheduled": 1,
+        "browser_warmup_sequences_scheduled": 1,
+        "browser_arms_started": 1,
+        "browser_arms_completed": 1,
+        "browser_scored_sequences_completed": 1,
+        "browser_recorded_output_tokens": 1020,
+        "browser_observed_warmup_sequences": 1,
+        "browser_recorded_warmup_output_tokens": 12
+      },
+      "elapsed_seconds": 52.72047583409585,
+      "result_sha256": "003ccb698ae8500478812ca4393a24c15e4581030cdbf155f8c492fc9deec80b",
+      "saved_result_file_sha256": "f122284277e7adb6aa3f3437f4d7915ed610451cde269beee3e6e43ba69fb307",
+      "saved_graded_file_sha256": "6efdf7fbbb1c03cc0396a765bc0b20d7edd06d144645521d79151f87a9981911",
+      "saved_backend_receipts_file_sha256": "8dfd186482db4acb595d7c7596b289d669f22ebce21c766ecc1bb00b6f105a46",
+      "cleanup_confirmed": true
+    },
+    {
+      "action_id": "7e98927cbb4a4967a16981d0a9c35dee",
+      "request_sha256": "8aa301a1f4a2cb78000a7ad66db67f4b52fc0cbec4614e8361161f1f180e7c23",
+      "decoding": {
+        "schema": "weight-space-browser-research-v1",
+        "scope": "adaptive_development",
+        "presencePenalty": 1.5,
+        "frequencyPenalty": 0,
+        "repetitionPenalty": 1,
+        "topK": "unsupported",
+        "promptMode": "browser_default"
+      },
+      "settings": {
+        "temperature": 0,
+        "topP": 1,
+        "seed": 42,
+        "maxTokens": 1024,
+        "contextWindow": 4096,
+        "warmups": 1,
+        "warmupTokens": 16,
+        "requestLimitMs": 120000,
+        "thinking": false
+      },
+      "rationale": "Following inspection of A35 training responses, isolate the presence penalty from temperature, top-p, thinking and budget. Chosen examples contrast verbatim repetition, correct intermediate answers that fail to finalize, natural math errors and an already correct answer. This adaptive comparison does not estimate held-out accuracy.",
+      "items": [
+        "counting_and_probability/train-00000-of-00001.parquet:000680",
+        "number_theory/train-00000-of-00001.parquet:000355",
+        "prealgebra/train-00000-of-00001.parquet:000423",
+        "geometry/train-00000-of-00001.parquet:000859",
+        "counting_and_probability/train-00000-of-00001.parquet:000643",
+        "algebra/train-00000-of-00001.parquet:001169"
+      ],
+      "summary": {
+        "sequences": 6,
+        "graded": 6,
+        "ungraded": 0,
+        "accuracy": 0.16666666666666666,
+        "mean_output_tokens": 693.3333333333334,
+        "truncated": 2
+      },
+      "accounting": {
+        "browser_scored_sequences_scheduled": 6,
+        "browser_warmup_sequences_scheduled": 1,
+        "browser_arms_started": 1,
+        "browser_arms_completed": 1,
+        "browser_scored_sequences_completed": 6,
+        "browser_recorded_output_tokens": 4160,
+        "browser_observed_warmup_sequences": 1,
+        "browser_recorded_warmup_output_tokens": 12
+      },
+      "elapsed_seconds": 90.85128187504597,
+      "result_sha256": "ebc5fa0f759d34b8218a173f48d1ce311e25fec8f1e4c008d78ebf33edeb9040",
+      "saved_result_file_sha256": "9965b774f7ac9c967ad011a862497f09cbe44b46bba22db5b154c2a704f66d04",
+      "saved_graded_file_sha256": "5ca91e7f369eb7481f438742179122790e7c3eee11cdea9ddee70ca77697a0b1",
+      "saved_backend_receipts_file_sha256": "09d5bf8cdc496e82691b1ec1e80bb43de459c1e893103531a467281787818f28",
+      "cleanup_confirmed": true
+    },
+    {
+      "action_id": "1aa8f99442b54e3b94a23a6fa6745d00",
+      "request_sha256": "79553ec5685da2acbd884a33f54a4095df9f598001ee3a237d4195b91718e585",
+      "decoding": {
+        "schema": "weight-space-browser-research-v1",
+        "scope": "adaptive_development",
+        "presencePenalty": 0,
+        "frequencyPenalty": 0.1,
+        "repetitionPenalty": 1,
+        "topK": "unsupported",
+        "promptMode": "browser_default"
+      },
+      "settings": {
+        "temperature": 0,
+        "topP": 1,
+        "seed": 42,
+        "maxTokens": 1024,
+        "contextWindow": 4096,
+        "warmups": 1,
+        "warmupTokens": 16,
+        "requestLimitMs": 120000,
+        "thinking": false
+      },
+      "rationale": "The presence1.5 comparison rescued the literal factorial loop but broke the correct lawn answer and did not improve the six-item total. Revise the mechanism: use frequency penalty0.1, which accumulates with repeated token count, while restoring presence0 and holding greedy decoding, thinking mode, token budget and examples fixed. Test whether this interrupts late repetition with less early arithmetic disruption; no performance threshold or submission is implied.",
+      "items": [
+        "counting_and_probability/train-00000-of-00001.parquet:000680",
+        "number_theory/train-00000-of-00001.parquet:000355",
+        "prealgebra/train-00000-of-00001.parquet:000423",
+        "geometry/train-00000-of-00001.parquet:000859",
+        "counting_and_probability/train-00000-of-00001.parquet:000643",
+        "algebra/train-00000-of-00001.parquet:001169"
+      ],
+      "summary": {
+        "sequences": 6,
+        "graded": 6,
+        "ungraded": 0,
+        "accuracy": 0.3333333333333333,
+        "mean_output_tokens": 677.1666666666666,
+        "truncated": 2
+      },
+      "accounting": {
+        "browser_scored_sequences_scheduled": 6,
+        "browser_warmup_sequences_scheduled": 1,
+        "browser_arms_started": 1,
+        "browser_arms_completed": 1,
+        "browser_scored_sequences_completed": 6,
+        "browser_recorded_output_tokens": 4063,
+        "browser_observed_warmup_sequences": 1,
+        "browser_recorded_warmup_output_tokens": 12
+      },
+      "elapsed_seconds": 88.64274062495679,
+      "result_sha256": "4f57008aaf7c72389f1dc7c883fb919389a17e0cf424d760ca961f8f8c5bea45",
+      "saved_result_file_sha256": "b74048c63edddc1d496b55bb2bd8757b4e01a42231eddaea0a1742ced3ca76ef",
+      "saved_graded_file_sha256": "1d5184fc9a56ef5bb9497d7f5b86823511c9fec0d3e6b804de323d755824534b",
+      "saved_backend_receipts_file_sha256": "14b9c9ab4884f50e4b243581e00413a4b0ef91dc65830688842f2a01d82bd5a9",
+      "cleanup_confirmed": true
+    },
+    {
+      "action_id": "a96d9839a5a24428b1c49d01512f5ccc",
+      "request_sha256": "b0011eecb6e53b8abb2bed3c2479c3e9769c75628b824f2d989f2542e494c58b",
+      "decoding": {
+        "schema": "weight-space-browser-research-v1",
+        "scope": "adaptive_development",
+        "presencePenalty": 0,
+        "frequencyPenalty": 0,
+        "repetitionPenalty": 1,
+        "topK": "unsupported",
+        "promptMode": "browser_default"
+      },
+      "settings": {
+        "temperature": 0,
+        "topP": 1,
+        "seed": 42,
+        "maxTokens": 1024,
+        "contextWindow": 4096,
+        "warmups": 1,
+        "warmupTokens": 16,
+        "requestLimitMs": 120000,
+        "thinking": false
+      },
+      "rationale": "Assess transfer of the frequency0.1 hypothesis to the other training item in each chosen subject/level stratum. These six examples were not used to choose the penalty; this remains adaptive practice, not a held-out benchmark. Original and frequency0.1 requests are prepared together with unchanged greedy, thinking-disabled,1024-token settings.",
+      "items": [
+        "counting_and_probability/train-00000-of-00001.parquet:000117",
+        "number_theory/train-00000-of-00001.parquet:000509",
+        "prealgebra/train-00000-of-00001.parquet:000922",
+        "geometry/train-00000-of-00001.parquet:000272",
+        "counting_and_probability/train-00000-of-00001.parquet:000183",
+        "algebra/train-00000-of-00001.parquet:001294"
+      ],
+      "summary": {
+        "sequences": 6,
+        "graded": 6,
+        "ungraded": 0,
+        "accuracy": 0.3333333333333333,
+        "mean_output_tokens": 611.8333333333334,
+        "truncated": 1
+      },
+      "accounting": {
+        "browser_scored_sequences_scheduled": 6,
+        "browser_warmup_sequences_scheduled": 1,
+        "browser_arms_started": 1,
+        "browser_arms_completed": 1,
+        "browser_scored_sequences_completed": 6,
+        "browser_recorded_output_tokens": 3671,
+        "browser_observed_warmup_sequences": 1,
+        "browser_recorded_warmup_output_tokens": 12
+      },
+      "elapsed_seconds": 83.98507008305751,
+      "result_sha256": "843f07818bd38b3123ba1152969db68c7c084a616310f31ff458699e500ff974",
+      "saved_result_file_sha256": "aa96a630e1a019668714235552ceb34f48824746216d16cdfa7c7ab74664d0e8",
+      "saved_graded_file_sha256": "d55cd6a4f3079369f2f54f6236ed39bc62ab608eb21c9819a3c14709a76cfb24",
+      "saved_backend_receipts_file_sha256": "8dfd186482db4acb595d7c7596b289d669f22ebce21c766ecc1bb00b6f105a46",
+      "cleanup_confirmed": true
+    },
+    {
+      "action_id": "045265b8168b413fa478408419dd26d6",
+      "request_sha256": "417e334ec2ff83a21e6bcbac7a038ee509efe1c59064bea863832a949d554f51",
+      "decoding": {
+        "schema": "weight-space-browser-research-v1",
+        "scope": "adaptive_development",
+        "presencePenalty": 0,
+        "frequencyPenalty": 0.1,
+        "repetitionPenalty": 1,
+        "topK": "unsupported",
+        "promptMode": "browser_default"
+      },
+      "settings": {
+        "temperature": 0,
+        "topP": 1,
+        "seed": 42,
+        "maxTokens": 1024,
+        "contextWindow": 4096,
+        "warmups": 1,
+        "warmupTokens": 16,
+        "requestLimitMs": 120000,
+        "thinking": false
+      },
+      "rationale": "Assess transfer of the frequency0.1 hypothesis to the other training item in each chosen subject/level stratum. These six examples were not used to choose the penalty; this remains adaptive practice, not a held-out benchmark. Original and frequency0.1 requests are prepared together with unchanged greedy, thinking-disabled,1024-token settings.",
+      "items": [
+        "counting_and_probability/train-00000-of-00001.parquet:000117",
+        "number_theory/train-00000-of-00001.parquet:000509",
+        "prealgebra/train-00000-of-00001.parquet:000922",
+        "geometry/train-00000-of-00001.parquet:000272",
+        "counting_and_probability/train-00000-of-00001.parquet:000183",
+        "algebra/train-00000-of-00001.parquet:001294"
+      ],
+      "summary": {
+        "sequences": 6,
+        "graded": 6,
+        "ungraded": 0,
+        "accuracy": 0.0,
+        "mean_output_tokens": 668.1666666666666,
+        "truncated": 2
+      },
+      "accounting": {
+        "browser_scored_sequences_scheduled": 6,
+        "browser_warmup_sequences_scheduled": 1,
+        "browser_arms_started": 1,
+        "browser_arms_completed": 1,
+        "browser_scored_sequences_completed": 6,
+        "browser_recorded_output_tokens": 4009,
+        "browser_observed_warmup_sequences": 1,
+        "browser_recorded_warmup_output_tokens": 12
+      },
+      "elapsed_seconds": 86.10498620895669,
+      "result_sha256": "40279c54817351c42248511ca7d391f66809dd3b3919947ab09d5dc75aee9721",
+      "saved_result_file_sha256": "c77cfc8f6f8bf37c17522e58e4bc89e6bab3dc754c4228d6c9339d9b6b0d51ae",
+      "saved_graded_file_sha256": "a7ab26dbb7b0ab046080d6da086dfc824028db9447b11fc95b8983717d45ac32",
+      "saved_backend_receipts_file_sha256": "14b9c9ab4884f50e4b243581e00413a4b0ef91dc65830688842f2a01d82bd5a9",
+      "cleanup_confirmed": true
+    }
+  ],
+  "decision": "Reject both tested repetition-penalty leads as general repairs. Presence1.5 trades a factorial rescue for a lawn regression. Frequency0.1 initially changes selected practice accuracy1/6 to2/6, but on six additional same-stratum practice items it changes2/6 to0/6, regresses both initially correct answers, increases truncations1 to2, and raises output tokens3671 to4009. No novel weight candidate selected, no final submission, and no new MATH-500 run.",
+  "development_closed": false,
+  "final_submission": null,
+  "final_baseline": null,
+  "final_candidate": null,
+  "limitations": [
+    "The six failure-oriented examples were chosen after seeing their baseline answers.",
+    "One deterministic sample per problem/configuration; tiny exploratory counts are not general improvement evidence.",
+    "Quantized browser backend and old non-thinking prompt remain different from paper BF16/thinking settings.",
+    "Counterparts were chosen as the other training item in each selected subject/level stratum before either counterpart run; they are additional adaptive practice, not an unseen holdout."
+  ],
+  "total_observed": {
+    "browser_scored_sequences_completed": 25,
+    "browser_observed_warmup_sequences": 5,
+    "browser_recorded_output_tokens": 16923,
+    "browser_recorded_warmup_output_tokens": 60,
+    "target_generation_sequences": 30
+  },
+  "remaining_forward_attempts": 45,
+  "new_source_weight_edits": 0,
+  "further_diagnostic": "Read-only source-to-quantized edit geometry, recorded separately. The published delta is largely preserved directionally, so blind amplitude compensation is not supported.",
+  "code_validation": {
+    "next_version_focused_tests": 66,
+    "result": "passed",
+    "fresh_browser_worker_build": "passed",
+    "next_version_target_generations": 2,
+    "executed_version_note": "Five scientific probes retain their frozen first implementation. The subsequent version passed66 tests and a worker build, then executed one scored published-edit integration response plus one warmup; source editing and restores after feedback also passed."
+  },
+  "secondary_grader_verification": {
+    "source": "Independent original-paper grader replay on all 25 saved responses",
+    "records": 25,
+    "label_disagreements": 0,
+    "new_target_generations": 0,
+    "report_sha256": "8217cc9b94bbd580b22b19809d51726e08261175fe6b6381dee6e3e1c92105f5",
+    "primary_saved_grades_unchanged": true
+  },
+  "diagnostic_evidence": {
+    "kind": "source_to_quantized_edit_geometry",
+    "file": "p50c-quantized-transfer.json",
+    "public_record_sha256": "b6f4670946b5c0eceeb9d8d105a5cae83072164a05bc0a5dcf85bad6e61dc149",
+    "target_forwards": 0,
+    "new_weight_edits": 0
+  },
+  "engineering_validation": {
+    "scope": "Separate published-edit plumbing verification; not a sixth adaptive scientific probe",
+    "evidence_file": "edited-snapshot-integration.json",
+    "evidence_sha256": "67d65ccb6ff153f57d3961effbb657cc6953f102dff5e43a7be3c9e07c396338",
+    "study_sha256": "9d98f4c01c771effc144ffa8e8ae55db433c58dc02b0d7c00b48231f56592182",
+    "action_id": "868e436c814b4a3b9e32a2cf2b7a9118",
+    "actual_execution": true,
+    "generic_module_sha256": "57c13a6d01f221c034f85c821eb4251cd663359f5bc787c3e4df1e99d644535f",
+    "tested_prompt_mode": "browser_default",
+    "source_and_response_checks": {
+      "source_snapshot_sha256": "39c8c621e58ff6860c1fe198d62b267a8de740da0d83147b8382ee02522e3a30",
+      "source_sha256": "30c24b2f248212c05e6edc99c6732ae0e392486efeb8ddce776dbff158fee62e",
+      "source_audit_sha256": "f0090b979c4be4a19d9a05ebc24a150952b9ed6fa7df7bb657ba394b5604c214",
+      "artifact_sha256": "16f63797ba796217d50efb8cbeb942f7bdba72f4e663bfa74fbc6406e5634e33",
+      "all_artifact_files_equal": true,
+      "exact_saved_published_response_match": true,
+      "output_sha256": "3d072d31e4080d2702d5f928f639b4f78e6c50093efd2ff17ff288ece78c52e8",
+      "token_counts": {
+        "input": 62,
+        "output": 1020,
+        "total": 1082
+      },
+      "status": "truncated",
+      "correct": false,
+      "cleanup_confirmed": true,
+      "temporary_model_removed": true,
+      "reservation": {
+        "scope": "All requested arms, scored requests and one warmup per arm; conservative rendered inputs plus full declared output ceilings",
+        "input_tokens_reserved": 89,
+        "output_tokens_reserved": 1040,
+        "generation_tokens_reserved": 1129,
+        "max_generation_tokens": 1048576,
+        "browser_execution_seconds_reserved": 300,
+        "wall_time_scope": "Sum of bounded browser-arm execution allowances; source verification, conversion and build preparation are separately recorded overhead"
+      }
+    },
+    "accounting": {
+      "browser_scored_sequences_scheduled": 1,
+      "browser_warmup_sequences_scheduled": 1,
+      "browser_arms_started": 1,
+      "browser_arms_completed": 1,
+      "browser_scored_sequences_completed": 1,
+      "browser_recorded_output_tokens": 1020,
+      "browser_observed_warmup_sequences": 1,
+      "browser_recorded_warmup_output_tokens": 12
+    },
+    "post_feedback_edit_and_snapshots_verified": true,
+    "published_and_pristine_restores_verified": true,
+    "kernel_and_browser_cleanup_confirmed": true,
+    "development_remains_open": true,
+    "final_working_edits": 0,
+    "final_submission": null,
+    "final_browser_arms": 0,
+    "new_scientific_weight_candidate": false,
+    "earlier_25_response_record_sha256": "216197448e4b3cd39a9d9d0596fec68e9b191435eec18c6ca81849d8d9830b9f",
+    "fixture_vs_actual": "Materialization, conversion, exact deployment identity, one real edited-source response, continued metered editing and both restores were exercised live. The 66 automated tests and worker build remain separately labeled checks.",
+    "live_stream_reconstruction": {
+      "output_delta_events": 73,
+      "growing_full_output_events": 0,
+      "reconstructed_requests": 2,
+      "scored_raw_output_reconstructed_exactly": true,
+      "events_sha256": "41e1ffda95fa930df105b9efc9793f5c7990c96dc00a151a1712d02bac1bc60e"
+    }
+  },
+  "grand_total_observed_including_engineering": {
+    "browser_scored_sequences_completed": 26,
+    "browser_observed_warmup_sequences": 6,
+    "browser_recorded_output_tokens": 17943,
+    "browser_recorded_warmup_output_tokens": 72,
+    "target_generation_sequences": 32
+  },
+  "optional_hf_template_validation": {
+    "scope": "Tool capability verification only; separate from scientific probes and edited-source engineering response",
+    "mode": "hf_thinking",
+    "editor_selectable": true,
+    "default_mode_still_available": true,
+    "user_text_unchanged": true,
+    "artifact_file": "hf-thinking-mode-validation.json",
+    "artifact_sha256": "d6cbf37eda143cba117f93f40be845aa932b29de275dc22cef27a93b9138612a",
+    "module_sha256": "b65fa8b4116cd887fc3a4a5294b91f63abdc9ff1c69b18c2184f3388445599d0",
+    "focused_tests_passed": 70,
+    "worker_build": "passed",
+    "exact_prompt_token_matches": 71,
+    "training_messages": 70,
+    "operational_warmups_tokenized": 1,
+    "engine_loads": 0,
+    "target_generations": 0,
+    "live_inference_for_this_mode": false,
+    "interpretation": "Verified HF user-only template for actual messages, not complete paper prompt/decoding/precision parity."
+  }
+}

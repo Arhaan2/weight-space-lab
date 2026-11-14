@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "kind": "source_to_quantized_edit_geometry",
+  "target_forwards": 0,
+  "new_weight_edits": 0,
+  "source_audit_sha256": "f0090b979c4be4a19d9a05ebc24a150952b9ed6fa7df7bb657ba394b5604c214",
+  "source_shards": {
+    "baseline": "04b1c301231dd422b8860db31311ab2721511346a32cb1e079c4c4e5f1fe4696",
+    "candidate": "bd5c223dc7d0ed48a6857f798a94da6ec46c40b9ff4e7bc31872dba10f943ae5"
+  },
+  "baseline_artifact_sha256": "5ead3e9c60107ab7168bee5373f6cd636c839b82557fed6550aaaa30170aa5b0",
+  "candidate_artifact_sha256": "16f63797ba796217d50efb8cbeb942f7bdba72f4e663bfa74fbc6406e5634e33",
+  "tensors": [
+    {
+      "tensor": "model.language_model.layers.15.mlp.down_proj.weight",
+      "shape": [
+        1024,
+        3584
+      ],
+      "source_before_tensor_sha256": "ef60d2c687bab19464dca9c8bfd7777e46ad226df0c9e25643b0bab04b5a1cca",
+      "source_after_tensor_sha256": "82e2d733ea64feaeb4af93a1e065641d3df98b494a8b7576ef2f52e90fe2ee53",
+      "deployed_tensor_sha256": {
+        "original": {
+          "model.layers.15.mlp.down_proj.q_weight": "beedf8b901fb35a594e7e79697b1f71cc0abf0d6f00fd2c32819e3d102026dc6",
+          "model.layers.15.mlp.down_proj.q_scale": "64880c2a8e575745bc2bf0c189109ddc3955ef9d766bd5f731b330f7233a3474"
+        },
+        "edited": {
+          "model.layers.15.mlp.down_proj.q_weight": "b6ecf62b6ed3a78ef77ea2eabfdf5e5c795e11328ca149d018ff938e0422c6cd",
+          "model.layers.15.mlp.down_proj.q_scale": "c1e0d0af158f8bcc0da4909c8a9964fed3351e65ec67807ac601071db05fc24c"
+        }
+      },
+      "source_changed_entries": 65260,
+      "source_changed_columns": 64,
+      "decoded_changed_entries": 157832,
+      "decoded_changed_outside_source_support": 111919,
+      "source_delta_l2": 1.7488876203545385,
+      "deployed_delta_l2": 1.8216664233402184,
+      "source_relative_edit_l2": 0.10636181051504248,
+      "delta_cosine": 0.9599303318880313,
+      "deployed_gain_along_source_delta": 0.9998771985084803,
+      "deployed_to_source_delta_norm_ratio": 1.0416143393884427,
+      "relative_delta_error_l2": 0.29190072799268846,
+      "deployed_delta_energy_outside_source_support_fraction": 0.05137269055012301,
+      "source_delta_rank1_energy_fraction": 0.9999945399403964,
+      "source_delta_rank5_energy_fraction": 0.9999956140970734
+    },
+    {
+      "tensor": "model.language_model.layers.19.mlp.down_proj.weight",
+      "shape": [
+        1024,
+        3584
+      ],
+      "source_before_tensor_sha256": "638eedeb701b94aa861f4438e615c07ec6c60ee703db1bfee2de577bb6498c3e",
+      "source_after_tensor_sha256": "8ef3c61bc36af113ad58e89dbb0a4a14dcba5a45cb750c15ab515c82ddd12eb2",
+      "deployed_tensor_sha256": {
+        "original": {
+          "model.layers.19.mlp.down_proj.q_weight": "7661e74263127e81377af6eda39e2398da821c1187dc094c8545812fc9a3e071",
+          "model.layers.19.mlp.down_proj.q_scale": "6012f6b8fe995077e447adfc85bc7dcd53fac7f890e6fb2c701d61aadcf7451e"
+        },
+        "edited": {
+          "model.layers.19.mlp.down_proj.q_weight": "de67726c4c695202f213dd4a3c26a5f483fc4bcdb32b1f486c5f326d11c3c498",
+          "model.layers.19.mlp.down_proj.q_scale": "20d69b620c3372c079ac26e1929a20298d9c03c8d48fa2ab335c314eb5cb8973"
+        }
+      },
+      "source_changed_entries": 64928,
+      "source_changed_columns": 64,
+      "decoded_changed_entries": 139073,
+      "decoded_changed_outside_source_support": 96820,
+      "source_delta_l2": 1.398763191406424,
+      "deployed_delta_l2": 1.475695000377305,
+      "source_relative_edit_l2": 0.0810627652563223,
+      "delta_cosine": 0.9485020635442483,
+      "deployed_gain_along_source_delta": 1.0006695640971497,
+      "deployed_to_source_delta_norm_ratio": 1.0549998809258971,
+      "relative_delta_error_l2": 0.3341939864201,
+      "deployed_delta_energy_outside_source_support_fraction": 0.05723521109058816,
+      "source_delta_rank1_energy_fraction": 0.9999913816723272,
+      "source_delta_rank5_energy_fraction": 0.99999267257579
+    }
+  ],
+  "method": "Compare BF16-source delta to decoded q4f16_1 edited-minus-original delta, in the same tensor coordinates. Delta cosines and gains use all coordinates; off-support energy is reported separately. SVD describes source-edit geometry only.",
+  "interpretation": "Weight-space transfer diagnostic only. These geometric differences do not identify their causal effect on answer accuracy and do not substitute for a BF16 runtime comparison.",
+  "script_sha256": "3e58ca96c0544df0409ca94c88fc1255df958f03252c9d09d2b1c36f44ba64af",
+  "publication_projection": {
+    "original_record_sha256": "1af81d3a75a20235fb3aa8b4f79cea670a22cfbd91f0f6f266d73de9b9b8a313",
+    "transformation": "Source shard paths replaced by baseline/candidate role names; all computed measurements and identities preserved."
+  }
+}
